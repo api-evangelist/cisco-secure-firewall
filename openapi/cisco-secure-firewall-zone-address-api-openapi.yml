@@ -1,0 +1,267 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine Zone Address API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: Zone Address
+paths:
+  /topology/get-zones-by-addresses-with-tags:
+    post:
+      description: 'Roles allowed: support,topology-rw,topology-ro,internal'
+      operationId: getZonesByAddressWithTags
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressesWithTags'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressesWithTagsToZones'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get zones by address with tags collection
+      tags:
+      - Zone Address
+  /topology/zone/{zoneId}/addresses:
+    delete:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: deleteAllAddressesFromZone
+      parameters:
+      - in: path
+        name: zoneId
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestResponse'
+          description: Accepted
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete all addresses from zone
+      tags:
+      - Zone Address
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro,internal'
+      operationId: getAllAddressesForZone
+      parameters:
+      - in: path
+        name: zoneId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressWithZoneMatchApi'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get all addresses for zone
+      tags:
+      - Zone Address
+    patch:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: deleteAddressesFromZone
+      parameters:
+      - in: path
+        name: zoneId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressesApi'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete addresses from zone
+      tags:
+      - Zone Address
+    post:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: addAddressesToZone
+      parameters:
+      - in: path
+        name: zoneId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressWithZoneMatchApi'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Add addresses to zone
+      tags:
+      - Zone Address
+components:
+  schemas:
+    AddressesApi:
+      properties:
+        addresses:
+          description: List of valid IPV4 addresses
+          example:
+          - value: 1.1.1.1/32
+          items:
+            $ref: '#/components/schemas/StringValue'
+          type: array
+      type: object
+    AddressWithZoneMatchApi:
+      properties:
+        addresses:
+          items:
+            $ref: '#/components/schemas/AddressWithZoneMatch'
+          type: array
+      type: object
+    AddressesWithTagsToZones:
+      properties:
+        addressesWithTagsToZones:
+          items:
+            $ref: '#/components/schemas/AddressWithTagsToZones'
+          type: array
+      type: object
+    AddressWithZoneMatch:
+      properties:
+        exactMatch:
+          type: boolean
+        value:
+          description: Valid IPV4 address
+          example: 1.1.1.1/32
+          type: string
+      type: object
+    AddressWithTagsToZones:
+      properties:
+        addressWithTags:
+          type: string
+        zones:
+          items:
+            type: string
+          type: array
+      type: object
+    ReqIdAndReqSystem:
+      properties:
+        id:
+          example: 03502bc3-c140-4951-b467-bd17312a9b0b
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
+      type: object
+    AddressesWithTags:
+      properties:
+        addressesWithTags:
+          items:
+            $ref: '#/components/schemas/StringValue'
+          type: array
+      type: object
+    StringValue:
+      properties:
+        value:
+          type: string
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

@@ -1,0 +1,246 @@
+openapi: 3.2.0
+info:
+  contact: {}
+  description: Provisioning APIs for activating and managing entitlements, subscriptions, and claim codes
+  title: Provisioning Product Instance API
+  version: 1.0.1
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/provisioning.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/provisioning.yaml
+servers:
+- url: https://api.int.security.cisco.com/provisioning
+tags:
+- name: Product Instance
+paths:
+  /productInstance/{instanceId}/provision:
+    post:
+      security:
+      - EnterpriseAdminBearerAuth:
+        - security:enterprise:admin:{enterprise_id}
+      description: Provisions a product instance with the given ID
+      tags:
+      - Product Instance
+      summary: Provision a product instance
+      operationId: provision-product-instance
+      parameters:
+      - description: ID of the product instance to provision
+        name: instanceId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.ProductInstanceProvisionRequest'
+        description: Provisioning request details
+        required: true
+      responses:
+        '200':
+          description: OK - Provisioning completed successfully
+        '202':
+          description: Accepted - Provisioning is in progress
+        '400':
+          description: Bad Request - Invalid instance ID or request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - User is not an admin of the associated enterprise
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '403':
+          description: Forbidden - Product is not provisionable via API
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '409':
+          description: Conflict - Product already exists for enterprise
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '424':
+          description: Failed Dependency - Error during provisioning
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal Server Error - Unexpected error during provisioning
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+  /productInstance/{instanceId}/applyLicenses:
+    post:
+      security:
+      - EnterpriseAdminBearerAuth:
+        - security:enterprise:admin:{enterprise_id}
+      description: Applies licenses from a source product instance to a target product instance
+      tags:
+      - Product Instance
+      summary: Apply licenses from a source product instance to a target product instance
+      operationId: apply-product-instance-licenses
+      parameters:
+      - description: ID of the product instance to apply licenses to
+        name: instanceId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.ProductInstanceApplyLicensesRequest'
+        description: Apply licenses request details
+        required: true
+      responses:
+        '200':
+          description: OK - Licenses applied successfully
+        '400':
+          description: Bad Request - Invalid instance ID, customer mismatch, or product mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '412':
+          description: Precondition Required - Customers do not match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal Server Error - Error applying licenses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+  /productInstance/{instanceId}/reset:
+    put:
+      security:
+      - EnterpriseAdminBearerAuth:
+        - security:enterprise:admin:{enterprise_id}
+      description: Resets a product instance to NEW status, clearing external tenant ID and other provisioning data
+      tags:
+      - Product Instance
+      summary: Reset a product instance
+      operationId: reset-product-instance
+      parameters:
+      - description: ID of the product instance to reset
+        name: instanceId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Reset product instance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.ProductInstance'
+        '400':
+          description: Bad Request - Invalid instance ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - Invalid scope or user not admin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal Server Error - Error resetting product instance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+components:
+  schemas:
+    model.ProvisioningQuestionAnswer:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+    model.Region:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+    model.ProductInstance:
+      type: object
+      properties:
+        id:
+          type: string
+        external_tenant_id:
+          type: string
+        provisioning_status:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
+    model.ProductInstanceProvisionRequest:
+      type: object
+      properties:
+        additional_metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProvisioningQuestionAnswer'
+        create_new_tenant:
+          type: boolean
+        initial_admin:
+          type: string
+        region:
+          type: string
+    model.Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    model.ProductInstanceApplyLicensesRequest:
+      type: object
+      properties:
+        sourceInstanceId:
+          type: string
+  securitySchemes:
+    EnterpriseAdminBearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://id.cisco.com/oauth2/default/v1/token
+          scopes:
+            security:enterprise:admin:{enterprise_id}: Grants enterprise admin access with dynamic enterprise ID validation
+    ServiceTokenBearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://id.cisco.com/oauth2/default/v1/token
+          scopes:
+            security:provisioning:tenants:read: Grants read access to provisioning tenants
+            security:provisioning:subscriptions:write: Grants write access to provisioning subscriptions

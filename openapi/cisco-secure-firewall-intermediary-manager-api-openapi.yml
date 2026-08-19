@@ -1,0 +1,2438 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine Intermediary Manager API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: Intermediary Manager
+paths:
+  /topology/manager/cdo:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getIntermediaryManagerIds
+      parameters:
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntermediaryManagerIdPage'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get all Intermediary managers
+      tags:
+      - Intermediary Manager
+    patch:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: updateIntermediaryManagerHosts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntermediaryManagerUpdateApi'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update Intermediary manager hosts
+      tags:
+      - Intermediary Manager
+    post:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: createCdoManager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CdoManagerRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Create an intermediary manager for CDO
+      tags:
+      - Intermediary Manager
+  /topology/manager/cdo/asa/gateway-set:
+    post:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: createAsaGatewaySetForCdoManager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CdoAsaGatewaySetRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Create a gateway set for CDO ASA
+      tags:
+      - Intermediary Manager
+  /topology/manager/cdo/gateway-set/{gwSetId}/manager:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getIntermediaryManagerIdForGatewaySet
+      parameters:
+      - in: path
+        name: gwSetId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntermediaryManagerIdResponse'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Intermediary manager for a gateway set
+      tags:
+      - Intermediary Manager
+  /topology/manager/cdo/{managerId}:
+    delete:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: deleteIntermediaryManager
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete Intermediary manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/cdo/{managerId}/credential-name:
+    patch:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: updateIntermediaryManagerCredentialName
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialNameRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update Credential Name used by Intermediary Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/cdo/{managerId}/gateway-sets:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getGatewaySetsForIntermediaryManager
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewaySets'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get gateway sets for an Intermediary manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/cdo/{managerId}/status:
+    put:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: updateIntermediaryManagerStatus
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntermediaryManagerStatusRequest'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Activate /Deactivate Intermediary Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/multi-cloud-defense:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getIntermediaryManagerIds_1
+      parameters:
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntermediaryManagerIdPage'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get all Intermediary managers
+      tags:
+      - Intermediary Manager
+    patch:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: updateIntermediaryManagerHosts_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntermediaryManagerUpdateApi'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update Intermediary manager hosts
+      tags:
+      - Intermediary Manager
+    post:
+      description: 'Lower host priority field values indicate higher priorities during any actions performed by PINACL.
+
+
+        Roles allowed: support,topology-rw'
+      operationId: createMultiCloudDefenseManager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultiCloudDefenseManagerApi'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Create Multi Cloud Defense manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/multi-cloud-defense/gateway-set/{gwSetId}/manager:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getIntermediaryManagerIdForGatewaySet_1
+      parameters:
+      - in: path
+        name: gwSetId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntermediaryManagerIdResponse'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Intermediary manager for a gateway set
+      tags:
+      - Intermediary Manager
+  /topology/manager/multi-cloud-defense/rule-set:
+    post:
+      description: 'Create a ruleset for multi cloud defense.
+
+
+        Roles allowed: support,topology-rw'
+      operationId: createMultiCloudDefenseRuleSet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RuleSetApi'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Create Multi Cloud Defense Rule set
+      tags:
+      - Intermediary Manager
+  /topology/manager/multi-cloud-defense/{managerId}:
+    delete:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: deleteIntermediaryManager_1
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete Intermediary manager
+      tags:
+      - Intermediary Manager
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getMultiCloudDefenseManager
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MultiCloudDefenseManagerApi'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Multi Cloud Defense manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/multi-cloud-defense/{managerId}/credential-name:
+    patch:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: updateIntermediaryManagerCredentialName_1
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialNameRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update Credential Name used by Intermediary Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/multi-cloud-defense/{managerId}/gateway-sets:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getGatewaySetsForIntermediaryManager_1
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewaySets'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get gateway sets for an Intermediary manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/multi-cloud-defense/{managerId}/status:
+    put:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: updateIntermediaryManagerStatus_1
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntermediaryManagerStatusRequest'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Activate /Deactivate Intermediary Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getIntermediaryManagerIds_2
+      parameters:
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntermediaryManagerIdPage'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get all Intermediary managers
+      tags:
+      - Intermediary Manager
+    patch:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: updateIntermediaryManagerHosts_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntermediaryManagerUpdateApi'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update Intermediary manager hosts
+      tags:
+      - Intermediary Manager
+    post:
+      description: 'Lower host priority field values indicate higher priorities during any actions performed by PINACL.
+
+
+        Roles allowed: support,topology-rw'
+      operationId: createPensandoDscManager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PensandoDscManagerApi'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Create Pensando DSC manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc-pdt:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getIntermediaryManagerIds_3
+      parameters:
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntermediaryManagerIdPage'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get all Intermediary managers
+      tags:
+      - Intermediary Manager
+    patch:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: updateIntermediaryManagerHosts_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntermediaryManagerUpdateApi'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update Intermediary manager hosts
+      tags:
+      - Intermediary Manager
+    post:
+      description: 'Lower host priority field values indicate higher priorities during any actions performed by PINACL.
+
+
+        Roles allowed: support,topology-rw'
+      operationId: createPensandoDscPdtManager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PensandoDscPdtManagerApi'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Create Pensando DSC PDT manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc-pdt/address/infra:
+    patch:
+      description: 'Retire subnet zone.
+
+
+        Roles allowed: support,topology-rw'
+      operationId: retireSubnetZone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressApi'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PsmPdtRetireZoneResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Retire Infra Subnet
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc-pdt/address/infra/{address}:
+    delete:
+      description: 'Delete Infra Subnet.
+
+
+        Roles allowed: support,topology-rw'
+      operationId: deleteSubnetZone
+      parameters:
+      - in: path
+        name: address
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Delete Infra Subnet
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc-pdt/gateway-set/{gwSetId}/manager:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getIntermediaryManagerIdForGatewaySet_3
+      parameters:
+      - in: path
+        name: gwSetId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntermediaryManagerIdResponse'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Intermediary manager for a gateway set
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc-pdt/policy-details/{managerId}:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getPolicyInformationForManager
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PensandoDscPdtManagerApi'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Policy details for Pensando DSC-PDT manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc-pdt/{managerId}:
+    delete:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: deleteIntermediaryManager_3
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete Intermediary manager
+      tags:
+      - Intermediary Manager
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getPensandoDscPdtManager
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: includeMetadata
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PensandoDscPdtManagerApi'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Pensando DSC manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc-pdt/{managerId}/credential-name:
+    patch:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: updateIntermediaryManagerCredentialName_3
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialNameRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update Credential Name used by Intermediary Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc-pdt/{managerId}/gateway-sets:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getGatewaySetsForIntermediaryManager_3
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewaySets'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get gateway sets for an Intermediary manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc-pdt/{managerId}/pdt/{pdtId}:
+    delete:
+      description: 'Delete pdt from psm.
+
+
+        Roles allowed: support,topology-rw'
+      operationId: deletePdtFromPsm
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: pdtId
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestsResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Delete pdt from psm
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc-pdt/{managerId}/pdt/{pdtId}/addresses/app:
+    patch:
+      description: 'Delete application addresses from pdt.
+
+
+        Roles allowed: support,topology-rw'
+      operationId: deleteAddressesFromAppPolicy
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: pdtId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressesApi'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Delete app addresses from pdt
+      tags:
+      - Intermediary Manager
+    post:
+      description: 'Add addresses to app policy for given managerId and pdtId.
+
+
+        Roles allowed: support,topology-rw'
+      operationId: addAddressesToAppPolicy
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: pdtId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressWithExactMatch'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PsmPdtAddAddressResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Add application addresses to a pdt
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc-pdt/{managerId}/pdt/{pdtId}/addresses/infra:
+    patch:
+      description: 'Delete infra address from a pdt.
+
+
+        Roles allowed: support,topology-rw'
+      operationId: deleteAddressesFromInfraPolicy
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: pdtId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressApi'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Delete infra address from a pdt
+      tags:
+      - Intermediary Manager
+    post:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: addAddressesToInfraPolicy
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: pdtId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PensandoPdtAddAddressesToInfraApi'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PsmPdtAddAddressResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Add infra address to a pdt
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc-pdt/{managerId}/status:
+    put:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: updateIntermediaryManagerStatus_3
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntermediaryManagerStatusRequest'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Activate /Deactivate Intermediary Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc/addresses:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro,internal'
+      operationId: getAddressesForManager
+      parameters:
+      - in: query
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressesApi'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get addresses for the Pensando DSC Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc/gateway-set/{gwSetId}/manager:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getIntermediaryManagerIdForGatewaySet_2
+      parameters:
+      - in: path
+        name: gwSetId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntermediaryManagerIdResponse'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Intermediary manager for a gateway set
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc/monitor:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro,internal'
+      operationId: getManagersToMonitor
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntermediaryManagersResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the Pensando DSC managers to be monitored
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc/monitor/reset-failures:
+    patch:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: resetMonitoringFailures
+      parameters:
+      - in: query
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Reset the monitoring failures for the Pensando DSC Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc/monitor/status:
+    put:
+      description: 'Roles allowed: support,internal'
+      operationId: updateMonitoringStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMonitoringStatusRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: 'Update the status after monitoring for the Pensando DSC manager '
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc/zone:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro,internal'
+      operationId: getZoneForManager
+      parameters:
+      - in: query
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZoneResp'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get child zone for the Pensando DSC Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc/{managerId}:
+    delete:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: deleteIntermediaryManager_2
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete Intermediary manager
+      tags:
+      - Intermediary Manager
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getPensandoDscManager
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: includeMetadata
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PensandoDscManagerApi'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Pensando DSC manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc/{managerId}/credential-name:
+    patch:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: updateIntermediaryManagerCredentialName_2
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialNameRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update Credential Name used by Intermediary Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc/{managerId}/gateway-sets:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getGatewaySetsForIntermediaryManager_2
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewaySets'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get gateway sets for an Intermediary manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dsc/{managerId}/status:
+    put:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: updateIntermediaryManagerStatus_2
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntermediaryManagerStatusRequest'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Activate /Deactivate Intermediary Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dss:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getIntermediaryManagerIds_4
+      parameters:
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntermediaryManagerIdPage'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get all Intermediary managers
+      tags:
+      - Intermediary Manager
+    patch:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: updateIntermediaryManagerHosts_4
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntermediaryManagerUpdateApi'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update Intermediary manager hosts
+      tags:
+      - Intermediary Manager
+    post:
+      description: 'Lower host priority field values indicate higher priorities during any actions performed by PINACL.
+
+
+        Roles allowed: support,topology-rw'
+      operationId: createPensandoDssManager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PensandoDssManagerApi'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Create Pensando DSS manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dss/add-subnets-to-vlan/{managerId}:
+    post:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: addSubnetsToVlan
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PensandoDssManagerAddAddressesApi'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Add subnets to VLAN for the Pensando DSS Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dss/delete-subnets-from-vlan/{managerId}:
+    post:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: deleteSubnetsFromVlan
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PensandoDssManagerDeleteAddressesApi'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete subnets from VLAN for the Pensando DSS Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dss/gateway-set/{gwSetId}/manager:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getIntermediaryManagerIdForGatewaySet_4
+      parameters:
+      - in: path
+        name: gwSetId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntermediaryManagerIdResponse'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Intermediary manager for a gateway set
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dss/{managerId}:
+    delete:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: deleteIntermediaryManager_4
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete Intermediary manager
+      tags:
+      - Intermediary Manager
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getPensandoDssManager
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: includeMetadata
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PensandoDssManagerApi'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Pensando DSS manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dss/{managerId}/credential-name:
+    patch:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: updateIntermediaryManagerCredentialName_4
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialNameRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update Credential Name used by Intermediary Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dss/{managerId}/gateway-sets:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getGatewaySetsForIntermediaryManager_4
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewaySets'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get gateway sets for an Intermediary manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dss/{managerId}/status:
+    put:
+      description: 'Roles allowed: support,topology-rw,internal'
+      operationId: updateIntermediaryManagerStatus_4
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntermediaryManagerStatusRequest'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Activate /Deactivate Intermediary Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dss/{managerId}/vrf:
+    post:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: createVrf
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PensandoDssManagerCreateVrfApi'
+        required: true
+      responses:
+        '202':
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+      summary: Create VRF for the Pensando DSS Manager
+      tags:
+      - Intermediary Manager
+  /topology/manager/pensando-dss/{managerId}/vrf/{vrfId}:
+    delete:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: delete
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: vrfId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete VRF from the Pensando DSS Manager
+      tags:
+      - Intermediary Manager
+components:
+  schemas:
+    IntermediaryManagersResponse:
+      properties:
+        intermediaryManagers:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerInfo'
+          type: array
+      type: object
+    IntermediaryManagerMetadata:
+      properties:
+        lastMonitoredTimestamp:
+          format: date-time
+          type: string
+        modifiedTimestamp:
+          format: date-time
+          type: string
+        monitorMessage:
+          type: string
+        monitorRetryCount:
+          format: int32
+          type: integer
+      type: object
+    PensandoPdtAddAddressesToInfraApi:
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressWithZoneMatch'
+        parentZone:
+          type: string
+      required:
+      - address
+      type: object
+    RuleSetApi:
+      properties:
+        id:
+          type: string
+        intermediaryManagerId:
+          type: string
+      type: object
+    AddressApi:
+      properties:
+        address:
+          description: Valid IPV4 addresses
+          example: 1.1.1.1/32
+          type: string
+      type: object
+    UpdateMonitoringStatusRequest:
+      properties:
+        managerId:
+          type: string
+        message:
+          type: string
+        status:
+          type: boolean
+      type: object
+    PensandoDssManagerAddAddressesApi:
+      properties:
+        addresses:
+          items:
+            type: string
+          type: array
+        parentZoneId:
+          type: string
+        vlanId:
+          format: int32
+          type: integer
+        vrfId:
+          pattern: '[A-Za-z0-9]+[A-Za-z0-9-.]*[A-Za-z0-9]+'
+          type: string
+      required:
+      - addresses
+      - vlanId
+      - vrfId
+      type: object
+    TopologyRequestsResponse:
+      properties:
+        requests:
+          items:
+            $ref: '#/components/schemas/ReqIdAndReqSystem'
+          type: array
+      type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
+      type: object
+    MultiCloudDefenseManagerApi:
+      properties:
+        credentialName:
+          type: string
+        hostDetails:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+          type: array
+        id:
+          type: string
+        status:
+          enum:
+          - INACTIVE
+          - ACTIVE
+          type: string
+      type: object
+    IntermediaryManagerUpdateApi:
+      properties:
+        hostDetails:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+          type: array
+        id:
+          type: string
+      required:
+      - hostDetails
+      - id
+      type: object
+    IntermediaryManagerIdResponse:
+      properties:
+        id:
+          type: string
+      required:
+      - id
+      type: object
+    IntermediaryManagerHostDetails:
+      properties:
+        hostname:
+          type: string
+        port:
+          format: int32
+          type: integer
+        priority:
+          default: 1
+          format: int32
+          minimum: 1
+          type: integer
+      required:
+      - hostname
+      - port
+      type: object
+    IntermediaryManagerIdPage:
+      properties:
+        cursor:
+          type: string
+        managerIds:
+          items:
+            type: string
+          type: array
+      type: object
+    CredentialNameRequest:
+      properties:
+        credentialName:
+          type: string
+      type: object
+    CdoManagerRequest:
+      properties:
+        credentialName:
+          type: string
+        hostDetails:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+          type: array
+        id:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IntermediaryManagerMetadata'
+        parentZoneId:
+          type: string
+        status:
+          description: Monitoring Status
+          enum:
+          - INACTIVE
+          - ACTIVE
+          type: string
+      required:
+      - hostDetails
+      - id
+      - status
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
+      type: object
+    PensandoDssManagerCreateVrfApi:
+      properties:
+        vrfId:
+          pattern: '[A-Za-z0-9]+[A-Za-z0-9-.]*[A-Za-z0-9]+'
+          type: string
+      required:
+      - vrfId
+      type: object
+    PensandoDssManagerApi:
+      properties:
+        credentialName:
+          type: string
+        hostDetails:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+          type: array
+        id:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IntermediaryManagerMetadata'
+        status:
+          description: Monitoring Status
+          enum:
+          - INACTIVE
+          - ACTIVE
+          type: string
+      required:
+      - hostDetails
+      - id
+      - status
+      type: object
+    PensandoDssManagerDeleteAddressesApi:
+      properties:
+        addresses:
+          items:
+            type: string
+          type: array
+        vlanId:
+          format: int32
+          type: integer
+        vrfId:
+          type: string
+      required:
+      - addresses
+      - vlanId
+      - vrfId
+      type: object
+    AddressesApi:
+      properties:
+        addresses:
+          description: List of valid IPV4 addresses
+          example:
+          - value: 1.1.1.1/32
+          items:
+            $ref: '#/components/schemas/StringValue'
+          type: array
+      type: object
+    IntermediaryManagerInfo:
+      properties:
+        hostname:
+          type: string
+        id:
+          type: string
+        port:
+          format: int32
+          type: integer
+      type: object
+    PsmPdtRetireZoneResponse:
+      properties:
+        decommissionedGwSet:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        reqId:
+          format: uuid
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+        zoneId:
+          type: string
+      type: object
+    PsmPdtTopologyAffectedEntities:
+      properties:
+        enforcementPointId:
+          type: string
+        gwSetId:
+          type: string
+        zoneId:
+          type: string
+      type: object
+    AddressWithZoneMatch:
+      properties:
+        exactMatch:
+          type: boolean
+        value:
+          description: Valid IPV4 address
+          example: 1.1.1.1/32
+          type: string
+      type: object
+    IntermediaryManagerStatusRequest:
+      properties:
+        status:
+          enum:
+          - INACTIVE
+          - ACTIVE
+          type: string
+      type: object
+    PensandoDscPdtManagerApi:
+      properties:
+        credentialName:
+          type: string
+        hostDetails:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+          type: array
+        id:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IntermediaryManagerMetadata'
+        parentZoneId:
+          type: string
+        status:
+          description: Monitoring Status
+          enum:
+          - INACTIVE
+          - ACTIVE
+          type: string
+      required:
+      - hostDetails
+      - id
+      - status
+      type: object
+    ReqIdAndReqSystem:
+      properties:
+        id:
+          example: 03502bc3-c140-4951-b467-bd17312a9b0b
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    PensandoDscManagerApi:
+      properties:
+        credentialName:
+          type: string
+        hostDetails:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+          type: array
+        id:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IntermediaryManagerMetadata'
+        parentZoneId:
+          type: string
+        status:
+          description: Monitoring Status
+          enum:
+          - INACTIVE
+          - ACTIVE
+          type: string
+      required:
+      - hostDetails
+      - id
+      - status
+      type: object
+    StringValue:
+      properties:
+        value:
+          type: string
+      type: object
+    ZoneResp:
+      properties:
+        id:
+          type: string
+      required:
+      - id
+      type: object
+    PsmPdtAddAddressResponse:
+      properties:
+        affectedEntities:
+          $ref: '#/components/schemas/PsmPdtTopologyAffectedEntities'
+        reqId:
+          format: uuid
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    AddressWithExactMatch:
+      properties:
+        addresses:
+          items:
+            $ref: '#/components/schemas/AddressWithZoneMatch'
+          type: array
+        parentZone:
+          type: string
+      required:
+      - addresses
+      type: object
+    GatewaySets:
+      properties:
+        gatewaySets:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
+      type: object
+    CdoAsaGatewaySetRequest:
+      properties:
+        deviceName:
+          type: string
+        direction:
+          enum:
+          - INBOUND
+          - OUTBOUND
+          type: string
+        interfaceName:
+          type: string
+        intermediaryManagerId:
+          type: string
+        isGlobal:
+          type: boolean
+        status:
+          enum:
+          - ACTIVE
+          - HELD
+          - SKIPPED
+          - UNMANAGED
+          type: string
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

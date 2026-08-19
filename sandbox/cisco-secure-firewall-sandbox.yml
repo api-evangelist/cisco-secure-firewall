@@ -1,0 +1,49 @@
+generated: '2026-08-19'
+method: probed
+source: >-
+  https://developer.cisco.com/secure-firewall/management-center/,
+  https://devnetsandbox.cisco.com/RM/Diagram/Index/1228cb22-b2ba-48d3-a70a-86a53f4eecc0?diagramType=Topology,
+  live probe of https://fmcrestapisandbox.cisco.com/ (2026-08-19)
+note: >-
+  Cisco runs a real, reachable Secure Firewall Management Center sandbox through DevNet — an always-on FMC
+  instance plus reservable topologies. This is a genuine test environment against the actual product, not a
+  mock, and it is one of the stronger developer-experience assets in this profile. There is, separately, no
+  test-vs-live key mode on the cloud API: a Security Cloud Control API token is scoped to a real tenant, and
+  there is no sandbox tenant or test-mode key prefix.
+environments:
+- name: Secure Firewall Management Center Sandbox (always-on)
+  type: always-on
+  host: fmcrestapisandbox.cisco.com
+  url: https://fmcrestapisandbox.cisco.com/
+  api_explorer: https://fmcrestapisandbox.cisco.com/api/api-explorer
+  probe:
+  - url: https://fmcrestapisandbox.cisco.com/
+    status: 200
+  - url: https://fmcrestapisandbox.cisco.com/api/api-explorer
+    status: 401
+  credentials: >-
+    Issued through DevNet; not reproduced here. The API Explorer requires authentication (probed 401), so
+    the OpenAPI it serves is not anonymously fetchable from the sandbox either.
+  note: >-
+    This is the on-premises FMC REST API, served per-appliance at /api/api-explorer — the same shape every
+    customer's own management center exposes. It is the only way to read the on-prem contract without owning
+    an appliance.
+- name: Secure Firewall Management Center Sandbox (reservable)
+  type: reservable
+  url: https://devnetsandbox.cisco.com/RM/Diagram/Index/1228cb22-b2ba-48d3-a70a-86a53f4eecc0?diagramType=Topology
+  probe:
+  - url: https://devnetsandbox.cisco.com/RM/Diagram/Index/1228cb22-b2ba-48d3-a70a-86a53f4eecc0?diagramType=Topology
+    status: 200
+  requires: A free Cisco DevNet account and a reservation.
+test_modes:
+  key_prefixes: []
+  test_cards: []
+  time_simulation: false
+  note: >-
+    Not applicable. Security Cloud Control issues one class of API token against a live tenant; there is no
+    test-mode key, no fixture generator and no time simulation.
+learning:
+- url: https://developer.cisco.com/learning/modules/Firepower
+  name: FMC Learning Module
+- url: https://developer.cisco.com/learning/modules/automating-cisco-defense-orchestrator/
+  name: Automating Security Cloud Control learning labs

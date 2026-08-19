@@ -1,0 +1,345 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine MPM Policy Push API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: MPM Policy Push
+paths:
+  /mpm/policy/multi-request:
+    post:
+      description: 'Roles allowed: support, mpm-rw'
+      operationId: createMultiPolicyPushRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpmMultiPolicyPushRequestApi'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: 'Create a multi-policy Push Request '
+      tags:
+      - MPM Policy Push
+  /mpm/policy/request:
+    post:
+      description: 'Roles allowed: support, mpm-rw'
+      operationId: createPolicyPushRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpmPolicyPushRequestApi'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: 'Create Policy Push Request '
+      tags:
+      - MPM Policy Push
+  /mpm/policy/request/gateway-set/{gwSetId}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getPolicyPushRequests
+      parameters:
+      - in: path
+        name: gwSetId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: query
+        name: policyId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: query
+        name: lastReqId
+        schema:
+          format: uuid
+          type: string
+      - in: query
+        name: lastTimestampInEpochMillis
+        schema:
+          format: int64
+          type: integer
+      - in: query
+        name: multiRequestCursorId
+        schema:
+          format: uuid
+          type: string
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmPolicyPushRequestsPage'
+          description: '200'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get policy push requests for gateway-set and manager
+      tags:
+      - MPM Policy Push
+components:
+  schemas:
+    MpmRequestInfo:
+      properties:
+        createdBy:
+          type: string
+        createdTime:
+          format: date-time
+          type: string
+        gatewaySetId:
+          type: string
+        id:
+          format: uuid
+          type: string
+        lockAcquired:
+          type: boolean
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        managerId:
+          format: uuid
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        multiReqCursorId:
+          format: uuid
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+        revisionId:
+          format: int32
+          type: integer
+        subRequests:
+          items:
+            $ref: '#/components/schemas/SubRequest'
+          type: array
+        tasks:
+          items:
+            $ref: '#/components/schemas/Task'
+          type: array
+      type: object
+    MpmPolicyPushRequestApi:
+      properties:
+        gatewaySetId:
+          type: string
+        managerId:
+          format: uuid
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+        revisionId:
+          format: int32
+          type: integer
+      required:
+      - gatewaySetId
+      - managerId
+      - policyId
+      - policyType
+      - revisionId
+      type: object
+    MpmPolicyIdentifier:
+      properties:
+        managerId:
+          format: uuid
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+        revisionId:
+          format: int32
+          type: integer
+      required:
+      - managerId
+      - policyId
+      - policyType
+      - revisionId
+      type: object
+    SubRequest:
+      properties:
+        errors:
+          type: string
+        executionCount:
+          format: int32
+          type: integer
+        gatewaySetInfo:
+          enum:
+          - ACTIVE
+          - HELD
+          - SKIPPED
+          - UNMANAGED
+          type: string
+        gwSetId:
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        priorityValue:
+          format: int32
+          type: integer
+        queuedTime:
+          format: date-time
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        retryThreshold:
+          format: int32
+          type: integer
+        subReqStatus:
+          enum:
+          - READY
+          - IN_PROGRESS
+          - HELD
+          - SKIPPED
+          - SUCCEEDED
+          - ERRORED
+          type: string
+      type: object
+    MpmPolicyPushRequestsPage:
+      properties:
+        lastRequestId:
+          format: uuid
+          type: string
+        lastTimestampInMillis:
+          format: int64
+          type: integer
+        multiReqCursorId:
+          format: uuid
+          type: string
+        requests:
+          items:
+            $ref: '#/components/schemas/MpmRequestInfo'
+          type: array
+      type: object
+    MpmMultiPolicyPushRequestApi:
+      properties:
+        gatewaySetId:
+          type: string
+        policyIdentifiers:
+          items:
+            $ref: '#/components/schemas/MpmPolicyIdentifier'
+          type: array
+      required:
+      - gatewaySetId
+      - policyIdentifiers
+      type: object
+    Task:
+      properties:
+        allocatedTime:
+          format: date-time
+          type: string
+        completedTime:
+          format: date-time
+          type: string
+        gwSetId:
+          type: string
+        taskId:
+          type: string
+        taskStatus:
+          enum:
+          - ALLOCATED
+          - DISCARDED
+          - SUCCEEDED
+          - FAILED
+          type: string
+        workerId:
+          type: string
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

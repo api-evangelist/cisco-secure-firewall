@@ -1,0 +1,266 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall Meta API
+  version: 1.13.0
+  contact:
+    name: Cisco Security Cloud Control TAC
+    email: cdo.tac@cisco.com
+  description: 'Operations tagged Meta across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
+    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
+      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
+    operation_coverage: 3/3
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: Meta
+paths:
+  /.well-known/jwks.json:
+    get:
+      description: 'Retrieves the JSON Web Key Set (JWKS), which is a set of keys containing the public keys used to verify
+        any JSON Web Token (JWT) issued by the Authorization Server and signed using the RS256 signing algorithm. Note: Verification
+        of the token using a JSON Web Key does not guarantee validity due to the possibility of revocation.'
+      operationId: getJwks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JwkSet'
+          description: The JSON Web Key Set.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      summary: Fetch JSON Web Key Set
+      tags:
+      - Meta
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/meta:
+    get:
+      description: Get Meta information about CDO, including the IP addresses of Security Cloud Control services.
+      operationId: getMeta
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meta'
+          description: Meta information about Security Cloud Control.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      summary: Get Meta information
+      tags:
+      - Meta
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/regions:
+    get:
+      description: Get the list of regions that Security Cloud Control is deployed in.
+      operationId: getRegions
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoRegionList'
+          description: List of Security Cloud Control regions
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      summary: Get Security Cloud Control Regions
+      tags:
+      - Meta
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  schemas:
+    CdoRegion:
+      properties:
+        apiDomain:
+          description: The domain for API services in the region.
+          type: string
+        description:
+          description: Human readable description of the region.
+          type: string
+        domain:
+          description: The domain for the region.
+          type: string
+      type: object
+    JsonWebKey:
+      properties:
+        alg:
+          description: The specific cryptographic algorithm used with the key.
+          type: string
+        e:
+          description: The exponent for the RSA public key.
+          type: string
+        kid:
+          description: The unique identifier for the key.
+          type: string
+        kty:
+          description: The family of cryptographic algorithms used with the key.
+          type: string
+        n:
+          description: The modulus for the RSA public key.
+          type: string
+        use:
+          description: How the key was meant to be used.
+          type: string
+      type: object
+    JwkSet:
+      properties:
+        keys:
+          description: The JSON Web Key Set.
+          items:
+            $ref: '#/components/schemas/JsonWebKey'
+          type: array
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
+    Meta:
+      properties:
+        cloudConnectorIps:
+          description: The IP addresses from which to allow inbound access to your network if you wish to connect to your
+            devices through Security Cloud Control's Cloud Connector.
+          example: 35.157.12.126
+          items:
+            type: string
+          type: array
+      type: object
+    CdoRegionList:
+      properties:
+        items:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/CdoRegion'
+          type: array
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cisco-secure-firewall-scc-firewall-manager-openapi.yml
+- scc-firewall-manager-openapi.yaml

@@ -1,0 +1,635 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine MPM Search API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: MPM Search
+paths:
+  /mpm/manager/{managerId}/app-groups/{revisionId}/name/{appGroupNamePrefix}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getAppGroupsByAppGroupNamePrefix
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      - in: path
+        name: appGroupNamePrefix
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MpmAppGroupObj'
+                type: array
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the app groups in a manager at revision by appGroup prefix name
+      tags:
+      - MPM Search
+  /mpm/manager/{managerId}/apps/{revisionId}/name/{appNamePrefix}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getAppsByAppNamePrefix
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      - in: path
+        name: appNamePrefix
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MpmAppObj'
+                type: array
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the apps in a manager at revision by app prefix name
+      tags:
+      - MPM Search
+  /mpm/manager/{managerId}/apps/{revisionId}/value:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getAppsAndAppGroupsResultByAppValue
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      - in: query
+        name: appValue
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: searchCriteria
+        schema:
+          default: CONTAINS
+          enum:
+          - CONTAINS
+          - CONTAINED
+          - EQUALS
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmAppsAndAppGroupsResult'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the apps and app-groups in a manager at revision by app value
+      tags:
+      - MPM Search
+  /mpm/manager/{managerId}/endpoint-groups/{revisionId}/name/{endpointGroupNamePrefix}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getEndpointGroupsByEndpointGroupNamePrefix
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      - in: path
+        name: endpointGroupNamePrefix
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MpmEndpointObj'
+                type: array
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the endpoint groups in a manager at revision by endpointGroup prefix name
+      tags:
+      - MPM Search
+  /mpm/manager/{managerId}/endpoints/{revisionId}/name/{endpointNamePrefix}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getEndpointsByEndpointNamePrefix
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      - in: path
+        name: endpointNamePrefix
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MpmEndpointObj'
+                type: array
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the endpoints in a manager at revision by endpoint prefix name
+      tags:
+      - MPM Search
+  /mpm/manager/{managerId}/endpoints/{revisionId}/value:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getEndpointsAndEndpointGroupsByEndpointValue
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      - in: query
+        name: endpointValue
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: searchCriteria
+        schema:
+          default: CONTAINS
+          enum:
+          - CONTAINS
+          - CONTAINED
+          - EQUALS
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmEndpointsAndEndpointGroupsResult'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the endpoints and endpoint-groups in a manager at revision by endpoint value
+      tags:
+      - MPM Search
+  /mpm/manager/{managerId}/policies/{revisionId}/name/{policyNamePrefix}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getPoliciesByPolicyNamePrefix
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      - in: path
+        name: policyNamePrefix
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MpmPolicyWithoutRulesObj'
+                type: array
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get policies in a manager at revision by policy prefix name
+      tags:
+      - MPM Search
+  /mpm/manager/{managerId}/policy/{policyId}/{revisionId}/search:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: searchRules
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      - in: query
+        name: srcIp
+        schema:
+          example: 1.1.1.1/32
+          format: Ip should be valid IPV4 address in CIDR notation
+          type: string
+      - in: query
+        name: srcIpSearchCriteria
+        schema:
+          default: CONTAINS
+          enum:
+          - CONTAINS
+          - CONTAINED
+          - EQUALS
+          type: string
+      - in: query
+        name: dstIp
+        schema:
+          example: 1.1.1.1/32
+          format: Ip should be valid IPV4 address in CIDR notation
+          type: string
+      - in: query
+        name: dstIpSearchCriteria
+        schema:
+          default: CONTAINS
+          enum:
+          - CONTAINS
+          - CONTAINED
+          - EQUALS
+          type: string
+      - in: query
+        name: app
+        schema:
+          example: tcp40-80
+          format: App format examples- icmp3:4, tcp80, tcp80-90, skip, pim, etc
+          type: string
+      - in: query
+        name: appSearchCriteria
+        schema:
+          default: CONTAINS
+          enum:
+          - CONTAINS
+          - CONTAINED
+          - EQUALS
+          type: string
+      - in: query
+        name: action
+        schema:
+          enum:
+          - PERMIT
+          - DENY
+          type: string
+      - in: query
+        name: enabled
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmRuleSearchResults'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the policy in a manager at revision
+      tags:
+      - MPM Search
+components:
+  schemas:
+    MpmEndpointObj:
+      properties:
+        addressEnd:
+          format: int64
+          type: integer
+        addressStart:
+          format: int64
+          type: integer
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    MpmEndpointGroupObj:
+      properties:
+        description:
+          type: string
+        epgs:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        eps:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+      type: object
+    MpmEndpointsAndEndpointGroupsResult:
+      properties:
+        endpointGroups:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+          uniqueItems: true
+        endpoints:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+          uniqueItems: true
+      type: object
+    MpmAppObj:
+      properties:
+        alg:
+          type: string
+        anyApp:
+          type: boolean
+        description:
+          type: string
+        ianaProtocol:
+          format: int32
+          type: integer
+        icmpCode:
+          format: int32
+          type: integer
+        icmpType:
+          format: int32
+          type: integer
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        portEnd:
+          format: int32
+          type: integer
+        portStart:
+          format: int32
+          type: integer
+        timeout:
+          format: int32
+          type: integer
+        value:
+          type: string
+      type: object
+    MpmAppsAndAppGroupsResult:
+      properties:
+        appGroups:
+          items:
+            $ref: '#/components/schemas/MpmAppGroupObj'
+          type: array
+          uniqueItems: true
+        apps:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+          uniqueItems: true
+      type: object
+    MpmPolicyWithoutRulesObj:
+      properties:
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        installTargets:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+      type: object
+    MpmAppGroupObj:
+      properties:
+        aps:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+      type: object
+    MpmRuleSearchResults:
+      properties:
+        apgs:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        aps:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        dstEpgs:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        dstEps:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        rules:
+          items:
+            format: uuid
+            type: string
+          type: array
+        srcEpgs:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        srcEps:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

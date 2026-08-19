@@ -1,0 +1,390 @@
+openapi: 3.2.0
+info:
+  version: 1.4.0
+  title: Identity and Access Management User Management API
+  description: APIs for creating and updating the customer enterprise, including user access control.
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/iam.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/iam.yaml
+servers:
+- url: https://api.int.security.cisco.com/identity
+  variables:
+    baseUrl:
+      default: https://api.int.security.cisco.com/identity
+    domain:
+      default: https://sso-apps-preview.myverysecuresignon.name/api
+security:
+- OpenID: []
+- bearerAuth: []
+tags:
+- name: User Management
+paths:
+  /enterprises/{id}/users:
+    get:
+      x-try-it-enabled: true
+      tags:
+      - User Management
+      operationId: listEnterpriseUsers
+      description: Lists the users belonging to the enterprise
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: limit
+        description: The numbers of items to return
+        schema:
+          type: integer
+      - in: query
+        name: order
+        description: The order, ascending or descending, of the items
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          - ASC
+          - DESC
+      - in: query
+        name: after
+        description: The pagination cursor for the next page
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+            Link:
+              description: The pagination cursor links
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EnterpriseUser'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    post:
+      x-try-it-enabled: true
+      tags:
+      - User Management
+      operationId: addEnterpriseUser
+      description: '### Add a user to the enterprise.
+
+        Adds an existing user to enterprise, If the user does not exist in the Okta org, it will create a new account first.
+
+        New user accounts will created for Okta-managed credentials(i.e., `credType=OKTA`) unless the enterprise is configured with an identity provider for the user''s email domain (i.e., `credType=FEDERATION`).
+
+        As a side effect of creating a new `credType=OKTA` account, an account activation email will be sent by Okta to the user.
+
+        '
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseUserProfile'
+      responses:
+        '200':
+          description: ''
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseUser'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /enterprises/{id}/users/{userId}:
+    put:
+      tags:
+      - User Management
+      x-try-it-enabled: true
+      operationId: updateEnterpriseUser
+      description: Update a username or user info
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The user ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseUserProfile'
+      responses:
+        '200':
+          description: ''
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnterpriseUser'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    delete:
+      tags:
+      - User Management
+      x-try-it-enabled: true
+      operationId: removeEnterpriseUser
+      description: Remove an user from the enterprise
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The user ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /enterprises/{id}/users/{userId}/lifecycle/enable:
+    post:
+      tags:
+      - User Management
+      x-try-it-enabled: true
+      operationId: enableEnterpriseUser
+      description: '### Enable an enterprise user
+
+        Removes an user from `enterprise-disabled-{enterpriseId}` group to re-enable any existing access rights.
+
+        Further, all access control checks would be verified if user is present in `enterprise-disabled-{enterpriseId}` group or not.
+
+        '
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: The user ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    ResponsibleActor:
+      type: object
+      required:
+      - id
+      - disabledAt
+      - firstName
+      - lastName
+      properties:
+        id:
+          type: string
+          format: uuid
+        disabledAt:
+          type: string
+          format: date-time
+        firstName:
+          type: string
+        lastName:
+          type: string
+    EnterpriseUser:
+      type: object
+      required:
+      - id
+      - status
+      - profile
+      properties:
+        id:
+          type: string
+        cdoUserId:
+          type: string
+        status:
+          type: string
+          enum:
+          - STAGED
+          - PROVISIONED
+          - ACTIVE
+          - RECOVERY
+          - PASSWORD_EXPIRED
+          - LOCKED_OUT
+          - SUSPENDED
+          - DEPROVISIONED
+          - ENTERPRISE_DISABLED
+        created:
+          type: string
+          format: date-time
+        activated:
+          type: string
+          format: date-time
+        statusChanged:
+          type: string
+          format: date-time
+        lastLogin:
+          type: string
+          format: date-time
+        lastUpdated:
+          type: string
+          format: date-time
+        passwordChanged:
+          type: string
+          format: date-time
+        isAdmin:
+          type: boolean
+          default: false
+        disabledBy:
+          $ref: '#/components/schemas/ResponsibleActor'
+        credentialProviderType:
+          type: string
+          enum:
+          - OKTA
+          - ACTIVE_DIRECTORY
+          - LDAP
+          - FEDERATION
+          - SOCIAL
+          - IMPORT
+          description: it is referencing same type as [provider object's type](https://developer.okta.com/docs/reference/api/users/#provider-object)
+        profile:
+          $ref: '#/components/schemas/EnterpriseUserProfile'
+    EnterpriseUserProfile:
+      type: object
+      required:
+      - firstName
+      - lastName
+      - login
+      - email
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        login:
+          type: string
+        email:
+          type: string
+        mobilePhone:
+          type: string
+        secondEmail:
+          type: string
+  responses:
+    NotFoundError:
+      description: Not Found
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    GeneralError:
+      description: An unknown error occurred
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NoContent:
+      description: No content
+  headers:
+    Date:
+      schema:
+        type: string
+        pattern: ^.*$
+  securitySchemes:
+    OpenID:
+      type: openIdConnect
+      openIdConnectUrl: https://auth.example.com/.well-known/openid-configuration
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    piamServiceTokenSecurity:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.example.com/oauth/token
+          scopes:
+            security:duo:identity:mappings-migrate: Grants write and read access to product mappings migration APIs for Duo Security
+            security:etd:identity:mappings-migrate: Grants write and read access to Encrypted Traffic Analytics product mappings migration APIs
+            security:panoptica:identity:mappings-migrate: Grants write and read access to Panoptica product mappings migration APIs
+            security:secure-access:identity:mappings-migrate: Grants write and read access to Secure Access product mappings migration APIs
+            security:secure-endpoint:identity:mappings-migrate: Grants write and read access to Secure Endpoint product mappings migration APIs
+            security:secure-workload:identity:mappings-migrate: Grants write and read access to Secure Workload product mappings migration APIs
+            security:vuln-mgmt:identity:mappings-migrate: Grants write and read access to Vulnerability Management product mappings migration APIs
+            security:attack-surface-mgmt:identity:mappings-migrate: Grants write and read access to Attack Surface Management product mappings migration APIs
+            security:cdo:identity:mappings-migrate: Grants write and read access to CDO product mappings migration APIs
+            security:xdr:identity:mappings-migrate: Grants write and read access to XDR product mappings migration APIs
+            security:cdo:public-api: Grants write and read access to CDO Public Group Directory APIs

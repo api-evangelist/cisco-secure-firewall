@@ -1,0 +1,947 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall Remote Access Monitoring API
+  version: 1.13.0
+  contact:
+    name: Cisco Security Cloud Control TAC
+    email: cdo.tac@cisco.com
+  description: 'Operations tagged Remote Access Monitoring across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
+    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
+      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
+    operation_coverage: 7/7
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: Remote Access Monitoring
+paths:
+  /v1/mfaevents:
+    get:
+      description: Get a list of MFA events.
+      operationId: getMfaEvents
+      parameters:
+      - description: The number of results to retrieve.
+        in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 200
+          minimum: 0
+          type: string
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+        in: query
+        name: offset
+        required: false
+        schema:
+          minimum: 0
+          type: string
+      - description: The query to execute. Use the Lucene Query Syntax to construct your query.
+        example: fieldName:fieldValue
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+      - description: The fields to sort results by.
+        example: name:DESC
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MfaEventPage'
+          description: List of MFA events
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get MFA Events
+      tags:
+      - Remote Access Monitoring
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/mfaevents/{mfaEventUid}:
+    get:
+      description: Get a MFA event by UID in the Security Cloud Control tenant.
+      operationId: getMfaEvent
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the MFA event in Security Cloud Control.
+        in: path
+        name: mfaEventUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MfaEvent'
+          description: MFA Event object
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get MFA Event
+      tags:
+      - Remote Access Monitoring
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/vpnsessions:
+    get:
+      description: Get a list of RA VPN sessions.
+      operationId: getRaVpnSessions
+      parameters:
+      - description: The number of results to retrieve.
+        in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 200
+          minimum: 0
+          type: string
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+        in: query
+        name: offset
+        required: false
+        schema:
+          minimum: 0
+          type: string
+      - description: The query to execute. Use the Lucene Query Syntax to construct your query.
+        example: fieldName:fieldValue
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+      - description: The fields to sort results by.
+        example: name:DESC
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RaVpnSessionPage'
+          description: List of RA VPN Sessions
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get RA VPN Sessions
+      tags:
+      - Remote Access Monitoring
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/vpnsessions/{deviceUid}/terminate:
+    post:
+      description: This is an asynchronous operation to terminate all RA VPN sessions on a device in the Security Cloud Control
+        tenant. This operation returns a link to a transaction object that can be used to monitor the progress of the operation.
+      operationId: terminateRaVpnSessionsByDevice
+      parameters:
+      - in: path
+        name: deviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the termination
+            operation
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Terminate RA VPN Sessions
+      tags:
+      - Remote Access Monitoring
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/vpnsessions/{deviceUid}/terminate/{userName}:
+    post:
+      description: This is an asynchronous operation to terminate all of a user's RA VPN sessions on a device in the Security
+        Cloud Control tenant. This operation returns a link to a transaction object that can be used to monitor the progress
+        of the operation.
+      operationId: terminateRaVpnSessionsByDeviceAndUserName
+      parameters:
+      - in: path
+        name: deviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: userName
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the termination
+            operation
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Terminate User's RA VPN Sessions
+      tags:
+      - Remote Access Monitoring
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/vpnsessions/{raVpnSessionUid}:
+    get:
+      description: Get a RA VPN session by UID in the Security Cloud Control tenant.
+      operationId: getRaVpnSession
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the RA VPN session in Security Cloud Control.
+        in: path
+        name: raVpnSessionUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RaVpnSession'
+          description: RA VPN Session object
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get RA VPN Session
+      tags:
+      - Remote Access Monitoring
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/vpnsessions/refresh:
+    post:
+      description: This is an asynchronous operation to refresh RA VPN sessions for all devices in the Security Cloud Control
+        tenant.
+      operationId: refreshRaVpnSessionsByDevice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RaVpnDeviceInput'
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the refresh operation
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Refresh RA VPN Sessions
+      tags:
+      - Remote Access Monitoring
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  schemas:
+    MfaEvent:
+      properties:
+        application:
+          description: The name of the application associated with the MFA event.
+          example: Security Cloud Sign On Preview
+          type: string
+        clientDevice:
+          $ref: '#/components/schemas/ClientDevice'
+          description: The client device that triggered this MFA event.
+        reason:
+          description: The reason for the result of the MFA event. When the `result` is `DENIED`, this field contains information
+            on why the MFA event failed.
+          example: valid_passcode
+          type: string
+        result:
+          description: The result of the MFA event.
+          enum:
+          - DENIED
+          - GRANTED
+          example: GRANTED
+          type: string
+        secondFactor:
+          description: The second factor used for the MFA event.
+          example: sms_passcode
+          type: string
+        timestamp:
+          description: The time (in UTC) at which the user logged in to the MFA event, represented using the RFC-3339 standard.
+          example: 2023-12-13 05:15:44+00:00
+          format: date-time
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the MFA event.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        username:
+          description: The name of the user associated with the MFA event.
+          example: user@example.com
+          type: string
+      required:
+      - uid
+      - username
+      type: object
+    RaVpnDeviceInput:
+      properties:
+        deviceUids:
+          description: List of UIDs of the devices to refresh RA VPN sessions for. Each of these devices has to be an RA VPN
+            headend (this is indicated by the `deviceRole` field in the device object being set to `RA_VPN_HEADEND`).
+          items:
+            type: string
+          minItems: 1
+          type: array
+      required:
+      - deviceUids
+      type: object
+    Location:
+      properties:
+        city:
+          description: The city where the client device is located.
+          example: San Jose
+          type: string
+        country:
+          description: The country where the client device is located.
+          example: United States
+          type: string
+        subdivision:
+          description: The subdivision (e.g., state or province) where the client device is located.
+          example: California
+          type: string
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    MfaEventPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/MfaEvent'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    ClientDevice:
+      properties:
+        browser:
+          $ref: '#/components/schemas/Browser'
+          description: The web browser running on the client device.
+        encrypted:
+          description: Indicates whether encryption is enabled on the client device.
+          example: true
+          type: boolean
+        firewalled:
+          description: Indicates whether a firewall is enabled on the client device.
+          example: true
+          type: boolean
+        ipAddress:
+          description: The IP address of the client device that has triggered this MFA event.
+          example: 106.51.163.157
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+          description: The location of the client device.
+        os:
+          $ref: '#/components/schemas/OS'
+          description: The operating system of the client device.
+        passwordSet:
+          description: Indicates whether a password is set on the client device.
+          example: false
+          type: boolean
+        uid:
+          description: The unique identifier, represented as a UUID, of the device.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - uid
+      type: object
+    CdoTransaction:
+      properties:
+        cdoTransactionStatus:
+          description: The status of the transaction
+          enum:
+          - PENDING
+          - IN_PROGRESS
+          - DONE
+          - ERROR
+          example: IN_PROGRESS
+          type: string
+        entityUid:
+          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a
+            transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
+          example: f5f660d4-4b81-4374-877d-fbc4bee894e2
+          format: uuid
+          type: string
+        entityUrl:
+          description: A URL to access the entity that the transaction is triggered on. This can also be empty
+          example: https://edge.us.cdo.cisco.com/platform/public-api/v1/inventory/devices/f5f660d4-4b81-4374-877d-fbc4bee894e2
+          type: string
+        errorDetails:
+          additionalProperties:
+            type: string
+          description: Transaction error details, if any
+          type: object
+        errorMessage:
+          description: Transaction error message, if any
+          type: string
+        lastUpdatedTime:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the transaction status was last updated
+          example: 2023-12-13 08:15:44+00:00
+          format: date-time
+          type: string
+        submissionTime:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the transaction was triggered
+          example: 2023-12-13 05:15:44+00:00
+          format: date-time
+          type: string
+        tenantUid:
+          description: The unique identifier of the tenant that the transaction triggered on.
+          example: 5131daad-e813-4b8f-8f42-be1e241e2cdb
+          format: uuid
+          type: string
+        transactionDetails:
+          additionalProperties:
+            type: string
+          description: Transaction details, if any
+          type: object
+        transactionPollingUrl:
+          description: The URL to poll to track the progress of the transaction.
+          example: https://edge.us.cdo.cisco.com/platform/v1/transactions/7131daad-e813-4b8f-8f42-be1e241e8cdb
+          type: string
+        transactionType:
+          description: the type of the transaction
+          enum:
+          - ONBOARD_ASA
+          - ONBOARD_IOS
+          - ONBOARD_DUO_ADMIN_PANEL
+          - CREATE_FTD
+          - ONBOARD_FTD_ZTP
+          - REGISTER_FTD
+          - DELETE_CDFMC_MANAGED_FTD
+          - RECONNECT_ASA
+          - READ_ASA
+          - BULK_READ_ASA
+          - EXECUTE_CLI_COMMAND
+          - BULK_ACCEPT_ASA_CERTIFICATES
+          - DEPLOY_ASA_DEVICE_CHANGES
+          - DEPLOY_FTD_DEVICE_CHANGES
+          - INDEX_TENANT
+          - TERMINATE_DEVICE_RA_VPN_SESSIONS
+          - REFRESH_RA_VPN_SESSIONS
+          - TERMINATE_USER_RA_VPN_SESSIONS
+          - UPGRADE_ASA
+          - UPGRADE_FTD
+          - UPGRADE_FTD_CACHE
+          - MSP_UPGRADE_FTDS
+          - MSP_GET_COMPATIBLE_FTD_UPGRADE_PACKAGES
+          - CREATE_SDC
+          - SEND_AI_ASSISTANT_MESSAGE
+          - MSP_CREATE_TENANT
+          - MSP_ADD_USERS_TO_TENANT
+          - MSP_ADD_USER_GROUPS_TO_TENANT
+          - MSP_DELETE_USERS_FROM_TENANT
+          - MSP_DELETE_USER_GROUPS_FROM_TENANT
+          - MSP_ADD_EXISTING_TENANT
+          - MSP_ENABLE_MULTICLOUD_DEFENSE
+          - MSP_PROVISION_CDFMC
+          - CREATE_USERS
+          - DELETE_USERS
+          - EXECUTE_ASA_COMMAND
+          - ANALYZE_POLICIES
+          - TRIGGER_FMC_DATA_EXPORT
+          - EXPORT_DEVICES
+          - EXPORT_CLOUD_SERVICES
+          - EXPORT_MANAGERS
+          - EXPORT_TEMPLATES
+          - PROVISION_SDWAN_SAL_RESOURCES
+          - DEPROVISION_SDWAN_SAL_RESOURCES
+          - PROVISION_FIREWALL_SAL_RESOURCES
+          - DEPROVISION_FIREWALL_SAL_RESOURCES
+          - ASA_HEALTH_METRICS_TENANT_OPT_IN
+          - ASA_HEALTH_METRICS_TENANT_OPT_OUT
+          example: ONBOARD_ASA
+          type: string
+        transactionUid:
+          description: The unique identifier of the transaction triggered.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    RaVpnSessionPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/RaVpnSession'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    OS:
+      properties:
+        type:
+          description: The type of operating system running on the client device.
+          example: mac-intel
+          type: string
+        version:
+          description: The version of the operating system running on the client device.
+          example: 14.2.1
+          type: string
+      type: object
+    RaVpnSession:
+      properties:
+        assignedIpV4:
+          description: The IPv4 address assigned to the RA VPN session.
+          example: 172.16.0.2
+          type: string
+        assignedIpV6:
+          description: The IPv6 address assigned to the RA VPN session.
+          example: 172.16.0.2
+          type: string
+        auditSessionId:
+          description: The audit session ID associated with this RA VPN session.
+          example: 0a6405150000900065c0c86d
+          type: string
+        bytesRx:
+          description: The number of bytes received during the RA VPN session.
+          example: 6102087
+          format: int64
+          type: integer
+        bytesTx:
+          description: The number of bytes transmitted during the RA VPN session.
+          example: 9157513
+          format: int64
+          type: integer
+        deviceUid:
+          description: The unique identifier, represented as a UUID, of the device associated with the RA VPN session.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        lastActiveTime:
+          description: The time (in UTC) at which the user was last active in the RA VPN session, represented using the RFC-3339
+            standard.
+          example: 2023-12-13 05:15:44+00:00
+          format: date-time
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+          description: The location of the client device.
+        loginTime:
+          description: The time (in UTC) at which the user logged in to the RA VPN session, represented using the RFC-3339
+            standard.
+          example: 2023-12-13 05:15:44+00:00
+          format: date-time
+          type: string
+        os:
+          $ref: '#/components/schemas/OS'
+          description: The operating system of the client device.
+        publicIp:
+          description: The public IP address of the client that has established this RA VPN session.
+          example: 106.51.163.157
+          type: string
+        status:
+          description: The status of the RA VPN session.
+          enum:
+          - ACTIVE
+          - TERMINATED
+          example: ACTIVE
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the VPN session.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        username:
+          description: The name of the user associated with the RA VPN session.
+          example: user@example.com
+          type: string
+      required:
+      - deviceUid
+      - uid
+      - username
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
+    Browser:
+      properties:
+        name:
+          description: The name of the web browser running on the client device.
+          example: Chrome
+          type: string
+        version:
+          description: The version of the web browser running on the client device.
+          example: 121.0.6167.160
+          type: string
+      type: object
+  responses:
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
+    http405MethodNotAllowed:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Method not allowed.
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cisco-secure-firewall-scc-firewall-manager-openapi.yml
+- scc-firewall-manager-openapi.yaml

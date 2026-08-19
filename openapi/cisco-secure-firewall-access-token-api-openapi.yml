@@ -1,0 +1,107 @@
+openapi: 3.2.0
+info:
+  description: Service for managing API keys and tokens
+  title: Key Management Service v2 Access Token API
+  version: 1.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/api-token.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/api-token.yaml
+servers:
+- url: https://api.int.security.cisco.com/v1/api/applications
+tags:
+- name: Access Token
+paths:
+  /access_token:
+    post:
+      description: Create a new access token using a CUI refresh token for API keys. A valid PIAM token must be provided in the authorization header.
+      operationId: generateCUIToken
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenFormRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshTokenResponse'
+          description: Access token generated
+        '400':
+          description: Invalid request
+        '401':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ErrorResponse'
+                type: array
+          description: Unauthorized - Invalid PIAM token
+      security:
+      - bearerAuth: []
+      summary: Generate a CUI access token using a refresh token
+      tags:
+      - Access Token
+components:
+  schemas:
+    RefreshTokenResponse:
+      properties:
+        accessToken:
+          description: The newly generated access token.
+          type: string
+        refreshToken:
+          description: The newly generated refresh token.
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        message:
+          description: A descriptive error message.
+          type: string
+        timestamp:
+          description: The timestamp of when the error occurred in ISO 8601 format.
+          format: date-time
+          type: string
+        trackingId:
+          description: A unique identifier for tracking the error.
+          format: uuid
+          type: string
+      required:
+      - trackingId
+      - message
+      - timestamp
+      type: object
+    RefreshTokenFormRequest:
+      properties:
+        apiKeyId:
+          description: The ID of the API key associated with the refresh token.
+          type: string
+        grantType:
+          description: The type of grant, which must be 'refresh_token'.
+          enum:
+          - refresh_token
+          type: string
+        refreshToken:
+          description: The refresh token to be used for generating a new access token.
+          type: string
+      required:
+      - grantType
+      - refreshToken
+      - apiKeyId
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http

@@ -1,0 +1,377 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall Changelogs API
+  version: 1.13.0
+  contact:
+    name: Cisco Security Cloud Control TAC
+    email: cdo.tac@cisco.com
+  description: 'Operations tagged Changelogs across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
+    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
+      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
+    operation_coverage: 2/2
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: Changelogs
+paths:
+  /v1/changelogs:
+    get:
+      description: Get a list of Change Logs in the Security Cloud Control tenant.
+      operationId: getChangelogs
+      parameters:
+      - description: The number of results to retrieve.
+        in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 200
+          minimum: 0
+          type: string
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+        in: query
+        name: offset
+        required: false
+        schema:
+          minimum: 0
+          type: string
+      - description: The searchText parameter serves as a flexible search option that allows for text-based filtering across
+          all fields of the Change Log object. This parameter can be used independently to search for entries containing the
+          specified text, or in combination with the q query parameter for more targeted results. When used with q, the search
+          conditions of searchText are logically ANDed with the q parameter's criteria, ensuring that the returned entries
+          satisfy both sets of conditions.
+        in: query
+        name: searchText
+        required: false
+        schema:
+          type: string
+      - description: The time range for which to retrieve Change Logs. This parameter cannot be used in conjunction with a
+          query on the lastEventDate field.
+        in: query
+        name: timeRange
+        required: false
+        schema:
+          enum:
+          - 5m
+          - 15m
+          - 30m
+          - 1h
+          type: string
+      - description: The query to execute. Use the Lucene Query Syntax to construct your query.
+        example: fieldName:fieldValue
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangelogPage'
+          description: List of Change Log objects
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get Change Logs
+      tags:
+      - Changelogs
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/changelogs/{changelogUid}:
+    get:
+      description: Get a specific Change Log object by UID in the Security Cloud Control tenant.
+      operationId: getChangelog
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the changelog in Security Cloud Control.
+        in: path
+        name: changelogUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Changelog'
+          description: Change Log objects
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get Change Log
+      tags:
+      - Changelogs
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  responses:
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
+    http405MethodNotAllowed:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Method not allowed.
+  schemas:
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    ChangelogPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/Changelog'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    Changelog:
+      properties:
+        entityName:
+          description: The name of the device, manager or service to which the Change Log refers.
+          example: example-asa
+          type: string
+        entityUid:
+          description: The unique identifier, represented as a UUID, of the device, manager or service to which the Change
+            Log refers.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        events:
+          description: The events recorded in this Change Log.
+          items:
+            $ref: '#/components/schemas/Event'
+          type: array
+        lastEventDate:
+          description: 'The time (UTC; represented using the RFC-3339 standard) at which the last event in the changelog occurred.
+            You can perform range queries on this endpoint using the syntax `[lastEventDate:YYYY-MM-ddTHH:mm:ssZ TO lastEventDate:YYYY-MM-ddTHH:mm:ssZ]`:
+            please note that this will need to be URL-encoded.'
+          format: date-time
+          type: string
+        status:
+          description: The status of the Change Log.
+          enum:
+          - ACTIVE
+          - COMPLETED
+          - UNKNOWN
+          example: ACTIVE
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the Change Log.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - uid
+      type: object
+    Event:
+      properties:
+        action:
+          description: The action performed.
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - ERROR
+          - UNKNOWN
+          type: string
+        changeRequestName:
+          description: The name of the Change Request associated with the Change Log event.
+          example: LH-12345
+          type: string
+        changeRequestUid:
+          description: The unique identifier, represented as a UUID, of the Change Request associated with the Change Log
+            event.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        commands:
+          description: The commands executed, if any, by the Change Log event.
+          type: string
+        date:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the Change Log Event occurred.
+          format: date-time
+          type: string
+        description:
+          description: A human-readable description of the Change Log event.
+          type: string
+        diff:
+          description: A textual Diff representation of the changes made to the configuration.
+          type: string
+        username:
+          description: The username of the user that triggered the Change Log event.
+          example: myuser@cisco.com
+          type: string
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cisco-secure-firewall-scc-firewall-manager-openapi.yml
+- scc-firewall-manager-openapi.yaml

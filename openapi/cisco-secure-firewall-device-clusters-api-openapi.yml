@@ -1,0 +1,1558 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall Device Clusters API
+  version: 1.13.0
+  contact:
+    name: Cisco Firepower TAC
+    email: ngfw-support@cisco.com
+  description: 'Operations tagged Device Clusters across 2 of this provider''s published API definitions: cdfmc-openapi.yaml,
+    cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
+      schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
+    operation_coverage: 9/9
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: Device Clusters
+paths:
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deviceclusters/{containerUUID}/operational/ftdclusterdevicecommands:
+    post:
+      deprecated: false
+      description: '**Execute given command on the Firewall Threat Defense Cluster. _Check the response section for applicable
+        examples (if any)._**'
+      operationId: createFTDClusterDeviceCommandContainer
+      parameters:
+      - description: Filter are <code>operation</code> and <code>deviceUUID</code>. Filter is of format:<code>deviceUUID:device
+          uuid;operation:{enable|disable|control}</code>.<br/> <code>'deviceUUID'</code> is UUID of device and is a mandatory
+          field.<br/> <code>'operation'</code> is the command that needs to be executed on device and is a mandatory field.
+        in: query
+        name: filter
+        required: true
+        schema:
+          type: string
+      - description: The container id under which this specific resource is contained.
+        in: path
+        name: containerUUID
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '202':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/deviceclusters/ContainerUUID/operational/ftdclusterdevicecommands?filter=deviceUUID:device_uuid;operation:enable
+                  ( Success:POST method to execute commands on FTD Cluster )'
+                : value:
+                    command: enable
+                    id: clusterUuid
+                    links:
+                      self: /fmc_config/v1/domain/DomainUUID/deviceclusters/ContainerUUID/operational/ftdclusterdevicecommands?filter=deviceUUID:device_uuid;operation:enable
+                    metadata:
+                      task:
+                        id: <50014672387>
+                        message: Cluster enabling is in progress
+                        status: RUNNING
+                        taskType: FTD_CLUSTER_COMMAND
+                        type: TaskStatus
+                    name: clusterName
+                    type: DeviceCluster
+              schema:
+                $ref: '#/components/schemas/FTDClusterDeviceCommandContainer'
+                type: object
+          description: Accepted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Device Clusters
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deviceclusters/ftdclusterreadinesscheck:
+    post:
+      deprecated: false
+      description: '**Check if cluster is ready to become control and if the data devices are compatible with that control.
+        This readiness check is for platforms that support cluster bootstrap from Firewall Management Center. _Check the response
+        section for applicable examples (if any)._**'
+      operationId: createFTDClusterDeviceReadinessContainer
+      parameters:
+      - description: Boolean value, if set to "true" skips control readiness check and only checks data device compatibility
+          with control.
+        in: query
+        name: skipControlReadiness
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FTDClusterDeviceReadinessContainer'
+              type: object
+        description: Input representation of device details for control and data devices.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FTDClusterDeviceReadinessContainer'
+                type: object
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Device Clusters
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deviceclusters/ftddevicecluster:
+    get:
+      deprecated: false
+      description: '**Get a list of all Firewall Threat Defense clusters.**'
+      operationId: getAllRestFTDClusterDeviceContainer
+      parameters:
+      - description: Filter clusters based on parameters.<br />Value is of format <code>clusterBootstrapSupported:{true|false};analyticsOnly:{true|false}</code>.
+        in: query
+        name: filter
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Get all paginated FTD
+                  Cluster container objects without offset and limit )'
+                : value:
+                    items:
+                    - id: <container_uuid>
+                      links:
+                        self: /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster/<container_uuid>
+                      name: <cluster_name>
+                    - id: <container_uuid>
+                      links:
+                        self: /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster/<container_uuid>
+                      name: <cluster_name>
+                    - id: <container_uuid>
+                      links:
+                        self: /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster/<container_uuid>
+                      name: <cluster_name>
+                    links:
+                      self: /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster?offset=0&limit=1&expanded=true
+                    paging:
+                      count: 3
+                      limit: 3
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/RestFTDClusterDeviceContainerListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Device Clusters
+    post:
+      deprecated: false
+      description: '**Create a Firewall Threat Defense cluster. _Check the response section for applicable examples (if any)._**'
+      operationId: createRestFTDClusterDeviceContainer
+      parameters:
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test POST method
+                to create a FTD Cluster Container Device. )'
+              : value:
+                  clusterMode: SPANNED
+                  commonBootstrap:
+                    cclInterface:
+                      id: <Interface_UUID>
+                      name: <Ethernetx/x>
+                      type: PhysicalInterface
+                    cclNetwork: <subnet_mask>
+                    clusterKey: <cluster_key>
+                  controlDevice:
+                    clusterNodeBootstrap:
+                      cclIp: <127.2.0.1>
+                      localUnit: <localUnit>
+                      priority: 1
+                      siteId: 1
+                    deviceDetails:
+                      id: <control_device_UUID>
+                      name: <Device_name>
+                      type: Device
+                  dataDevices:
+                  - clusterNodeBootstrap:
+                      cclIp: <127.2.0.2>
+                      localUnit: <localUnit>
+                      priority: 2
+                      siteId: 2
+                    deviceDetails:
+                      id: <data1_device_UUID>
+                      name: <Device_name>
+                      type: Device
+                  - clusterNodeBootstrap:
+                      cclIp: <127.2.0.3>
+                      localUnit: <localUnit>
+                      priority: 3
+                      siteId: 3
+                    deviceDetails:
+                      id: <data2_device_UUID>
+                      name: <Device_name>
+                      type: Device
+                  name: <cluster_name>
+                  type: DeviceCluster
+              ? 'Example 2 : POST /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test POST method
+                to create a vFTD Cluster. )'
+              : value:
+                  commonBootstrap:
+                    cclInterface:
+                      id: <Interface_UUID>
+                      name: GigabitEthernetx/x
+                      type: PhysicalInterface
+                    cclNetwork: <subnet_mask>
+                    vniNetwork: 10.10.3.0/27
+                  controlDevice:
+                    clusterNodeBootstrap:
+                      cclIp: 10.10.4.1
+                      priority: 1
+                    deviceDetails:
+                      id: <control_device_UUID>
+                      type: Device
+                  dataDevices:
+                  - clusterNodeBootstrap:
+                      cclIp: <cclip>
+                      priority: 2
+                    deviceDetails:
+                      id: data1_device_UUID
+                      type: Device
+                  name: <cluster_name>
+                  type: DeviceCluster
+            schema:
+              $ref: '#/components/schemas/RestFTDClusterDeviceContainer'
+              type: object
+        description: Input representation of Firewall Threat Defense Cluster model.
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test POST
+                  method to create a FTD Cluster Container Device. )'
+                : value:
+                    controlDevice:
+                      type: Device
+                    description: Cluster IN Progress
+                    id: 93cfc470-4f09-11ea-90d0-ec0bf4b0ebe5
+                    metadata:
+                      task:
+                        id: '30064773125'
+                        message: <Container Created>
+                        status: IN_PROGRESS
+                        taskType: NGFW_CLUSTER_OPERATIONS
+                        type: TaskStatus
+                    name: test Cluster
+                ? 'Example 2 : POST /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test POST
+                  method to create a vFTD Cluster. )'
+                : value:
+                    metadata:
+                      task:
+                        id: '34359745117'
+                        message: Control Bootstrap In Progress
+                        status: RUNNING
+                        taskType: FTD_CLUSTER_CREATE
+                        type: TaskStatus
+                    name: cluster
+                    type: DeviceCluster
+              schema:
+                $ref: '#/components/schemas/RestFTDClusterDeviceContainer'
+                type: object
+          description: Accepted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Device Clusters
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  ? /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deviceclusters/ftddevicecluster/{containerUUID}/clusterhealthmonitorsettings/{clusterUuid}
+  : get:
+      deprecated: false
+      description: '**Get health check monitor settings of a Firewall Threat Defense cluster.**'
+      operationId: getClusterHealthMonitorSettingsModel
+      parameters:
+      - description: UUID of the Firewall Threat Defense cluster.
+        in: path
+        name: clusterUuid
+        required: true
+        schema:
+          type: string
+      - description: UUID of the ticket for tracking the configuration changes.
+        in: header
+        name: ticket-id
+        required: false
+        schema:
+          type: string
+      - description: The container id under which this specific resource is contained.
+        in: path
+        name: containerUUID
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster/{clusterUuid}/clusterhealthmonitorsettings/{clusterUuid}
+                  ( Success:GET method to update health check monitor settings of FTD Cluster )'
+                : value:
+                    holdTime: 3
+                    id: clusterUuid
+                    interfaceAutoRejoin:
+                      clusterInterface:
+                        attempts: 3
+                        interval: 5
+                        nextInterval: 1
+                      dataInterface:
+                        attempts: 3
+                        interval: 5
+                        nextInterval: 2
+                    isHealthCheckEnabled: true
+                    monitorInterface:
+                      debounceTime: 500
+                      isServiceApplicationEnabled: false
+                    systemAutoRejoin:
+                      attempts: 3
+                      interval: 5
+                      nextInterval: 2
+                    type: ClusterHealthMonitorSetting
+                    unMonitorInterface:
+                    - GigabitEthernet0/1
+                    - GigabitEthernet0/2
+                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster/{clusterUuid}/clusterhealthmonitorsettings/{clusterUuid}
+                  ( Success:GET response when health check is disabled )'
+                : value:
+                    id: clusterUuid
+                    isHealthCheckEnabled: false
+                    monitorInterface:
+                      debounceTime: 5000
+                      isServiceApplicationEnabled: true
+                    systemAutoRejoin:
+                      attempts: 3
+                      interval: 5
+                      nextInterval: 2
+                    type: ClusterHealthMonitorSetting
+                    unMonitorInterface:
+                    - GigabitEthernet0/1
+                    - GigabitEthernet0/2
+              schema:
+                $ref: '#/components/schemas/ClusterHealthMonitorSettingsModel'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Device Clusters
+    put:
+      deprecated: false
+      description: '**Modify health check monitor settings of a Firewall Threat Defense cluster. _Check the response section
+        for applicable examples (if any)._**'
+      operationId: updateClusterHealthMonitorSettingsModel
+      parameters:
+      - description: UUID of the Firewall Threat Defense cluster.
+        in: path
+        name: clusterUuid
+        required: true
+        schema:
+          type: string
+      - description: Boolean value which specifies whether to change the entire object or only certain attributes of the settings.
+          If the value is true then only the attributes that are specified will change.
+        in: query
+        name: partialUpdate
+        required: false
+        schema:
+          type: boolean
+      - description: UUID of the ticket for tracking the configuration changes.
+        in: header
+        name: ticket-id
+        required: false
+        schema:
+          type: string
+      - description: The container id under which this specific resource is contained.
+        in: path
+        name: containerUUID
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClusterHealthMonitorSettingsModel'
+              type: object
+        description: The input representation of cluster health monitor setting model.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster/{clusterUuid}/clusterhealthmonitorsettings/{clusterUuid}?partialUpdate=false
+                  ( Success:PUT method to update health check settings )'
+                : value:
+                    holdTime: 3
+                    id: clusterUuid
+                    interfaceAutoRejoin:
+                      clusterInterface:
+                        attempts: 3
+                        interval: 5
+                        nextInterval: 1
+                      dataInterface:
+                        attempts: 3
+                        interval: 5
+                        nextInterval: 2
+                    isHealthCheckEnabled: true
+                    monitorInterface:
+                      debounceTime: 500
+                      isServiceApplicationEnabled: false
+                    systemAutoRejoin:
+                      attempts: 3
+                      interval: 5
+                      nextInterval: 2
+                    type: ClusterHealthMonitorSetting
+                    unMonitorInterface:
+                    - GigabitEthernet0/1
+                    - GigabitEthernet0/2
+                ? 'Example 2 : PUT /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster/{clusterUuid}/clusterhealthmonitorsettings/{clusterUuid}?partialUpdate=false
+                  ( Success:PUT method to disable health check )'
+                : value:
+                    holdTime: 3
+                    id: clusterUuid
+                    interfaceAutoRejoin:
+                      clusterInterface:
+                        attempts: 3
+                        interval: 5
+                        nextInterval: 1
+                      dataInterface:
+                        attempts: 3
+                        interval: 5
+                        nextInterval: 2
+                    isHealthCheckEnabled: false
+                    monitorInterface:
+                      debounceTime: 500
+                      isServiceApplicationEnabled: false
+                    systemAutoRejoin:
+                      attempts: 3
+                      interval: 5
+                      nextInterval: 2
+                    type: ClusterHealthMonitorSetting
+                    unMonitorInterface:
+                    - GigabitEthernet0/1
+                    - GigabitEthernet0/2
+                ? 'Example 3 : PUT /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster/{clusterUuid}/clusterhealthmonitorsettings/{clusterUuid}?partialUpdate=true
+                  ( Success:PUT method with partialUpdate filter to update specific attributes )'
+                : value:
+                    holdTime: 33
+                    id: clusterUuid
+                    interfaceAutoRejoin:
+                      clusterInterface:
+                        attempts: 40
+                        interval: 10
+                    isHealthCheckEnabled: true
+                    monitorInterface:
+                      debounceTime: 5000
+                    type: ClusterHealthMonitorSetting
+              schema:
+                $ref: '#/components/schemas/ClusterHealthMonitorSettingsModel'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Device Clusters
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deviceclusters/ftddevicecluster/{objectId}:
+    delete:
+      deprecated: false
+      description: '**Delete the Firewall Threat Defense Cluster record associated with the specified ID. _Check the response
+        section for applicable examples (if any)._**'
+      operationId: deleteRestFTDClusterDeviceContainer
+      parameters:
+      - description: Identifier of a Firewall Threat Defense Cluster.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - description: Filter clusters based on parameters. Value is of format <code>"dataDeviceIds:dataDeviceId1,dataDeviceId2,.."</code>.
+          If no filter is provided, the entire cluster will be deleted from the Firewall Management Center.
+        in: query
+        name: filter
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : DELETE /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test DELETE
+                  method to delete FMC bootstrapped clusters(TPK/VMware/KVM) )'
+                : value:
+                    controlDevice:
+                      clusterNodeBootstrap:
+                        cclIp: <cclip>
+                        localUnit: <localUnit>
+                        priority: 1
+                        siteId: 1
+                      deviceDetails:
+                        id: <control_device_UUID>
+                        type: Device
+                    dataDevices:
+                    - clusterNodeBootstrap:
+                        cclIp: <cclip>
+                        localUnit: <localUnit>
+                        priority: 2
+                        siteId: 1
+                      deviceDetails:
+                        id: <data1_device_UUID>
+                        type: Device
+                    - clusterNodeBootstrap:
+                        cclIp: <cclip>
+                        localUnit: <localUnit>
+                        priority: 3
+                        siteId: 1
+                      deviceDetails:
+                        id: <data2_device_UUID>
+                        type: Device
+                    - clusterNodeBootstrap:
+                        cclIp: <cclip>
+                        localUnit: <localUnit>
+                        priority: 4
+                        siteId: 1
+                      deviceDetails:
+                        id: <data3_device_UUID>
+                        type: Device
+                    ftdClusterBootstrap:
+                      clusterControlLink: <cluster_control_link>
+                      clusterGroupName: <cluster_group_name>
+                      clusterKey: <cluster_key>
+                    id: 35874370-9957-11e8-af35-2038dcb5d0fa
+                    name: <cluster_name>
+                    type: DeviceCluster
+                ? 'Example 2 : DELETE /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test DELETE
+                  method to delete FMC managed clusters(9330/4100/AWS/GCP) )'
+                : value:
+                    controlDevice:
+                      deviceDetails:
+                        id: <control_device_UUID>
+                        name: <host_name>
+                        type: Device
+                    dataDevices:
+                    - deviceDetails:
+                        id: <data1_device_UUID>
+                        name: <host_name>
+                        type: Device
+                    - deviceDetails:
+                        id: <data2_device_UUID>
+                        name: <host_name>
+                        type: Device
+                    id: 31298d34-2ade-11ed-b3d1-d1afe42d9868
+                    metadata:
+                      analyticsOnly: false
+                    name: <cluster_name>
+                    type: DeviceCluster
+              schema:
+                $ref: '#/components/schemas/RestFTDClusterDeviceContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Device Clusters
+    get:
+      deprecated: false
+      description: '**Get the Firewall Threat Defense Cluster record associated with the specified ID.**'
+      operationId: getRestFTDClusterDeviceContainer
+      parameters:
+      - description: Identifier of a Firewall Threat Defense Cluster.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - description: Boolean to specify if live status of cluster nodes is required.
+        in: query
+        name: liveStatus
+        required: false
+        schema:
+          type: string
+      - description: Boolean to specify if cluster control link and data interface MTU values are required.
+        in: query
+        name: includeMTUValues
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test GET method
+                  for a specific FTD Cluster Container Device. )'
+                : value:
+                    controlDevice:
+                      clusterNodeBootstrap:
+                        cclIp: <cclip>
+                        localUnit: <localUnit>
+                        priority: 1
+                        siteId: 0
+                      deviceDetails:
+                        id: <control_device_UUID>
+                        type: Device
+                    dataDevices:
+                    - clusterNodeBootstrap:
+                        cclIp: <cclip>
+                        localUnit: <localUnit>
+                        priority: 2
+                        siteId: 0
+                      deviceDetails:
+                        id: <data1_device_UUID>
+                        type: Device
+                    - clusterNodeBootstrap:
+                        cclIp: <cclip>
+                        localUnit: <localUnit>
+                        priority: 3
+                        siteId: 0
+                      deviceDetails:
+                        id: <data2_device_UUID>
+                        type: Device
+                    - clusterNodeBootstrap:
+                        cclIp: <cclip>
+                        localUnit: <localUnit>
+                        priority: 4
+                        siteId: 0
+                      deviceDetails:
+                        id: <data3_device_UUID>
+                        type: Device
+                    id: 35874370-9957-11e8-af35-2038dcb5d0fa
+                    links:
+                      self: /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster?offset=0&limit=1&expanded=true
+                    metadata:
+                      clusterDeviceGroup:
+                        id: <device_group_id>
+                        name: <device_group_name>
+                        type: DeviceGroup
+                      domain:
+                        id: <domain_uuid>
+                        type: Domain
+                      lastUser:
+                        name: admin
+                        type: User
+                    name: <cluster_name>
+                    type: DeviceCluster
+              schema:
+                $ref: '#/components/schemas/RestFTDClusterDeviceContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Device Clusters
+    put:
+      deprecated: false
+      description: '**Modify the Firewall Threat Defense Cluster record associated with the specified ID. _Check the response
+        section for applicable examples (if any)._**'
+      operationId: updateRestFTDClusterDeviceContainer
+      parameters:
+      - description: Identifier of a Firewall Threat Defense Cluster.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test PUT method
+                to create a FTD Cluster Container Device. )'
+              : value:
+                  controlDevice:
+                    clusterNodeBootstrap:
+                      cclIp: <cclip>
+                      localUnit: <localUnit>
+                      priority: 1
+                      siteId: 1
+                    deviceDetails:
+                      id: <control_device_UUID>
+                      type: Device
+                  dataDevices:
+                  - clusterNodeBootstrap:
+                      cclIp: <cclip>
+                      localUnit: <localUnit>
+                      priority: 2
+                      siteId: 1
+                    deviceDetails:
+                      id: <data1_device_UUID>
+                      type: Device
+                  - clusterNodeBootstrap:
+                      cclIp: <cclip>
+                      localUnit: <localUnit>
+                      priority: 3
+                      siteId: 1
+                    deviceDetails:
+                      id: <data2_device_UUID>
+                      type: Device
+                  - clusterNodeBootstrap:
+                      cclIp: <cclip>
+                      localUnit: <localUnit>
+                      priority: 4
+                      siteId: 1
+                    deviceDetails:
+                      id: <data3_device_UUID>
+                      type: Device
+                  ftdClusterBootstrap:
+                    clusterControlLink: <cluster_control_link>
+                    clusterGroupName: <cluster_group_name>
+                    clusterKey: <cluster_key>
+                  id: 35874370-9957-11e8-af35-2038dcb5d0fa
+                  name: <cluster_name>
+                  type: DeviceCluster
+              ? 'Example 2 : PUT /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test PUT method
+                to add a FTD Container Device to the Cluster. )'
+              : value:
+                  action: ADD_NODES
+                  dataDevices:
+                  - clusterNodeBootstrap:
+                      cclIp: <cclip>
+                      localUnit: <localUnit>
+                      priority: 2
+                      siteId: 1
+                    deviceDetails:
+                      id: <data1_device_UUID>
+                      name: data1_device_name
+                      type: Device
+                  - clusterNodeBootstrap:
+                      cclIp: <cclip>
+                      localUnit: <localUnit>
+                      priority: 3
+                      siteId: 1
+                    deviceDetails:
+                      id: <data2_device_UUID>
+                      name: data2_device_name
+                      type: Device
+                  - clusterNodeBootstrap:
+                      cclIp: <cclip>
+                      localUnit: <localUnit>
+                      priority: 4
+                      siteId: 1
+                    deviceDetails:
+                      id: <data3_device_UUID>
+                      name: data3_device_name
+                      type: Device
+                  id: 35874370-9957-11e8-af35-2038dcb5d0fa
+                  type: DeviceCluster
+              ? 'Example 3 : PUT /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test PUT method
+                to remove a FTD Container Device from the Cluster. )'
+              : value:
+                  action: REMOVE_NODES
+                  dataDevices:
+                  - clusterNodeBootstrap:
+                      cclIp: <cclip>
+                      localUnit: <localUnit>
+                      priority: 2
+                      siteId: 1
+                    deviceDetails:
+                      id: <data1_device_UUID>
+                      name: data1_device_name
+                      type: Device
+                  - clusterNodeBootstrap:
+                      cclIp: <cclip>
+                      localUnit: <localUnit>
+                      priority: 3
+                      siteId: 1
+                    deviceDetails:
+                      id: <data2_device_UUID>
+                      name: data2_device_name
+                      type: Device
+                  - clusterNodeBootstrap:
+                      cclIp: <cclip>
+                      localUnit: <localUnit>
+                      priority: 4
+                      siteId: 1
+                    deviceDetails:
+                      id: <data3_device_UUID>
+                      name: data3_device_name
+                      type: Device
+                  id: 35874370-9957-11e8-af35-2038dcb5d0fa
+                  type: DeviceCluster
+              ? 'Example 4 : PUT /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Test PUT(Cluster name
+                change) of cluster container object. Cluster container UUID should be passed as Object id. The name field
+                should contain the new cluster name )'
+              : value:
+                  action: UPDATE_CLUSTER_NAME
+                  id: <cluster_uuid>
+                  name: <new_cluster_name>
+            schema:
+              $ref: '#/components/schemas/RestFTDClusterDeviceContainer'
+              type: object
+        description: Input representation of Firewall Threat Defense Cluster model.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test PUT method
+                  to create a FTD Cluster Container Device. )'
+                : value:
+                    controlDevice:
+                      type: Device
+                    description: Cluster updated successfully
+                    id: 93cfc470-4f09-11ea-90d0-ec0bf4b0ebe5
+                    name: string
+                ? 'Example 2 : PUT /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test PUT method
+                  to add a FTD Container Device to the Cluster. )'
+                : value:
+                    action: ADD_NODES
+                    id: 83ab4eba-fbdb-11ee-8c09-a857d59a6db2
+                    metadata:
+                      task:
+                        id: '34359741318'
+                        message: Adding node(s) to cluster is in progress
+                        status: RUNNING
+                        taskType: FTD_CLUSTER_ADD_NODES
+                        type: TaskStatus
+                    type: DeviceCluster
+                ? 'Example 3 : PUT /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Success: Test PUT method
+                  to remove a FTD Container Device from the Cluster. )'
+                : value:
+                    action: REMOVE_NODES
+                    id: 83ab4eba-fbdb-11ee-8c09-a857d59a6db2
+                    metadata:
+                      task:
+                        id: '34359742298'
+                        message: Removing node(s) from cluster is in progress
+                        status: RUNNING
+                        taskType: FTD_CLUSTER_REMOVE_NODES
+                        type: TaskStatus
+                    type: DeviceCluster
+                ? 'Example 4 : PUT /fmc_config/v1/domain/DomainUUID/deviceclusters/ftddevicecluster ( Test PUT(Cluster name
+                  change) of cluster container object. Cluster container UUID should be passed as Object id. The name field
+                  should contain the new cluster name )'
+                : value:
+                    action: UPDATE_CLUSTER_NAME
+                    id: <cluster_uuid>
+                    name: <new_cluster_name>
+                    type: DeviceCluster
+              schema:
+                $ref: '#/components/schemas/RestFTDClusterDeviceContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Device Clusters
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  schemas:
+    IInterfaceAutoRejoin:
+      properties:
+        clusterInterface:
+          $ref: '#/components/schemas/IClusterAutoRejoin'
+          type: object
+        dataInterface:
+          $ref: '#/components/schemas/IClusterAutoRejoin'
+          type: object
+      type: object
+    RestFTDClusterDevice:
+      properties:
+        clusterNodeBootstrap:
+          $ref: '#/components/schemas/IFTDClusterNodeBootstrap'
+          type: object
+        deviceDetails:
+          $ref: '#/components/schemas/IFTDDeviceDetails'
+          type: object
+      type: object
+    IDeviceClusterReadinessData:
+      properties:
+        errors:
+          items:
+            type: string
+          type: array
+        status:
+          enum:
+          - READY
+          - NOT_READY
+          type: string
+      required:
+      - errors
+      - status
+      type: object
+    RestFTDClusterDeviceContainer:
+      properties:
+        action:
+          enum:
+          - CREATE_CLUSTER
+          - ADD_NODES
+          - REMOVE_NODES
+          - UPDATE_BOOTSTRAP
+          - UPDATE_CLUSTER_NAME
+          - BREAK
+          - DELETE_CLUSTER
+          type: string
+        clusterMode:
+          enum:
+          - SPANNED
+          - INDIVIDUAL
+          type: string
+        commonBootstrap:
+          $ref: '#/components/schemas/RestIFTDClusterBootstrap'
+          type: object
+        controlDevice:
+          $ref: '#/components/schemas/RestFTDClusterDevice'
+          type: object
+        dataDevices:
+          items:
+            $ref: '#/components/schemas/RestIFTDClusterDevice'
+            type: object
+          type: array
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/RestFTDClusterDeviceMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      required:
+      - commonBootstrap
+      - controlDevice
+      - dataDevices
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    RestFTDClusterDeviceMetadata:
+      properties:
+        analyticsOnly:
+          type: boolean
+        clusterControlLinkMTU:
+          type: string
+        clusterhealthmonitorsettings:
+          $ref: '#/components/schemas/ClusterHealthMonitorSettingMetadata'
+          type: object
+        isLocked:
+          type: boolean
+        matches:
+          items:
+            type: string
+          type: array
+        maxDataInterfaceMTU:
+          type: string
+        task:
+          $ref: '#/components/schemas/RestTaskStatus'
+          type: object
+      type: object
+    RestIFTDClusterBootstrap:
+      properties:
+        cclInterface:
+          $ref: '#/components/schemas/RestIFTDBaseInterface'
+          type: object
+        cclNetwork:
+          type: string
+        clusterKey:
+          type: string
+        lacpMode:
+          enum:
+          - ACTIVE
+          - PASSIVE
+          - 'ON'
+          type: string
+        lacpRate:
+          enum:
+          - DEFAULT
+          - NORMAL
+          - FAST
+          type: string
+        memberInterfaces:
+          items:
+            $ref: '#/components/schemas/RestIFTDBaseInterface'
+            type: object
+          type: array
+        vniNetwork:
+          type: string
+      required:
+      - cclInterface
+      - cclNetwork
+      - clusterKey
+      - vniNetwork
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    RestTaskStatus:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        message:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        taskType:
+          enum:
+          - DEVICE_REGISTRATION
+          - SMART_LICENSE
+          - DEVICE_DEPLOYMENT
+          - DEVICE_ROLLBACK
+          - NGFWHA_OPERATIONS
+          - COPY_CONFIG_REQUEST
+          - HIT_COUNT_REFRESH
+          - FTD_CLUSTER_BOOTSTRAP
+          - FTD_CLUSTER_CREATE
+          - FTD_CLUSTER_BREAK
+          - FTD_CLUSTER_ADD_NODES
+          - FTD_CLUSTER_REMOVE_NODES
+          - DEVICE_BACKUP
+          - FTD_CLUSTER_UPDATE_BOOTSTRAP
+          - FTD_CLUSTER_COMMAND
+          - SSP_EPM_OIR
+          - SSP_EPM_BREAKOUT_DEPLOY
+          - DEVICE_EXPORT
+          - DEVICE_IMPORT
+          - POLICY_EXPORT
+          - CHASSIS_REGISTRATION
+          - CHANGE_MANAGER
+          - CONFIGURE_DEVICE_VALIDATE
+          - CONFIGURE_DEVICE
+          - CONFIGURE_MANAGER
+          - CONFIGURE_MANAGER_ADD
+          - CONFIGURE_MANAGER_DELETE
+          - INITIATE_MIGRATION
+          - DISCARD_MIGRATION
+          - SWITCH_TO_ANALYTICS
+          - DELETE_DEVICE
+          - GENERATE_REPORTS
+          - FLEXCONFIG_MIGRATION
+          - DEVICE_UNREGISTRATION
+          - PENDING_CHANGES_REQUEST
+          - DEVICE_TROUBLESHOOT
+          - DEVICE_MODEL_MIGRATION
+          - DEVICE_TEMPLATE_CREATION
+          - CHASSIS_CONVERSION_REQUEST
+          - SNORT_PROFILER
+          - CPU_PROFILER
+          - POLICY_REPORT_GENERATION
+          - DEVICE_TEMPLATE_APPLY
+          - LTP_ONBOARDING
+          - POLICY_CLONE_OPERATION
+          - DEVICE_CERTIFICATE_MANAGEMENT
+          - OOB_CHANGES_REQUEST
+          - UPLOAD_TROUBLESHOOT
+          type: string
+        type:
+          type: string
+      type: object
+    RestIFTDBaseInterface:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ClusterHealthMonitorSettingsModel:
+      description: A model representing FTD Cluster Health Check Monitor Settings
+      properties:
+        holdTime:
+          description: hold-time determines the amount of time between unit heartbeat status messages
+          type: number
+        id:
+          type: string
+        interfaceAutoRejoin:
+          $ref: '#/components/schemas/IInterfaceAutoRejoin'
+          description: Data and Cluster Interface auto rejoin
+          type: object
+        isHealthCheckEnabled:
+          description: To toggle health check
+          type: boolean
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/RestFTDClusterDeviceMetadata'
+          type: object
+        monitorInterface:
+          $ref: '#/components/schemas/IClusterMonitorInterface'
+          description: monitor interface parmas like debounce time and service module
+          type: object
+        systemAutoRejoin:
+          $ref: '#/components/schemas/IClusterAutoRejoin'
+          description: Sets system auto rejoin params if the failure is due to system
+          type: object
+        type:
+          type: string
+        unMonitorInterface:
+          description: un-monitor interfaces
+          items:
+            type: string
+          type: array
+      type: object
+    FTDClusterDeviceReadinessContainer:
+      description: A model representing FTD Cluster Device Readiness Model
+      properties:
+        clusterMode:
+          description: INDIVIDUAL or SPANNED mode
+          enum:
+          - SPANNED
+          - INDIVIDUAL
+          type: string
+        controlDevice:
+          $ref: '#/components/schemas/IFTDClusterDeviceReadinessEntity'
+          description: Control device details
+          type: object
+        dataDevices:
+          description: List of data devices
+          items:
+            $ref: '#/components/schemas/IFTDClusterDeviceReadinessEntity'
+            type: object
+          type: array
+        description:
+          type: string
+        mtuWarningMsg:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+      required:
+      - controlDevice
+      type: object
+    IFTDDeviceDetails:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          enum:
+          - ADDED_OUT_OF_BOX
+          - DISABLED
+          - JOINING
+          - NORMAL
+          - NOT_AVAILABLE
+          type: string
+        type:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    ClusterHealthMonitorSettingMetadata:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        type:
+          type: string
+      type: object
+    IFTDClusterDeviceReadinessEntity:
+      properties:
+        clusterReadiness:
+          $ref: '#/components/schemas/IDeviceClusterReadinessData'
+          type: object
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    IClusterAutoRejoin:
+      properties:
+        attempts:
+          format: int32
+          type: integer
+        interval:
+          format: int32
+          type: integer
+        nextInterval:
+          format: int32
+          type: integer
+      type: object
+    RestIFTDClusterDevice:
+      properties:
+        clusterNodeBootstrap:
+          $ref: '#/components/schemas/IFTDClusterNodeBootstrap'
+          type: object
+        deviceDetails:
+          $ref: '#/components/schemas/IFTDDeviceDetails'
+          type: object
+        keepLocalEvents:
+          type: boolean
+      type: object
+    IClusterMonitorInterface:
+      properties:
+        debounceTime:
+          format: int32
+          type: integer
+        isServiceApplicationEnabled:
+          type: boolean
+      type: object
+    RestFTDClusterDeviceContainerListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/RestFTDClusterDeviceContainer'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IFTDClusterNodeBootstrap:
+      properties:
+        cclIp:
+          type: string
+        localUnit:
+          type: string
+        priority:
+          format: int32
+          type: integer
+        siteId:
+          format: int32
+          type: integer
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    FTDClusterDeviceCommandContainer:
+      description: A model representing FTD Cluster Device enable nodes, disable nodes and change control Model
+      properties:
+        command:
+          description: 'command that needs to b executed on cluster, For eg: enable, disable, control'
+          enum:
+          - enable
+          - disable
+          - control
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/RestFTDClusterDeviceMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+  parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cdfmc-openapi.yaml
+- cisco-secure-firewall-cdfmc-openapi.yml

@@ -1,0 +1,73 @@
+generated: '2026-08-19'
+method: searched
+source: >-
+  https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/ (SDKs page),
+  https://pypi.org/pypi/scc-firewall-manager-sdk/json, https://pypi.org/pypi/cdo-sdk-python/json,
+  https://galaxy.ansible.com/api/v3/.../cisco/fmcansible/, https://registry.terraform.io/v1/providers/CiscoDevNet/fmc
+note: >-
+  Cisco publishes one generated Python SDK for the Security Cloud Control Firewall Manager / cdFMC API, plus
+  first-party infrastructure-as-code packages (Ansible collection, Terraform provider) for the Secure Firewall
+  Management Center. There is no first-party JavaScript, Go, Java, .NET or Ruby client library.
+packages:
+- language: python
+  registry: pypi
+  name: scc-firewall-manager-sdk
+  official: true
+  url: https://pypi.org/project/scc-firewall-manager-sdk/
+  install: pip install scc-firewall-manager-sdk
+  version: 1.22.873
+  published: '2026-08-19'
+  release_count: 4060
+  docs: https://scc-firewall-manager-sdk.readthedocs.io/
+  covers: cisco-secure-firewall:scc-firewall-manager, cisco-secure-firewall:cdfmc
+  note: >-
+    OpenAPI-generated client for the Cisco Security Cloud Control Firewall Manager API. Current — the latest
+    release was published the same day this profile was probed.
+- language: python
+  registry: pypi
+  name: cdo-sdk-python
+  official: true
+  url: https://pypi.org/project/cdo-sdk-python/
+  install: pip install cdo-sdk-python
+  version: 1.9.85
+  published: '2025-03-31'
+  release_count: 1499
+  status: superseded
+  note: >-
+    The earlier Cisco Defense Orchestrator (CDO) Python SDK. Last published 2025-03-31, before the CDO to
+    Security Cloud Control rename; superseded by scc-firewall-manager-sdk. Retained here as a decay signal,
+    not as a recommended dependency.
+- language: python
+  registry: ansible-galaxy
+  name: cisco.fmcansible
+  official: true
+  url: https://galaxy.ansible.com/ui/repo/published/cisco/fmcansible/
+  install: ansible-galaxy collection install cisco.fmcansible
+  version: 1.1.1
+  published: '2026-08-13'
+  download_count: 16644
+  source: https://github.com/CiscoDevNet/FMCAnsible
+  docs: https://developer.cisco.com/docs/fmc-ansible/
+  note: >-
+    First-party Ansible collection for the Secure Firewall Management Center REST API. `published` is the
+    collection's Galaxy updated_at; the highest published version is 1.1.1.
+- language: go
+  registry: terraform
+  name: CiscoDevNet/fmc
+  official: true
+  url: https://registry.terraform.io/providers/CiscoDevNet/fmc/latest
+  install: 'terraform { required_providers { fmc = { source = "CiscoDevNet/fmc" } } }'
+  version: 2.5.0
+  published: '2026-07-29'
+  downloads: 171365
+  source: https://github.com/CiscoDevNet/terraform-provider-fmc
+  note: First-party Terraform provider for the Secure Firewall Management Center.
+absent:
+- language: javascript
+  note: No first-party npm client library published for the FMC / SCC Firewall Manager API.
+- language: java
+  note: No first-party Maven Central artifact found.
+- language: dotnet
+  note: No first-party NuGet package found.
+- language: ruby
+  note: No first-party RubyGems package found.

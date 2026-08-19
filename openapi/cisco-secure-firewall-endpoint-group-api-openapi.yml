@@ -1,0 +1,498 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine Endpoint Group API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: Endpoint Group
+paths:
+  /pcm/endpointgroups:
+    get:
+      description: 'Roles allowed: support, pcm-rw, pcm-ro'
+      operationId: getAllEndpointGroups
+      parameters:
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointGroupPageApi'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get all endpoint groups
+      tags:
+      - Endpoint Group
+    put:
+      description: 'Roles allowed: support,pcm-rw,pcm-ro'
+      operationId: getExistingAndMissingEndpointGroupsByIdsInBulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndpointGroupIdListUserApi'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExistingAndMissingEndpointGroupsApi'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '413':
+          description: Request Entity Too Large
+        '500':
+          description: Internal Server Error
+      summary: Get existing and missing endpoint groups by id in bulk
+      tags:
+      - Endpoint Group
+  /pcm/endpointgroups/idPrefix/{endpointGroupIdPrefix}:
+    get:
+      description: 'Roles allowed: support, pcm-rw, pcm-ro'
+      operationId: getEndpointGroupsByIdPrefix
+      parameters:
+      - in: path
+        name: endpointGroupIdPrefix
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointGroupListApi'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get endpoint groups by ID prefix
+      tags:
+      - Endpoint Group
+  /pcm/endpointgroups/{endpointGroupId}:
+    get:
+      description: 'Roles allowed: support,pcm-rw,pcm-ro'
+      operationId: getEndpointGroup1
+      parameters:
+      - in: path
+        name: endpointGroupId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointGroupApi'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get endpoint group by id
+      tags:
+      - Endpoint Group
+    post:
+      description: 'Roles allowed: support,pcm-rw'
+      operationId: createEndpointGroup
+      parameters:
+      - in: path
+        name: endpointGroupId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndpointGroupUserApi'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Create endpoint group
+      tags:
+      - Endpoint Group
+  /pcm/endpointgroups/{endpointGroupId}/references:
+    get:
+      description: 'Roles allowed: support,pcm-rw,pcm-ro'
+      operationId: getEndpointGroupReferences
+      parameters:
+      - in: path
+        name: endpointGroupId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupReferences'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get all the direct references (Policy/Rules & Endpoint Groups) of endpoint group by id
+      tags:
+      - Endpoint Group
+  /pcm/endpointgroups/{endpointGroupId}/{version}:
+    delete:
+      description: 'Roles allowed: support,pcm-rw'
+      operationId: deleteEndpointGroup
+      parameters:
+      - in: path
+        name: endpointGroupId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: version
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete endpoint group by id
+      tags:
+      - Endpoint Group
+    put:
+      description: 'Roles allowed: support,pcm-rw'
+      operationId: updateEndpointGroup
+      parameters:
+      - in: path
+        name: endpointGroupId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: version
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndpointGroupUserApi'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update endpoint group
+      tags:
+      - Endpoint Group
+  /pcm/entities-referenced-by-rules/endpointgroups:
+    get:
+      description: 'Roles allowed: support, pcm-rw, pcm-ro'
+      operationId: getEndpointGroupsReferencedByRules
+      parameters:
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointGroupIdPageApi'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get all endpoint groups which are directly referenced by rules
+      tags:
+      - Endpoint Group
+components:
+  schemas:
+    EndpointGroupPageApi:
+      properties:
+        cursor:
+          type: string
+        epgs:
+          items:
+            $ref: '#/components/schemas/EndpointGroupApi'
+          type: array
+      type: object
+    ExistingAndMissingEndpointGroupsApi:
+      properties:
+        existingEpgs:
+          items:
+            $ref: '#/components/schemas/EndpointGroupApi'
+          type: array
+        missingEpgs:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
+      type: object
+    EndpointGroupListApi:
+      properties:
+        epgs:
+          items:
+            $ref: '#/components/schemas/EndpointGroupApi'
+          type: array
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
+      type: object
+    GroupReferences:
+      properties:
+        groupIds:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        policies:
+          items:
+            $ref: '#/components/schemas/PolicyReference'
+          type: array
+      type: object
+    EndpointGroupIdListUserApi:
+      properties:
+        endpointGroupIds:
+          items:
+            type: string
+          type: array
+      type: object
+    EndpointGroupUserApi:
+      properties:
+        description:
+          type: string
+        memberEndpoints:
+          items:
+            $ref: '#/components/schemas/EndpointWithTagApi'
+          type: array
+        memberGroups:
+          example:
+          - memberGroup1
+          format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+          items:
+            example: '["memberGroup1"]'
+            format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+            type: string
+          type: array
+      type: object
+    EndpointGroupApi:
+      properties:
+        description:
+          type: string
+        id:
+          example: id1
+          format: 'Id should match this regex: ^[A-Za-z-_0-9~.]+$'
+          type: string
+        memberEndpoints:
+          items:
+            $ref: '#/components/schemas/EndpointWithTagApi'
+          type: array
+        memberGroups:
+          example:
+          - memberGroup1
+          format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+          items:
+            example: '["memberGroup1"]'
+            format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+            type: string
+          type: array
+        revision:
+          format: int32
+          type: integer
+      type: object
+    ReqIdAndReqSystem:
+      properties:
+        id:
+          example: 03502bc3-c140-4951-b467-bd17312a9b0b
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    EndpointGroupIdPageApi:
+      properties:
+        cursor:
+          type: string
+        epgs:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
+      type: object
+    EndpointWithTagApi:
+      properties:
+        ip:
+          example: 1.1.1.1/32
+          format: IP should be valid IPV4 address in CIDR notation
+          type: string
+        tags:
+          example:
+          - key:value
+          format: 'Tag should match this regex: ^[A-Za-z0-9~.]+:[A-Za-z0-9~.]+$'
+          items:
+            example: '["key:value"]'
+            format: 'Tag should match this regex: ^[A-Za-z0-9~.]+:[A-Za-z0-9~.]+$'
+            type: string
+          type: array
+      required:
+      - ip
+      type: object
+    PolicyReference:
+      properties:
+        id:
+          type: string
+        ruleIds:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

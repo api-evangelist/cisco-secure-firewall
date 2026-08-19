@@ -1,0 +1,333 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine MPM Endpoint API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: MPM Endpoint
+paths:
+  /mpm/manager/{managerId}/endpoint/{endpointId}/{revisionId}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getEndpoint
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: endpointId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmEndpointObj'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the endpoint in a manager at revision
+      tags:
+      - MPM Endpoint
+  /mpm/manager/{managerId}/endpoints/ids/{revisionId}:
+    put:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getEndpointsByIdsInBulk
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                format: uuid
+                type: string
+              type: array
+              uniqueItems: true
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MpmEndpointObj'
+                type: array
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '413':
+          description: Request Entity Too Large
+        '500':
+          description: Internal Server Error
+      summary: Get the endpoints in a manager at revision in bulk
+      tags:
+      - MPM Endpoint
+  /mpm/manager/{managerId}/endpoints/names/{revisionId}:
+    put:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getEndpointsByNamesInBulk
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                type: string
+              type: array
+              uniqueItems: true
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MpmEndpointObj'
+                type: array
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '413':
+          description: Request Entity Too Large
+        '500':
+          description: Internal Server Error
+      summary: Get the endpoints in a manager at revision in bulk
+      tags:
+      - MPM Endpoint
+  /mpm/manager/{managerId}/endpoints/{revisionId}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getEndpoints
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmEndpointsPage'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the endpoints in a manager at revision
+      tags:
+      - MPM Endpoint
+  /mpm/manager/{managerId}/relations/endpoint/{endpointId}/{revisionId}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getRelationsForEndpoint
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: endpointId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmEntityRelations'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the Policies, Rules and Endpoint Groups related to an Endpoint
+      tags:
+      - MPM Endpoint
+components:
+  schemas:
+    MpmEndpointObj:
+      properties:
+        addressEnd:
+          format: int64
+          type: integer
+        addressStart:
+          format: int64
+          type: integer
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    MpmPolicyMetadataToRules:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        ruleIds:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    MpmEntityRelations:
+      properties:
+        appGroups:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        endpointGroups:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        policyToRules:
+          items:
+            $ref: '#/components/schemas/MpmPolicyMetadataToRules'
+          type: array
+      type: object
+    MpmEndpointsPage:
+      properties:
+        cursor:
+          type: string
+        endpoints:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

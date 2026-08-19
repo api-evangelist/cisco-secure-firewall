@@ -1,0 +1,211 @@
+openapi: 3.2.0
+info:
+  description: APIs for interacting with AI Assistant
+  title: AI Assistant Usage API
+  version: 2.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/ai-assistant.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/ai-assistant.yaml
+servers:
+- description: AI Assistant Production API Server (NAM region)
+  url: https://api.security.cisco.com/api/ai-assistant
+tags:
+- description: Usage APIs
+  name: Usage
+paths:
+  /v2/usage:
+    get:
+      operationId: getUsage
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/usageResponse'
+          description: Usage information retrieved successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Get the AI assistant usage information
+      tags:
+      - Usage
+  /v2/usage/history:
+    get:
+      operationId: getUsageHistory
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      - description: filter for how much data to show in the history graph
+        in: query
+        name: filter
+        required: false
+        schema:
+          enum:
+          - WEEK
+          - MONTH
+          - SIX_MONTHS
+          - YEAR
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/usageHistoryResponse'
+          description: Usage History retrieved successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Get the historical usage of AI Assistant
+      tags:
+      - Usage
+components:
+  schemas:
+    usageResponse:
+      description: Response containing the AI Assistant Usage
+      properties:
+        productUsage:
+          description: product usage list
+          items:
+            $ref: '#/components/schemas/productUsage'
+          type: array
+        totalFreeUnits:
+          description: total number of free units used by the AI assistant
+          type: integer
+        totalPaidUnits:
+          description: total number of paid units used by the AI assistant
+          type: integer
+        totalUnits:
+          description: total number of units used by the AI assistant
+          type: integer
+      type: object
+    errorResponse:
+      description: error response
+      properties:
+        code:
+          description: Error code
+          type: integer
+        details:
+          description: Additional details about the error
+          type: object
+        message:
+          description: Error message
+          type: string
+      type: object
+    usageHistoryResponse:
+      description: Response containing the AI Assistant Usage
+      properties:
+        history:
+          description: list of aggregated data based on day or month
+          items:
+            $ref: '#/components/schemas/history'
+          type: array
+      type: object
+    productUsage:
+      description: product usage object
+      properties:
+        freeUnits:
+          description: amount of free units used by the AI assistant
+          type: integer
+        paidUnits:
+          description: amount of paid units used by the AI assistant
+          type: integer
+        product:
+          description: product that used the units
+          enum:
+          - INVALID
+          - FIREWALL
+          - XDR
+          - SSE
+          - DUO
+          - HSD
+          - UNIFIED
+          type: string
+      type: object
+    history:
+      description: history object
+      properties:
+        date:
+          description: date time the data was aggregated for
+          format: date-time
+          type: string
+        productUsage:
+          $ref: '#/components/schemas/productUsage'
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      description: bearer token security scheme
+      scheme: bearer
+      type: http

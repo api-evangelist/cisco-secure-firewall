@@ -1,0 +1,1078 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall Network Map API
+  version: 1.13.0
+  contact:
+    name: Cisco Firepower TAC
+    email: ngfw-support@cisco.com
+  description: 'Operations tagged Network Map across 2 of this provider''s published API definitions: cdfmc-openapi.yaml,
+    cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
+      schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
+    operation_coverage: 10/10
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: Network Map
+paths:
+  /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/hosts:
+    delete:
+      deprecated: false
+      description: '**Delete the entire network map. _Check the response section for applicable examples (if any)._**'
+      operationId: deleteMultipleNetmapHost
+      parameters:
+      - description: Boolean value indicating whether this is performed as a bulk operation. <br>This field must be true in
+          order to delete with a filter rather than an identifier.
+        in: query
+        name: bulk
+        required: true
+        schema:
+          type: boolean
+      - description: 'Filter to limit the deletion. Values can be: <code>ipAddress:{192.168.1.2|''::ffff:c0a8:0102''}</code>.'
+        in: query
+        name: filter
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/hosts/HostUUID ( Example for a DELETE of a Network Map host. )':
+                  value:
+                    id: HostUUID
+                    ipAddress:
+                    - 192.168.1.2
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/hosts/HostUUID
+                    macAddress: AA:BB:CC:DD:EE:FF
+                    type: Host
+                ? 'Example 2 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/hosts?bulk=true&ipAddress=192.168.1.2 ( Example
+                  for a bulk DELETE of a Network Map host. )'
+                : value:
+                    items:
+                    - id: HostUUID
+                      ipAddress:
+                      - 192.168.1.2
+                      macAddress: AA:BB:CC:DD:EE:FF
+                      type: Host
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/hosts?bulk=true&filter=ipAddress:192.168.1.2
+              schema:
+                $ref: '#/components/schemas/NetmapHost'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Network Map
+    get:
+      deprecated: false
+      description: '**Get the list of all hosts in the network map.**'
+      operationId: getAllNetmapHost
+      parameters:
+      - description: 'Values can be: <code>ipAddress:{192.168.1.2|''::ffff:c0a8:0102''}</code>.'
+        in: query
+        name: filter
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : GET /api/fmc_netmap/v1/domain/DomainUUID/hosts ( Example for GET ALL Network Map hosts. The
+                  response structure varies based on the ''expanded'' query parameter. )'
+                : {}
+              schema:
+                $ref: '#/components/schemas/NetmapHostListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Network Map
+    post:
+      deprecated: false
+      description: '**Create a host in the network map. _Check the response section for applicable examples (if any)._**'
+      operationId: createMultipleNetmapHost
+      parameters:
+      - description: Boolean value indicating whether this is performed as a bulk operation.
+        in: query
+        name: bulk
+        required: false
+        schema:
+          type: boolean
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : POST /api/fmc_netmap/v1/domain/DomainUUID/hosts ( Example payload for a POST of a Network Map host. )':
+                value:
+                  ipAddress:
+                  - 192.168.1.2
+                  macAddress: AA:BB:CC:DD:EE:FF
+                  type: Host
+            schema:
+              $ref: '#/components/schemas/NetmapHost'
+              type: object
+        description: Representation of the Network Map host resource.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              examples:
+                'Example 1 : POST /api/fmc_netmap/v1/domain/DomainUUID/hosts ( Example payload for a POST of a Network Map host. )':
+                  value:
+                    id: HostUUID
+                    ipAddress:
+                    - 192.168.1.2
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/hosts/HostUUID
+                    macAddress: AA:BB:CC:DD:EE:FF
+                    type: Host
+              schema:
+                $ref: '#/components/schemas/NetmapHost'
+                type: object
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Network Map
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/hosts/{objectId}:
+    delete:
+      deprecated: false
+      description: '**Delete the host associated with the specified ID in the Network Map. _Check the response section for
+        applicable examples (if any)._**'
+      operationId: deleteNetmapHost
+      parameters:
+      - description: UUID of the host.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/hosts/HostUUID ( Example for a DELETE of a Network Map host. )':
+                  value:
+                    id: HostUUID
+                    ipAddress:
+                    - 192.168.1.2
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/hosts/HostUUID
+                    macAddress: AA:BB:CC:DD:EE:FF
+                    type: Host
+                ? 'Example 2 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/hosts?bulk=true&ipAddress=192.168.1.2 ( Example
+                  for a bulk DELETE of a Network Map host. )'
+                : value:
+                    items:
+                    - id: HostUUID
+                      ipAddress:
+                      - 192.168.1.2
+                      macAddress: AA:BB:CC:DD:EE:FF
+                      type: Host
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/hosts?bulk=true&filter=ipAddress:192.168.1.2
+              schema:
+                $ref: '#/components/schemas/NetmapHost'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Network Map
+    get:
+      deprecated: false
+      description: '**Get the host associated with the specified ID in the Network Map.**'
+      operationId: getNetmapHost
+      parameters:
+      - description: UUID of the host.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - description: Boolean indicating whether to include the operating system of the host.
+        in: query
+        name: includeOs
+        required: false
+        schema:
+          type: boolean
+      - description: Boolean indicating whether to include the port, protocol, and confidence of the host.
+        in: query
+        name: includeService
+        required: false
+        schema:
+          type: boolean
+      - description: Boolean indicating whether to include the applications of the host.
+        in: query
+        name: includeApps
+        required: false
+        schema:
+          type: boolean
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /api/fmc_netmap/v1/domain/DomainUUID/hosts/HostUUID ( Example for GET a Network Map host. )':
+                  value:
+                    applications:
+                    - appVersion: 23.0.1271.97
+                      clientAppId: 589
+                    criticalityLevel: '0.0'
+                    id: HostUUID1
+                    ipAddress:
+                    - 21.0.0.6
+                    lastSeen: '2024-06-21T16:52:42.000Z'
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/hosts/188a3462-13a5-4c31-8944-c12c406da542
+                    macAddress: 0C:00:00:00:00:06
+                    netmapNum: 1
+                    operatingSystems:
+                    - osProduct: Android
+                      osVendor: Google
+                      osVersion: 6.0, 7.0, 7.1, 9.0, 10.0, 11.0, 12.0
+                    services:
+                    - confidence: '50.0'
+                      port: 545
+                      protocol: udp
+                    type: Host
+              schema:
+                $ref: '#/components/schemas/NetmapHost'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Network Map
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/vulns:
+    delete:
+      deprecated: false
+      description: '**Delete all the vulnerabilities in the network map. _Check the response section for applicable examples
+        (if any)._**'
+      operationId: deleteMultipleNetmapVuln
+      parameters:
+      - description: Boolean value indicating whether this is performed as a bulk operation. This field must be true in order
+          to delete with a filter rather than an identifier.
+        in: query
+        name: bulk
+        required: true
+        schema:
+          type: boolean
+      - description: 'Filters for retrieve and delete operations. The <code>source</code> filter must be included for delete.<br>Values
+          can be any of: <code>ipAddress:192.168.1.2;source:MySource;port:443;protocol:tcp;id:12345</code>.'
+        in: query
+        name: filter
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID ( Example of a delete of a Network Map vuln. )':
+                  value:
+                    cve: 2021-12345
+                    description: Description of the vuln
+                    id: VulnID
+                    ipAddress: 192.168.1.2
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID
+                    port: 443
+                    protocol: tcp
+                    source: My Vuln Source
+                    type: Vuln
+                ? 'Example 2 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/vulns?bulk=true&filter=source:MyVulnSource ( Example
+                  of bulk delete of vulns with a filter from the Network Map )'
+                : value:
+                    items:
+                    - cve: 2021-12345
+                      description: Description of the vuln
+                      id: VulnID1
+                      ipAddress: 192.168.1.2
+                      links:
+                        self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID1
+                      port: 443
+                      protocol: tcp
+                      source: MyVulnSource
+                      type: Vuln
+                    - cve: 2021-98765
+                      description: Description of the vuln
+                      id: VulnID2
+                      ipAddress: 192.168.1.3
+                      links:
+                        self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID2
+                      source: MyVulnSource
+                      type: Vuln
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns?bulk=true&filter=source:MyVulnSource
+              schema:
+                $ref: '#/components/schemas/NetmapVuln'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Network Map
+    get:
+      deprecated: false
+      description: '**Get the list of all vulnerabilities in the network map.**'
+      operationId: getAllNetmapVuln
+      parameters:
+      - description: 'Filters for retrieve and delete operations. The <code>source</code> filter must be included for delete.<br>Values
+          can be any of: <code>ipAddress:192.168.1.2;source:MySource;port:443;protocol:tcp;id:12345</code>.'
+        in: query
+        name: filter
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_netmap/v1/domain/DomainUUID/vulns ( Example of a GET ALL vulns of the Network Map )':
+                  value:
+                    items:
+                    - cve: 2021-12345
+                      id: VulnID1
+                      ipAddress: 192.168.1.2
+                      links:
+                        self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID1
+                      port: 443
+                      protocol: tcp
+                      source: MyVulnSource
+                      type: Vuln
+                    - cve: 2021-98765
+                      id: VulnID2
+                      ipAddress: 2001:0:3238:dfe1:63::fefb
+                      links:
+                        self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID2
+                      source: MyVulnSource
+                      type: Vuln
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns?offset=0&limit=25
+                    paging:
+                      count: 2
+                      limit: 25
+                      offset: 0
+                      pages: 1
+                ? 'Example 2 : GET /fmc_netmap/v1/domain/DomainUUID/vulns?expanded=true ( Example of a GET ALL with expanded
+                  vulns of the Network Map )'
+                : value:
+                    items:
+                    - cve: 2021-12345
+                      description: Description of the vuln
+                      id: '2000001'
+                      ipAddress: 192.168.1.2
+                      links:
+                        self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID1
+                      port: 443
+                      protocol: tcp
+                      source: MyVulnSource
+                      type: Vuln
+                    - cve: 2021-98765
+                      description: Description of the vuln
+                      id: '2000002'
+                      ipAddress: 2001:0:3238:dfe1:63::fefb
+                      links:
+                        self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID2
+                      source: My Vuln Source
+                      type: Vuln
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns?offset=0&limit=25&expanded=true
+                    paging:
+                      count: 2
+                      limit: 25
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/NetmapVulnListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Network Map
+    post:
+      deprecated: false
+      description: '**Create a vulnerability in the network map. _Check the response section for applicable examples (if any)._**'
+      operationId: createMultipleNetmapVuln
+      parameters:
+      - description: Boolean value indicating whether this is performed as a bulk operation.
+        in: query
+        name: bulk
+        required: false
+        schema:
+          type: boolean
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : POST /api/fmc_netmap/v1/domain/DomainUUID/vulns ( Example payload for a POST of a Network Map vuln. )':
+                value:
+                  cve: 2021-12345
+                  description: Description of the vuln
+                  id: '12345'
+                  ipAddress: 192.168.1.2
+                  port: 443
+                  protocol: tcp
+                  source: MyVulnSource
+                  type: Vuln
+            schema:
+              $ref: '#/components/schemas/NetmapVuln'
+              type: object
+        description: Representation of the Network Map vulnerability resource.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              examples:
+                'Example 1 : POST /api/fmc_netmap/v1/domain/DomainUUID/vulns ( Example payload for a POST of a Network Map vuln. )':
+                  value:
+                    cve: 2021-12345
+                    description: Description of the vuln
+                    id: '12345'
+                    ipAddress: 192.168.1.2
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID
+                    port: 443
+                    protocol: tcp
+                    source: MyVulnSource
+                    type: Vuln
+              schema:
+                $ref: '#/components/schemas/NetmapVuln'
+                type: object
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Network Map
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/vulns/{objectId}:
+    delete:
+      deprecated: false
+      description: '**Delete the vulnerability in the network map with the specified ID. _Check the response section for applicable
+        examples (if any)._**'
+      operationId: deleteNetmapVuln
+      parameters:
+      - description: Unique identifier of the vulnerability.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID ( Example of a delete of a Network Map vuln. )':
+                  value:
+                    cve: 2021-12345
+                    description: Description of the vuln
+                    id: VulnID
+                    ipAddress: 192.168.1.2
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID
+                    port: 443
+                    protocol: tcp
+                    source: My Vuln Source
+                    type: Vuln
+                ? 'Example 2 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/vulns?bulk=true&filter=source:MyVulnSource ( Example
+                  of bulk delete of vulns with a filter from the Network Map )'
+                : value:
+                    items:
+                    - cve: 2021-12345
+                      description: Description of the vuln
+                      id: VulnID1
+                      ipAddress: 192.168.1.2
+                      links:
+                        self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID1
+                      port: 443
+                      protocol: tcp
+                      source: MyVulnSource
+                      type: Vuln
+                    - cve: 2021-98765
+                      description: Description of the vuln
+                      id: VulnID2
+                      ipAddress: 192.168.1.3
+                      links:
+                        self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID2
+                      source: MyVulnSource
+                      type: Vuln
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns?bulk=true&filter=source:MyVulnSource
+              schema:
+                $ref: '#/components/schemas/NetmapVuln'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Network Map
+    get:
+      deprecated: false
+      description: '**Get the vulnerability in the network map with the specified ID.**'
+      operationId: getNetmapVuln
+      parameters:
+      - description: Unique identifier of the vulnerability.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID ( Example of a GET of a Network Map vuln. )':
+                  value:
+                    cve: 2021-12345
+                    description: Description of the vuln
+                    id: VulnID
+                    ipAddress: 192.168.1.2
+                    links:
+                      self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/vulns/VulnID
+                    port: 443
+                    protocol: tcp
+                    source: My Vuln Source
+                    type: Vuln
+              schema:
+                $ref: '#/components/schemas/NetmapVuln'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Network Map
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+  schemas:
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    NetmapVulnListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/NetmapVuln'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    NetmapVuln:
+      description: Represents the vulnerability object which is used to add a vuln to the Network Map
+      properties:
+        cve:
+          description: The CVE number of the vuln (eg. 2020-1234)
+          type: string
+        description:
+          description: The description of the vuln. If this value is empty, the description is automatically taken from the
+            title of the CVE
+          type: string
+        id:
+          description: ID of the vuln. When provided during creation, must be less than 2,000,000.<br>If not provided during
+            creation, will be auto-assigned to a value greater than or equal to 2,000,000
+          type: string
+        ipAddress:
+          description: IP address of the host that contains the vuln
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        port:
+          description: The port associated with the vuln. If provided, must also provide a protocol
+          format: int32
+          type: integer
+        protocol:
+          description: 'The protocol associated with the vuln. Can be: tcp or udp. If provided, must also provide a port'
+          type: string
+        source:
+          description: Name of the source of the vulnerability. This groups together vulns from a single source.<br>Vulns
+            discovered using passive detection (from a NGFW/NGIPS device) have the source as 'RNA'
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    NetmapOS:
+      properties:
+        osProduct:
+          type: string
+        osVendor:
+          type: string
+        osVersion:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    NetmapHostListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/NetmapHost'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    NetmapHost:
+      description: Represents the host object in the Network Map
+      properties:
+        applications:
+          items:
+            $ref: '#/components/schemas/NetmapApplication'
+            type: object
+          type: array
+        apps:
+          type: string
+        criticalityLevel:
+          type: string
+        description:
+          type: string
+        hostname:
+          type: string
+        id:
+          description: UUID of the host
+          type: string
+        ipAddress:
+          description: List of IPs of the host. At this point, when creating a host, only one IP is supported, but must still
+            be in an array
+          items:
+            type: string
+          type: array
+        lastSeen:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        macAddress:
+          description: MAC of the host. This is the primary MAC of the host
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        netbiosName:
+          type: string
+        netmapNum:
+          type: number
+        operatingSystem:
+          items:
+            $ref: '#/components/schemas/NetmapOS'
+            type: object
+          type: array
+        operatingSystems:
+          items:
+            $ref: '#/components/schemas/NetmapOS'
+            type: object
+          type: array
+        os:
+          type: string
+        service:
+          type: string
+        services:
+          items:
+            $ref: '#/components/schemas/NetmapService'
+            type: object
+          type: array
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    NetmapService:
+      properties:
+        confidence:
+          type: string
+        port:
+          format: int32
+          type: integer
+        protocol:
+          type: string
+      type: object
+    NetmapApplication:
+      properties:
+        AppVersion:
+          type: string
+        appVersion:
+          type: string
+        clientAppId:
+          format: int32
+          type: integer
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cdfmc-openapi.yaml
+- cisco-secure-firewall-cdfmc-openapi.yml

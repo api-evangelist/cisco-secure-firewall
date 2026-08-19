@@ -1,0 +1,106 @@
+generated: '2026-08-19'
+method: searched
+source: >-
+  https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/,
+  https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/,
+  https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/overview/searching.md,
+  openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml,
+  openapi/cisco-secure-firewall-cdfmc-openapi.yml
+authentication:
+  style: bearer JWT
+  header: 'Authorization: Bearer $API_TOKEN'
+  token_source: >-
+    Generated in the Security Cloud Control console under Settings -> User Management. Cisco recommends
+    creating a dedicated "API Only User" so automation is not tied to a person.
+  expiry: >-
+    API tokens do not expire and carry no `exp` claim; they are refreshed or revoked manually by a
+    super-admin. The console's own access tokens expire after 1 hour and cannot be minted by API users.
+  see: authentication/cisco-secure-firewall-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  scope: null
+  retention: null
+  evidence: >-
+    No Idempotency-Key header, no idempotency-scope parameter and no retry-safety statement appears anywhere
+    in either published contract or the developer documentation. The only related statement is in Getting
+    Started: "All DELETE operations in the Security Cloud Control API are idempotent" — that is HTTP method
+    semantics, not an idempotency mechanism, and it says nothing about POST.
+  substitute: >-
+    Asynchronous POST operations return a transaction and are tracked via GET /v1/transactions/{transactionUid}
+    rather than replayed. That gives an agent a way to check whether work completed, but not a way to retry
+    safely without duplicating it.
+pagination:
+  style: offset-limit
+  params:
+  - name: limit
+    in: query
+    used_by: 30 operations
+  - name: offset
+    in: query
+    used_by: 30 operations
+  response_fields:
+  - count
+  - limit
+  - offset
+  - items
+  cdfmc_note: >-
+    The cdFMC surface uses FMC-native paging and exposes `bulk` (101 operations) and `filter` (155
+    operations) query parameters instead of a uniform limit/offset pair.
+filtering_and_search:
+  style: Lucene query syntax via the `q` query parameter
+  used_by: 29 operations
+  capabilities:
+  - field match — q=baz:example
+  - wildcard — q=baz:*example*
+  - RFC 3339 time-range — q=loginTime:[2024-12-17Z10:00:00Z TO 2024-12-17Z13:00:00Z]
+  - exclusive bounds using { and }
+  - open-ended ranges using *
+  discovery: >-
+    There is no published list of searchable fields. Cisco documents that you discover them by trying: an
+    unsupported field returns HTTP 400 with the list of searchable fields for that endpoint in the response.
+  sort: '`sort` query parameter (18 operations)'
+  cross_resource: GET /v1/search runs a tenant-wide search; POST /v1/search/index triggers full re-indexing.
+async_operations:
+  pattern: >-
+    "All POST operations with an action verb trigger asynchronous operations." The caller receives a
+    transaction and polls GET /v1/transactions/{transactionUid} for progress. 45 operations declare HTTP 202.
+  examples:
+  - deployAsaDeviceChanges
+  - deployFtdDeviceChanges
+  - deployChangesToMultipleFtdDevices
+  - upgradeFtdDevices
+  - readAsaDeviceConfiguration
+request_id_tracing:
+  header: null
+  body_field: requestId
+  evidence: >-
+    Observed live: an unauthenticated 401 from api.us.security.cisco.com returns
+    {"timestamp","path","status","error","requestId"}. The correlation id is in the BODY, not in a response
+    header, so a client that only logs headers captures nothing to give support.
+versioning:
+  in_path: true
+  current: 1.13.0
+  see: lifecycle/cisco-secure-firewall-lifecycle.yml
+error_envelope:
+  documented: CommonApiError — errorCode (enum) + errorMsg + details
+  observed_at_edge: timestamp + path + status + error + requestId
+  divergent: true
+  see: errors/cisco-secure-firewall-problem-types.yml
+rate_limit_signaling:
+  headers: none declared
+  status_on_exhaustion: 429 (TOO_MANY_REQUESTS in the CommonApiError enum)
+  see: rate-limits/cisco-secure-firewall-rate-limits.yml
+methods:
+  GET: list (paged) and single-resource reads
+  POST: create, or trigger an asynchronous action
+  PATCH: modify a resource (Security Cloud Control surface)
+  PUT: modify a resource (cdFMC surface only)
+  DELETE: delete; documented as idempotent
+  note: >-
+    A real inconsistency inside one product: the SCC layer modifies with PATCH, the cdFMC layer modifies with
+    PUT. Cisco documents the split rather than reconciling it, so a client spanning both surfaces must carry
+    two update conventions.
+media_types:
+  request: application/json
+  response: application/json

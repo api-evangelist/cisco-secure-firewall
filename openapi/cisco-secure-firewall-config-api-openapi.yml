@@ -1,0 +1,208 @@
+openapi: 3.2.0
+info:
+  description: APIs for interacting with AI Assistant
+  title: AI Assistant Config API
+  version: 2.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/ai-assistant.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/ai-assistant.yaml
+servers:
+- description: AI Assistant Production API Server (NAM region)
+  url: https://api.security.cisco.com/api/ai-assistant
+tags:
+- description: Configuration APIs
+  name: Config
+paths:
+  /v2/config:
+    get:
+      operationId: getConfig
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/configUserResponse'
+          description: Configuration retrieved successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Get the user configuration for the AI Assistant
+      tags:
+      - Config
+  /v2/config/user/state:
+    patch:
+      operationId: updateUserStateConfig
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/patchConfigUserState'
+        required: true
+      responses:
+        '200':
+          description: Configuration updated successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Update the config user state for the AI Assistant
+      tags:
+      - Config
+components:
+  schemas:
+    patchConfigUserState:
+      description: update user state config request body
+      properties:
+        unified:
+          description: unified assistant user state config
+          properties:
+            onboarded:
+              description: indicates if the user has completed onboarding
+              type: boolean
+          type: object
+      type: object
+    errorResponse:
+      description: error response
+      properties:
+        code:
+          description: Error code
+          type: integer
+        details:
+          description: Additional details about the error
+          type: object
+        message:
+          description: Error message
+          type: string
+      type: object
+    configUserResponse:
+      description: Response containing the user configuration for the AI Assistant
+      properties:
+        amplitude_config:
+          description: Amplitude configuration details.
+          type:
+          - object
+          - 'null'
+        app_type:
+          description: The type of application, e.g., "unified".
+          type: string
+        ld_config:
+          description: LaunchDarkly configuration details.
+          properties:
+            client_id:
+              description: LaunchDarkly client ID.
+              type: string
+            secure_hash:
+              description: LaunchDarkly secure hash.
+              type: string
+          type: object
+        system_config:
+          description: System configuration details.
+          type:
+          - object
+          - 'null'
+        tenant_id:
+          description: The unique identifier for the tenant.
+          type: string
+        user_config:
+          description: User-specific configuration settings.
+          properties:
+            settings:
+              description: user settings
+              type: object
+            state:
+              description: user state
+              properties:
+                xdr:
+                  description: user xdr config
+                  properties:
+                    onboarded:
+                      description: Indicates if the user has completed onboarding.
+                      type: boolean
+                  type: object
+              type: object
+          type:
+          - object
+          - 'null'
+        user_id:
+          description: The user's email or unique identifier.
+          type: string
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      description: bearer token security scheme
+      scheme: bearer
+      type: http

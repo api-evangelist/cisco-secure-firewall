@@ -1,0 +1,900 @@
+openapi: 3.2.0
+info:
+  description: APIs for interacting with AI Assistant
+  title: AI Assistant Action API
+  version: 2.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/ai-assistant.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/ai-assistant.yaml
+servers:
+- description: AI Assistant Production API Server (NAM region)
+  url: https://api.security.cisco.com/api/ai-assistant
+tags:
+- description: Action APIs
+  name: Action
+paths:
+  /v2/conversations/{conversation_id}/action/{action_id}/action_steps:
+    get:
+      operationId: listActionSteps
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      - description: unique ID for the conversation.
+        in: path
+        name: conversation_id
+        required: true
+        schema:
+          type: string
+      - description: unique ID for the action.
+        in: path
+        name: action_id
+        required: true
+        schema:
+          type: string
+      - description: max number of action steps to return
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+      - description: offset used to retrieve the desired set of action steps
+        in: query
+        name: offset
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listActionStepResponse'
+          description: A successful response.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: list action steps for a given action
+      tags:
+      - Action
+  /v2/conversations/{conversation_id}/actions/{action_id}:
+    get:
+      operationId: getAction
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      - description: ID of conversation to fetch
+        in: path
+        name: conversation_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: ID of action to fetch
+        in: path
+        name: action_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/actionGetResponse'
+          description: Action retrieved successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Get action details
+      tags:
+      - Action
+    patch:
+      operationId: updateAction
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      - description: ID of conversation to fetch
+        in: path
+        name: conversation_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: ID of action to fetch
+        in: path
+        name: action_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/actionUpdateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/actionUpdateResponse'
+          description: Action retrieved successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Update the action
+      tags:
+      - Action
+  /v2/conversations/{conversation_id}/actions/{action_id}/invoke:
+    post:
+      operationId: invokeAction
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      - description: ID of conversation to fetch
+        in: path
+        name: conversation_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: ID of action to fetch
+        in: path
+        name: action_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: Common metadata to be passed to the action
+        in: query
+        name: common_metadata
+        required: true
+        schema:
+          $ref: '#/components/schemas/commonMetadata'
+      - description: Param to skip actual action execution and just post a message
+        in: query
+        name: post_message_only
+        required: false
+        schema:
+          type: boolean
+      - description: Operation to perform on the action
+        in: query
+        name: action_operation
+        required: true
+        schema:
+          $ref: '#/components/schemas/actionOperation'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/actionInvokeResponse'
+          description: Action invoked successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Invoke an action
+      tags:
+      - Action
+  /v2/conversations/{conversation_id}/actions/{action_id}/status:
+    get:
+      operationId: getActionStatus
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      - description: conversation id
+        in: path
+        name: conversation_id
+        required: true
+        schema:
+          type: string
+      - description: action ID
+        in: path
+        name: action_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pollActionExecutionStatusResponse'
+          description: A successful response.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: get the execution status of an action that has already been invoked
+      tags:
+      - Action
+  /v2/conversations/{conversation_id}/actions/{action_id}/validate:
+    put:
+      operationId: validateAction
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      - description: ID of conversation to fetch
+        in: path
+        name: conversation_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: ID of action to fetch
+        in: path
+        name: action_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: Common metadata to be passed to the action
+        in: query
+        name: common_metadata
+        required: true
+        schema:
+          $ref: '#/components/schemas/commonMetadata'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/actionValidateResponse'
+          description: Action validated successfully and status updated accordingly.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Validate action details
+      tags:
+      - Action
+  /v2/conversations/{conversation_id}/message/{message_id}/actions:
+    get:
+      operationId: listConversationActions
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      - description: conversation ID
+        in: path
+        name: conversation_id
+        required: true
+        schema:
+          type: string
+      - description: message ID
+        in: path
+        name: message_id
+        required: true
+        schema:
+          type: string
+      - description: return only actions with these names
+        in: query
+        name: nameFilter
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getActionsByConversationIDResponse'
+          description: A successful response.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: get list of actions for a single conversation
+      tags:
+      - Action
+components:
+  schemas:
+    commonMetadata:
+      description: metadata which can be common across all actions
+      properties:
+        entities:
+          $ref: '#/components/schemas/entityParams'
+        error:
+          description: store custom error which will be reflected on UI
+          type: string
+        incompleteEntities:
+          $ref: '#/components/schemas/incompleteEntities'
+      type: object
+    messageAction:
+      description: action details for a message
+      properties:
+        actionId:
+          description: action ID
+          type: string
+        commonMetadata:
+          $ref: '#/components/schemas/commonMetadata'
+        description:
+          description: action description
+          type: string
+        name:
+          $ref: '#/components/schemas/actionName'
+        status:
+          $ref: '#/components/schemas/actionStatus'
+        title:
+          description: action title
+          type: string
+      type: object
+    actionValidateResponse:
+      description: validate action API response body
+      properties:
+        common_metadata:
+          description: action metadata
+          type: object
+        error:
+          description: action validation error
+          type: string
+        status:
+          $ref: '#/components/schemas/actionStatus'
+      type: object
+    interObjectOptions:
+      description: InterObjectOptions is used to provide options for the ambiguity in the inter-object params.
+      properties:
+        options:
+          $ref: '#/components/schemas/entityParams'
+        type:
+          description: this type is used to disambiguate between Application, URL, and other types
+          type: string
+      type: object
+    actionStepType:
+      default: DEFAULT
+      description: action step type
+      enum:
+      - DEFAULT
+      - API
+      type: string
+    actionGetResponse:
+      description: response body for getAction API
+      properties:
+        actionId:
+          description: action ID
+          type: string
+        commonMetadata:
+          description: action metadata
+          type: object
+        createdAt:
+          description: time at which the action was created
+          format: date-time
+          type: string
+        description:
+          description: action description
+          type: string
+        error:
+          description: action error
+          type: string
+        messageId:
+          description: message ID
+          format: uuid
+          type: string
+        name:
+          $ref: '#/components/schemas/actionName'
+        retryConfig:
+          description: action retry config
+          type: string
+        status:
+          $ref: '#/components/schemas/actionStatus'
+        title:
+          description: action title
+          type: string
+        updatedAt:
+          description: time at which the action was last updated
+          format: date-time
+          type: string
+        userDetails:
+          description: user details
+          properties:
+            email:
+              description: user email
+              type: string
+            id:
+              description: user ID
+              type: string
+            name:
+              description: user name
+              type: string
+          type: object
+      type: object
+    errorResponse:
+      description: error response
+      properties:
+        code:
+          description: Error code
+          type: integer
+        details:
+          description: Additional details about the error
+          type: object
+        message:
+          description: Error message
+          type: string
+      type: object
+    actionStepStatus:
+      default: UNKNOWN
+      description: status of action step
+      enum:
+      - UNKNOWN
+      - CREATED
+      - EXECUTION_IN_PROGRESS
+      - EXECUTION_COMPLETE
+      - EXECUTION_FAILED
+      - EXECUTION_CANCELLED
+      type: string
+    actionUpdateResponse:
+      description: action update response body
+      properties:
+        error:
+          description: update error
+          type: string
+      type: object
+    actionStep:
+      description: action step object
+      properties:
+        actionOperation:
+          $ref: '#/components/schemas/actionOperation'
+        apiMetadata:
+          $ref: '#/components/schemas/actionStepAPIMetadata'
+        completedAt:
+          description: execution completion timestamp
+          format: date-time
+          type: string
+        createdAt:
+          description: action step creation timestamp
+          format: date-time
+          type: string
+        description:
+          description: description for action step
+          type: string
+        executedAt:
+          description: execution start timestamp
+          format: date-time
+          type: string
+        id:
+          description: unique identifier of action step
+          type: string
+        parentActionId:
+          description: id of parent action
+          type: string
+        result:
+          description: result of action step execution
+          format: byte
+          type: string
+        retryConfig:
+          description: retry details
+          format: byte
+          type: string
+        sequenceNumber:
+          description: sequence number of action step
+          type: integer
+        status:
+          $ref: '#/components/schemas/actionStepStatus'
+        type:
+          $ref: '#/components/schemas/actionStepType'
+        updatedAt:
+          description: action step update timestamp
+          format: date-time
+          type: string
+      type: object
+    actionName:
+      description: action name
+      enum:
+      - NONE
+      - FPA_CREATE_RULE
+      - FPA_PAO_REMEDIATION_ENQUEUE
+      - DISPLAY
+      - PROMPT
+      type: string
+    missedInvalidSingleValuedParams:
+      description: represents the ambiguity in Missed, Invalid, and SingleValued params.
+      properties:
+        actionStepId:
+          description: action step id
+          type: string
+        error:
+          description: error string which might be helpful for UI display
+          type: string
+        name:
+          description: name of the param
+          type: string
+        options:
+          description: options for the ambiguity
+          items:
+            $ref: '#/components/schemas/entityParams'
+          type: array
+        type:
+          description: type of the entity
+          type: string
+      type: object
+    pollActionExecutionStatusResponse:
+      description: response to getActionStatus API
+      properties:
+        responseMessage:
+          description: response message
+          type: string
+        status:
+          $ref: '#/components/schemas/actionStatus'
+      type: object
+    entityParams:
+      description: leaf entity details
+      properties:
+        actionStepId:
+          description: action step id
+          type: string
+        details:
+          description: details related to entity
+          format: byte
+          type: string
+        id:
+          description: id of the entity
+          type: string
+        isSelected:
+          description: is entity selected by user
+          type: boolean
+        name:
+          description: name of the entity
+          type: string
+        type:
+          description: type of the entity
+          type: string
+        value:
+          description: value of the entity
+          type: string
+      type: object
+    actionStepAPIMetadata:
+      description: all details to trigger action step of type API
+      properties:
+        endpoint:
+          description: endpoint of the API
+          type: string
+        headers:
+          description: headers for the API request
+          type: object
+        method:
+          description: http method for API
+          type: string
+        payload:
+          description: payload for the API request
+          format: byte
+          type: string
+      type: object
+    getActionsByConversationIDResponse:
+      description: response structure for getting actions for a single conversation
+      properties:
+        msgActions:
+          $ref: '#/components/schemas/messageActions'
+      type: object
+    actionInvokeResponse:
+      description: invoke action response body
+      properties:
+        error:
+          description: action invocation error
+          type: string
+        status:
+          $ref: '#/components/schemas/actionStatus'
+        taskId:
+          description: async task ID for action execution
+          type: string
+        taskUrl:
+          description: URL to async task
+          type: string
+      type: object
+    intraObjectParams:
+      description: represents the ambiguity in the intra-object params like RickMiles1, RickMiles2, etc.
+      properties:
+        actionStepId:
+          description: action step id
+          type: string
+        options:
+          $ref: '#/components/schemas/entityParams'
+        type:
+          description: type of the entity
+          type: string
+      type: object
+    listActionStepResponse:
+      description: response containing list of action steps
+      properties:
+        actionSteps:
+          description: list of action step objects
+          items:
+            $ref: '#/components/schemas/actionStep'
+          type: array
+      type: object
+    actionUpdateRequest:
+      description: action update API request body
+      properties:
+        common_metadata:
+          description: action metadata
+          type: object
+        description:
+          description: action description
+          type: string
+        status:
+          $ref: '#/components/schemas/actionStatus'
+      required:
+      - status
+      type: object
+    actionOperation:
+      description: action operation
+      enum:
+      - EXECUTE
+      - UNDO
+      type: string
+    actionStatus:
+      description: action status
+      enum:
+      - NO_ACTION_STATUS
+      - DISABLED
+      - VALIDATION
+      - CONFIRMATION
+      - IN_PROGRESS
+      - COMPLETE
+      - FAILED
+      - CANCELLED
+      - VALIDATION_IN_PROGRESS
+      - UNDO_IN_PROGRESS
+      - UNDO_COMPLETE
+      - UNDO_FAILED
+      - INVALID
+      type: string
+    incompleteEntities:
+      description: list of incomplete entities where we need user interaction
+      properties:
+        interObjects:
+          $ref: '#/components/schemas/interObjectParams'
+        intraObject:
+          $ref: '#/components/schemas/intraObjectParams'
+        invalidParams:
+          $ref: '#/components/schemas/missedInvalidSingleValuedParams'
+        missedParams:
+          $ref: '#/components/schemas/missedInvalidSingleValuedParams'
+        singleValuedParams:
+          $ref: '#/components/schemas/missedInvalidSingleValuedParams'
+      type: object
+    messageActions:
+      description: list of actions for a message
+      properties:
+        actions:
+          description: list of actions
+          items:
+            $ref: '#/components/schemas/messageAction'
+          type: array
+        messageId:
+          description: message ID
+          type: string
+      type: object
+    interObjectParams:
+      description: represents the ambiguity in the inter-object params like Application or URL
+      properties:
+        actionStepId:
+          description: action step id
+          type: string
+        options:
+          description: options for the ambiguity
+          items:
+            $ref: '#/components/schemas/interObjectOptions'
+          type: array
+        rawValue:
+          description: raw value of the entity which can be used for UI display
+          type: string
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      description: bearer token security scheme
+      scheme: bearer
+      type: http

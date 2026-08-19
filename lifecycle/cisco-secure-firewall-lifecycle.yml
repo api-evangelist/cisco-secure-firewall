@@ -1,0 +1,68 @@
+generated: '2026-08-19'
+method: searched
+source: >-
+  https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/,
+  https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/api-changelog.md,
+  https://status.security.cisco.com/, https://status.defenseorchestrator.com/,
+  openapi/cisco-secure-firewall-cdfmc-openapi.yml
+versioning:
+  scheme: semantic (documented API version) + URI path major version
+  current_version: 1.13.0
+  version_date: '2025-05-23'
+  path_prefix: /v1
+  cdfmc_path_prefix: /v1/cdfmc/api/fmc_config/v1 and /v1/cdfmc/api/fmc_platform/v1
+  policy: >-
+    Cisco states on the introduction page: "Backwards compatibility of the API is guaranteed using a
+    versioning system." The published guarantee is the whole of the stated policy — there is no separate
+    versioning-policy document, no stated support window for a superseded version, and no version negotiation
+    header.
+  note: >-
+    The on-premises Secure Firewall Management Center versions its API against the appliance release train
+    (6.1 through 7.7 and 10.0 quick-start guides are published on cisco.com); the cloud contract profiled
+    here versions independently at 1.13.0.
+deprecation:
+  policy_published: true
+  policy_url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/api-changelog/
+  mechanism: >-
+    Deprecation is expressed in the specification itself via the OpenAPI `deprecated: true` flag, and
+    announced in the dated API changelog. No RFC 8594 Sunset or Deprecation response header is declared in
+    either contract.
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations:
+  - operationId: getAllChassisInterface
+    spec: openapi/cisco-secure-firewall-cdfmc-openapi.yml
+  - operationId: getChassisInterface
+    spec: openapi/cisco-secure-firewall-cdfmc-openapi.yml
+  - operationId: addTenantToMspPortal
+    spec: openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml
+  deprecated_base_urls:
+  - url: https://edge.{region}.cdo.cisco.com/api/rest
+    status: superseded, still served
+    replaced_by: https://api.{region}.security.cisco.com/firewall
+    announced: '2025-02-05'
+    note: >-
+      Announced in changelog 1.8.0. Cisco explicitly commits that the old URLs "will continue to work" —
+      a soft deprecation with no stated end date.
+  - url: https://{region}.manage.security.cisco.com/api/rest
+    status: superseded, still served
+    replaced_by: https://api.{region}.security.cisco.com/firewall
+    announced: '2025-02-05'
+status_page:
+  url: https://status.security.cisco.com/
+  status: 200
+  secondary:
+  - url: https://status.defenseorchestrator.com/
+    status: 200
+    note: The legacy Cisco Defense Orchestrator status page, still served after the Security Cloud Control rename.
+sla:
+  published: false
+  note: >-
+    No public SLA or uptime commitment is published on the developer documentation. Availability terms are
+    part of the commercial agreement rather than the developer surface.
+maintenance:
+  published: true
+  note: >-
+    Cisco publishes a "Security Cloud Control Firewall Management Platform Maintenance Schedule" and a
+    "Cloud-Delivered Firewall Management Center Maintenance Schedule" in the Security Cloud Control
+    documentation set on securitydocs.cisco.com.

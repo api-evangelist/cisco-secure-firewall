@@ -1,0 +1,201 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine Zone Tag API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: Zone Tag
+paths:
+  /topology/zone/{zoneId}/tag/{tag}:
+    delete:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: deleteTagFromZone
+      parameters:
+      - in: path
+        name: zoneId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: tag
+        required: true
+        schema:
+          description: TopologyTag is combination of key and value pair separated by delimiter
+          example: key:value
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestResponse'
+          description: Accepted
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete tag from zone
+      tags:
+      - Zone Tag
+  /topology/zone/{zoneId}/tags:
+    delete:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: deleteAllTagsFromZone
+      parameters:
+      - in: path
+        name: zoneId
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestResponse'
+          description: Accepted
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete all tags from zone
+      tags:
+      - Zone Tag
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro,internal'
+      operationId: getAllTagsForZone
+      parameters:
+      - in: path
+        name: zoneId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyTagsApi'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get all tags for zone
+      tags:
+      - Zone Tag
+    post:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: addTagsToZone
+      parameters:
+      - in: path
+        name: zoneId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopologyTagsRequest'
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Add tags to zone
+      tags:
+      - Zone Tag
+components:
+  schemas:
+    TopologyTagsApi:
+      properties:
+        tags:
+          items:
+            $ref: '#/components/schemas/TopologyTag'
+          type: array
+      type: object
+    RequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ApiRequest'
+      type: object
+    TopologyTagsRequest:
+      properties:
+        tags:
+          description: TopologyTag is combination of key and value pair separated by delimiter
+          example:
+          - value: tagKey:tagValue
+          items:
+            $ref: '#/components/schemas/StringValue'
+          type: array
+      type: object
+    TopologyTag:
+      properties:
+        priority:
+          format: int32
+          type: integer
+        tagKey:
+          type: string
+        tagValue:
+          type: string
+      required:
+      - tagKey
+      - tagValue
+      type: object
+    ApiRequest:
+      properties:
+        id:
+          example: 03502bc3-c140-4951-b467-bd17312a9b0b
+          type: string
+      type: object
+    StringValue:
+      properties:
+        value:
+          type: string
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

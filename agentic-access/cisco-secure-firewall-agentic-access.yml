@@ -1,0 +1,121 @@
+generated: '2026-08-19'
+method: generated
+source: >-
+  openapi/cisco-secure-firewall-cdfmc-openapi.yml, openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml,
+  authentication/cisco-secure-firewall-authentication.yml, conventions/cisco-secure-firewall-conventions.yml
+note: >-
+  A RECOMMENDED x-agentic-access contract for Cisco Secure Firewall, classified by API Evangelist from the
+  provider's published operations. Cisco publishes no agentic-access policy of its own. This is guidance for
+  anyone pointing an agent at these APIs — it is not a Cisco artifact and does not describe a control Cisco
+  enforces.
+context: >-
+  This is a firewall control plane. A wrong write here is not a bad record in a database — it is an outage,
+  or an opening. Three properties of the published contract make agent use riskier than average and all
+  three are the provider's to fix: there is no idempotency key, so a retried write can duplicate; there are
+  only six coarse roles and no scopes, so a token that can read devices can usually also change them; and
+  API tokens do not expire, so a leaked agent credential is valid until a human revokes it.
+classification:
+  totals:
+    operations: 1471
+    read: 735
+    create: 246
+    mutate: 252
+    destructive: 212
+    trigger: 26
+  by_spec:
+    cdfmc:
+      read: 657
+      create: 213
+      mutate: 239
+      destructive: 197
+      trigger: 5
+    scc_firewall_manager:
+      read: 78
+      create: 33
+      mutate: 13
+      destructive: 15
+      trigger: 21
+classes:
+- action_class: read
+  consequence: none
+  escalation: not required
+  token: >-
+    Issue the agent a token whose user holds ROLE_READ_ONLY. This is the only role that structurally
+    prevents a write, and it should be the default for any agent that is not explicitly deploying.
+  operations_pattern: all GET operations
+  examples:
+  - getDevices
+  - getDeviceManagers
+  - getAllAccessPolicy
+  - getAllAccessRule
+  - getChangelogs
+  - search
+- action_class: create
+  consequence: reversible-with-effort
+  escalation: human approval per call
+  token: ROLE_EDIT_ONLY at most; never ROLE_DEPLOY_ONLY or above
+  note: >-
+    Creating an object or a rule does not change traffic until it is deployed, which is a genuine safety
+    margin. Use it: let an agent stage, and require a human at the deployment step.
+  examples:
+  - createMultipleNetworkObject
+  - createMultipleHostObject
+  - createAccessPolicy
+  - createUser
+  - createChangeRequest
+- action_class: mutate
+  consequence: reversible-with-effort
+  escalation: human approval per call
+  token: ROLE_EDIT_ONLY
+  note: >-
+    The cdFMC surface mutates with PUT and the Firewall Manager surface with PATCH. An agent that assumes one
+    verb will silently fail on half the estate.
+  examples:
+  - updateAccessRule
+  - modifyDevice
+  - modifyObject
+  - modifyTenantSettings
+- action_class: destructive
+  consequence: irreversible
+  escalation: human approval, always, with the resolved target named back to the human
+  token: ROLE_EDIT_ONLY, and only for a scoped, pre-agreed resource set
+  note: >-
+    212 DELETE operations. Several are bulk — deleteMultipleNetworkObject, deleteMultipleHostObject,
+    deleteMultipleUsers — and take an id list, so a single call can remove a great many things. DELETE is
+    documented as idempotent, which makes a repeat safe but does not make the first call recoverable.
+  examples:
+  - deleteDevice
+  - deleteMultipleNetworkObject
+  - deleteMultipleHostObject
+  - deleteUser
+  - deleteSdc
+- action_class: trigger
+  consequence: service-affecting
+  escalation: human approval, always. Never autonomous.
+  token: ROLE_DEPLOY_ONLY, issued for the operation and revoked after
+  note: >-
+    These change what the firewall does to live traffic, or take a device out of service. They are
+    asynchronous — poll getTransaction — and they are the operations where the absence of an idempotency key
+    matters most: a timed-out deploy must be RESOLVED by polling, never resent.
+  examples:
+  - createDeploymentRequest
+  - deployFtdDeviceChanges
+  - deployChangesToMultipleFtdDevices
+  - upgradeFtdDevices
+  - upgradeAsaDevice
+  - createRollbackRequest
+  - terminateRaVpnSessionsByDevice
+  - executeDeviceCommand
+  - executeCliCommand
+credentials:
+  recommendation: >-
+    Mint a dedicated API-only user per agent, as Cisco itself recommends, so the agent's actions are
+    attributable in the changelog and its token can be revoked without affecting a person. Rotate with
+    POST /v1/users/{apiUserUid}/apiToken/generate and revoke with .../apiToken/revoke.
+  expiry: >-
+    API tokens carry no exp claim. Enforce your own rotation schedule — the API will not.
+  region_scope: A token is bound to one region; it will not work against another.
+audit:
+  note: >-
+    Every change is recorded in the tenant changelog (GET /v1/changelogs, Lucene-searchable) and the audit
+    log (GET /v1/auditlogs). Reconcile agent activity against those, keyed on the API-only user.

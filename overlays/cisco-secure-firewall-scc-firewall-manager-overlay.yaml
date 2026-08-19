@@ -1,0 +1,49 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Cisco Security Cloud Control Firewall Manager API
+  version: 1.0.0
+  x-generated: '2026-08-19'
+  x-method: generated
+  x-source: openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml
+extends: openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml
+x-note: >-
+  Non-destructive enhancements only. Cisco's published contract is never mutated.
+actions:
+- target: $.info
+  update:
+    x-apis-io:
+      provider: cisco-secure-firewall
+      profile: https://apis.io/providers/cisco-secure-firewall/
+      harvested: '2026-08-19'
+      first_party: true
+      source: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+    x-conventions:
+      auth: 'Authorization: Bearer $API_TOKEN'
+      pagination: offset/limit; response envelope is {count, limit, offset, items}
+      search: Lucene syntax via `q`; unsupported fields return 400 listing the searchable fields
+      update_verb: PATCH
+      async: Action-verb POSTs return a transaction; poll GET /v1/transactions/{transactionUid}
+      idempotency: >-
+        No idempotency key. Only DELETE is documented as idempotent.
+    x-error-contract:
+      schema: CommonApiError (errorCode enum + errorMsg + details)
+      edge_divergence: >-
+        The gateway rejects unauthenticated requests with {timestamp, path, status, error, requestId} —
+        a different shape from the documented CommonApiError. Clients must handle both.
+    x-rate-limits:
+      documented: false
+      status_on_exhaustion: 429
+      error_code: TOO_MANY_REQUESTS
+      headers: none declared
+    x-compliance:
+      fedramp: >-
+        All Security Cloud Control Firewall Manager APIs are available on FedRAMP at
+        https://manage.secure.cisco/api/rest, with the exception of the MSP APIs.
+- target: $.tags
+  update:
+  - name: untagged
+    description: >-
+      GAP. This contract declares no tags at all and none of its 160 operations is tagged, so no client
+      generator, documentation renderer or agent tool-namer can group it by resource. The paths do group
+      cleanly — inventory, objects, policies, users, msp, vpnsessions, transactions, cli, connectors,
+      changelogs, meta — and that grouping is what apis.io uses.

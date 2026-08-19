@@ -1,0 +1,120 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine Child Zone API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: Child Zone
+paths:
+  /topology/gateway-set/{id}/adjacent-parent-child-zone-pairs:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro,internal'
+      operationId: getAdjacentParentChildZonePairsForGatewaySet
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentChildZonePairs'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get adjacent parent-child zone pairs for gateway set
+      tags:
+      - Child Zone
+  /topology/get-gateway-sets-for-child-zones:
+    post:
+      description: 'Roles allowed: support,topology-rw,topology-ro,internal'
+      operationId: getGatewaySetsForChildZones
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChildZoneIds'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewaySets'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get gateway sets for child zones
+      tags:
+      - Child Zone
+components:
+  schemas:
+    ParentChildZonePair:
+      properties:
+        childZoneId:
+          type: string
+        parentZoneId:
+          type: string
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
+      type: object
+    GatewaySets:
+      properties:
+        gatewaySets:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
+      type: object
+    ParentChildZonePairs:
+      properties:
+        parentChildZonePairs:
+          items:
+            $ref: '#/components/schemas/ParentChildZonePair'
+          type: array
+      type: object
+    ChildZoneIds:
+      properties:
+        childZoneIds:
+          items:
+            type: string
+          type: array
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

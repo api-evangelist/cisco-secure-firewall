@@ -1,0 +1,1397 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall Analysis API
+  version: 1.13.0
+  contact:
+    name: Cisco Firepower TAC
+    email: ngfw-support@cisco.com
+  description: 'Operations tagged Analysis across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml.
+    Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
+      schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
+    operation_coverage: 6/6
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: Analysis
+paths:
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/analysis/activesessions:
+    delete:
+      deprecated: false
+      description: '**Administratively logout active user session. _Check the response section for applicable examples (if
+        any)._**'
+      operationId: deleteMultipleActiveSession
+      parameters:
+      - description: should always be set to true
+        in: query
+        name: bulk
+        required: false
+        schema:
+          type: boolean
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : DELETE /fmc_config/v1/domain/domainUUID/analysis/activesessions ( Success: Test logout )':
+                value:
+                  ids:
+                  - id1
+                  - id2
+                  - id3
+            schema:
+              $ref: '#/components/schemas/ActiveSession'
+              type: object
+        description: list ids of sessions to logout
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : DELETE /fmc_config/v1/domain/domainUUID/analysis/activesessions ( Success: Test logout )':
+                  value:
+                    links: {}
+              schema:
+                $ref: '#/components/schemas/ActiveSession'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Analysis
+    get:
+      deprecated: false
+      description: '**Retrieves active sessions.**'
+      operationId: getAllActiveSession
+      parameters:
+      - description: 'Search based on user ID.Operator: <code>EQUALS</code>.'
+        in: query
+        name: userId
+        required: false
+        schema:
+          type: number
+      - description: 'Search based on the session login time, format: <code>{before|after}:{loginTime}</code> or <code>after:{loginTime},before:{loginTime}</code>,
+          where loginTime takes Long value (Unix Timestamp).'
+        in: query
+        name: loginTime
+        required: false
+        schema:
+          type: string
+      - description: Search based on the time when the user was last seen. Format and values as for loginTime.
+        in: query
+        name: lastSeen
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user username. Operator: <code>CONTAINS</code> (i.e. search for ana will return users
+          with usernames ana, banana, canada if they have active sessions)'
+        in: query
+        name: username
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user email. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: email
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user department. Operator: <code>EQUALS</code>.'
+        in: query
+        name: department
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on authentication type (passive, active). Operator: <code>EQUALS</code>.'
+        in: query
+        name: authenticationType
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on device. Operator: <code>EQUALS</code>.'
+        in: query
+        name: device
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on IP of the session. Operator: <code>EQUALS</code>. Or search based on the subnet or range,
+          example: 192.168.1.0/24, 192.168.0.1-192.168.0.5.'
+        in: query
+        name: currentIP
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user common name in AD. Operator: <code>EQUALS</code>.'
+        in: query
+        name: user
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on realm ID. Operator: <code>EQUALS</code>.'
+        in: query
+        name: realmId
+        required: false
+        schema:
+          type: number
+      - description: 'Search based on realm name. Operator: <code>EQUALS</code>.'
+        in: query
+        name: realmName
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user first name. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: firstName
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user last name. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: lastName
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user phone. Operator: <code>EQUALS</code>.'
+        in: query
+        name: phone
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on realm type (LDAP, Microsoft Azure). Operator: <code>EQUALS</code>.'
+        in: query
+        name: discoveryApplication
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn client application. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnClientApplication
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn client OS. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnClientOS
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn client public IP. Operator: <code>EQUALS</code>. Or search based on the subnet or
+          range, example: 192.168.1.0/24, 192.168.0.1-192.168.0.5.'
+        in: query
+        name: vpnClientPublicIP
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn connection profile. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnConnectionProfile
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn group policy. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnGroupPolicy
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn session type. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnSessionType
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on pat range start. Operator: <code>EQUALS</code>.'
+        in: query
+        name: patRangeStart
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user pat start. Operator: <code>EQUALS</code>.'
+        in: query
+        name: userPatStart
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user pat end. Operator: <code>EQUALS</code>.'
+        in: query
+        name: userPatEnd
+        required: false
+        schema:
+          type: string
+      - description: Sort by specific field (ORDER BY), format:<code>{fieldName}:{asc|desc}</code>
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActiveSessionListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Analysis
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/analysis/identifiedusers:
+    delete:
+      deprecated: false
+      description: '**Deletes users. Use query parameters described below to narrow the deletion. _Check the response section
+        for applicable examples (if any)._**'
+      operationId: deleteMultipleIdentifiedUser
+      parameters:
+      - description: Required parameter, should be always set to <code>true</code>
+        in: query
+        name: bulk
+        required: true
+        schema:
+          type: boolean
+      - description: Delete all users.
+        in: query
+        name: deleteAll
+        required: false
+        schema:
+          type: boolean
+      - description: 'Delete users with given ids, format: <code>id1,id2,...</code>'
+        in: query
+        name: userIds
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user ID.Operator: <code>EQUALS</code>.'
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: user
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on last seen, format: <code>{before|after}:{lastSeen}</code> or <code>after:{lastSeen},before:{lastSeen}</code>,
+          where lastSeen takes Long value (Unix Timestamp).'
+        in: query
+        name: lastSeen
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on realm ID. Operator: <code>EQUALS</code>.'
+        in: query
+        name: realmId
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on realm name. Operator: <code>EQUALS</code>.'
+        in: query
+        name: realmName
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on username. Operator: <code>CONTAINS</code> (i.e. search for ana will return users with
+          usernames ana, banana, canada)'
+        in: query
+        name: username
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on first name. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: firstName
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on last name. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: lastName
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on email. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: email
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on department. Operator: <code>EQUALS</code>.'
+        in: query
+        name: department
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on phone. Operator: <code>EQUALS</code>.'
+        in: query
+        name: phone
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on realm type (LDAP, AzureAD). Operator: <code>EQUALS</code>.'
+        in: query
+        name: discoveryApplication
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on number of active sessions. Operator: <code>EQUALS</code>.'
+        in: query
+        name: activeSessionCount
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on availability for policy. Operator: <code>EQUALS</code>.'
+        in: query
+        name: availableForPolicy
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentifiedUser'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Analysis
+    get:
+      deprecated: false
+      description: '**Gets user activities.**'
+      operationId: getAllIdentifiedUser
+      parameters:
+      - description: Sort by specific field (ORDER BY), format:<code>{fieldName}:{asc|desc}</code>
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user ID.Operator: <code>EQUALS</code>.'
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on user. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: user
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on last seen, format: <code>{before|after}:{lastSeen}</code> or <code>after:{lastSeen},before:{lastSeen}</code>,
+          where lastSeen takes Long value (Unix Timestamp).'
+        in: query
+        name: lastSeen
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on realm ID. Operator: <code>EQUALS</code>.'
+        in: query
+        name: realmId
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on realm name. Operator: <code>EQUALS</code>.'
+        in: query
+        name: realmName
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on username. Operator: <code>CONTAINS</code> (i.e. search for ana will return users with
+          usernames ana, banana, canada)'
+        in: query
+        name: username
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on first name. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: firstName
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on last name. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: lastName
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on email. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: email
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on department. Operator: <code>EQUALS</code>.'
+        in: query
+        name: department
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on phone. Operator: <code>EQUALS</code>.'
+        in: query
+        name: phone
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on realm type (LDAP, AzureAD). Operator: <code>EQUALS</code>.'
+        in: query
+        name: discoveryApplication
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on number of active sessions. Operator: <code>EQUALS</code>.'
+        in: query
+        name: activeSessionCount
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on availability for policy. Operator: <code>EQUALS</code>.'
+        in: query
+        name: availableForPolicy
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentifiedUserListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Analysis
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/analysis/useractivity:
+    delete:
+      deprecated: false
+      description: '**Delete users. Use query parameters to limit which users will be deleted. _Check the response section
+        for applicable examples (if any)._**'
+      operationId: deleteMultipleUserActivity
+      parameters:
+      - description: Required parameter, should be always set to <code>true</code>
+        in: query
+        name: bulk
+        required: true
+        schema:
+          type: boolean
+      - description: Delete all user activities. When set to <code>true</code> event query parameters should be absent.
+        in: query
+        name: deleteAll
+        required: false
+        schema:
+          type: boolean
+      - description: 'Search based on the time, format: <code>{before|after}:{time}</code> or <code>after:{time},before:{time}</code>,
+          where time takes Long value (Unix Timestamp).'
+        in: query
+        name: time
+        required: true
+        schema:
+          type: string
+      - description: 'Search based on event. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: event
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on username. Operator: <code>CONTAINS</code> (i.e. search for ana will return users with
+          usernames ana, banana, canada).'
+        in: query
+        name: username
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on realm. Operator: <code>EQUALS</code>.'
+        in: query
+        name: realmName
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on realm type (LDAP, Microsoft Azure). Operator: <code>EQUALS</code>.'
+        in: query
+        name: discoveryApplication
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on authentication type. Operator: <code>EQUALS</code>.'
+        in: query
+        name: authenticationType
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on IP address. Operator: <code>EQUALS</code>. Or search based on the subnet or range, example:
+          192.168.1.0/24, 192.168.0.1-192.168.0.5.'
+        in: query
+        name: ipAddress
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on start port. Operator: <code>EQUALS</code>.'
+        in: query
+        name: startPort
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on end port. Operator: <code>EQUALS</code>.'
+        in: query
+        name: endPort
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on description. Operator: <code>CONTAINS</code>'
+        in: query
+        name: description
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn session type. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnSessionType
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn group policy. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnGroupPolicy
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn connection profile. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnConnectionProfile
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn client public IP. Operator: <code>EQUALS</code>. Or search based on the subnet or
+          range, example: 192.168.1.0/24, 192.168.0.1-192.168.0.5.'
+        in: query
+        name: vpnClientPublicIP
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn client country. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnClientCountry
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn client OS. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnClientOS
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn client application. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnClientApplication
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn connection duration. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnConnectionDuration
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn bytes transmitted. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnBytesOut
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn received. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnBytesIn
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on security group tag. Operator: <code>EQUALS</code>.'
+        in: query
+        name: securityGroupTag
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on endpoint profile. Operator: <code>EQUALS</code>.'
+        in: query
+        name: endpointProfile
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on endpoint location. Operator: <code>EQUALS</code>. Or search based on the subnet or range,
+          example: 192.168.1.0/24, 192.168.0.1-192.168.0.5.'
+        in: query
+        name: endpointLocation
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on device. Operator: <code>EQUALS</code>.'
+        in: query
+        name: device
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : DELETE /fmc_config/v1/domain/domainUUID/analysis/useractivity ( Success: Test delete )':
+                value:
+                  ids:
+                  - id1
+                  - id2
+                  - id3
+            schema:
+              $ref: '#/components/schemas/UserActivity'
+              type: object
+        description: Input representation of user activity.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : DELETE /fmc_config/v1/domain/domainUUID/analysis/useractivity ( Success: Test delete )':
+                  value:
+                    links: {}
+              schema:
+                $ref: '#/components/schemas/UserActivity'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Analysis
+    get:
+      deprecated: false
+      description: '**Get a list of identified users.**'
+      operationId: getAllUserActivity
+      parameters:
+      - description: Sort by specific field (ORDER BY), format:<code>{fieldName}:{asc|desc}</code>.
+        in: query
+        name: sort
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on event. Operator: <code>EQUALS</code>.'
+        in: query
+        name: id
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on the time, format: <code>{before|after}:{time}</code> or <code>after:{time},before:{time}</code>,
+          where time takes Long value (Unix Timestamp).'
+        in: query
+        name: time
+        required: true
+        schema:
+          type: string
+      - description: 'Search based on event. Operator: <code>CONTAINS</code>.'
+        in: query
+        name: event
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on username. Operator: <code>CONTAINS</code> (i.e. search for ana will return users with
+          usernames ana, banana, canada).'
+        in: query
+        name: username
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on realm. Operator: <code>EQUALS</code>.'
+        in: query
+        name: realmName
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on realm type (LDAP, Microsoft Azure). Operator: <code>EQUALS</code>.'
+        in: query
+        name: discoveryApplication
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on authentication type. Operator: <code>EQUALS</code>.'
+        in: query
+        name: authenticationType
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on IP address. Operator: <code>EQUALS</code>. Or search based on the subnet or range, example:
+          192.168.1.0/24, 192.168.0.1-192.168.0.5.'
+        in: query
+        name: ipAddress
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on start port. Operator: <code>EQUALS</code>.'
+        in: query
+        name: startPort
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on end port. Operator: <code>EQUALS</code>.'
+        in: query
+        name: endPort
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on description. Operator: <code>CONTAINS</code>'
+        in: query
+        name: description
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn session type. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnSessionType
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn group policy. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnGroupPolicy
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn connection profile. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnConnectionProfile
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn client public IP. Operator: <code>EQUALS</code>. Or search based on the subnet or
+          range, example: 192.168.1.0/24, 192.168.0.1-192.168.0.5.'
+        in: query
+        name: vpnClientPublicIP
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn client country. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnClientCountry
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn client OS. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnClientOS
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn client application. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnClientApplication
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn connection duration. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnConnectionDuration
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn bytes transmitted. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnBytesOut
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on vpn received. Operator: <code>EQUALS</code>.'
+        in: query
+        name: vpnBytesIn
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on security group tag. Operator: <code>EQUALS</code>.'
+        in: query
+        name: securityGroupTag
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on endpoint profile. Operator: <code>EQUALS</code>.'
+        in: query
+        name: endpointProfile
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on endpoint location. Operator: <code>EQUALS</code>. Or search based on the subnet or range,
+          example: 192.168.1.0/24, 192.168.0.1-192.168.0.5.'
+        in: query
+        name: endpointLocation
+        required: false
+        schema:
+          type: string
+      - description: 'Search based on device. Operator: <code>EQUALS</code>.'
+        in: query
+        name: device
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserActivityListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Analysis
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  schemas:
+    ActiveSessionListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ActiveSession'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    UserActivityListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/UserActivity'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ActiveSession:
+      properties:
+        authenticationType:
+          type: string
+        currentIP:
+          type: string
+        department:
+          type: string
+        description:
+          type: string
+        device:
+          type: string
+        discoveryApplication:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        id:
+          type: string
+        lastName:
+          type: string
+        lastSeen:
+          format: int32
+          type: integer
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        loginTime:
+          format: int32
+          type: integer
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        patRangeStart:
+          format: int32
+          type: integer
+        phone:
+          type: string
+        realmId:
+          format: int32
+          type: integer
+        realmName:
+          type: string
+        type:
+          type: string
+        user:
+          type: string
+        userId:
+          format: int32
+          type: integer
+        userPatEnd:
+          format: int32
+          type: integer
+        userPatStart:
+          format: int32
+          type: integer
+        username:
+          type: string
+        version:
+          type: string
+        vpnClientApplication:
+          type: string
+        vpnClientOS:
+          type: string
+        vpnClientPublicIP:
+          type: string
+        vpnConnectionProfile:
+          type: string
+        vpnGroupPolicy:
+          type: string
+        vpnSessionType:
+          type: string
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    UserActivity:
+      properties:
+        authenticationType:
+          type: string
+        description:
+          type: string
+        device:
+          type: string
+        discoveryApplication:
+          type: string
+        endPort:
+          format: int32
+          type: integer
+        endpointLocation:
+          type: string
+        endpointProfile:
+          type: string
+        event:
+          type: string
+        id:
+          type: string
+        ipAddress:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        realmName:
+          type: string
+        securityGroupTag:
+          type: string
+        startPort:
+          format: int32
+          type: integer
+        time:
+          format: int32
+          type: integer
+        type:
+          type: string
+        username:
+          type: string
+        version:
+          type: string
+        vpnBytesIn:
+          format: int32
+          type: integer
+        vpnBytesOut:
+          format: int32
+          type: integer
+        vpnClientApplication:
+          type: string
+        vpnClientCountry:
+          type: string
+        vpnClientOS:
+          type: string
+        vpnClientPublicIP:
+          type: string
+        vpnConnectionDuration:
+          format: int32
+          type: integer
+        vpnConnectionProfile:
+          type: string
+        vpnGroupPolicy:
+          type: string
+        vpnSessionType:
+          type: string
+      type: object
+    IdentifiedUser:
+      properties:
+        activeSessionCount:
+          format: int32
+          type: integer
+        availableForPolicy:
+          type: boolean
+        department:
+          type: string
+        description:
+          type: string
+        discoveryApplication:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        id:
+          type: string
+        lastName:
+          type: string
+        lastSeen:
+          format: int32
+          type: integer
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        phone:
+          type: string
+        realmId:
+          format: int32
+          type: integer
+        realmName:
+          type: string
+        type:
+          type: string
+        user:
+          type: string
+        username:
+          type: string
+        version:
+          type: string
+      type: object
+    IdentifiedUserListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/IdentifiedUser'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+  parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cdfmc-openapi.yaml
+- cisco-secure-firewall-cdfmc-openapi.yml

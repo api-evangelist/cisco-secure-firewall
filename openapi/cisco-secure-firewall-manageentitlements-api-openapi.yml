@@ -1,0 +1,347 @@
+openapi: 3.2.0
+info:
+  description: MSP APIs for viewing, creating and updating the manager and managed organizations
+  title: MSP Manage Entitlements API
+  version: 1.4.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/msp.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/msp.yaml
+servers:
+- url: https://api.int.security.cisco.com/identity
+  variables:
+    baseUrl:
+      default: https://api.int.security.cisco.com/identity
+    domain:
+      default: https://sso-apps-preview.myverysecuresignon.name/api
+security:
+- OpenID: []
+- bearerAuth: []
+tags:
+- name: ManageEntitlements
+paths:
+  /organizations/{managerId}/managed/{managedId}/entitlements:
+    get:
+      description: List all the active entitlements at the SKU level between a manager and managed org. User has to be a member of the enterprise to be able to get list of entitlements info.
+      parameters:
+      - description: ManagerID(UUID)
+        in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      - description: ManagedID(UUID)
+        in: path
+        name: managedId
+        required: true
+        schema:
+          type: string
+      - description: Number of results per page (default 10)
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 10
+          type: integer
+      - description: Pagination offset (default 0)
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+      - description: Okta access token (user must be an admin of the specified organization)
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.OrgEntitlements'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+          description: Invalid enterprise ID, limit, or offset value
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+          description: Unauthorized - User is not admin of the organization
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+          description: Internal server error
+      summary: Get entitlements for an organization
+      tags:
+      - ManageEntitlements
+      x-publicly-available: true
+    patch:
+      description: Updates the quantity of entitlements shared from a manager organization to a managed organization. Specific scopes are required to access the API `security:provisioning:subscriptions:write`. Client credentials are issued by IAM team individually.
+      parameters:
+      - description: Manager Organization ID (UUID)
+        in: path
+        name: managerId
+        required: true
+        schema:
+          type: string
+      - description: Managed Organization ID (UUID)
+        in: path
+        name: managedId
+        required: true
+        schema:
+          type: string
+      - description: Authorization token (user must be admin of both manager and managed orgs)
+        in: header
+        name: Authorization
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.UpdateEntitlementsRequest'
+        description: Request body containing subscription and SKU details to update
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.UpdateEntitlementResponse'
+          description: Successfully updated entitlements
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+          description: Invalid UUID format, request body, minimum quantity not met, or managed org not found
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+          description: User is not an admin of manager or managed org
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+          description: Internal server error
+      security:
+      - piamServiceTokenSecurity:
+        - security:provisioning:subscriptions:write
+      summary: Update entitlements between manager and managed organizations
+      tags:
+      - ManageEntitlements
+      x-codegen-request-body-name: body
+      x-publicly-available: true
+components:
+  schemas:
+    model.PaginationInfo:
+      properties:
+        limit:
+          type: integer
+        offset:
+          type: integer
+        totalRecords:
+          type: integer
+      type: object
+    model.ProvisionedSKU:
+      properties:
+        name:
+          type: string
+        productInfo:
+          items:
+            $ref: '#/components/schemas/model.ProductInfo'
+          type: array
+      type: object
+    model.UserSubscription:
+      properties:
+        id:
+          type: string
+        skus:
+          items:
+            $ref: '#/components/schemas/model.SKU'
+          type: array
+      type: object
+    model.SharedEntitlement:
+      properties:
+        assignedEntitlements:
+          type: integer
+        managedOrgId:
+          type: string
+        productsList:
+          items:
+            $ref: '#/components/schemas/model.ProductConf'
+          type: array
+      type: object
+    model.OrgEntitlements:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/model.PaginationInfo'
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/model.SubnSku'
+          type: array
+      type: object
+    model.UpdateEntitlementsRequest:
+      properties:
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/model.UserSubscription'
+          type: array
+      type: object
+    model.MspSku:
+      properties:
+        availableEntitlements:
+          type: integer
+        minEntitlementsQuantity:
+          type: integer
+        productsList:
+          items:
+            $ref: '#/components/schemas/model.ProductConf'
+          type: array
+        reservedEntitlements:
+          type: integer
+        sharedEntitlements:
+          items:
+            $ref: '#/components/schemas/model.SharedEntitlement'
+          type: array
+        skuName:
+          type: string
+      type: object
+    model.ProductConf:
+      properties:
+        activationStatus:
+          type: string
+        name:
+          type: string
+        operand:
+          type: integer
+        operator:
+          type: string
+        region:
+          type: string
+      type: object
+    model.Error:
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      type: object
+    model.ProvisionedSubscription:
+      properties:
+        id:
+          type: string
+        skus:
+          items:
+            $ref: '#/components/schemas/model.ProvisionedSKU'
+          type: array
+      type: object
+    model.ProductInfo:
+      properties:
+        assignedEntitlements:
+          type: integer
+        product:
+          type: string
+        productRegion:
+          type: string
+      type: object
+    model.UpdateEntitlementResponse:
+      properties:
+        endDate:
+          type: string
+        id:
+          type: string
+        licenseType:
+          type: string
+        provisioningErrors:
+          items:
+            $ref: '#/components/schemas/model.SubscriptionProvisioningError'
+          type: array
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/model.ProvisionedSubscription'
+          type: array
+      type: object
+    model.SubscriptionProvisioningError:
+      properties:
+        error:
+          type: string
+        subscriptionId:
+          type: string
+      type: object
+    model.SKU:
+      properties:
+        name:
+          type: string
+        quantity:
+          type: integer
+      type: object
+    model.SubnSku:
+      properties:
+        endDate:
+          type: string
+        externalSubscriptionId:
+          type: string
+        licenseType:
+          type: string
+        skus:
+          additionalProperties:
+            $ref: '#/components/schemas/model.MspSku'
+          type: object
+      type: object
+  securitySchemes:
+    OpenID:
+      openIdConnectUrl: https://auth.example.com/.well-known/openid-configuration
+      type: openIdConnect
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+    piamServiceTokenSecurity:
+      flows:
+        clientCredentials:
+          scopes:
+            security:attack-surface-mgmt:identity:mappings-migrate: Grants write and read access to Attack Surface Management product mappings migration APIs
+            security:cdo:identity:mappings-migrate: Grants write and read access to CDO product mappings migration APIs
+            security:cdo:public-api: Grants write and read access to CDO Public Group Directory APIs
+            security:duo:identity:mappings-migrate: Grants write and read access to product mappings migration APIs for Duo Security
+            security:etd:identity:mappings-migrate: Grants write and read access to Encrypted Traffic Analytics product mappings migration APIs
+            security:global:provisioning-config:write: Global provisioning configuration management
+            security:global:provisioning-subscription:write: Global subscription provisioning operations
+            security:panoptica:identity:mappings-migrate: Grants write and read access to Panoptica product mappings migration APIs
+            security:provisioning:global-config:write: Global configuration write access
+            security:provisioning:maintainance:write: Maintenance operations (provisioning, migrations)
+            security:provisioning:subscriptions:read: Read subscription data
+            security:provisioning:subscriptions:write: Write subscription data
+            security:secure-access:identity:mappings-migrate: Grants write and read access to Secure Access product mappings migration APIs
+            security:secure-endpoint:identity:mappings-migrate: Grants write and read access to Secure Endpoint product mappings migration APIs
+            security:secure-workload:identity:mappings-migrate: Grants write and read access to Secure Workload product mappings migration APIs
+            security:subscription:move: Move subscriptions between enterprises
+            security:vuln-mgmt:identity:mappings-migrate: Grants write and read access to Vulnerability Management product mappings migration APIs
+            security:xdr:identity:mappings-migrate: Grants write and read access to XDR product mappings migration APIs
+          tokenUrl: https://auth.example.com/oauth/token
+      type: oauth2

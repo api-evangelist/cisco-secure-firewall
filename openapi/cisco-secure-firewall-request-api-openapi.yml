@@ -1,0 +1,864 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine Request API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: Request
+paths:
+  /mpm/requests/{requestId}:
+    get:
+      description: 'Roles allowed: support,mpm-rw,mpm-ro'
+      operationId: getRequest
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullRequestDetails'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get request details
+      tags:
+      - Request
+  /mpm/requests/{requestId}/status:
+    get:
+      description: 'Roles allowed: support,mpm-rw,mpm-ro'
+      operationId: getRequestStatus
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestStatusResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get request status
+      tags:
+      - Request
+  /pcm/requests/child-requests/{requestId}/status:
+    get:
+      description: 'Roles allowed: support, pcm-rw, pcm-ro'
+      operationId: getRequestAndChildrenStatuses
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestAndChildrenStatusesResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get request status and its child request statuses
+      tags:
+      - Request
+  /pcm/requests/status:
+    post:
+      description: 'Roles allowed: support, pcm-rw, pcm-ro'
+      operationId: getPcmRequestStatusesBulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestsResponse'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestStatusResponses'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '413':
+          description: Request Entity Too Large
+        '500':
+          description: Internal Server Error
+      summary: Get PCM request status by request ids
+      tags:
+      - Request
+  /pcm/requests/{requestId}:
+    get:
+      description: 'Roles allowed: support, pcm-rw, pcm-ro'
+      operationId: getRequest_1
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullRequestDetails'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get PCM request details
+      tags:
+      - Request
+  /pcm/requests/{requestId}/manual/status/complete:
+    patch:
+      description: 'Roles allowed: support'
+      operationId: completePcmManualRequestStatus
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Complete PCM manual request status
+      tags:
+      - Request
+  /pcm/requests/{requestId}/status:
+    get:
+      description: 'Roles allowed: support, pcm-rw, pcm-ro'
+      operationId: getRequestStatus_1
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestStatusResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get PCM request status
+      tags:
+      - Request
+  /pcm/requests/{requestId}/status/complete:
+    patch:
+      description: 'Roles allowed: support'
+      operationId: completePcmRequestStatus
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Complete PCM request status
+      tags:
+      - Request
+  /topology/requests/child-requests/{requestId}:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getChildRequestIds
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChildRequestsResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get child request ids
+      tags:
+      - Request
+  /topology/requests/child-requests/{requestId}/status:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getRequestWithChildren
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestAndChildrenStatusesResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get request status and its child request statuses
+      tags:
+      - Request
+  /topology/requests/{requestId}:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getRequest1
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullRequestDetails'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get request details
+      tags:
+      - Request
+  /topology/requests/{requestId}/status:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getRequestStatus1
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestStatusResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get request status
+      tags:
+      - Request
+components:
+  schemas:
+    RequestStatusResponses:
+      properties:
+        requestStatuses:
+          items:
+            $ref: '#/components/schemas/RequestStatusResponse'
+          type: array
+      type: object
+    PushGatewayRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        objectIdRef:
+          type: string
+        reqId:
+          format: uuid
+          type: string
+      type: object
+    PcmRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        externalReqPayload:
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        manualStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        objectIdRef:
+          type: string
+        reqAction:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqType:
+          enum:
+          - POLICY
+          - APP_GROUP
+          - ENDPOINT_GROUP
+          type: string
+        revision:
+          format: int32
+          type: integer
+      type: object
+    SdiRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        externalReqPayload:
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        manualStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqType:
+          enum:
+          - PROVISION_FLOWS
+          type: string
+        sdiReqId:
+          type: string
+      type: object
+    GatewaySetDetails:
+      properties:
+        errMsg:
+          type: string
+        gwSetId:
+          type: string
+        subRequestStatus:
+          type: string
+      type: object
+    MpmGovernancePolicyDynamicGroupRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        dynamicGroupId:
+          type: string
+        id:
+          format: uuid
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+      type: object
+    RequestingSystemRequestDetails:
+      properties:
+        hasRequestDetail:
+          type: boolean
+        mpmGovernanceDynamicGroupRequest:
+          $ref: '#/components/schemas/MpmGovernancePolicyDynamicGroupRequest'
+        mpmRequest:
+          items:
+            $ref: '#/components/schemas/MpmRequest'
+          type: array
+        pcmRequest:
+          $ref: '#/components/schemas/PcmRequest'
+        pushGatewayRequest:
+          $ref: '#/components/schemas/PushGatewayRequest'
+        sdiRequest:
+          $ref: '#/components/schemas/SdiRequest'
+        topologyChangeRequest:
+          $ref: '#/components/schemas/TopologyChangeRequest'
+        topologyRequest:
+          $ref: '#/components/schemas/ZoneTopologyRequest'
+      type: object
+    MpmRequest:
+      properties:
+        createdBy:
+          type: string
+        createdTime:
+          format: date-time
+          type: string
+        gatewaySetId:
+          type: string
+        id:
+          format: uuid
+          type: string
+        lockAcquired:
+          type: boolean
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        managerId:
+          format: uuid
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+        revisionId:
+          format: int32
+          type: integer
+      type: object
+    ZoneTopologyRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        externalReqPayload:
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        reqAction:
+          enum:
+          - ADD
+          - DELETE
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqType:
+          enum:
+          - ADDRESS
+          - TAG
+          type: string
+        zoneId:
+          type: string
+      type: object
+    RequestsResponse:
+      properties:
+        requests:
+          items:
+            $ref: '#/components/schemas/ApiRequest'
+          type: array
+      type: object
+    FullRequestDetails:
+      properties:
+        details:
+          $ref: '#/components/schemas/RequestingSystemRequestDetails'
+        errCode:
+          enum:
+          - INPUT_VALIDATION_ERROR
+          - INPUT_VALIDATION_ERROR_OBJECT_DOES_NOT_EXIST
+          - INPUT_VALIDATION_ERROR_OBJECT_ALREADY_EXISTS
+          - INPUT_VALIDATION_ERROR_INVALID_REVISION
+          - INPUT_VALIDATION_ERROR_EP_WITH_NO_ZONE
+          - INPUT_VALIDATION_ERROR_PARSING_FAILED
+          type: string
+        errMsg:
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        reqSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+        username:
+          type: string
+      type: object
+    ChildRequestApi:
+      properties:
+        requestId:
+          format: uuid
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    ChildRequestStatusResponse:
+      properties:
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+        status:
+          $ref: '#/components/schemas/RequestStatusResponse'
+      type: object
+    ApiRequest:
+      properties:
+        id:
+          example: 03502bc3-c140-4951-b467-bd17312a9b0b
+          type: string
+      type: object
+    RequestStatusResponse:
+      properties:
+        details:
+          items:
+            $ref: '#/components/schemas/GatewaySetDetails'
+          type: array
+        errCode:
+          enum:
+          - INPUT_VALIDATION_ERROR
+          - INPUT_VALIDATION_ERROR_OBJECT_DOES_NOT_EXIST
+          - INPUT_VALIDATION_ERROR_OBJECT_ALREADY_EXISTS
+          - INPUT_VALIDATION_ERROR_INVALID_REVISION
+          - INPUT_VALIDATION_ERROR_EP_WITH_NO_ZONE
+          - INPUT_VALIDATION_ERROR_PARSING_FAILED
+          type: string
+        errMsg:
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        manualStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        reqSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+        sdiReqId:
+          type: string
+      type: object
+    RequestAndChildrenStatusesResponse:
+      properties:
+        childRequestStatuses:
+          items:
+            $ref: '#/components/schemas/ChildRequestStatusResponse'
+          type: array
+        parentRequestStatus:
+          $ref: '#/components/schemas/RequestStatusResponse'
+      type: object
+    TopologyChangeRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        externalReqPayload:
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        reqId:
+          format: uuid
+          type: string
+      type: object
+    ChildRequestsResponse:
+      properties:
+        childRequests:
+          items:
+            $ref: '#/components/schemas/ChildRequestApi'
+          type: array
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

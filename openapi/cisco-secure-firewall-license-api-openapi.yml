@@ -1,0 +1,892 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall License API
+  version: 1.13.0
+  contact:
+    name: Cisco Firepower TAC
+    email: ngfw-support@cisco.com
+  description: 'Operations tagged License across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml.
+    Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
+      schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
+    operation_coverage: 6/6
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: License
+paths:
+  /v1/cdfmc/api/fmc_platform/v1/license/devicelicenses:
+    get:
+      deprecated: false
+      description: '**Get all device licenses.**'
+      operationId: getAllDeviceLicense
+      parameters:
+      - description: '[DEV ERROR: Missing description]'
+        in: query
+        name: filter
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /api/fmc_platform/v1/license/devicelicenses ( API for GET all device license. )':
+                  value:
+                    items:
+                    - id: 01184a7e-af2e-11e9-a663-9eb033590246
+                      licenseTypes:
+                      - ESSENTIALS
+                      - IPS
+                      - MALWARE_DEFENSE
+                      performanceTier: FTDv30
+                      type: DeviceLicense
+                    - id: 12184a7e-af2e-11e9-a663-9eb033590288
+                      licenseTypes:
+                      - ESSENTIALS
+                      - IPS
+                      - MALWARE_DEFENSE
+                      - URL
+                      performanceTier: FTDv10
+                      type: DeviceLicense
+              schema:
+                $ref: '#/components/schemas/DeviceLicenseListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - License
+    put:
+      deprecated: false
+      description: '**Modify the device licenses. _Check the response section for applicable examples (if any)._**'
+      operationId: updateMultipleDeviceLicense
+      parameters:
+      - description: Boolean value indicating whether this is performed as a bulk operation.
+        in: query
+        name: bulk
+        required: true
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : PUT /api/fmc_platform/v1/license/devicelicenses/objectId ( API for the device license update )':
+                value:
+                  id: bdeb61ba-50d3-11ec-9058-8c269f48f8b7
+                  licenseTypes:
+                  - IPS
+                  - MALWARE_DEFENSE
+                  performanceTier: FTDv50
+                  type: DeviceLicense
+              'Example 2 : PUT /api/fmc_platform/v1/license/devicelicenses?bulk=true ( API for the device license update )':
+                value:
+                - id: bdeb61ba-50d3-11ec-9058-8c269f48f8b7
+                  licenseTypes:
+                  - IPS
+                  - MALWARE_DEFENSE
+                  performanceTier: FTDv30
+                  type: DeviceLicense
+                - id: 04ab4046-4e92-11ec-ad45-c9ae659fb632
+                  licenseTypes:
+                  - IPS
+                  - MALWARE_DEFENSE
+                  - URL
+                  performanceTier: FTDv50
+                  type: DeviceLicense
+            schema:
+              $ref: '#/components/schemas/DeviceLicense'
+              type: object
+        description: Contains the Device License attributes, as shown in the examples.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : PUT /api/fmc_platform/v1/license/devicelicenses/objectId ( API for the device license update )':
+                  value:
+                    id: bdeb61ba-50d3-11ec-9058-8c269f48f8b7
+                    licenseTypes:
+                    - IPS
+                    - MALWARE_DEFENSE
+                    performanceTier: FTDv50
+                    type: DeviceLicense
+                'Example 2 : PUT /api/fmc_platform/v1/license/devicelicenses?bulk=true ( API for the device license update )':
+                  value:
+                    items:
+                    - id: bdeb61ba-50d3-11ec-9058-8c269f48f8b7
+                      licenseTypes:
+                      - ESSENTIALS
+                      - IPS
+                      - MALWARE_DEFENSE
+                      performanceTier: FTDv30
+                      type: DeviceLicense
+                    - id: 12184a7e-af2e-11e9-a663-9eb033590288
+                      licenseTypes:
+                      - ESSENTIALS
+                      - IPS
+                      - MALWARE_DEFENSE
+                      - URL
+                      performanceTier: FTDv50
+                      type: DeviceLicense
+              schema:
+                $ref: '#/components/schemas/DeviceLicense'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - License
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_platform/v1/license/devicelicenses/{objectId}:
+    get:
+      deprecated: false
+      description: '**Get the device license associated with the specified ID.**'
+      operationId: getDeviceLicense
+      parameters:
+      - description: Unique identifier associated with the device license.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /api/fmc_platform/v1/license/devicelicenses/deviceId ( API for GET a device license. )':
+                  value:
+                    id: 01184a7e-af2e-11e9-a663-9eb033590246
+                    licenseTypes:
+                    - ESSENTIALS
+                    - IPS
+                    - MALWARE_DEFENSE
+                    - URL
+                    performanceTier: FTDv50
+                    type: DeviceLicense
+              schema:
+                $ref: '#/components/schemas/DeviceLicense'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - License
+    put:
+      deprecated: false
+      description: '**Modify the device license associated with the specified ID. _Check the response section for applicable
+        examples (if any)._**'
+      operationId: updateDeviceLicense
+      parameters:
+      - description: Unique identifier associated with the device license.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : PUT /api/fmc_platform/v1/license/devicelicenses/objectId ( API for the device license update )':
+                value:
+                  id: bdeb61ba-50d3-11ec-9058-8c269f48f8b7
+                  licenseTypes:
+                  - IPS
+                  - MALWARE_DEFENSE
+                  performanceTier: FTDv50
+                  type: DeviceLicense
+              'Example 2 : PUT /api/fmc_platform/v1/license/devicelicenses?bulk=true ( API for the device license update )':
+                value:
+                - id: bdeb61ba-50d3-11ec-9058-8c269f48f8b7
+                  licenseTypes:
+                  - IPS
+                  - MALWARE_DEFENSE
+                  performanceTier: FTDv30
+                  type: DeviceLicense
+                - id: 04ab4046-4e92-11ec-ad45-c9ae659fb632
+                  licenseTypes:
+                  - IPS
+                  - MALWARE_DEFENSE
+                  - URL
+                  performanceTier: FTDv50
+                  type: DeviceLicense
+            schema:
+              $ref: '#/components/schemas/DeviceLicense'
+              type: object
+        description: Contains the Device License attributes, as shown in the examples.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : PUT /api/fmc_platform/v1/license/devicelicenses/objectId ( API for the device license update )':
+                  value:
+                    id: bdeb61ba-50d3-11ec-9058-8c269f48f8b7
+                    licenseTypes:
+                    - IPS
+                    - MALWARE_DEFENSE
+                    performanceTier: FTDv50
+                    type: DeviceLicense
+                'Example 2 : PUT /api/fmc_platform/v1/license/devicelicenses?bulk=true ( API for the device license update )':
+                  value:
+                    items:
+                    - id: bdeb61ba-50d3-11ec-9058-8c269f48f8b7
+                      licenseTypes:
+                      - ESSENTIALS
+                      - IPS
+                      - MALWARE_DEFENSE
+                      performanceTier: FTDv30
+                      type: DeviceLicense
+                    - id: 12184a7e-af2e-11e9-a663-9eb033590288
+                      licenseTypes:
+                      - ESSENTIALS
+                      - IPS
+                      - MALWARE_DEFENSE
+                      - URL
+                      performanceTier: FTDv50
+                      type: DeviceLicense
+              schema:
+                $ref: '#/components/schemas/DeviceLicense'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - License
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_platform/v1/license/smartlicenses:
+    get:
+      deprecated: false
+      description: '**Get the list of all Smart Licenses and associated information.**'
+      operationId: getSmartLicense
+      parameters:
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /api/fmc_platform/v1/license/smartlicenses ( API for the smart license registration status )':
+                  value:
+                    items:
+                    - metadata:
+                        authStatus: AUTHORIZED|AUTHORIZED_RESERVED|OUT_OF_COMPLIANCE|AUTHORIZATION_EXPIRED|NOT_AUTHORIZED
+                        evalExpiresInDays: 0
+                        evalUsed: true
+                        exportControl: true
+                        lastRenewedTime: 2021-10-25T15:10:26UTC
+                        lastSynchronizedTime: 2021-10-25T15:10:38UTC
+                        virtualAccount: FMC_ENG_BLR
+                      regStatus: REGISTERED|UNREGISTERED|RESERVATION_IN_PROGRESS|EVALUATION
+                      type: SmartLicense
+                    links:
+                      self: https:/localhost:8585/api/fmc_platform/v1/license/smartlicenses?offset=0&limit=25
+                    paging:
+                      count: 1
+                      limit: 25
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/SmartLicenseListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - License
+    post:
+      deprecated: false
+      description: '**Update Smart Licenses. _Check the response section for applicable examples (if any)._**'
+      operationId: createSmartLicense
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : POST /api/fmc_platform/v1/license/smartlicenses ( POST API for the smart license registration request )':
+                value:
+                  force: 'false'
+                  registrationType: REGISTER
+                  token: X2M3YmJlY...
+                  type: SmartLicense
+              'Example 2 : POST /api/fmc_platform/v1/license/smartlicenses ( POST API for the smart license deregistration request )':
+                value:
+                  registrationType: DEREGISTER
+                  type: SmartLicense
+              'Example 3 : POST /api/fmc_platform/v1/license/smartlicenses ( POST API for the smart license evaluation request )':
+                value:
+                  registrationType: EVALUATION
+                  type: SmartLicense
+            schema:
+              $ref: '#/components/schemas/SmartLicense'
+              type: object
+        description: Contains the SmartLicense token and attributes, as shown in the examples.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              examples:
+                'Example 2 : POST /api/fmc_platform/v1/license/smartlicenses ( POST API for the smart license deregistration request )':
+                  value:
+                    items:
+                    - registrationType: UNREGISTER
+                      type: SmartLicense
+                'Example 3 : POST /api/fmc_platform/v1/license/smartlicenses ( POST API for the smart license evaluation request )':
+                  value:
+                    items:
+                    - metadata:
+                        authStatus: EVALUATION
+                        evalExpiresInDays: 89
+                        evalUsed: false
+                        exportControl: false
+                        virtualAccount: Evaluation Mode
+                      regStatus: EVALUATION
+                      type: SmartLicense
+              schema:
+                $ref: '#/components/schemas/SmartLicense'
+                type: object
+          description: Created
+        '202':
+          content:
+            application/json:
+              examples:
+                'Example 1 : POST /api/fmc_platform/v1/license/smartlicenses ( POST API for the smart license registration request )':
+                  value:
+                    items:
+                    - regStatus: RESERVATION_IN_PROGRESS
+                      registrationType: REGISTER
+                      token: '****'
+                      type: SmartLicense
+              schema:
+                $ref: '#/components/schemas/SmartLicense'
+                type: object
+          description: Accepted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - License
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  schemas:
+    DeviceLicense:
+      description: API's to trigger retrieving and updating the Smart License operations on devices.
+      properties:
+        description:
+          description: More information about the Device License.
+          type: string
+        id:
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/IDeviceLicense'
+            type: object
+          type: array
+        licenseTypes:
+          items:
+            enum:
+            - ESSENTIALS
+            - EXPORT_CONTROL
+            - MALWARE_DEFENSE
+            - MALWARE_DEFENSE_HA
+            - SECURE_CLIENT_PREMIER
+            - SECURE_CLIENT_PREMIER_HA
+            - SECURE_CLIENT_PREMIER_ADVANTAGE
+            - SECURE_CLIENT_PREMIER_ADVANTAGE_HA
+            - URL
+            - URL_HA
+            - IPS
+            - IPS_HA
+            - SECURE_CLIENT_VPNOnly
+            - SECURE_CLIENT_VPNOnly_HA
+            - CARRIER
+            - CARRIER_HA
+            type: string
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object representing this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the Device License.
+          type: string
+        performanceTier:
+          enum:
+          - FTDv
+          - FTDv5
+          - FTDv10
+          - FTDv20
+          - FTDv30
+          - FTDv50
+          - FTDv100
+          type: string
+        type:
+          description: DeviceLicense
+          type: string
+        version:
+          type: string
+      type: object
+    IDeviceLicense:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/IDeviceLicense'
+            type: object
+          type: array
+        licenseTypes:
+          items:
+            enum:
+            - ESSENTIALS
+            - EXPORT_CONTROL
+            - MALWARE_DEFENSE
+            - MALWARE_DEFENSE_HA
+            - SECURE_CLIENT_PREMIER
+            - SECURE_CLIENT_PREMIER_HA
+            - SECURE_CLIENT_PREMIER_ADVANTAGE
+            - SECURE_CLIENT_PREMIER_ADVANTAGE_HA
+            - URL
+            - URL_HA
+            - IPS
+            - IPS_HA
+            - SECURE_CLIENT_VPNOnly
+            - SECURE_CLIENT_VPNOnly_HA
+            - CARRIER
+            - CARRIER_HA
+            type: string
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        performanceTier:
+          enum:
+          - FTDv
+          - FTDv5
+          - FTDv10
+          - FTDv20
+          - FTDv30
+          - FTDv50
+          - FTDv100
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    ISmartLicenseMetaData:
+      properties:
+        authStatus:
+          enum:
+          - AUTHORIZED
+          - AUTHORIZED_RESERVED
+          - OUT_OF_COMPLIANCE
+          - AUTHORIZATION_EXPIRED
+          - NOT_AUTHORIZED
+          - EVALUATION
+          type: string
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        evalExpiresInDays:
+          format: int32
+          type: integer
+        evalUsed:
+          type: boolean
+        exportControl:
+          type: boolean
+        isLocked:
+          type: boolean
+        lastRenewedTime:
+          type: string
+        lastSynchronizedTime:
+          type: string
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+        virtualAccount:
+          type: string
+      type: object
+    SmartLicense:
+      description: API's to trigger Smart License related operations like evaluation, registration, de-registration and Smart
+        License operations on devices.
+      properties:
+        description:
+          description: More information about the Smart License.
+          type: string
+        force:
+          description: true | false, if true, Overwrite FMC instance in Smart Software Manager if instance already exists.
+            default is false
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object representing this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/ISmartLicenseMetaData'
+          description: Object representing metadata attributes for the Smart License.
+          type: object
+        name:
+          description: Name of the Smart License.
+          type: string
+        regStatus:
+          description: REGISTERED|UNREGISTERED|RESERVATION_IN_PROGRESS|EVALUATION
+          enum:
+          - REGISTERED
+          - UNREGISTERED
+          - RESERVATION_IN_PROGRESS
+          - EVALUATION
+          type: string
+        registrationType:
+          description: EVALUATION|REGISTERED|DEREGISTERED
+          enum:
+          - EVALUATION
+          - REGISTER
+          - DEREGISTER
+          type: string
+        token:
+          description: X2M3YmJlY...
+          type: string
+        type:
+          description: SmartLicense
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    SmartLicenseListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/SmartLicense'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    DeviceLicenseListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/DeviceLicense'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+  parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cdfmc-openapi.yaml
+- cisco-secure-firewall-cdfmc-openapi.yml

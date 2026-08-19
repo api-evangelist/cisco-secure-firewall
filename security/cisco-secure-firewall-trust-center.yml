@@ -1,0 +1,26 @@
+generated: '2026-08-19'
+method: searched
+source: >-
+  https://trustportal.cisco.com/,
+  https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+trust_center:
+  url: https://trustportal.cisco.com/
+  status: 200
+  operator: Cisco Systems (corporate, covers all Cisco cloud services)
+  scope: corporate — not a Secure Firewall specific trust page
+certifications:
+- name: FedRAMP
+  scope: >-
+    All Security Cloud Control Firewall Manager APIs except the MSP APIs, served at
+    https://manage.secure.cisco/api/rest
+  evidence: >-
+    Published verbatim by Cisco on its own API documentation introduction page: "All Security Cloud Control
+    Firewall Manager APIs are available on FedRAMP at https://manage.secure.cisco/api/rest, with the
+    exception of the MSP APIs."
+  source: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  verified: true
+note: >-
+  FedRAMP is the only certification named on the Secure Firewall / Security Cloud Control developer surface
+  itself. Cisco's corporate Trust Portal hosts the wider certification library (its landing page renders
+  200), but the individual attestation documents sit behind a per-service selection flow that was not walked,
+  so no further certification is asserted here. An honest single-item list, not a claim of narrow compliance.

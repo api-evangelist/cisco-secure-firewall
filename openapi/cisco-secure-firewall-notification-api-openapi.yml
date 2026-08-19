@@ -1,0 +1,441 @@
+openapi: 3.2.0
+info:
+  description: APIs for interacting with AI Assistant
+  title: AI Assistant Notification API
+  version: 2.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/ai-assistant.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/ai-assistant.yaml
+servers:
+- description: AI Assistant Production API Server (NAM region)
+  url: https://api.security.cisco.com/api/ai-assistant
+tags:
+- description: Notification APIs
+  name: Notification
+paths:
+  /v2/notifications:
+    get:
+      operationId: listNotifications
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notificationListResponse'
+          description: Notifications retrieved successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Get all notifications for the user based on the tenant
+      tags:
+      - Notification
+  /v2/notifications/delete:
+    put:
+      operationId: bulkDeleteNotifications
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/deleteBulkNotificationRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteBulkNotificationResponse'
+          description: Notifications deleted successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Bulk deletes the notifications for the user based on the initiation_type, user_id and tenant_key
+      tags:
+      - Notification
+  /v2/notifications/{notification_id}/initiation_type/{initiation_type}:
+    delete:
+      operationId: deleteNotification
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      - description: unique ID of notification
+        in: path
+        name: notification_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: initiation type of notification
+        in: path
+        name: initiation_type
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteNotificationResponse'
+          description: Notification deleted successfully.
+        '400':
+          description: Bad request or missing fields
+        '404':
+          description: Notification not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Delete a notification by given notification id and initiation type
+      tags:
+      - Notification
+  /v2/user/notifications:
+    put:
+      operationId: updateNotificationStatus
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/markNotificationStatusRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/markNotificationStatusResponse'
+          description: User notification status updated successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Update the user notification is_read status
+      tags:
+      - Notification
+  /v2/user/notifications/count:
+    get:
+      operationId: getNotificationCount
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notificationCountResponse'
+          description: Notifications count retrieved successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: Get the count of unread notifications for the user based on the tenant
+      tags:
+      - Notification
+components:
+  schemas:
+    markNotificationStatusRequest:
+      description: update notification status API request body
+      properties:
+        is_read:
+          description: new read status
+          type: boolean
+        notifications:
+          description: notifications to update
+          items:
+            properties:
+              initiation_type:
+                description: notification initiation type
+                type: string
+              notification_id:
+                description: notification ID
+                format: uuid
+                type: string
+            required:
+            - notification_id
+            - initiation_type
+            type: object
+          type: array
+      required:
+      - notifications
+      - is_read
+      type: object
+    notificationCountResponse:
+      description: get notification count API response body
+      properties:
+        error:
+          description: error encountered while fetching counts
+          type: string
+        notificationCount:
+          description: count of notifications
+          type: integer
+        unreadNotificationCount:
+          description: count of unread notifications
+          type: integer
+      type: object
+    notificationListResponse:
+      description: list notifications API response body
+      properties:
+        notifications:
+          description: notification object list
+          items:
+            $ref: '#/components/schemas/notification'
+          type: array
+      type: object
+    errorResponse:
+      description: error response
+      properties:
+        code:
+          description: Error code
+          type: integer
+        details:
+          description: Additional details about the error
+          type: object
+        message:
+          description: Error message
+          type: string
+      type: object
+    deleteBulkNotificationResponse:
+      description: bulk delete notifications response body
+      properties:
+        error:
+          description: deletion error
+          type: string
+        status:
+          description: deletion status
+          enum:
+          - SUCCESS
+          - FAILED
+          type: string
+      type: object
+    notification:
+      description: notification object
+      properties:
+        analysis:
+          description: notification analysis
+          type: string
+        appType:
+          description: notification app type
+          type: string
+        conversationId:
+          description: conversation ID
+          format: uuid
+          type: string
+        id:
+          description: notification ID
+          format: uuid
+          type: string
+        initiationType:
+          description: notification initiation type
+          type: string
+        interactionType:
+          description: notification interaction type
+          type: string
+        messageId:
+          description: message ID
+          format: uuid
+          type: string
+        notificationType:
+          description: notification type
+          type: string
+        read:
+          description: notification read status
+          type: boolean
+        severityType:
+          description: notification severity
+          type: string
+        timestamp:
+          description: notification time
+          format: date-time
+          type: string
+      type: object
+    deleteNotificationResponse:
+      description: delete notification API response body
+      properties:
+        error:
+          description: deletion error
+          type: string
+        status:
+          description: deletion status
+          enum:
+          - SUCCESS
+          - FAILED
+          type: string
+      type: object
+    markNotificationStatusResponse:
+      description: update notification status API response body
+      properties:
+        error:
+          description: update error
+          type: string
+        status:
+          description: notification status
+          enum:
+          - SUCCESS
+          - FAILED
+          type: string
+      type: object
+    deleteBulkNotificationRequest:
+      description: bulk delete notifications request body
+      properties:
+        notifications:
+          description: notifications to delete
+          items:
+            properties:
+              initiation_type:
+                description: type of notification initiation
+                type: string
+              notification_id:
+                description: notification ID
+                format: uuid
+                type: string
+            required:
+            - notification_id
+            - initiation_type
+            type: object
+          type: array
+      required:
+      - notifications
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      description: bearer token security scheme
+      scheme: bearer
+      type: http

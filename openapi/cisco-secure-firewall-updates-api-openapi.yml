@@ -1,0 +1,1453 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall Updates API
+  version: 1.13.0
+  contact:
+    name: Cisco Firepower TAC
+    email: ngfw-support@cisco.com
+  description: 'Operations tagged Updates across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml.
+    Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
+      schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
+    operation_coverage: 8/8
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: Updates
+paths:
+  /v1/cdfmc/api/fmc_platform/v1/updates/cancelupgrades:
+    post:
+      deprecated: false
+      description: '**Cancel a failed upgrade. _Check the response section for applicable examples (if any)._**'
+      operationId: createCancelUpgrade
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : POST /api/fmc_platform/v1/updates/cancelupgrades ( Trigger cancel upgrade on the specified devices )':
+                value:
+                  targets:
+                  - id: 1251b782-7922-11e8-85d1-9ce8632d3182
+                    name: vFTD-1
+                    type: Device
+                  - id: 88f052b8-7922-11e8-a602-840c6cea8ca5
+                    name: vFTD-2
+                    type: Device
+            schema:
+              $ref: '#/components/schemas/CancelUpgrade'
+              type: object
+        description: The input representation of CancelUpgrade object model.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              examples:
+                'Example 1 : POST /api/fmc_platform/v1/updates/cancelupgrades ( Trigger cancel upgrade on the specified devices )':
+                  value:
+                    metadata:
+                      task:
+                        id: '8589935884'
+                        message: Triggered all Cancel Upgrades successfully
+                        status: RUNNING
+                    targets:
+                    - id: 1251b782-7922-11e8-85d1-9ce8632d3182
+                      name: vFTD-1
+                      type: Device
+                    - id: 88f052b8-7922-11e8-a602-840c6cea8ca5
+                      name: vFTD-2
+                      type: Device
+                    type: CancelUpgrade
+              schema:
+                $ref: '#/components/schemas/CancelUpgrade'
+                type: object
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Updates
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_platform/v1/updates/retryupgrades:
+    post:
+      deprecated: false
+      description: '**Retry a failed upgrade. _Check the response section for applicable examples (if any)._**'
+      operationId: createRetryUpgrade
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : POST /api/fmc_platform/v1/updates/retryupgrades ( Trigger retry upgrade on the specified devices )':
+                value:
+                  targets:
+                  - id: 1251b782-7922-11e8-85d1-9ce8632d3182
+                    name: vFTD-1
+                    type: Device
+                  - id: 88f052b8-7922-11e8-a602-840c6cea8ca5
+                    name: vFTD-2
+                    type: Device
+            schema:
+              $ref: '#/components/schemas/RetryUpgrade'
+              type: object
+        description: The input representation of RetryUpgrade object model.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              examples:
+                'Example 1 : POST /api/fmc_platform/v1/updates/retryupgrades ( Trigger retry upgrade on the specified devices )':
+                  value:
+                    metadata:
+                      task:
+                        id: '8589935884'
+                        message: Triggered all Retry Upgrades successfully
+                        status: RUNNING
+                    targets:
+                    - id: 1251b782-7922-11e8-85d1-9ce8632d3182
+                      name: vFTD-1
+                      type: Device
+                    - id: 88f052b8-7922-11e8-a602-840c6cea8ca5
+                      name: vFTD-2
+                      type: Device
+                    type: RetryUpgrade
+              schema:
+                $ref: '#/components/schemas/RetryUpgrade'
+                type: object
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Updates
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_platform/v1/updates/revertupgrades:
+    post:
+      deprecated: false
+      description: '**Trigger reversion of an upgrade. _Check the response section for applicable examples (if any)._**'
+      operationId: createRevertUpgrade
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : POST /api/fmc_platform/v1/updates/revertupgrades ( Trigger revert upgrade on the specified devices )':
+                value:
+                  targets:
+                  - id: 1251b782-7922-11e8-85d1-9ce8632d3182
+                    name: vFTD-1
+                    type: Device
+                  - id: 88f052b8-7922-11e8-a602-840c6cea8ca5
+                    name: vFTD-2
+                    type: Device
+            schema:
+              $ref: '#/components/schemas/RevertUpgrade'
+              type: object
+        description: The input representation of RevertUpgrade object model.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              examples:
+                'Example 1 : POST /api/fmc_platform/v1/updates/revertupgrades ( Trigger revert upgrade on the specified devices )':
+                  value:
+                    metadata:
+                      task:
+                        id: '8589935884'
+                        message: Triggered all Revert Upgrades successfully
+                        status: RUNNING
+                    targets:
+                    - id: 1251b782-7922-11e8-85d1-9ce8632d3182
+                      name: vFTD-1
+                      type: Device
+                    - id: 88f052b8-7922-11e8-a602-840c6cea8ca5
+                      name: vFTD-2
+                      type: Device
+                    type: RevertUpgrade
+              schema:
+                $ref: '#/components/schemas/RevertUpgrade'
+                type: object
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Updates
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_platform/v1/updates/upgradepackages:
+    get:
+      deprecated: false
+      description: '**Get the list of all upgrade packages.**'
+      operationId: getAllUpgradePackage
+      parameters:
+      - description: Exclude packages from support site and only show local packages.
+        in: query
+        name: excludeSupportSite
+        required: false
+        schema:
+          type: boolean
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GETALL /api/fmc_platform/v1/updates/upgradepackages ( Test Get of Upgrade Packages )':
+                  value:
+                    items:
+                    - id: aaebb332-de68-11ef-9a96-abb007be7f1b
+                      links:
+                        self: https://example.cisco.com/api/fmc_platform/v1/updates/upgradepackages/aaebb332-de68-11ef-9a96-abb007be7f1b
+                      metadata:
+                        fileSize: 1319180.0
+                        isSuggestedRelease: true
+                        modelNumber: '75'
+                        packageAvailability:
+                          availableOnSupportSite: true
+                          bundleAvailableLocally: false
+                          directPullSupported: true
+                          userConfiguredPointer: true
+                        rebootRequired: true
+                        updateVersion: 7.4.2-172
+                        upgradeFileId: Cisco FTD Upgrade / Mon Jul 29 21:56:41 UTC 2024
+                        upgradeFileName: Cisco_FTD_Upgrade-7.4.2-172.sh.REL.tar
+                        upgradeFrom: 7.0.0
+                        upgradeType: Cisco FTD Upgrade
+                        uploadDate: '2024-07-29T21:56:41Z'
+                      name: Cisco_FTD_Upgrade-7.4.2-172.sh.REL.tar
+                      type: UpgradePackage
+                    - id: aaec00c6-de68-11ef-9a96-abb007be7f1b
+                      links:
+                        self: https://example.cisco.com/api/fmc_platform/v1/updates/upgradepackages/aaec00c6-de68-11ef-9a96-abb007be7f1b
+                      metadata:
+                        fileSize: 1527590.0
+                        isSuggestedRelease: false
+                        modelNumber: '75'
+                        packageAvailability:
+                          availableOnSupportSite: true
+                          bundleAvailableLocally: false
+                          directPullSupported: true
+                          userConfiguredPointer: false
+                        rebootRequired: true
+                        updateVersion: 7.6.0-113
+                        upgradeFileId: Cisco FTD Upgrade / Fri Sep 13 02:45:00 UTC 2024
+                        upgradeFileName: Cisco_FTD_Upgrade-7.6.0-113.sh.REL.tar
+                        upgradeFrom: 7.1.0
+                        upgradeType: Cisco FTD Upgrade
+                        uploadDate: '2024-09-13T02:45:00Z'
+                      name: Cisco_FTD_Upgrade-7.6.0-113.sh.REL.tar
+                      type: UpgradePackage
+                    links:
+                      self: https://example.cisco.com/api/fmc_platform/v1/updates/upgradepackages
+                    paging:
+                      count: 4
+                      limit: 4
+                      offset: 0
+                      pages: 1
+                'Example 2 : GETALL /api/fmc_platform/v1/updates/upgradepackages ( Test Get of Upgrade Packages )':
+                  value:
+                    items:
+                    - id: aaebb332-de68-11ef-9a96-abb007be7f1b
+                      links:
+                        self: https://example.cisco.com/api/fmc_platform/v1/updates/upgradepackages/aaebb332-de68-11ef-9a96-abb007be7f1b
+                      metadata:
+                        fileSize: 1319180.0
+                        isSuggestedRelease: true
+                        modelNumber: '75'
+                        packageAvailability:
+                          availableOnSupportSite: true
+                          bundleAvailableLocally: false
+                          directPullSupported: true
+                          userConfiguredPointer: true
+                        rebootRequired: true
+                        updateVersion: 7.4.2-172
+                        upgradeFileId: Cisco FTD Upgrade / Mon Jul 29 21:56:41 UTC 2024
+                        upgradeFileName: Cisco_FTD_Upgrade-7.4.2-172.sh.REL.tar
+                        upgradeFrom: 7.0.0
+                        upgradeType: Cisco FTD Upgrade
+                        uploadDate: '2024-07-29T21:56:41Z'
+                      name: Cisco_FTD_Upgrade-7.4.2-172.sh.REL.tar
+                      type: UpgradePackage
+                    - id: aaec00c6-de68-11ef-9a96-abb007be7f1b
+                      links:
+                        self: https://example.cisco.com/api/fmc_platform/v1/updates/upgradepackages/aaec00c6-de68-11ef-9a96-abb007be7f1b
+                      metadata:
+                        fileSize: 1527590.0
+                        isSuggestedRelease: false
+                        modelNumber: '75'
+                        packageAvailability:
+                          availableOnSupportSite: true
+                          bundleAvailableLocally: false
+                          directPullSupported: true
+                          userConfiguredPointer: false
+                        rebootRequired: true
+                        updateVersion: 7.6.0-113
+                        upgradeFileId: Cisco FTD Upgrade / Fri Sep 13 02:45:00 UTC 2024
+                        upgradeFileName: Cisco_FTD_Upgrade-7.6.0-113.sh.REL.tar
+                        upgradeFrom: 7.1.0
+                        upgradeType: Cisco FTD Upgrade
+                        uploadDate: '2024-09-13T02:45:00Z'
+                      name: Cisco_FTD_Upgrade-7.6.0-113.sh.REL.tar
+                      type: UpgradePackage
+                    links:
+                      self: https://example.cisco.com/api/fmc_platform/v1/updates/upgradepackages
+                    paging:
+                      count: 4
+                      limit: 4
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/UpgradePackageListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Updates
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_platform/v1/updates/upgradepackages/{containerUUID}/applicabledevices:
+    get:
+      deprecated: false
+      description: '**Get the list of devices available for the specified upgrade package.**'
+      operationId: getAllApplicableDevice
+      parameters:
+      - description: The container id under which this specific resource is contained.
+        in: path
+        name: containerUUID
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicableDeviceListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Updates
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_platform/v1/updates/upgradepackages/{objectId}:
+    delete:
+      deprecated: false
+      description: '**Delete the upgrade package associated with the specified ID. _Check the response section for applicable
+        examples (if any)._**'
+      operationId: deleteUpgradePackage
+      parameters:
+      - description: Unique identifier of the upgrade package.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - description: Boolean for package type. If TRUE, delete the user configured pointer. If FALSE, delete the local bundle.
+        in: query
+        name: userConfiguredPointer
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : DELETE /api/fmc_platform/v1/updates/upgradepackages/aaebb332-de68-11ef-9a96-abb007be7f1b9?userConfiguredPointer=true
+                  ( Delete the Upgrade Package  by the upgrade package id. This operation will remove the upgrade package
+                  from FMC. )'
+                : value:
+                    id: aaebb332-de68-11ef-9a96-abb007be7f1b
+                    links:
+                      self: https://example.cisco.com/api/fmc_platform/v1/updates/upgradepackages/aaebb332-de68-11ef-9a96-abb007be7f1b
+                    metadata:
+                      fileSize: 1319180.0
+                      isSuggestedRelease: true
+                      modelNumber: '75'
+                      packageAvailability:
+                        availableOnSupportSite: true
+                        bundleAvailableLocally: false
+                        directPullSupported: true
+                        userConfiguredPointer: true
+                      rebootRequired: true
+                      updateVersion: 7.4.2-172
+                      upgradeFileId: Cisco FTD Upgrade / Mon Jul 29 21:56:41 UTC 2024
+                      upgradeFileName: Cisco_FTD_Upgrade-7.4.2-172.sh.REL.tar
+                      upgradeFrom: 7.0.0
+                      upgradeType: Cisco FTD Upgrade
+                      uploadDate: '2024-07-29T21:56:41Z'
+                    name: Cisco_FTD_Upgrade-7.4.2-172.sh.REL.tar
+                    type: UpgradePackage
+              schema:
+                $ref: '#/components/schemas/UpgradePackage'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Updates
+    get:
+      deprecated: false
+      description: '**Get the upgrade package associated with the specified ID.**'
+      operationId: getUpgradePackage
+      parameters:
+      - description: Unique identifier of the object.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GETALL /api/fmc_platform/v1/updates/upgradepackages ( Test Get of Upgrade Packages )':
+                  value:
+                    items:
+                    - id: aaebb332-de68-11ef-9a96-abb007be7f1b
+                      links:
+                        self: https://example.cisco.com/api/fmc_platform/v1/updates/upgradepackages/aaebb332-de68-11ef-9a96-abb007be7f1b
+                      metadata:
+                        fileSize: 1319180.0
+                        isSuggestedRelease: true
+                        modelNumber: '75'
+                        packageAvailability:
+                          availableOnSupportSite: true
+                          bundleAvailableLocally: false
+                          directPullSupported: true
+                          userConfiguredPointer: true
+                        rebootRequired: true
+                        updateVersion: 7.4.2-172
+                        upgradeFileId: Cisco FTD Upgrade / Mon Jul 29 21:56:41 UTC 2024
+                        upgradeFileName: Cisco_FTD_Upgrade-7.4.2-172.sh.REL.tar
+                        upgradeFrom: 7.0.0
+                        upgradeType: Cisco FTD Upgrade
+                        uploadDate: '2024-07-29T21:56:41Z'
+                      name: Cisco_FTD_Upgrade-7.4.2-172.sh.REL.tar
+                      type: UpgradePackage
+                    - id: aaec00c6-de68-11ef-9a96-abb007be7f1b
+                      links:
+                        self: https://example.cisco.com/api/fmc_platform/v1/updates/upgradepackages/aaec00c6-de68-11ef-9a96-abb007be7f1b
+                      metadata:
+                        fileSize: 1527590.0
+                        isSuggestedRelease: false
+                        modelNumber: '75'
+                        packageAvailability:
+                          availableOnSupportSite: true
+                          bundleAvailableLocally: false
+                          directPullSupported: true
+                          userConfiguredPointer: false
+                        rebootRequired: true
+                        updateVersion: 7.6.0-113
+                        upgradeFileId: Cisco FTD Upgrade / Fri Sep 13 02:45:00 UTC 2024
+                        upgradeFileName: Cisco_FTD_Upgrade-7.6.0-113.sh.REL.tar
+                        upgradeFrom: 7.1.0
+                        upgradeType: Cisco FTD Upgrade
+                        uploadDate: '2024-09-13T02:45:00Z'
+                      name: Cisco_FTD_Upgrade-7.6.0-113.sh.REL.tar
+                      type: UpgradePackage
+                    links:
+                      self: https://example.cisco.com/api/fmc_platform/v1/updates/upgradepackages
+                    paging:
+                      count: 4
+                      limit: 4
+                      offset: 0
+                      pages: 1
+                ? 'Example 2 : GET /api/fmc_platform/v1/updates/upgradepackages/aaebb332-de68-11ef-9a96-abb007be7f1b ( Test
+                  Get of Upgrade Packages )'
+                : value:
+                    id: aaebb332-de68-11ef-9a96-abb007be7f1b
+                    links:
+                      self: https://example.cisco.com/api/fmc_platform/v1/updates/upgradepackages/aaebb332-de68-11ef-9a96-abb007be7f1b
+                    metadata:
+                      fileSize: 1319180.0
+                      isSuggestedRelease: true
+                      modelNumber: '75'
+                      packageAvailability:
+                        availableOnSupportSite: true
+                        bundleAvailableLocally: false
+                        directPullSupported: true
+                        userConfiguredPointer: true
+                      rebootRequired: true
+                      updateVersion: 7.4.2-172
+                      upgradeFileId: Cisco FTD Upgrade / Mon Jul 29 21:56:41 UTC 2024
+                      upgradeFileName: Cisco_FTD_Upgrade-7.4.2-172.sh.REL.tar
+                      upgradeFrom: 7.0.0
+                      upgradeType: Cisco FTD Upgrade
+                      uploadDate: '2024-07-29T21:56:41Z'
+                    name: Cisco_FTD_Upgrade-7.4.2-172.sh.REL.tar
+                    type: UpgradePackage
+              schema:
+                $ref: '#/components/schemas/UpgradePackage'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Updates
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_platform/v1/updates/upgrades:
+    post:
+      deprecated: false
+      description: '**Create a task to trigger a Threat Defense upgrade/readiness check on a list of devices or push an upgrade
+        file to a list of devices. If neither pushUpgradeFileOnly nor readinessCheckOnly is set, execute upgrade on the device.
+        _Check the response section for applicable examples (if any)._**'
+      operationId: createUpgrade
+      parameters:
+      - description: Boolean for Snort version. When TRUE the device is set to Snort3, when FALSE the device is set to Snort2.
+        in: query
+        name: toggleToSnort3
+        required: false
+        schema:
+          type: boolean
+      - description: Boolean for upgrade revert. When TRUE backups are made so that the device may be reverted to the pre-upgrade
+          version following an upgrade. When FALSE revert is not enabled for the device. By default this is TRUE. This option
+          is not applicable to Hotfixes, for a Hotfix upgrade this option must be explicitly set to FALSE.
+        in: query
+        name: enableUpgradeRevert
+        required: false
+        schema:
+          type: boolean
+      - description: Boolean for auto upgrade cancel. When TRUE the upgrade is automatically cancelled and the device rolled
+          back to the previous version (if possible) if the upgrade fails. When FALSE if the upgrade fails the device remains
+          in the failed state and will not be automatically rolled back. By default this is FALSE. This option is not applicable
+          to Patches or Hotfixes.
+        in: query
+        name: autoUpgradeCancel
+        required: false
+        schema:
+          type: boolean
+      - description: Boolean for readiness check. When TRUE run readiness check for the upgrade package on a list of devices.
+          Not compatible with pushUpgradeFileOnly option.
+        in: query
+        name: readinessCheckOnly
+        required: false
+        schema:
+          type: boolean
+      - description: Boolean for upgrade file push. When TRUE push the upgrade file to a list of devices. Not compatible with
+          readinessCheckOnly option.
+        in: query
+        name: pushUpgradeFileOnly
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : POST /api/fmc_platform/v1/updates/upgrades ( Push the specified upgrade package on the specified devices )':
+                value:
+                  pushUpgradeFileOnly: 'true'
+                  targets:
+                  - id: 1251b782-7922-11e8-85d1-9ce8632d3182
+                    name: vFTD-1
+                    type: Device
+                  - id: 88f052b8-7922-11e8-a602-840c6cea8ca5
+                    name: vFTD-2
+                    type: Device
+                  upgradePackage:
+                    id: 73207350-8395-11e8-845b-e5a3cc8a21de
+                    type: UpgradePackage
+              'Example 2 : POST /api/fmc_platform/v1/updates/upgrades ( Trigger the specified upgrade on the specified devices )':
+                value:
+                  pushUpgradeFileOnly: 'false'
+                  targets:
+                  - id: 1251b782-7922-11e8-85d1-9ce8632d3182
+                    name: vFTD-1
+                    type: Device
+                  - id: 88f052b8-7922-11e8-a602-840c6cea8ca5
+                    name: vFTD-2
+                    type: Device
+                  upgradePackage:
+                    id: 73207350-8395-11e8-845b-e5a3cc8a21de
+                    type: UpgradePackage
+              'Example 3 : POST /api/fmc_platform/v1/updates/upgrades ( Trigger readiness check on the specified devices )':
+                value:
+                  readinessCheckOnly: 'true'
+                  targets:
+                  - id: 1251b782-7922-11e8-85d1-9ce8632d3182
+                    name: vFTD-1
+                    type: Device
+                  - id: 88f052b8-7922-11e8-a602-840c6cea8ca5
+                    name: vFTD-2
+                    type: Device
+                  upgradePackage:
+                    id: 73207350-8395-11e8-845b-e5a3cc8a21de
+                    type: UpgradePackage
+            schema:
+              $ref: '#/components/schemas/Upgrade'
+              type: object
+        description: The input representation of Upgrade object model.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              examples:
+                'Example 1 : POST /api/fmc_platform/v1/updates/upgrades ( Push the specified upgrade package on the specified devices )':
+                  value:
+                    metadata:
+                      task:
+                        id: '8589935884'
+                        message: Triggered all upgrade staging successfully.
+                        status: RUNNING
+                    pushUpgradeFileOnly: 'true'
+                    targets:
+                    - id: 1251b782-7922-11e8-85d1-9ce8632d3182
+                      name: vFTD-1
+                      type: Device
+                    - id: 88f052b8-7922-11e8-a602-840c6cea8ca5
+                      name: vFTD-2
+                      type: Device
+                    type: Upgrade
+                    upgradePackage:
+                      id: 73207350-8395-11e8-845b-e5a3cc8a21de
+                      type: UpgradePackage
+                'Example 2 : POST /api/fmc_platform/v1/updates/upgrades ( Trigger the specified upgrade on the specified devices )':
+                  value:
+                    metadata:
+                      task:
+                        id: '8589935884'
+                        message: Triggered all upgrades successfully.
+                        status: RUNNING
+                    pushUpgradeFileOnly: 'false'
+                    targets:
+                    - id: 1251b782-7922-11e8-85d1-9ce8632d3182
+                      name: vFTD-1
+                      type: Device
+                    - id: 88f052b8-7922-11e8-a602-840c6cea8ca5
+                      name: vFTD-2
+                      type: Device
+                    type: Upgrade
+                    upgradePackage:
+                      id: 73207350-8395-11e8-845b-e5a3cc8a21de
+                      type: UpgradePackage
+                'Example 3 : POST /api/fmc_platform/v1/updates/upgrades ( Trigger readiness check on the specified devices )':
+                  value:
+                    metadata:
+                      task:
+                        id: '8589935884'
+                        message: Triggered all readiness checks successfully.
+                        status: RUNNING
+                    pushUpgradeFileOnly: 'false'
+                    targets:
+                    - id: 1251b782-7922-11e8-85d1-9ce8632d3182
+                      name: vFTD-1
+                      type: Device
+                    - id: 88f052b8-7922-11e8-a602-840c6cea8ca5
+                      name: vFTD-2
+                      type: Device
+                    type: Upgrade
+                    upgradePackage:
+                      id: 73207350-8395-11e8-845b-e5a3cc8a21de
+                      type: UpgradePackage
+              schema:
+                $ref: '#/components/schemas/Upgrade'
+                type: object
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Updates
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+  schemas:
+    IAdvanced:
+      properties:
+        enableOGS:
+          type: boolean
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    ITarget:
+      description: This is the target device.
+      properties:
+        description:
+          type: string
+        id:
+          description: Unique ID of the device.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the device.
+          type: string
+        type:
+          description: Device
+          type: string
+        version:
+          type: string
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    Upgrade:
+      description: This API is to trigger an upgrade/readinesscheck on a list of devices or just push an upgrade file to a
+        list of devices.
+      properties:
+        autoUpgradeCancel:
+          description: If set to True, the upgrade will be automatically canceled and go back to the original starting point
+            upon an upgrade failure, otherwise the device will stay at the current state where it failed.
+          type: boolean
+        description:
+          description: More information about the upgrade.
+          type: string
+        enableUpgradeRevert:
+          type: boolean
+        id:
+          description: Unique ID of this operation.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object representing this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the triggered task.
+          type: object
+        name:
+          description: Name of the upgrade.
+          type: string
+        pushUpgradeFileOnly:
+          description: Set to True if pushing the upgrade file to device(s) only, otherwise actual upgrade will also be triggered.
+            When both readinessCheckOnly and pushUpgradeFileOnly are set to true, readinessCheckOnly will take the precedence.
+          type: boolean
+        readinessCheckOnly:
+          description: Set to True if performing readiness check only, otherwise the device will start a real upgrade procedure.
+            When both readinessCheckOnly and pushUpgradeFileOnly are set to true, readinessCheckOnly will take the precedence.
+          type: boolean
+        targets:
+          description: A list of FTD devices.
+          items:
+            $ref: '#/components/schemas/ITarget'
+            type: object
+          type: array
+        troubleshootGeneration:
+          description: Boolean value indicating whether to generate troubleshooting information during the upgrade.
+          type: boolean
+        type:
+          description: Upgrade
+          type: string
+        upgradePackage:
+          $ref: '#/components/schemas/UpgradePackage'
+          description: Object representing the upgrade package.
+          type: object
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    UpgradePackage:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    DialHost:
+      properties:
+        host:
+          type: string
+        port:
+          format: int32
+          type: integer
+      type: object
+    ApplicableDevice:
+      properties:
+        accessPolicy:
+          $ref: '#/components/schemas/IPolicyModel'
+          type: object
+        advanced:
+          $ref: '#/components/schemas/IAdvanced'
+          type: object
+        containerType:
+          type: string
+        description:
+          type: string
+        healthMessage:
+          type: string
+        healthPolicy:
+          $ref: '#/components/schemas/IHealthPolicy'
+          type: object
+        healthStatus:
+          type: string
+        id:
+          type: string
+        isPartOfContainer:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        model:
+          type: string
+        modelId:
+          type: string
+        modelNumber:
+          type: string
+        modelType:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        status:
+          type: string
+        sw_version:
+          type: string
+        type:
+          type: string
+        upgradePackage:
+          $ref: '#/components/schemas/UpgradePackage'
+          type: object
+        version:
+          type: string
+      type: object
+    HealthThreshold:
+      properties:
+        type:
+          type: string
+        value:
+          format: int32
+          type: integer
+      type: object
+    RetryUpgrade:
+      description: This operation retries a failed upgrade.
+      properties:
+        description:
+          description: More details about the operation.
+          type: string
+        id:
+          description: Unique Task ID of this request.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the triggered task.
+          type: object
+        name:
+          description: The name of the operation.
+          type: string
+        targets:
+          description: A list of FTD devices.
+          items:
+            $ref: '#/components/schemas/ITarget'
+            type: object
+          type: array
+        type:
+          description: RetryUpgrade
+          type: string
+        version:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    UpgradePackageListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/UpgradePackage'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    CancelUpgrade:
+      description: This operation is to cancel a failed upgrade.
+      properties:
+        description:
+          description: Cancel a failed upgrade.
+          type: string
+        forceCancel:
+          description: Set to True if cancelling an ongoing upgrade by force, False otherwise.
+          type: boolean
+        id:
+          description: Unique Task ID of this request.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        targets:
+          description: A list of FTD devices
+          items:
+            $ref: '#/components/schemas/ITarget'
+            type: object
+          type: array
+        type:
+          description: CancelUpgrade
+          type: string
+        upgradeId:
+          type: string
+        version:
+          type: string
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    IHealthPolicy:
+      description: Description of Health Policy.
+      properties:
+        basePolicyID:
+          type: string
+        defaultPolicy:
+          type: boolean
+        description:
+          description: Description of Health Policy.
+          type: string
+        healthModules:
+          items:
+            $ref: '#/components/schemas/HealthModule'
+            type: object
+          type: array
+        id:
+          description: Unique identifier (UUID) representing the Health policy.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the Health policy.
+          type: object
+        name:
+          description: User-specified name of the Health policy.
+          type: string
+        policyType:
+          type: string
+        setting:
+          $ref: '#/components/schemas/HealthSetting'
+          type: object
+        type:
+          description: Type of the Health policy; this value is always HealthPolicy.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    HealthModule:
+      properties:
+        alertConfig:
+          items:
+            $ref: '#/components/schemas/HealthAlertConfig'
+            type: object
+          type: array
+        alertEnabled:
+          type: boolean
+        criticalThreshold:
+          format: int32
+          type: integer
+        customThresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+        enabled:
+          type: boolean
+        moduleId:
+          type: string
+        severity:
+          type: string
+        type:
+          type: string
+        warningThreshold:
+          format: int32
+          type: integer
+      type: object
+    ApplicableDeviceListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ApplicableDevice'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    HealthSetting:
+      properties:
+        alertEvaluationInterval:
+          format: int32
+          type: integer
+        certFileContent:
+          type: string
+        certFileName:
+          type: string
+        certFileType:
+          type: string
+        certPassphrase:
+          type: string
+        configType:
+          type: string
+        dataCollectionInterval:
+          format: int32
+          type: integer
+        dialInHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        dialOutHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        enabledOpenConfig:
+          type: boolean
+        grpcPassword:
+          type: string
+        grpcUsername:
+          type: string
+        readOnly:
+          type: boolean
+      type: object
+    RevertUpgrade:
+      description: This operation reverts an upgrade.
+      properties:
+        description:
+          description: More details about the operation.
+          type: string
+        id:
+          description: Unique Task ID of this request.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the triggered task.
+          type: object
+        name:
+          description: The name of the operation.
+          type: string
+        targets:
+          description: A list of FTD devices.
+          items:
+            $ref: '#/components/schemas/ITarget'
+            type: object
+          type: array
+        type:
+          description: RevertUpgrade
+          type: string
+        version:
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    HealthAlertConfig:
+      properties:
+        enabled:
+          type: boolean
+        name:
+          type: string
+        thresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+      type: object
+    IPolicyModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cdfmc-openapi.yaml
+- cisco-secure-firewall-cdfmc-openapi.yml

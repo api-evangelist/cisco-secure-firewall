@@ -1,0 +1,487 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine MPM Policy API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: MPM Policy
+paths:
+  /mpm/manager/{managerId}/policies/ids/{revisionId}:
+    put:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getPoliciesByIdsInBulk
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                format: uuid
+                type: string
+              type: array
+              uniqueItems: true
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MpmPolicyWithoutRulesObj'
+                type: array
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '413':
+          description: Request Entity Too Large
+        '500':
+          description: Internal Server Error
+      summary: Get the policies in a manager at revision in bulk
+      tags:
+      - MPM Policy
+  /mpm/manager/{managerId}/policies/names/{revisionId}:
+    put:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getPoliciesByNamesInBulk
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                type: string
+              type: array
+              uniqueItems: true
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MpmPolicyWithoutRulesObj'
+                type: array
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '413':
+          description: Request Entity Too Large
+        '500':
+          description: Internal Server Error
+      summary: Get the policies in a manager at revision in bulk
+      tags:
+      - MPM Policy
+  /mpm/manager/{managerId}/policies/{revisionId}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getPolicies
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmPoliciesPage'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the policies in a manager at revision
+      tags:
+      - MPM Policy
+  /mpm/manager/{managerId}/policy/{policyId}/{revisionId}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getPolicy
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: revisionId
+        required: true
+        schema:
+          format: int32
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmPolicyObj'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the policy in a manager at revision
+      tags:
+      - MPM Policy
+components:
+  schemas:
+    MpmEndpointObj:
+      properties:
+        addressEnd:
+          format: int64
+          type: integer
+        addressStart:
+          format: int64
+          type: integer
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    MpmEndpointGroupObj:
+      properties:
+        description:
+          type: string
+        epgs:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        eps:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+      type: object
+    MpmAppObj:
+      properties:
+        alg:
+          type: string
+        anyApp:
+          type: boolean
+        description:
+          type: string
+        ianaProtocol:
+          format: int32
+          type: integer
+        icmpCode:
+          format: int32
+          type: integer
+        icmpType:
+          format: int32
+          type: integer
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        portEnd:
+          format: int32
+          type: integer
+        portStart:
+          format: int32
+          type: integer
+        timeout:
+          format: int32
+          type: integer
+        value:
+          type: string
+      type: object
+    MpmPolicyWithoutRulesObj:
+      properties:
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        installTargets:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+      type: object
+    MpmAppGroupObj:
+      properties:
+        aps:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+      type: object
+    MpmPoliciesPage:
+      properties:
+        cursor:
+          type: string
+        policies:
+          items:
+            $ref: '#/components/schemas/MpmPolicyWithoutRulesObj'
+          type: array
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
+      type: object
+    MpmPolicyObj:
+      properties:
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        installTargets:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+        natRules:
+          items:
+            $ref: '#/components/schemas/MpmNatRuleObj'
+          type: array
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+        rules:
+          items:
+            $ref: '#/components/schemas/MpmRuleObj'
+          type: array
+      type: object
+    MpmRuleObj:
+      properties:
+        action:
+          enum:
+          - PERMIT
+          - DENY
+          type: string
+        apgs:
+          items:
+            $ref: '#/components/schemas/MpmAppGroupObj'
+          type: array
+        aps:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+        description:
+          type: string
+        dstDgs:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
+        dstEpgs:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        dstEps:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+        enabled:
+          type: boolean
+        fullyPinned:
+          type: boolean
+        id:
+          format: uuid
+          type: string
+        onClose:
+          type: boolean
+        onInit:
+          type: boolean
+        ruleGroup:
+          type: string
+        srcDgs:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
+        srcEpgs:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        srcEps:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+      type: object
+    MpmNatRuleObj:
+      properties:
+        apTranslated:
+          $ref: '#/components/schemas/MpmAppObj'
+        apgsMatch:
+          items:
+            $ref: '#/components/schemas/MpmAppGroupObj'
+          type: array
+        appNatType:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+        apsMatch:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+        description:
+          type: string
+        dstEpTranslated:
+          $ref: '#/components/schemas/MpmEndpointObj'
+        dstEpgsMatch:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        dstEpsMatch:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+        dstNatType:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+        enabled:
+          type: boolean
+        id:
+          format: uuid
+          type: string
+        srcEpTranslated:
+          $ref: '#/components/schemas/MpmEndpointObj'
+        srcEpgsMatch:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        srcEpsMatch:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+        srcNatType:
+          enum:
+          - MATCH
+          - STATIC
+          - HIDE
+          type: string
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

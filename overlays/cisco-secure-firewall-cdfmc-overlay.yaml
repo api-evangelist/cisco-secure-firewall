@@ -1,0 +1,60 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Cisco Cloud-delivered Firewall Management Center (cdFMC) API
+  version: 1.0.0
+  x-generated: '2026-08-19'
+  x-method: generated
+  x-source: openapi/cisco-secure-firewall-cdfmc-openapi.yml
+extends: openapi/cisco-secure-firewall-cdfmc-openapi.yml
+x-note: >-
+  Non-destructive enhancements only. Cisco's published contract is never mutated. Every action below records
+  something the original document does not carry — provenance, the runtime semantics documented on
+  developer.cisco.com but absent from the spec, and the two error envelopes actually in play.
+actions:
+- target: $.info
+  update:
+    x-apis-io:
+      provider: cisco-secure-firewall
+      profile: https://apis.io/providers/cisco-secure-firewall/
+      harvested: '2026-08-19'
+      first_party: true
+      source: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+    x-conventions:
+      auth: 'Authorization: Bearer $API_TOKEN (non-expiring Security Cloud Control API token)'
+      update_verb: PUT (the cdFMC surface modifies with PUT; the Firewall Manager surface uses PATCH)
+      async: Action-verb POSTs are asynchronous; poll GET /v1/transactions/{transactionUid}.
+      pagination: FMC-native paging; `bulk` and `filter` query parameters on 101 and 155 operations.
+      idempotency: >-
+        No idempotency key exists. Only DELETE is documented as idempotent, by HTTP semantics.
+      request_correlation: >-
+        The edge gateway returns a `requestId` in the error BODY. No correlation header is emitted.
+    x-error-contract:
+      documented_gap: >-
+        All 1,311 operations declare a `default` response and only two explicit 4xx responses exist in the
+        whole document. Generated clients have no typed error to switch on. See
+        errors/cisco-secure-firewall-problem-types.yml.
+      edge_envelope:
+        fields:
+        - timestamp
+        - path
+        - status
+        - error
+        - requestId
+        observed: 'HTTP 401 from https://api.us.security.cisco.com/firewall/v1/meta, 2026-08-19'
+    x-rate-limits:
+      documented: false
+      status_on_exhaustion: 429
+      headers: none declared
+- target: $.info
+  update:
+    x-agent-readiness:
+      mcp: local-stdio only (community servers in CiscoDevNet); no hosted endpoint
+      agent_card: none published
+      llms_txt: none published on developer.cisco.com (probed 404)
+      well_known: no /.well-known document served on the API host (all probes 404)
+- target: $.servers
+  update:
+  - description: >-
+      Regional bases. A token is region-scoped; a token minted in one region will not authenticate against
+      another. The legacy edge.<region>.cdo.cisco.com and <region>.manage.security.cisco.com bases are
+      superseded but still served.

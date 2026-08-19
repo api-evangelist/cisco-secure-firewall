@@ -1,0 +1,613 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine MPM Entities Revision Diff API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: MPM Entities Revision Diff
+paths:
+  /mpm/diff/manager/{managerId}/app-group/{appGroupId}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getAppGroupChangesBetweenRevisions
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: appGroupId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: query
+        name: leftRevision
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: rightRevision
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmAppGroupRevisionDiff'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the diff of App group between two revisions
+      tags:
+      - MPM Entities Revision Diff
+  /mpm/diff/manager/{managerId}/app/{appId}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getAppChangesBetweenRevisions
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: appId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: query
+        name: leftRevision
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: rightRevision
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmAppRevisionDiff'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the diff of App between two revisions
+      tags:
+      - MPM Entities Revision Diff
+  /mpm/diff/manager/{managerId}/endpoint-group/{endpointGroupId}:
+    get:
+      description: 'Roles allowed: support, mpm-rw,mpm-ro'
+      operationId: getEndpointGroupDiffBetweenRevisions
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: endpointGroupId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: query
+        name: leftRevision
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: rightRevision
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmEndpointGroupRevisionDiff'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get endpoint group difference between two revisions
+      tags:
+      - MPM Entities Revision Diff
+  /mpm/diff/manager/{managerId}/endpoint/{endpointId}:
+    get:
+      description: 'Roles allowed: support, mpm-rw,mpm-ro'
+      operationId: getEndpointDiffBetweenRevisions
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: endpointId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: query
+        name: leftRevision
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: rightRevision
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmEndpointRevisionDiff'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get endpoint difference between two revisions
+      tags:
+      - MPM Entities Revision Diff
+  /mpm/diff/manager/{managerId}/policy/{policyId}:
+    get:
+      description: 'Roles allowed: support, mpm-rw,mpm-ro'
+      operationId: getPolicyDiffBetweenRevisions
+      parameters:
+      - in: path
+        name: managerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: query
+        name: leftRevision
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: rightRevision
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmPolicyRevisionDiff'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get policy difference between two revisions
+      tags:
+      - MPM Entities Revision Diff
+components:
+  schemas:
+    MpmRelationshipRevisionDiff:
+      properties:
+        added:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        removed:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        updated:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    MpmAppGroupRevisionDiff:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - NO_DIFF
+          type: string
+        body:
+          $ref: '#/components/schemas/MpmAppGroupRevisionDiffBody'
+        id:
+          format: uuid
+          type: string
+      type: object
+    MpmEndpointGroupRevisionDiffBody:
+      properties:
+        epgs:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        eps:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        info:
+          $ref: '#/components/schemas/EndpointGroupInfoChange'
+      type: object
+    MpmAppRevisionDiff:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - NO_DIFF
+          type: string
+        body:
+          $ref: '#/components/schemas/AppChangeBody'
+        id:
+          format: uuid
+          type: string
+      type: object
+    PolicyRuleOrderChange:
+      properties:
+        newOrder:
+          items:
+            format: uuid
+            type: string
+          type: array
+        oldOrder:
+          items:
+            format: uuid
+            type: string
+          type: array
+      type: object
+    AppInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    PolicyInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+      type: object
+    EndpointChangeBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/EndpointInfoChange'
+      required:
+      - info
+      type: object
+    MpmAppGroupRevisionDiffBody:
+      properties:
+        apgs:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        aps:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        info:
+          $ref: '#/components/schemas/AppGroupInfoChange'
+      type: object
+    MpmRuleRevisionDiffBody:
+      properties:
+        apgs:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        aps:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        dstDgs:
+          $ref: '#/components/schemas/MpmDynamicGroupRelationshipRevisionDiff'
+        dstEpgs:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        dstEps:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        info:
+          $ref: '#/components/schemas/RuleInfoChange'
+        srcDgs:
+          $ref: '#/components/schemas/MpmDynamicGroupRelationshipRevisionDiff'
+        srcEpgs:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        srcEps:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+      type: object
+    MpmPolicyRevisionDiff:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - NO_DIFF
+          type: string
+        body:
+          $ref: '#/components/schemas/MpmPolicyRevisionDiffBody'
+        id:
+          format: uuid
+          type: string
+      type: object
+    MpmTargetRelationshipDiff:
+      properties:
+        added:
+          items:
+            type: string
+          type: array
+        removed:
+          items:
+            type: string
+          type: array
+      type: object
+    EndpointGroupInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    MpmNatRuleRevisionDiff:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - NO_DIFF
+          type: string
+        body:
+          $ref: '#/components/schemas/MpmNatRuleRevisionDiffBody'
+        id:
+          format: uuid
+          type: string
+      type: object
+    RuleInfoChange:
+      properties:
+        action:
+          enum:
+          - PERMIT
+          - DENY
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+        fullyPinned:
+          type: boolean
+        onClose:
+          type: boolean
+        onInit:
+          type: boolean
+        ruleGroup:
+          type: string
+      type: object
+    MpmRuleRevisionDiff:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - NO_DIFF
+          type: string
+        body:
+          $ref: '#/components/schemas/MpmRuleRevisionDiffBody'
+        id:
+          format: uuid
+          type: string
+      type: object
+    MpmEndpointGroupRevisionDiff:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - NO_DIFF
+          type: string
+        body:
+          $ref: '#/components/schemas/MpmEndpointGroupRevisionDiffBody'
+        id:
+          format: uuid
+          type: string
+      type: object
+    MpmNatRuleRevisionDiffBody:
+      properties:
+        apMatch:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        apTranslated:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        apgMatch:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        dstEpMatch:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        dstEpTranslated:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        dstEpgMatch:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        info:
+          $ref: '#/components/schemas/NatRuleInfoChange'
+        srcEpMatch:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        srcEpTranslated:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        srcEpgMatch:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+      type: object
+    MpmEndpointRevisionDiff:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - NO_DIFF
+          type: string
+        body:
+          $ref: '#/components/schemas/EndpointChangeBody'
+        id:
+          format: uuid
+          type: string
+      type: object
+    NatRuleInfoChange:
+      properties:
+        appNatType:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+        description:
+          type: string
+        dstNatType:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+        enabled:
+          type: boolean
+        ruleGroup:
+          type: string
+        srcNatType:
+          enum:
+          - MATCH
+          - STATIC
+          - HIDE
+          type: string
+      type: object
+    MpmPolicyRevisionDiffBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/PolicyInfoChange'
+        natRules:
+          items:
+            $ref: '#/components/schemas/MpmNatRuleRevisionDiff'
+          type: array
+        ruleOrder:
+          $ref: '#/components/schemas/PolicyRuleOrderChange'
+        rules:
+          items:
+            $ref: '#/components/schemas/MpmRuleRevisionDiff'
+          type: array
+        targets:
+          $ref: '#/components/schemas/MpmTargetRelationshipDiff'
+      type: object
+    AppChangeBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/AppInfoChange'
+      required:
+      - info
+      type: object
+    EndpointInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    AppGroupInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    MpmDynamicGroupRelationshipRevisionDiff:
+      properties:
+        added:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        removed:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

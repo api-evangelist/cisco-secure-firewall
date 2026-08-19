@@ -1,0 +1,439 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine Policy Import Service API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: Policy Import Service
+paths:
+  /policy-import:
+    post:
+      description: 'Roles allowed: support, mpm-rw'
+      operationId: importPolicy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpmPolicyImportApi'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal Server Error
+      summary: Import policy
+      tags:
+      - Policy Import Service
+  /policy-import/request/{id}:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getImportRequestStatus
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmPolicyImportRequestStatusApi'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmPolicyImportRequestStatusApi'
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Policy Import Status
+      tags:
+      - Policy Import Service
+components:
+  schemas:
+    MpmRuleImport:
+      properties:
+        action:
+          enum:
+          - PERMIT
+          - DENY
+          type: string
+        appGroups:
+          items:
+            type: string
+          type: array
+        apps:
+          items:
+            type: string
+          type: array
+        description:
+          type: string
+        destinationGroups:
+          items:
+            type: string
+          type: array
+        destinations:
+          items:
+            type: string
+          type: array
+        enabled:
+          type: boolean
+        fullyPinned:
+          type: boolean
+        onClose:
+          type: boolean
+        onInit:
+          type: boolean
+        ruleGroup:
+          type: string
+        ruleNumber:
+          format: int32
+          type: integer
+        sourceGroups:
+          items:
+            type: string
+          type: array
+        sources:
+          items:
+            type: string
+          type: array
+      type: object
+    AsaImportTypeDetails:
+      format: Payload in ASA/CSM format
+      properties:
+        credentialName:
+          type: string
+        deviceName:
+          type: string
+        hostname:
+          type: string
+        port:
+          format: int32
+          type: integer
+        uriScheme:
+          enum:
+          - http
+          - https
+          type: string
+      type: object
+    MpmPolicyImportRequestResp:
+      properties:
+        childChangeSetIds:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
+        createdTime:
+          format: date-time
+          type: string
+        details:
+          type: string
+        id:
+          format: uuid
+          type: string
+        managerName:
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        policyName:
+          type: string
+        targetManagerName:
+          type: string
+        targetPolicyName:
+          type: string
+      type: object
+    MpmNatRuleImport:
+      properties:
+        appMatch:
+          items:
+            type: string
+          type: array
+        appNatType:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+        appTranslated:
+          type: string
+        description:
+          type: string
+        destinationMatchEp:
+          items:
+            type: string
+          type: array
+        destinationMatchEpg:
+          items:
+            type: string
+          type: array
+        destinationNatType:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+        destinationTranslated:
+          type: string
+        enabled:
+          type: boolean
+        ruleGroup:
+          type: string
+        ruleNumber:
+          format: int32
+          type: integer
+        sourceMatchEp:
+          items:
+            type: string
+          type: array
+        sourceMatchEpg:
+          items:
+            type: string
+          type: array
+        sourceNatType:
+          enum:
+          - MATCH
+          - STATIC
+          - HIDE
+          type: string
+        sourceTranslated:
+          type: string
+      type: object
+    MpmPolicyImportRequestStatusApi:
+      properties:
+        details:
+          $ref: '#/components/schemas/MpmPolicyImportRequestResp'
+        errCode:
+          enum:
+          - INPUT_VALIDATION_ERROR
+          - INPUT_VALIDATION_ERROR_OBJECT_DOES_NOT_EXIST
+          - INPUT_VALIDATION_ERROR_OBJECT_ALREADY_EXISTS
+          - INPUT_VALIDATION_ERROR_INVALID_REVISION
+          - INPUT_VALIDATION_ERROR_EP_WITH_NO_ZONE
+          - INPUT_VALIDATION_ERROR_PARSING_FAILED
+          type: string
+        errMsg:
+          type: string
+        id:
+          type: string
+        importType:
+          enum:
+          - PAYLOAD
+          - FORTINET
+          - ASA
+          type: string
+        requestSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+        status:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+      type: object
+    ImportDetails:
+      format: Import details containing payload in one of the supported format and import type
+      properties:
+        asaImportTypeDetails:
+          $ref: '#/components/schemas/AsaImportTypeDetails'
+        fortiManagerImportTypeDetails:
+          $ref: '#/components/schemas/FortiManagerImportTypeDetails'
+        payloadImportTypeDetails:
+          $ref: '#/components/schemas/PayloadImportTypeDetails'
+        type:
+          enum:
+          - PAYLOAD
+          - FORTINET
+          - ASA
+          example: FORTINET
+          format: 'Type should reflect the vendor  '
+          type: string
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
+      type: object
+    ReqIdAndReqSystem:
+      properties:
+        id:
+          example: 03502bc3-c140-4951-b467-bd17312a9b0b
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
+      type: object
+    PayloadImportTypeDetails:
+      format: Payload in agnostic format
+      properties:
+        policy:
+          $ref: '#/components/schemas/MpmPolicyImportBase'
+        targetPolicyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+      type: object
+    MpmPolicyImportApi:
+      properties:
+        importDetails:
+          $ref: '#/components/schemas/ImportDetails'
+        managerName:
+          format: The name of the manager the policy is being imported from
+          type: string
+        policyName:
+          format: Name of policy being imported
+          type: string
+        targetManagerName:
+          format: The name of the manager the policy is being imported into
+          type: string
+        targetPolicyName:
+          format: The Name of policy that will be created with the content of imported policy
+          type: string
+      type: object
+    MpmGroupEntityImport:
+      properties:
+        description:
+          type: string
+        memberGroups:
+          items:
+            type: string
+          type: array
+        members:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+      type: object
+    FortiManagerImportTypeDetails:
+      format: Payload in Fortinet format
+      properties:
+        credentialName:
+          type: string
+        hostname:
+          type: string
+        port:
+          format: int32
+          type: integer
+        uriScheme:
+          enum:
+          - http
+          - https
+          type: string
+      type: object
+    MpmEntityImport:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    MpmPolicyImportBase:
+      properties:
+        appGroups:
+          items:
+            $ref: '#/components/schemas/MpmGroupEntityImport'
+          type: array
+        apps:
+          items:
+            $ref: '#/components/schemas/MpmEntityImport'
+          type: array
+        endpointGroups:
+          items:
+            $ref: '#/components/schemas/MpmGroupEntityImport'
+          type: array
+        endpoints:
+          items:
+            $ref: '#/components/schemas/MpmEntityImport'
+          type: array
+        installTargets:
+          items:
+            type: string
+          type: array
+        natRules:
+          items:
+            $ref: '#/components/schemas/MpmNatRuleImport'
+          type: array
+        rules:
+          items:
+            $ref: '#/components/schemas/MpmRuleImport'
+          type: array
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

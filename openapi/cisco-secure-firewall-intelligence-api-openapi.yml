@@ -1,0 +1,4642 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall Intelligence API
+  version: 1.13.0
+  contact:
+    name: Cisco Firepower TAC
+    email: ngfw-support@cisco.com
+  description: 'Operations tagged Intelligence across 2 of this provider''s published API definitions: cdfmc-openapi.yaml,
+    cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
+      schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
+    operation_coverage: 21/21
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: Intelligence
+paths:
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/taxiiconfig/collections:
+    post:
+      deprecated: false
+      description: '**API Operations on Taxii Collection objects. _Check the response section for applicable examples (if
+        any)._**'
+      operationId: createRESTTaxiiCollection
+      parameters:
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : POST /fmc_tid/v1/domain/domainUUID/taxiiconfig/collections ( POST Example for collections )':
+                value:
+                  caCert: ''
+                  clientCert: ''
+                  clientPrivateKey: ''
+                  discoveryInfo:
+                  - collectionAddress: http://hailataxii.com:80/taxii-data
+                    collectionContentBinding: '[]'
+                    collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                    collectionName: DISCOVERY
+                    collectionPollIntervalInMinutes: 0
+                    collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                    type: taxii_collections
+                  - collectionAddress: http://hailataxii.com:80/taxii-data
+                    collectionContentBinding: '[]'
+                    collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                    collectionName: COLLECTION_MANAGEMENT
+                    collectionPollIntervalInMinutes: 0
+                    collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                    type: taxii_collections
+                  - collectionAddress: http://hailataxii.com:80/taxii-data
+                    collectionContentBinding: '[]'
+                    collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                    collectionName: POLL
+                    collectionPollIntervalInMinutes: 0
+                    collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                    type: taxii_collections
+                  params:
+                    hostnameVerifier: allow_all
+                    selfSignedServerCertificate: 'false'
+                  passwd: password
+                  type: source
+                  uri: http://hailataxii.com/taxii-discovery-service
+                  username: username
+                  version: 0.1.0
+            schema:
+              $ref: '#/components/schemas/RESTTaxiiCollection'
+              type: object
+        description: The input Taxii Collection object model.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              examples:
+                'Example 1 : POST /fmc_tid/v1/domain/domainUUID/taxiiconfig/collections ( POST Example for collections )':
+                  value:
+                    availableCollections:
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionDescription: guest.Abuse_ch
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: guest.Abuse_ch
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionDescription: guest.CyberCrime_Tracker
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: guest.CyberCrime_Tracker
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionDescription: guest.EmergineThreats_rules
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: guest.EmergineThreats_rules
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionDescription: guest.EmergingThreats_rules
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: guest.EmergingThreats_rules
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionDescription: guest.Lehigh_edu
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: guest.Lehigh_edu
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionDescription: guest.MalwareDomainList_Hostlist
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: guest.MalwareDomainList_Hostlist
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionDescription: guest.blutmagie_de_torExits
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: guest.blutmagie_de_torExits
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionDescription: guest.dataForLast_7daysOnly
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: guest.dataForLast_7daysOnly
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionDescription: guest.dshield_BlockList
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: guest.dshield_BlockList
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionDescription: guest.phishtank_com
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: guest.phishtank_com
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionDescription: system.Default
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: system.Default
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    consumedIndicators: 0
+                    consumedObservables: 0
+                    consumedUnsupportedObservables: 0
+                    discardedIndicators: 0
+                    discoveryInfo:
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionContentBinding: '[]'
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: DISCOVERY
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionContentBinding: '[]'
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: COLLECTION_MANAGEMENT
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionContentBinding: '[]'
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: POLL
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    downloadOn: false
+                    feedStatus: new
+                    id: sourceUUID
+                    invalidObservables: 0
+                    lastRun: 0
+                    nextRun: 0
+                    params:
+                      hostnameVerifier: allow_all
+                      selfSignedServerCertificate: 'false'
+                    passwd: password
+                    property:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 0
+                      publish: true
+                      ttl: 90
+                    refresh: 0
+                    runNow: false
+                    totalDiscardedIndicators: 0
+                    totalIndicators: 0
+                    totalInvalidObservables: 0
+                    totalObservables: 0
+                    totalUnsupportedObservables: 0
+                    type: source
+                    uri: http://hailataxii.com/taxii-discovery-service
+                    username: username
+              schema:
+                $ref: '#/components/schemas/RESTTaxiiCollection'
+                type: object
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/taxiiconfig/discoveryinfo:
+    post:
+      deprecated: false
+      description: '**API Operations on Discovery Info objects. _Check the response section for applicable examples (if any)._**'
+      operationId: createRESTDiscoveryInfo
+      parameters:
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : POST /fmc_tid/v1/domain/domainUUID/taxiiconfig/discoveryinfo ( POST Example for discoveryinfo )':
+                value:
+                  caCert: ''
+                  clientCert: ''
+                  clientPrivateKey: ''
+                  params:
+                    hostnameVerifier: allow_all
+                    selfSignedServerCertificate: 'false'
+                  passwd: password
+                  type: source
+                  uri: http://hailataxii.com/taxii-discovery-service
+                  username: username
+                  version: 0.1.0
+            schema:
+              $ref: '#/components/schemas/RESTDiscoveryInfo'
+              type: object
+        description: The input Discovery Info object model.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              examples:
+                'Example 1 : POST /fmc_tid/v1/domain/domainUUID/taxiiconfig/discoveryinfo ( POST Example for discoveryinfo )':
+                  value:
+                    consumedIndicators: 0
+                    consumedObservables: 0
+                    consumedUnsupportedObservables: 0
+                    discardedIndicators: 0
+                    discoveryInfo:
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionContentBinding: '[]'
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: DISCOVERY
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionContentBinding: '[]'
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: COLLECTION_MANAGEMENT
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionContentBinding: '[]'
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: POLL
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    downloadOn: false
+                    feedStatus: new
+                    id: id
+                    invalidObservables: 0
+                    lastRun: 0
+                    nextRun: 0
+                    params:
+                      hostnameVerifier: allow_all
+                      selfSignedServerCertificate: 'false'
+                    passwd: password
+                    property:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 0
+                      publish: true
+                      ttl: 90
+                    refresh: 0
+                    runNow: false
+                    totalDiscardedIndicators: 0
+                    totalIndicators: 0
+                    totalInvalidObservables: 0
+                    totalObservables: 0
+                    totalUnsupportedObservables: 0
+                    type: source
+                    uri: http://hailataxii.com/taxii-discovery-service
+                    username: username
+              schema:
+                $ref: '#/components/schemas/RESTDiscoveryInfo'
+                type: object
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/tid/element:
+    get:
+      deprecated: false
+      description: '**API Operations on Element objects.**'
+      operationId: getAllRESTElement
+      parameters:
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_tid/v1/domain/domainUUID/tid/elementUUID ( Get all ElementModel instances. )':
+                  value:
+                    items:
+                    - id: elementUUID
+                      name: Element Name
+                      type: element
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/elementUUID
+                    paging:
+                      count: 1
+                      limit: 1
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/RESTElementListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/tid/element/{objectId}:
+    get:
+      deprecated: false
+      description: '**API Operations on Element objects.**'
+      operationId: getRESTElement
+      parameters:
+      - description: Unique identifier of the Element.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_tid/v1/domain/domainUUID/tid/element/elementUUID ( Get a single ElementModel instance )':
+                  value:
+                    caCert: '-----BEGIN CACERTIFICATE-----
+
+                      MIIGLT...
+
+                      -----END CACERTIFICATE-----
+
+                      '
+                    cert: '-----BEGIN CERTIFICATE-----
+
+                      MIIGLT...
+
+                      -----END CERTIFICATE-----
+
+                      '
+                    id: elementUUID
+                    key: 'REDACTED_PRIVATE_KEY_EXAMPLE
+
+                      '
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/element/elementUUID
+                    miscData:
+                      policyId: Sample Policy Id
+                      policyName: Sample Policy
+                      tidStatus: '1'
+                    model: Sample Model
+                    name: Sample Element
+                    registrationDate: '1457566762'
+                    status: SampleStatus
+                    type: element
+              schema:
+                $ref: '#/components/schemas/RESTElement'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/tid/incident:
+    get:
+      deprecated: false
+      description: '**API Operations on Incident objects.**'
+      operationId: getAllRESTIncident
+      parameters:
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_tid/v1/domain/domainUUID/tid/incident ( Example of GET all incidents (concise view) )':
+                  value:
+                    items:
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/incident
+                    paging:
+                      count: 7
+                      limit: 7
+                      offset: 0
+                      pages: 1
+                ? 'Example 2 : GET /fmc_tid/v1/domain/domainUUID/tid/incident?filter=updatedAt%3A1498629923..1499839523 (
+                  Example of GET all incidents (with filter) )'
+                : value:
+                    items:
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    - id: incidentUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      type: incident
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/incident?filter=updatedAt:1498629923..1499839523
+                    paging:
+                      count: 7
+                      limit: 7
+                      offset: 0
+                      pages: 1
+                'Example 3 : GET /fmc_tid/v1/domain/domainUUID/tid/incident?expanded=true ( Example of GET all incidents (expanded view) )':
+                  value:
+                    items:
+                    - actionTaken: monitored
+                      description: 123 blah
+                      equation:
+                        children:
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: LL_UNSUPPORTED_OBJECT_TYPE|Port
+                            value: IDREF:{http://hailataxii.com}Observable-fc5c11a8-b038-4abc-9641-2b495c78774a
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: DomainNameObjectType
+                            value: domainNameValue
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: true
+                            type: IPV_4_ADDR
+                            value: ipAddressValue
+                          condition: EQUALS
+                          isRealized: true
+                        isRealized: true
+                        op: OR
+                      feedId: feedUUID
+                      id: incidentUUID
+                      indicatorId: indicatorUUID
+                      indicatorName: Test Indicators
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      observations:
+                      - count: 1
+                        data:
+                          actionTaken: none
+                          miscData:
+                            appId: ICMP
+                            clientId: ICMP client
+                            connectionSec: '1498739637'
+                            counter: '83'
+                            destIpAddress: ipAddressValue
+                            destPort: '0'
+                            destZone: AutomatedInlineSZ
+                            instanceId: '1'
+                            protocol: ICMP
+                            srcIpAddress: ipAddressValue
+                            srcPort: '8'
+                            srcZone: AutomatedInlineSZ
+                            userId: No Authentication Required
+                          type: IPV_4_ADDR
+                          value: ipAddressValue
+                        elementId: elementUUID
+                        elementName: elementName
+                        timestamp: 1498739637.0
+                        type: observation
+                      property:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506514677.0
+                        publish: true
+                        ttl: 90
+                      realizedAt: 1498739702.0
+                      sourceName: guest.dataForLast_7daysOnly
+                      status: new
+                      type: incident
+                      updatedAt: 1499839877.0
+                      version: 1.0.0
+                    - actionTaken: monitored
+                      equation:
+                        children:
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: LL_UNSUPPORTED_OBJECT_TYPE|Port
+                            value: IDREF:{http://hailataxii.com}Observable-fc5c11a8-b038-4abc-9641-2b495c78774a
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: DomainNameObjectType
+                            value: domainNameValue
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: true
+                            type: IPV_4_ADDR
+                            value: ipAddressValue
+                          condition: EQUALS
+                          isRealized: true
+                        isRealized: true
+                        op: OR
+                      feedId: feedUUID
+                      id: incidentUUID
+                      indicatorId: indicatorUUID
+                      indicatorName: Test Indicators
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      observations:
+                      - count: 1
+                        data:
+                          actionTaken: none
+                          miscData:
+                            appId: ICMP
+                            clientId: ICMP client
+                            connectionSec: '1498739637'
+                            counter: '83'
+                            destIpAddress: ipAddressValue
+                            destPort: '0'
+                            destZone: AutomatedInlineSZ
+                            instanceId: '1'
+                            protocol: ICMP
+                            srcIpAddress: ipAddressValue
+                            srcPort: '8'
+                            srcZone: AutomatedInlineSZ
+                            userId: No Authentication Required
+                          type: IPV_4_ADDR
+                          value: ipAddressValue
+                        elementId: elementUUID
+                        elementName: elementName
+                        timestamp: 1498739637.0
+                        type: observation
+                      property:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506514677.0
+                        publish: true
+                        ttl: 90
+                      realizedAt: 1498739637.0
+                      sourceName: guest.dataForLast_7daysOnly
+                      status: new
+                      type: incident
+                      updatedAt: 1499839877.0
+                      version: 1.0.0
+                    - actionTaken: monitored
+                      equation:
+                        children:
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: LL_UNSUPPORTED_OBJECT_TYPE|Port
+                            value: IDREF:{http://hailataxii.com}Observable-fbdadbd3-dc8f-4f21-8736-1123903a056f
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: IPV_4_ADDR
+                            value: ipAddressValue
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: true
+                            type: DomainNameObjectType
+                            value: domainNameValue
+                          condition: EQUALS
+                          isRealized: true
+                        isRealized: true
+                        op: OR
+                      feedId: feedUUID
+                      id: incidentUUID
+                      indicatorId: indicatorUUID
+                      indicatorName: Test Indicators
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      observations:
+                      - count: 1
+                        data:
+                          actionTaken: none
+                          miscData:
+                            appId: DNS
+                            clientId: DNS
+                            connectionSec: '1498739586'
+                            counter: '78'
+                            destIpAddress: ipAddressValue
+                            destPort: '53'
+                            destZone: AutomatedInlineSZ
+                            dnsResponse: No Error
+                            instanceId: '1'
+                            protocol: UDP
+                            srcIpAddress: ipAddressValue
+                            srcPort: '41641'
+                            srcZone: AutomatedInlineSZ
+                            userId: No Authentication Required
+                          type: DomainNameObjectType
+                          value: domainNameValue
+                        elementId: elementUUID
+                        elementName: elementName
+                        timestamp: 1498739586.0
+                        type: observation
+                      property:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506514581.0
+                        publish: true
+                        ttl: 90
+                      realizedAt: 1498739618.0
+                      sourceName: guest.dataForLast_7daysOnly
+                      status: new
+                      type: incident
+                      updatedAt: 1499839877.0
+                      version: 1.0.0
+                    - actionTaken: monitored
+                      equation:
+                        children:
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: LL_UNSUPPORTED_OBJECT_TYPE|Port
+                            value: IDREF:{http://hailataxii.com}Observable-fbdadbd3-dc8f-4f21-8736-1123903a056f
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: LL_UNSUPPORTED_OBJECT_TYPE|Port
+                            value: IDREF:{http://hailataxii.com}Observable-ffed4f18-a648-4162-a088-a529f218ff96
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: IPV_4_ADDR
+                            value: ipAddressValue
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: true
+                            type: DomainNameObjectType
+                            value: domainNameValue
+                          condition: EQUALS
+                          isRealized: true
+                        isRealized: true
+                        op: OR
+                      feedId: feedUUID
+                      id: incidentUUID
+                      indicatorId: indicatorUUID
+                      indicatorName: Test Indicators 2
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      observations:
+                      - count: 1
+                        data:
+                          actionTaken: none
+                          miscData:
+                            appId: DNS
+                            clientId: DNS
+                            connectionSec: '1498739571'
+                            counter: '77'
+                            destIpAddress: ipAddressValue
+                            destPort: '53'
+                            destZone: AutomatedInlineSZ
+                            dnsResponse: No Error
+                            instanceId: '1'
+                            protocol: UDP
+                            srcIpAddress: ipAddressValue
+                            srcPort: '41207'
+                            srcZone: AutomatedInlineSZ
+                            userId: No Authentication Required
+                          type: DomainNameObjectType
+                          value: domainNameValue
+                        elementId: elementUUID
+                        elementName: elementName
+                        timestamp: 1498739571.0
+                        type: observation
+                      property:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506514581.0
+                        publish: true
+                        ttl: 90
+                      realizedAt: 1498739604.0
+                      sourceName: guest.dataForLast_7daysOnly
+                      status: new
+                      type: incident
+                      updatedAt: 1499840402.0
+                      version: 1.0.0
+                    - actionTaken: monitored
+                      equation:
+                        children:
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: LL_UNSUPPORTED_OBJECT_TYPE|Port
+                            value: IDREF:{http://hailataxii.com}Observable-fbdadbd3-dc8f-4f21-8736-1123903a056f
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: IPV_4_ADDR
+                            value: ipAddressValue
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: true
+                            type: DomainNameObjectType
+                            value: domainNameValue
+                          condition: EQUALS
+                          isRealized: true
+                        isRealized: true
+                        op: OR
+                      feedId: feedUUID
+                      id: incidentUUID
+                      indicatorId: indicatorUUID
+                      indicatorName: Test Indicators 3
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      observations:
+                      - count: 1
+                        data:
+                          actionTaken: none
+                          miscData:
+                            clientId: DNS
+                            connectionSec: '1498739586'
+                            counter: '78'
+                            destIpAddress: ipAddressValue
+                            destPort: '53'
+                            destZone: AutomatedInlineSZ
+                            dnsResponse: No Error
+                            instanceId: '1'
+                            protocol: UDP
+                            srcIpAddress: ipAddressValue
+                            srcPort: '41641'
+                            srcZone: AutomatedInlineSZ
+                            userId: No Authentication Required
+                          type: DomainNameObjectType
+                          value: domainNameValue
+                        elementId: elementUUID
+                        elementName: elementName
+                        timestamp: 1498739586.0
+                        type: observation
+                      property:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506514581.0
+                        publish: true
+                        ttl: 90
+                      realizedAt: 1498739586.0
+                      sourceName: guest.dataForLast_7daysOnly
+                      status: new
+                      type: incident
+                      updatedAt: 1499839877.0
+                      version: 1.0.0
+                    - actionTaken: monitored
+                      equation:
+                        children:
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: LL_UNSUPPORTED_OBJECT_TYPE|Port
+                            value: IDREF:{http://hailataxii.com}Observable-fbdadbd3-dc8f-4f21-8736-1123903a056f
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: LL_UNSUPPORTED_OBJECT_TYPE|Port
+                            value: IDREF:{http://hailataxii.com}Observable-ffed4f18-a648-4162-a088-a529f218ff96
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: IPV_4_ADDR
+                            value: ipAddressValue
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: true
+                            type: DomainNameObjectType
+                            value: domainNameValue
+                          condition: EQUALS
+                          isRealized: true
+                        isRealized: true
+                        op: OR
+                      feedId: feedUUID
+                      id: incidentUUID
+                      indicatorId: indicatorUUID
+                      indicatorName: Test Indicator 4
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      observations:
+                      - count: 1
+                        data:
+                          actionTaken: none
+                          miscData:
+                            clientId: DNS
+                            connectionSec: '1498739571'
+                            counter: '77'
+                            destIpAddress: ipAddressValue
+                            destPort: '53'
+                            destZone: AutomatedInlineSZ
+                            dnsResponse: No Error
+                            instanceId: '1'
+                            protocol: UDP
+                            srcIpAddress: ipAddressValue
+                            srcPort: '41207'
+                            srcZone: AutomatedInlineSZ
+                            userId: No Authentication Required
+                          type: DomainNameObjectType
+                          value: domainNameValue
+                        elementId: elementUUID
+                        elementName: elementName
+                        timestamp: 1498739571.0
+                        type: observation
+                      property:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506514581.0
+                        publish: true
+                        ttl: 90
+                      realizedAt: 1498739571.0
+                      sourceName: guest.dataForLast_7daysOnly
+                      status: new
+                      type: incident
+                      updatedAt: 1499839877.0
+                      version: 1.0.0
+                    - actionTaken: partiallyBlocked
+                      equation:
+                        children:
+                        - children:
+                          - applyCondition: ANY
+                            children:
+                            - isRealized: true
+                              type: SHA256
+                              value: sha256Value
+                            condition: EQUALS
+                            isRealized: true
+                          - applyCondition: ANY
+                            children:
+                            - isRealized: false
+                              type: SHA256
+                              value: sha256Value
+                            condition: EQUALS
+                            isRealized: false
+                          - applyCondition: ANY
+                            children:
+                            - isRealized: false
+                              type: SHA256
+                              value: sha256Value
+                            condition: EQUALS
+                            isRealized: false
+                          - applyCondition: ANY
+                            children:
+                            - isRealized: false
+                              type: SHA256
+                              value: sha256Value
+                            condition: EQUALS
+                            isRealized: false
+                          - applyCondition: ANY
+                            children:
+                            - isRealized: false
+                              type: SHA256
+                              value: sha256Value
+                            condition: EQUALS
+                            isRealized: false
+                          isRealized: false
+                          op: AND
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        isRealized: false
+                        op: OR
+                      feedId: feedUUID
+                      id: incidentUUID
+                      indicatorId: indicatorUUID
+                      indicatorName: Test Indicators 5
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                      observations:
+                      - count: 1
+                        data:
+                          actionTaken: none
+                          miscData:
+                            appId: HTTP
+                            clientId: Wget
+                            connectionSec: '1498739289'
+                            counter: '46'
+                            destIpAddress: ipAddressValue
+                            destPort: '80'
+                            instanceId: '1'
+                            protocol: TCP
+                            srcIpAddress: ipAddressValue
+                            srcPort: '39749'
+                            userId: No Authentication Required
+                          type: SHA256
+                          value: sha256Value
+                        elementId: elementUUID
+                        elementName: elementName
+                        timestamp: 1498739292.0
+                        type: observation
+                      - count: 2
+                        data:
+                          actionTaken: blocked
+                          miscData:
+                            appId: HTTP
+                            clientId: Wget
+                            connectionSec: '1498739351'
+                            counter: '57'
+                            destIpAddress: ipAddressValue
+                            destPort: '80'
+                            instanceId: '1'
+                            protocol: TCP
+                            srcIpAddress: ipAddressValue
+                            srcPort: '39753'
+                            userId: No Authentication Required
+                          type: SHA256
+                          value: sha256Value
+                        elementId: elementUUID
+                        elementName: elementName
+                        timestamp: 1498739351.0
+                        type: observation
+                      property:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506514284.0
+                        publish: true
+                        ttl: 90
+                      realizedAt: 0
+                      sourceName: SHA256_feed
+                      status: new
+                      type: incident
+                      updatedAt: 1499839877.0
+                      version: 1.0.0
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/incident?expanded=true
+                    paging:
+                      count: 7
+                      limit: 7
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/RESTIncidentListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/tid/incident/{objectId}:
+    delete:
+      deprecated: false
+      description: '**API Operations on Incident objects. _Check the response section for applicable examples (if any)._**'
+      operationId: deleteRESTIncident
+      parameters:
+      - description: Unique identifier of the Incident.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : DELETE /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID ( Example of DELETE by id )':
+                  value:
+                    actionTaken: partiallyBlocked
+                    equation:
+                      children:
+                      - children:
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: true
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: true
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        isRealized: false
+                        op: AND
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: SHA256
+                          value: sha256Value
+                        condition: EQUALS
+                        isRealized: false
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: SHA256
+                          value: sha256Value
+                        condition: EQUALS
+                        isRealized: false
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: SHA256
+                          value: sha256Value
+                        condition: EQUALS
+                        isRealized: false
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: SHA256
+                          value: sha256Value
+                        condition: EQUALS
+                        isRealized: false
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: SHA256
+                          value: sha256Value
+                        condition: EQUALS
+                        isRealized: false
+                      isRealized: false
+                      op: OR
+                    feedId: feedUUID
+                    id: incidentUUID
+                    indicatorId: indicatorUUID
+                    indicatorName: Test Indicators
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                    observations:
+                    - count: 1
+                      data:
+                        actionTaken: none
+                        miscData:
+                          appId: HTTP
+                          clientId: Wget
+                          connectionSec: '1498739289'
+                          counter: '46'
+                          destIpAddress: ipAddressValue
+                          destPort: '80'
+                          instanceId: '1'
+                          protocol: TCP
+                          srcIpAddress: ipAddressValue
+                          srcPort: '39749'
+                          userId: No Authentication Required
+                        type: SHA256
+                        value: sha256Value
+                      elementId: elementUUID
+                      elementName: elementName
+                      timestamp: 1498739292.0
+                      type: observation
+                    - count: 2
+                      data:
+                        actionTaken: blocked
+                        miscData:
+                          appId: HTTP
+                          clientId: Wget
+                          connectionSec: '1498739351'
+                          counter: '57'
+                          destIpAddress: ipAddressValue
+                          destPort: '80'
+                          instanceId: '1'
+                          protocol: TCP
+                          srcIpAddress: ipAddressValue
+                          srcPort: '39753'
+                          userId: No Authentication Required
+                        type: SHA256
+                        value: sha256Value
+                      elementId: elementUUID
+                      elementName: elementName
+                      timestamp: 1498739351.0
+                      type: observation
+                    property:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1506514284.0
+                      publish: true
+                      ttl: 90
+                    realizedAt: 0
+                    sourceName: Test URL Source
+                    status: new
+                    type: incident
+                    updatedAt: 1499839877.0
+                    version: 1.0.0
+              schema:
+                $ref: '#/components/schemas/RESTIncident'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    get:
+      deprecated: false
+      description: '**API Operations on Incident objects.**'
+      operationId: getRESTIncident
+      parameters:
+      - description: Unique identifier of the Incident.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID ( Example of GET by id )':
+                  value:
+                    actionTaken: partiallyBlocked
+                    equation:
+                      children:
+                      - children:
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: true
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: true
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        - applyCondition: ANY
+                          children:
+                          - isRealized: false
+                            type: SHA256
+                            value: sha256Value
+                          condition: EQUALS
+                          isRealized: false
+                        isRealized: false
+                        op: AND
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: SHA256
+                          value: sha256Value
+                        condition: EQUALS
+                        isRealized: false
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: SHA256
+                          value: sha256Value
+                        condition: EQUALS
+                        isRealized: false
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: SHA256
+                          value: sha256Value
+                        condition: EQUALS
+                        isRealized: false
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: SHA256
+                          value: sha256Value
+                        condition: EQUALS
+                        isRealized: false
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: SHA256
+                          value: sha256Value
+                        condition: EQUALS
+                        isRealized: false
+                      isRealized: false
+                      op: OR
+                    feedId: feedUUID
+                    id: incidentUUID
+                    indicatorId: indicatorUUID
+                    indicatorName: Test Indicators
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                    observations:
+                    - count: 1
+                      data:
+                        actionTaken: none
+                        miscData:
+                          appId: HTTP
+                          clientId: Wget
+                          connectionSec: '1498739289'
+                          counter: '46'
+                          destIpAddress: ipAddressValue
+                          destPort: '80'
+                          instanceId: '1'
+                          protocol: TCP
+                          srcIpAddress: ipAddressValue
+                          srcPort: '39749'
+                          userId: No Authentication Required
+                        type: SHA256
+                        value: sha256Value
+                      elementId: elementUUID
+                      elementName: elementName
+                      timestamp: 1498739292.0
+                      type: observation
+                    - count: 2
+                      data:
+                        actionTaken: blocked
+                        miscData:
+                          appId: HTTP
+                          clientId: Wget
+                          connectionSec: '1498739351'
+                          counter: '57'
+                          destIpAddress: ipAddressValue
+                          destPort: '80'
+                          instanceId: '1'
+                          protocol: TCP
+                          srcIpAddress: ipAddressValue
+                          srcPort: '39753'
+                          userId: No Authentication Required
+                        type: SHA256
+                        value: sha256Value
+                      elementId: elementUUID
+                      elementName: elementName
+                      timestamp: 1498739351.0
+                      type: observation
+                    property:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1506514284.0
+                      publish: true
+                      ttl: 90
+                    realizedAt: 0
+                    sourceName: Test URL Source
+                    status: new
+                    type: incident
+                    updatedAt: 1499839877.0
+                    version: 1.0.0
+              schema:
+                $ref: '#/components/schemas/RESTIncident'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    put:
+      deprecated: false
+      description: '**API Operations on Incident objects. _Check the response section for applicable examples (if any)._**'
+      operationId: updateRESTIncident
+      parameters:
+      - description: Unique identifier of the Incident.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              ? 'Example 1 : PUT /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID ( Example of PUT for Incident (change
+                name and status) )'
+              : value:
+                  actionTaken: monitored
+                  equation:
+                    children:
+                    - applyCondition: ANY
+                      children:
+                      - isRealized: false
+                        type: LL_UNSUPPORTED_OBJECT_TYPE|Port
+                        value: IDREF:{http://hailataxii.com}Observable-fbdadbd3-dc8f-4f21-8736-1123903a056f
+                      condition: EQUALS
+                      isRealized: false
+                    - applyCondition: ANY
+                      children:
+                      - isRealized: false
+                        type: LL_UNSUPPORTED_OBJECT_TYPE|Port
+                        value: IDREF:{http://hailataxii.com}Observable-ffed4f18-a648-4162-a088-a529f218ff96
+                      condition: EQUALS
+                      isRealized: false
+                    - applyCondition: ANY
+                      children:
+                      - isRealized: false
+                        type: IPV_4_ADDR
+                        value: ipAddressValue
+                      condition: EQUALS
+                      isRealized: false
+                    - applyCondition: ANY
+                      children:
+                      - isRealized: true
+                        type: DomainNameObjectType
+                        value: domainNameValue
+                      condition: EQUALS
+                      isRealized: true
+                    isRealized: true
+                    op: OR
+                  feedId: feedUUID
+                  id: incidentUUID
+                  indicatorId: indicatorUUID
+                  indicatorName: Test Indicators
+                  name: Incident
+                  observations:
+                  - count: 1
+                    data:
+                      actionTaken: none
+                      miscData:
+                        appId: DNS
+                        clientId: DNS
+                        connectionSec: '1498739571'
+                        counter: '77'
+                        destIpAddress: ipAddressValue
+                        destPort: '53'
+                        destZone: AutomatedInlineSZ
+                        dnsResponse: No Error
+                        instanceId: '1'
+                        protocol: UDP
+                        srcIpAddress: ipAddressValue
+                        srcPort: '41207'
+                        srcZone: AutomatedInlineSZ
+                        userId: No Authentication Required
+                      type: DomainNameObjectType
+                      value: domainNameValue
+                    elementId: elementUUID
+                    elementName: elementName
+                    timestamp: 1498739571.0
+                    type: observation
+                  property:
+                    action: monitor
+                    allowlist: false
+                    expirationTime: 1506514581.0
+                    publish: true
+                    ttl: 90
+                  realizedAt: 1498739604.0
+                  sourceName: Test STIX Feed
+                  status: new
+                  type: incident
+                  updatedAt: 1499839877.0
+                  version: 1.0.0
+            schema:
+              $ref: '#/components/schemas/RESTIncident'
+              type: object
+        description: The input Incident object model.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : PUT /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID ( Example of PUT for Incident (change
+                  name and status) )'
+                : value:
+                    actionTaken: monitored
+                    equation:
+                      children:
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: LL_UNSUPPORTED_OBJECT_TYPE|Port
+                          value: IDREF:{http://hailataxii.com}Observable-fbdadbd3-dc8f-4f21-8736-1123903a056f
+                        condition: EQUALS
+                        isRealized: false
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: LL_UNSUPPORTED_OBJECT_TYPE|Port
+                          value: IDREF:{http://hailataxii.com}Observable-ffed4f18-a648-4162-a088-a529f218ff96
+                        condition: EQUALS
+                        isRealized: false
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: IPV_4_ADDR
+                          value: ipAddressValue
+                        condition: EQUALS
+                        isRealized: false
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: true
+                          type: DomainNameObjectType
+                          value: domainNameValue
+                        condition: EQUALS
+                        isRealized: true
+                      isRealized: true
+                      op: OR
+                    feedId: feedUUID
+                    id: incidentUUID
+                    indicatorId: indicatorUUID
+                    indicatorName: Test Indicators
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/incident/incidentUUID
+                    name: Incident Closed
+                    observations:
+                    - count: 1
+                      data:
+                        actionTaken: none
+                        miscData:
+                          appId: DNS
+                          clientId: DNS
+                          connectionSec: '1498739571'
+                          counter: '77'
+                          destIpAddress: ipAddressValue
+                          destPort: '53'
+                          destZone: AutomatedInlineSZ
+                          dnsResponse: No Error
+                          instanceId: '1'
+                          protocol: UDP
+                          srcIpAddress: ipAddressValue
+                          srcPort: '41207'
+                          srcZone: AutomatedInlineSZ
+                          userId: No Authentication Required
+                        type: DomainNameObjectType
+                        value: domainNameValue
+                      elementId: elementUUID
+                      elementName: elementName
+                      timestamp: 1498739571.0
+                      type: observation
+                    property:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1506514581.0
+                      publish: true
+                      ttl: 90
+                    realizedAt: 1498739604.0
+                    sourceName: Test STIX Feed
+                    status: closed
+                    type: incident
+                    updatedAt: 1499840397.0
+                    version: 1.0.0
+              schema:
+                $ref: '#/components/schemas/RESTIncident'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/tid/indicator:
+    get:
+      deprecated: false
+      description: '**API Operations on Indicator objects.**'
+      operationId: getAllRESTIndicator
+      parameters:
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_tid/v1/domain/domainUUID/tid/indicator ( Get all Indicator instances. )':
+                  value:
+                    items:
+                    - id: indicatorUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/indicator/indicatorUUID
+                      name: Sample Indicator
+                      type: indicator
+                    - id: indicatorUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/indicator/indicatorUUID
+                      name: Sample Indicator 2
+                      type: indicator
+                    - id: indicatorUUID
+                      links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/indicator/indicatorUUID
+                      name: Sample Indicator 3
+                      type: indicator
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/indicator
+                    paging:
+                      count: 3
+                      limit: 3
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/RESTIndicatorListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/tid/indicator/{objectId}:
+    get:
+      deprecated: false
+      description: '**API Operations on Indicator objects.**'
+      operationId: getRESTIndicator
+      parameters:
+      - description: Unique identifier of the Indicator.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_tid/v1/domain/domainUUID/tid/indicator/indicatorUUID ( Get a single Indicator instance )':
+                  value:
+                    containsInvalid: false
+                    containsUnsupported: false
+                    customProperty:
+                      action: monitor
+                      publish: true
+                    description: Indicator description
+                    effectiveProperty:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1506280028.0
+                      publish: true
+                      ttl: 90
+                    equation:
+                      children:
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: IPV_4_ADDR
+                          value: IPV_4_ADDR:c4a098d02ba0407e165c14996f8eae6b65a119a2
+                        condition: EQUALS
+                        isRealized: false
+                      isRealized: false
+                      op: OR
+                    feedId: feedUUID
+                    id: indicatorUUID
+                    indicatorVersion: 1.0.0
+                    inheritedProperty:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1506280028.0
+                      publish: true
+                      ttl: 90
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/indicator/indicatorUUID
+                    name: Sample Indicator
+                    noPartialIncidents: 0
+                    noRealizedIncidents: 0
+                    observables:
+                    - effectiveProperty:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506280028.0
+                        publish: true
+                        ttl: 90
+                      id: IPV_4_ADDR:c4a098d02ba0407e165c14996f8eae6b65a119a2
+                      indicatorCount: 1
+                      inheritedProperty:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506280028.0
+                        publish: true
+                        ttl: 90
+                      name: Observable
+                      observableType: IPV_4_ADDR
+                      type: observable
+                      updatedAt: 1498504028.0
+                      value: ipAddressValue
+                      version: 1.0.0
+                    sourceName: Test Flat File IPV4
+                    type: indicator
+                    updatedAt: 1499842559.0
+                    version: 1.0.0
+              schema:
+                $ref: '#/components/schemas/RESTIndicator'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    put:
+      deprecated: false
+      description: '**API Operations on Indicator objects. _Check the response section for applicable examples (if any)._**'
+      operationId: updateRESTIndicator
+      parameters:
+      - description: Unique identifier of the Indicator.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : PUT /fmc_tid/v1/domain/domainUUID/tid/indicator/indicatorUUID ( PUT Example for Indicator )':
+                value:
+                  containsInvalid: false
+                  containsUnsupported: false
+                  customProperty:
+                    action: block
+                    publish: true
+                  description: Indicator description changed
+                  effectiveProperty:
+                    action: monitor
+                    allowlist: false
+                    expirationTime: 1506280028.0
+                    publish: true
+                    ttl: 90
+                  equation:
+                    children:
+                    - applyCondition: ANY
+                      children:
+                      - isRealized: false
+                        type: IPV_4_ADDR
+                        value: IPV_4_ADDR:c4a098d02ba0407e165c14996f8eae6b65a119a2
+                      condition: EQUALS
+                      isRealized: false
+                    isRealized: false
+                    op: OR
+                  feedId: feedUUID
+                  id: indicatorUUID
+                  indicatorVersion: 1.0.0
+                  inheritedProperty:
+                    action: monitor
+                    allowlist: false
+                    expirationTime: 1506280028.0
+                    publish: true
+                    ttl: 90
+                  name: Sample Indicator IPV4
+                  noPartialIncidents: 0
+                  noRealizedIncidents: 0
+                  observables:
+                  - effectiveProperty:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1506280028.0
+                      publish: true
+                      ttl: 90
+                    id: IPV_4_ADDR:c4a098d02ba0407e165c14996f8eae6b65a119a2
+                    indicatorCount: 1
+                    inheritedProperty:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1506280028.0
+                      publish: true
+                      ttl: 90
+                    name: Observable
+                    observableType: IPV_4_ADDR
+                    type: observable
+                    updatedAt: 1498504028.0
+                    value: ipAddressValue
+                    version: 1.0.0
+                  sourceName: Test Flat File IPV4
+                  type: indicator
+                  updatedAt: 1499842559.0
+                  version: 1.0.0
+            schema:
+              $ref: '#/components/schemas/RESTIndicator'
+              type: object
+        description: The input Indicator object model.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : PUT /fmc_tid/v1/domain/domainUUID/tid/indicator/indicatorUUID ( PUT Example for Indicator )':
+                  value:
+                    containsInvalid: false
+                    containsUnsupported: false
+                    customProperty:
+                      action: block
+                      publish: true
+                    description: Indicator description changed
+                    effectiveProperty:
+                      action: block
+                      allowlist: false
+                      expirationTime: 1506280028.0
+                      publish: true
+                      ttl: 90
+                    equation:
+                      children:
+                      - applyCondition: ANY
+                        children:
+                        - isRealized: false
+                          type: IPV_4_ADDR
+                          value: IPV_4_ADDR:c4a098d02ba0407e165c14996f8eae6b65a119a2
+                        condition: EQUALS
+                        isRealized: false
+                      isRealized: false
+                      op: OR
+                    feedId: feedUUID
+                    id: indicatorUUID
+                    indicatorVersion: 1.0.0
+                    inheritedProperty:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1506280028.0
+                      publish: true
+                      ttl: 90
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/indicator/indicatorUUID
+                    name: Sample Indicator IPV4
+                    noPartialIncidents: 0
+                    noRealizedIncidents: 0
+                    observables:
+                    - effectiveProperty:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506280028.0
+                        publish: true
+                        ttl: 90
+                      id: IPV_4_ADDR:c4a098d02ba0407e165c14996f8eae6b65a119a2
+                      indicatorCount: 1
+                      inheritedProperty:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506280028.0
+                        publish: true
+                        ttl: 90
+                      name: Observable
+                      observableType: IPV_4_ADDR
+                      type: observable
+                      updatedAt: 1498504028.0
+                      value: ipAddressValue
+                      version: 1.0.0
+                    sourceName: Test Flat File IPV4
+                    type: indicator
+                    updatedAt: 1499843144.0
+                    version: 1.0.0
+              schema:
+                $ref: '#/components/schemas/RESTIndicator'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/tid/observable:
+    get:
+      deprecated: false
+      description: '**API Operations on Observable objects.**'
+      operationId: getAllRESTObservable
+      parameters:
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_tid/v1/domain/domainUUID/tid/observable ( Get all Observable instances. )':
+                  value:
+                    items:
+                    - links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/observable/observableUUID
+                      name: Observable name 1
+                      type: observable
+                    - links:
+                        self: /fmc_tid/v1/domain/domainUUID/tid/observable/observableUUID
+                      name: Observable name 2
+                      type: observable
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/observable
+                    paging:
+                      count: 2
+                      limit: 2
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/RESTObservableListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/tid/observable/{objectId}:
+    get:
+      deprecated: false
+      description: '**API Operations on Observable objects.**'
+      operationId: getRESTObservable
+      parameters:
+      - description: Unique identifier of the Observable.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_tid/v1/domain/domainUUID/tid/observable/observableUUID ( Get a single Observable instance )':
+                  value:
+                    effectiveProperty:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1493929252.0
+                      publish: true
+                      ttl: 90
+                    id: observableUUID
+                    indicatorCount: 1
+                    inheritedProperty:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1493929252.0
+                      publish: true
+                      ttl: 90
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/observable/observableUUID
+                    name: Observable name
+                    observableType: IPV_4_ADDR
+                    type: observable
+                    updatedAt: 1486153252.0
+                    value: ipAddressValue
+                    version: 1.0.0
+              schema:
+                $ref: '#/components/schemas/RESTObservable'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    put:
+      deprecated: false
+      description: '**API Operations on Observable objects. _Check the response section for applicable examples (if any)._**'
+      operationId: updateRESTObservable
+      parameters:
+      - description: Unique identifier of the Observable.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : PUT /fmc_tid/v1/domain/domainUUID/tid/observable/observableUUID ( PUT Observable instance )':
+                value:
+                  customProperty:
+                    allowlist: true
+                  effectiveProperty:
+                    action: monitor
+                    allowlist: false
+                    expirationTime: 1493929252.0
+                    publish: true
+                    ttl: 90
+                  id: observableUUID
+                  indicatorCount: 1
+                  inheritedProperty:
+                    action: monitor
+                    allowlist: false
+                    expirationTime: 1493929252.0
+                    publish: true
+                    ttl: 90
+                  name: Observable name 2
+                  observableType: IPV_4_ADDR
+                  type: observable
+                  updatedAt: 1486153252.0
+                  value: ipAddressValue
+                  version: 1.0.0
+            schema:
+              $ref: '#/components/schemas/RESTObservable'
+              type: object
+        description: The input Observable object model.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : PUT /fmc_tid/v1/domain/domainUUID/tid/observable/observableUUID ( PUT Observable instance )':
+                  value:
+                    customProperty:
+                      allowlist: true
+                    effectiveProperty:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1493929252.0
+                      publish: true
+                      ttl: 90
+                    id: observableUUID
+                    indicatorCount: 1
+                    inheritedProperty:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1493929252.0
+                      publish: true
+                      ttl: 90
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/observable/observableUUID
+                    name: Observable name 2
+                    observableType: IPV_4_ADDR
+                    type: observable
+                    updatedAt: 1486153252.0
+                    value: ipAddressValue
+                    version: 1.0.0
+              schema:
+                $ref: '#/components/schemas/RESTObservable'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/tid/settings/{objectId}:
+    get:
+      deprecated: false
+      description: '**API Operations on Settings objects.**'
+      operationId: getRESTSettings
+      parameters:
+      - description: Unique identifier of the Settings object.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_tid/v1/domain/domainUUID/tid/settings/publish_observables ( Get a single Settings instance )':
+                  value:
+                    id: publish_observables
+                    settings:
+                      publish_observables: true
+                    type: settings
+                    version: 1.0.0
+              schema:
+                $ref: '#/components/schemas/RESTSettings'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    put:
+      deprecated: false
+      description: '**API Operations on Settings objects. _Check the response section for applicable examples (if any)._**'
+      operationId: updateRESTSettings
+      parameters:
+      - description: Unique identifier of the Settings object.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : PUT /fmc_tid/v1/domain/domainUUID/tid/settings/publish_observables ( PUT operation on Settings model )':
+                value:
+                  id: publish_observables
+                  settings:
+                    publish_observables: false
+                  type: settings
+            schema:
+              $ref: '#/components/schemas/RESTSettings'
+              type: object
+        description: The input Settings object model.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : PUT /fmc_tid/v1/domain/domainUUID/tid/settings/publish_observables ( PUT operation on Settings model )':
+                  value:
+                    id: publish_observables
+                    settings:
+                      publish_observables: false
+                    type: settings
+              schema:
+                $ref: '#/components/schemas/RESTSettings'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/tid/source:
+    get:
+      deprecated: false
+      description: '**API Operations on Source objects.**'
+      operationId: getAllRESTTidSource
+      parameters:
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_tid/v1/domain/domainUUID/tid/source ( Example of GET all sources (concise view) )':
+                  value:
+                    items:
+                    - id: sourceUUID
+                      name: Test URL Feed
+                      type: source
+                    - id: sourceUUID
+                      name: Test Flat File Domain Feed
+                      type: source
+                    - id: sourceUUID
+                      name: Test TAXII Feed
+                      type: source
+                    - id: sourceUUID
+                      name: Test TAXII Feed 2
+                      type: source
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/source
+                    paging:
+                      count: 4
+                      limit: 4
+                      offset: 0
+                      pages: 1
+                'Example 2 : GET /fmc_tid/v1/domain/domainUUID/tid/source?expanded=true ( Example of GET all sources (expanded view) )':
+                  value:
+                    items:
+                    - checksum: 204CCA8536F620B6B97396C464EA4E2F06DA998F8A855FCC8B1DC486598F698D
+                      consumedIndicators: 1
+                      consumedObservables: 10
+                      consumedUnsupportedObservables: 0
+                      delivery: upload
+                      discardedIndicators: 0
+                      downloadOn: false
+                      feedContent: stix
+                      feedStatus: completed
+                      feedType: stix
+                      finishTime: 1498738400.0
+                      id: sourceUUID
+                      invalidObservables: 0
+                      lastRun: 1498738283.0
+                      name: Test URL Feed
+                      nextRun: 0
+                      params:
+                        hostnameVerifier: allow_all
+                        job: 831f07f3-a0d2-481c-8eb8-5fbf22fe5ab1
+                        selfSignedServerCertificate: 'false'
+                      property:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506514283.0
+                        publish: true
+                        ttl: 90
+                      refresh: 0
+                      runNow: false
+                      statusMsg:
+                        '0':
+                          info: Operation completed successfully.
+                      totalDiscardedIndicators: 0
+                      totalIndicators: 1
+                      totalInvalidObservables: 0
+                      totalObservables: 0
+                      totalUnsupportedObservables: 0
+                      type: source
+                      uri: MzQwYWEyYjYxZjg4YmE1MTczNDNjYzk4ZTg0NDNlNGQwMzgyZWJlMw
+                    - checksum: D1BC2C02D0C0B50BD9CC73BB1C1FF4F2FB25E2ECE7C3520E85508996DF11929F
+                      consumedIndicators: 17695
+                      consumedObservables: 17695
+                      consumedUnsupportedObservables: 0
+                      delivery: upload
+                      discardedIndicators: 0
+                      downloadOn: false
+                      feedContent: DomainNameObjectType
+                      feedStatus: completed
+                      feedType: flatfile
+                      finishTime: 1498738400.0
+                      id: sourceUUID
+                      invalidObservables: 0
+                      lastRun: 1498738253.0
+                      name: Test Flat File Domain Feed
+                      nextRun: 0
+                      params:
+                        hostnameVerifier: allow_all
+                        job: 152d9e2b-b7d1-414a-8b73-25f44230b634
+                        selfSignedServerCertificate: 'false'
+                      property:
+                        action: block
+                        allowlist: false
+                        expirationTime: 1506514253.0
+                        publish: true
+                        ttl: 90
+                      refresh: 0
+                      runNow: false
+                      statusMsg:
+                        '0':
+                          info: Operation completed successfully.
+                      totalDiscardedIndicators: 0
+                      totalIndicators: 17695
+                      totalInvalidObservables: 0
+                      totalObservables: 0
+                      totalUnsupportedObservables: 0
+                      type: source
+                      uri: OWRmMWU2YmNmMzIzMDZjMjZjNGQxYTA4OThkNmIyZmU1ZmUzM2EwNQ
+                    - consumedIndicators: 0
+                      consumedObservables: 0
+                      consumedUnsupportedObservables: 0
+                      delivery: taxii
+                      description: Test TAXII Feed
+                      discardedIndicators: 0
+                      downloadOn: true
+                      feedContent: stix
+                      feedStatus: downloading
+                      feedType: stix
+                      id: sourceUUID
+                      invalidObservables: 0
+                      lastRun: 1499835668.0
+                      name: Test TAXII Feed
+                      nextRun: 1499922000.0
+                      params:
+                        hostnameVerifier: allow_all
+                        job: e06aa9fc-a6f3-4079-b384-0acf310efa85
+                        selfSignedServerCertificate: 'false'
+                      passwd: password
+                      property:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1507611664.0
+                        publish: true
+                        ttl: 90
+                      refresh: 1440
+                      runNow: false
+                      subscribedCollections:
+                      - collectionAddress: http://hailataxii.com:80/taxii-data
+                        collectionDescription: guest.EmergingThreats_rules
+                        collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                        collectionName: guest.EmergingThreats_rules
+                        collectionPollIntervalInMinutes: 0
+                        collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                        type: taxii_collections
+                      totalDiscardedIndicators: 0
+                      totalIndicators: 0
+                      totalInvalidObservables: 0
+                      totalObservables: 0
+                      totalUnsupportedObservables: 0
+                      type: source
+                      uri: http://hailataxii.com/taxii-discovery-service
+                      username: username
+                    - consumedIndicators: 66052
+                      consumedObservables: 103919
+                      consumedUnsupportedObservables: 9335
+                      delivery: taxii
+                      description: Test TAXII Feed 2
+                      discardedIndicators: 0
+                      downloadOn: false
+                      feedContent: stix
+                      feedStatus: completed_with_errors
+                      feedType: stix
+                      finishTime: 1498756750.0
+                      id: sourceUUID
+                      invalidObservables: 274
+                      lastRun: 1498738346.0
+                      name: Test TAXII Feed 2
+                      nextRun: 1498824000.0
+                      params:
+                        hostnameVerifier: allow_all
+                        job: b5618ed7-e029-4ae3-a616-eda7f538d678
+                        pollInterval: '86400'
+                        pollTimeStamp: '1498738348'
+                        selfSignedServerCertificate: 'false'
+                      password: password
+                      property:
+                        action: monitor
+                        allowlist: false
+                        expirationTime: 1506514346.0
+                        publish: true
+                        ttl: 90
+                      refresh: 1440
+                      runNow: false
+                      statusMsg:
+                        '305':
+                          info: 'Source Parser: Invalid observable(s).'
+                        '308':
+                          info: 'Source Parser: Unsupported observable type.'
+                      subscribedCollections:
+                      - collectionAddress: http://hailataxii.com:80/taxii-data
+                        collectionDescription: guest.dataForLast_7daysOnly
+                        collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                        collectionName: guest.dataForLast_7daysOnly
+                        collectionPollIntervalInMinutes: 0
+                        collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                        type: taxii_collections
+                      totalDiscardedIndicators: 0
+                      totalIndicators: 66052
+                      totalInvalidObservables: 274
+                      totalObservables: 0
+                      totalUnsupportedObservables: 9335
+                      type: source
+                      uri: http://hailataxii.com/taxii-discovery-service
+                      username: username
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/source?expanded=true
+                    paging:
+                      count: 4
+                      limit: 4
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/RESTTidSourceListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    post:
+      deprecated: false
+      description: '**API Operations on Source objects. _Check the response section for applicable examples (if any)._**'
+      operationId: createRESTTidSource
+      parameters:
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : POST /fmc_tid/v1/domain/domainUUID/tid/source ( POST example with taxii )':
+                value:
+                  delivery: taxii
+                  description: Sample TAXII Feed
+                  downloadOn: true
+                  feedContent: stix
+                  feedType: stix
+                  name: Sample TAXII Feed
+                  params:
+                    hostnameVerifier: allow_all
+                    selfSignedServerCertificate: 'false'
+                  passwd: password
+                  property:
+                    action: monitor
+                    publish: true
+                    ttl: 90
+                  refresh: 1440
+                  startHour: 2
+                  subscribedCollections:
+                  - collectionAddress: http://hailataxii.com:80/taxii-data
+                    collectionDescription: guest.MalwareDomainList_Hostlist
+                    collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                    collectionName: guest.MalwareDomainList_Hostlist
+                    collectionPollIntervalInMinutes: 0
+                    collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                    type: taxii_collections
+                  uri: http://hailataxii.com/taxii-discovery-service
+                  username: username
+                  version: 1.0.0
+              'Example 2 : POST /fmc_tid/v1/domain/domainUUID/tid/source ( POST example with URL )':
+                value:
+                  delivery: url
+                  description: ''
+                  downloadOn: true
+                  feedContent: DomainNameObjectType
+                  feedType: flatfile
+                  name: Test URL Source
+                  params:
+                    hostnameVerifier: allow_all
+                    selfSignedServerCertificate: 'false'
+                  property:
+                    action: monitor
+                    publish: true
+                    ttl: 90
+                  refresh: 1440
+                  startHour: 2
+                  uri: http://somehost/feeds/domain.txt
+                  version: 1.0.0
+              'Example 3 : POST /fmc_tid/v1/domain/domainUUID/tid/source ( POST example with HTTPS URL )':
+                value:
+                  caCert: ca_cert_here - optional
+                  clientCert: client_cert_here - optional
+                  clientPrivateKey: key_cert_here - optional
+                  delivery: url
+                  description: Test URL HTTPS
+                  downloadOn: true
+                  feedContent: IPV_4_ADDR
+                  feedType: flatfile
+                  name: Test URL HTTPS
+                  params:
+                    hostnameVerifier: allow_all
+                    selfSignedServerCertificate: 'true'
+                  property:
+                    action: block
+                    publish: true
+                    ttl: 90
+                  refresh: 1440
+                  startHour: 2
+                  uri: https://somehost/feeds/ipv4.block.txt
+                  version: 1.0.0
+            schema:
+              $ref: '#/components/schemas/RESTTidSource'
+              type: object
+        description: The input Source object model.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              examples:
+                'Example 1 : POST /fmc_tid/v1/domain/domainUUID/tid/source ( POST example with taxii )':
+                  value:
+                    consumedIndicators: 0
+                    consumedObservables: 0
+                    consumedUnsupportedObservables: 0
+                    delivery: taxii
+                    description: Sample TAXII Feed
+                    discardedIndicators: 0
+                    downloadOn: true
+                    feedContent: stix
+                    feedStatus: new
+                    feedType: stix
+                    id: sourceUUID
+                    invalidObservables: 0
+                    lastRun: 0
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/source/sourceUUID
+                    name: Sample TAXII Feed
+                    nextRun: 0
+                    params:
+                      hostnameVerifier: allow_all
+                      selfSignedServerCertificate: 'false'
+                    property:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1507613046.0
+                      publish: true
+                      ttl: 90
+                    refresh: 1440
+                    runNow: false
+                    subscribedCollections:
+                    - collectionAddress: http://hailataxii.com:80/taxii-data
+                      collectionDescription: guest.MalwareDomainList_Hostlist
+                      collectionMessageBinding: '[urn:taxii.mitre.org:message:xml:1.1]'
+                      collectionName: guest.MalwareDomainList_Hostlist
+                      collectionPollIntervalInMinutes: 0
+                      collectionProtocolBinding: urn:taxii.mitre.org:protocol:https:1.0
+                      type: taxii_collections
+                    totalDiscardedIndicators: 0
+                    totalIndicators: 0
+                    totalInvalidObservables: 0
+                    totalObservables: 0
+                    totalUnsupportedObservables: 0
+                    type: source
+                    uri: http://hailataxii.com/taxii-discovery-service
+                    username: username
+                'Example 2 : POST /fmc_tid/v1/domain/domainUUID/tid/source ( POST example with URL )':
+                  value:
+                    consumedIndicators: 0
+                    consumedObservables: 0
+                    consumedUnsupportedObservables: 0
+                    delivery: url
+                    discardedIndicators: 0
+                    downloadOn: true
+                    feedContent: DomainNameObjectType
+                    feedStatus: new
+                    feedType: flatfile
+                    id: sourceUUID
+                    invalidObservables: 0
+                    lastRun: 0
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/source/sourceUUID
+                    name: Test URL Source
+                    nextRun: 0
+                    params:
+                      hostnameVerifier: allow_all
+                      selfSignedServerCertificate: 'false'
+                    property:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1507612829.0
+                      publish: true
+                      ttl: 90
+                    refresh: 1440
+                    runNow: false
+                    totalDiscardedIndicators: 0
+                    totalIndicators: 0
+                    totalInvalidObservables: 0
+                    totalObservables: 0
+                    totalUnsupportedObservables: 0
+                    type: source
+                    uri: http://somehost/feeds/domain.txt
+                'Example 3 : POST /fmc_tid/v1/domain/domainUUID/tid/source ( POST example with HTTPS URL )':
+                  value:
+                    caCert: ca_cert_here - optional
+                    clientCert: client_cert_here - optional
+                    clientPrivateKey: key_cert_here - optional
+                    consumedIndicators: 0
+                    consumedObservables: 0
+                    consumedUnsupportedObservables: 0
+                    delivery: url
+                    description: Test URL HTTPS
+                    discardedIndicators: 0
+                    downloadOn: true
+                    feedContent: IPV_4_ADDR
+                    feedStatus: new
+                    feedType: flatfile
+                    id: sourceUUID
+                    invalidObservables: 0
+                    lastRun: 0
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/source/sourceUUID
+                    name: Test URL HTTPS
+                    nextRun: 0
+                    params:
+                      hostnameVerifier: allow_all
+                      selfSignedServerCertificate: 'true'
+                    property:
+                      action: block
+                      allowlist: false
+                      expirationTime: 1507614000.0
+                      publish: true
+                      ttl: 90
+                    refresh: 1440
+                    runNow: false
+                    totalDiscardedIndicators: 0
+                    totalIndicators: 0
+                    totalInvalidObservables: 0
+                    totalObservables: 0
+                    totalUnsupportedObservables: 0
+                    type: source
+                    uri: https://somehost/feeds/ipv4.block.txt
+              schema:
+                $ref: '#/components/schemas/RESTTidSource'
+                type: object
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_tid/v1/domain/{domainUUID}/tid/source/{objectId}:
+    delete:
+      deprecated: false
+      description: '**API Operations on Source objects. _Check the response section for applicable examples (if any)._**'
+      operationId: deleteRESTTidSource
+      parameters:
+      - description: Unique identifier of the Source.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : DELETE /fmc_tid/v1/domain/domainUUID/tid/source/sourceUUID ( Example of DELETE by id )':
+                  value:
+                    checksum: AD8E91B35B7F2EA8F99996EF49C1C9A43A86D6A271AE19782D5D31BF834BEE2A
+                    consumedIndicators: 1
+                    consumedObservables: 1
+                    consumedUnsupportedObservables: 0
+                    delivery: upload
+                    discardedIndicators: 0
+                    downloadOn: false
+                    feedContent: IPV_4_ADDR
+                    feedStatus: completed
+                    feedType: flatfile
+                    finishTime: 1499836437.0
+                    id: sourceUUID
+                    invalidObservables: 0
+                    lastRun: 1499836436.0
+                    name: Test STIX Source
+                    nextRun: 0
+                    params:
+                      hostnameVerifier: allow_all
+                      job: 85eaa1fb-7250-4db5-865e-622030a155d7
+                      selfSignedServerCertificate: 'false'
+                    property:
+                      action: monitor
+                      allowlist: false
+                      expirationTime: 1507612436.0
+                      publish: true
+                      ttl: 90
+                    refresh: 0
+                    runNow: false
+                    statusMsg:
+                      '0':
+                        info: Operation completed successfully.
+                    totalDiscardedIndicators: 0
+                    totalIndicators: 1
+                    totalInvalidObservables: 0
+                    totalObservables: 0
+                    totalUnsupportedObservables: 0
+                    type: source
+                    uri: NTAyNTVjOTJjNjAzYWUzOWNlOTE3N2UyNzkxMTI4YTE5YzUzODU3MQ
+                    username: username
+              schema:
+                $ref: '#/components/schemas/RESTTidSource'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    get:
+      deprecated: false
+      description: '**API Operations on Source objects.**'
+      operationId: getRESTTidSource
+      parameters:
+      - description: Unique identifier of the Source.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_tid/v1/domain/domainUUID/tid/source/sourceUUID ( Example of GET by id )':
+                  value:
+                    checksum: 6A330EFFD42314B74C030C0038BAB3352F70CC5344D6CE24774BD04EFDEDB7BD
+                    consumedIndicators: 0
+                    consumedObservables: 501
+                    consumedUnsupportedObservables: 0
+                    delivery: url
+                    description: Test URL Source
+                    discardedIndicators: 0
+                    downloadOn: true
+                    feedContent: DomainNameObjectType
+                    feedStatus: parsing
+                    feedType: flatfile
+                    id: sourceUUID
+                    invalidObservables: 0
+                    lastRun: 1499836832.0
+                    name: Test URL Source
+                    nextRun: 1499922000.0
+                    params:
+                      hostnameVerifier: allow_all
+                      pollInterval: '86400'
+                      selfSignedServerCertificate: 'false'
+                    property:
+                      action: block
+                      allowlist: false
+                      expirationTime: 1506749351.0
+                      publish: true
+                      ttl: 80
+                    refresh: 1440
+                    runNow: false
+                    totalDiscardedIndicators: 0
+                    totalIndicators: 0
+                    totalInvalidObservables: 0
+                    totalObservables: 0
+                    totalUnsupportedObservables: 0
+                    type: source
+                    uri: http://somehost/feeds/domain.txt
+              schema:
+                $ref: '#/components/schemas/RESTTidSource'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    put:
+      deprecated: false
+      description: '**API Operations on Source objects. _Check the response section for applicable examples (if any)._**'
+      operationId: updateRESTTidSource
+      parameters:
+      - description: Unique identifier of the Source.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            examples:
+              'Example 1 : PUT /fmc_tid/v1/domain/domainUUID/tid/source/sourceUUID ( Example of PUT )':
+                value:
+                  caCert: ''
+                  checksum: 6A330EFFD42314B74C030C0038BAB3352F70CC5344D6CE24774BD04EFDEDB7BD
+                  consumedIndicators: 0
+                  consumedObservables: 501
+                  consumedUnsupportedObservables: 0
+                  delivery: url
+                  description: Test URL Source
+                  discardedIndicators: 0
+                  downloadOn: true
+                  feedContent: DomainNameObjectType
+                  feedStatus: parsing
+                  feedType: flatfile
+                  id: sourceUUID
+                  invalidObservables: 0
+                  lastRun: 1499836832.0
+                  name: Test URL Source
+                  nextRun: 1499922000.0
+                  params:
+                    hostnameVerifier: allow_all
+                    selfSignedServerCertificate: 'false'
+                  property:
+                    action: block
+                    publish: true
+                    ttl: '80'
+                  refresh: 1440
+                  runNow: false
+                  totalDiscardedIndicators: 0
+                  totalIndicators: 0
+                  totalInvalidObservables: 0
+                  totalObservables: 0
+                  totalUnsupportedObservables: 0
+                  type: source
+                  uri: http://somehost/feeds/domain.txt
+            schema:
+              $ref: '#/components/schemas/RESTTidSource'
+              type: object
+        description: The input Source object model.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : PUT /fmc_tid/v1/domain/domainUUID/tid/source/sourceUUID ( Example of PUT )':
+                  value:
+                    checksum: 6A330EFFD42314B74C030C0038BAB3352F70CC5344D6CE24774BD04EFDEDB7BD
+                    consumedIndicators: 0
+                    consumedObservables: 501
+                    consumedUnsupportedObservables: 0
+                    delivery: url
+                    description: Test URL Source
+                    discardedIndicators: 0
+                    downloadOn: true
+                    feedContent: DomainNameObjectType
+                    feedStatus: parsing
+                    feedType: flatfile
+                    id: sourceUUID
+                    invalidObservables: 0
+                    lastRun: 1499836832.0
+                    links:
+                      self: /fmc_tid/v1/domain/domainUUID/tid/source/sourceUUID
+                    name: Test URL Source
+                    nextRun: 1499922000.0
+                    params:
+                      hostnameVerifier: allow_all
+                      pollInterval: '86400'
+                      selfSignedServerCertificate: 'false'
+                    property:
+                      action: block
+                      allowlist: false
+                      expirationTime: 1506749351.0
+                      publish: true
+                      ttl: 80
+                    refresh: 1440
+                    runNow: false
+                    totalDiscardedIndicators: 0
+                    totalIndicators: 0
+                    totalInvalidObservables: 0
+                    totalObservables: 0
+                    totalUnsupportedObservables: 0
+                    type: source
+                    uri: http://somehost/feeds/domain.txt
+              schema:
+                $ref: '#/components/schemas/RESTTidSource'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Intelligence
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  schemas:
+    LLHashMap:
+      additionalProperties:
+        type: string
+      type: object
+    LLFeedProperty:
+      properties:
+        action:
+          type: string
+        allowlist:
+          type: boolean
+        expirationTime:
+          format: int32
+          type: integer
+        publish:
+          type: boolean
+        tags:
+          $ref: '#/components/schemas/LLTags'
+          type: object
+        ttl:
+          format: int32
+          type: integer
+      type: object
+    LLIncident:
+      properties:
+        actionTaken:
+          type: string
+        description:
+          type: string
+        equation:
+          $ref: '#/components/schemas/LLEquationNode'
+          type: object
+        feedId:
+          type: string
+        id:
+          type: string
+        indicatorId:
+          type: string
+        indicatorName:
+          type: string
+        name:
+          type: string
+        observations:
+          items:
+            $ref: '#/components/schemas/LLObservation'
+            type: object
+          type: array
+        property:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        publish:
+          type: boolean
+        realizedAt:
+          format: int32
+          type: integer
+        sourceName:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        updatedAt:
+          format: int32
+          type: integer
+        version:
+          type: string
+      type: object
+    Object:
+      type: object
+    LLObservation:
+      properties:
+        count:
+          format: int32
+          type: integer
+        data:
+          $ref: '#/components/schemas/LLObservationData'
+          type: object
+        elementId:
+          type: string
+        elementName:
+          type: string
+        timestamp:
+          format: int32
+          type: integer
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    RESTTaxiiCollection:
+      properties:
+        availableCollections:
+          items:
+            $ref: '#/components/schemas/RESTCollectionTopic'
+            type: object
+          type: array
+        caCert:
+          type: string
+        checksum:
+          type: string
+        clientCert:
+          type: string
+        clientPrivateKey:
+          type: string
+        consumedIndicators:
+          format: int32
+          type: integer
+        consumedObservables:
+          format: int32
+          type: integer
+        consumedUnsupportedObservables:
+          format: int32
+          type: integer
+        delivery:
+          type: string
+        description:
+          type: string
+        discardedIndicators:
+          format: int32
+          type: integer
+        discoveryInfo:
+          items:
+            $ref: '#/components/schemas/RESTCollectionTopic'
+            type: object
+          type: array
+        downloadOn:
+          type: boolean
+        feedConfig:
+          $ref: '#/components/schemas/LLFeedConfig'
+          type: object
+        feedContent:
+          type: string
+        feedStatus:
+          type: string
+        feedType:
+          type: string
+        finishTime:
+          format: int32
+          type: integer
+        id:
+          type: string
+        invalidObservables:
+          format: int32
+          type: integer
+        lastRun:
+          format: int32
+          type: integer
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        llfeedConfig:
+          $ref: '#/components/schemas/LLFeedConfig'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        nextRun:
+          format: int32
+          type: integer
+        params:
+          $ref: '#/components/schemas/LLParams'
+          type: object
+        passwd:
+          type: string
+        property:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        refresh:
+          format: int32
+          type: integer
+        runNow:
+          type: boolean
+        startHour:
+          format: int32
+          type: integer
+        statusMsg:
+          $ref: '#/components/schemas/LLStatusMsg'
+          type: object
+        subscribedCollections:
+          items:
+            $ref: '#/components/schemas/RESTCollectionTopic'
+            type: object
+          type: array
+        totalDiscardedIndicators:
+          format: int32
+          type: integer
+        totalIndicators:
+          format: int32
+          type: integer
+        totalInvalidObservables:
+          format: int32
+          type: integer
+        totalObservables:
+          format: int32
+          type: integer
+        totalUnsupportedObservables:
+          format: int32
+          type: integer
+        type:
+          type: string
+        uri:
+          type: string
+        username:
+          type: string
+        version:
+          type: string
+      type: object
+    LLMiscData:
+      additionalProperties:
+        type: string
+      type: object
+    LLObservationData:
+      properties:
+        actionTaken:
+          type: string
+        miscData:
+          $ref: '#/components/schemas/LLMiscData'
+          type: object
+        type:
+          type: string
+        value:
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    RESTCollectionTopic:
+      properties:
+        collectionAddress:
+          type: string
+        collectionContentBinding:
+          type: string
+        collectionDescription:
+          type: string
+        collectionMessageBinding:
+          type: string
+        collectionName:
+          type: string
+        collectionPollIntervalInMinutes:
+          format: int32
+          type: integer
+        collectionProtocolBinding:
+          type: string
+        collectionSubType:
+          type: string
+        llcollectionTopic:
+          $ref: '#/components/schemas/LLCollectionTopic'
+          type: object
+        type:
+          type: string
+        value:
+          type: string
+      type: object
+    RESTIndicatorEquationNode:
+      properties:
+        applyCondition:
+          type: string
+        children:
+          items:
+            $ref: '#/components/schemas/RESTIndicatorEquationNode'
+            type: object
+          type: array
+        condition:
+          type: string
+        isRealized:
+          type: boolean
+        item:
+          $ref: '#/components/schemas/LLEquationNode'
+          type: object
+        op:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+      type: object
+    RESTObservable:
+      properties:
+        customProperty:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        description:
+          type: string
+        effectiveProperty:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        id:
+          type: string
+        indicatorCount:
+          format: int32
+          type: integer
+        inheritedProperty:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        observable:
+          $ref: '#/components/schemas/LLObservable'
+          type: object
+        observableType:
+          type: string
+        type:
+          type: string
+        updatedAt:
+          format: int32
+          type: integer
+        value:
+          type: string
+        version:
+          type: string
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    LLAdditionalProperties:
+      additionalProperties:
+        type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    LLSettings:
+      additionalProperties:
+        $ref: '#/components/schemas/Object'
+        type: object
+      type: object
+    LLElement:
+      properties:
+        action:
+          type: string
+        caCert:
+          type: string
+        capabilities:
+          items:
+            type: string
+          type: array
+        cert:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        key:
+          type: string
+        miscData:
+          $ref: '#/components/schemas/LLMiscData'
+          type: object
+        model:
+          type: string
+        name:
+          type: string
+        registrationDate:
+          format: int32
+          type: integer
+        status:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    LLEquationNode:
+      properties:
+        applyCondition:
+          type: string
+        children:
+          items:
+            $ref: '#/components/schemas/LLEquationNode'
+            type: object
+          type: array
+        condition:
+          type: string
+        isRealized:
+          type: boolean
+        op:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+      type: object
+    RESTSettings:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        settings:
+          $ref: '#/components/schemas/LLSettings'
+          type: object
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    RESTObservableListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/RESTObservable'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    RESTIndicator:
+      properties:
+        containsInvalid:
+          type: boolean
+        containsUnsupported:
+          type: boolean
+        customProperty:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        description:
+          type: string
+        effectiveProperty:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        equation:
+          $ref: '#/components/schemas/RESTIndicatorEquationNode'
+          type: object
+        feedId:
+          type: string
+        fileId:
+          type: string
+        id:
+          type: string
+        indicator:
+          $ref: '#/components/schemas/LLIndicator'
+          type: object
+        indicatorVersion:
+          type: string
+        inheritedProperty:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        iteratorId:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        noPartialIncidents:
+          format: int32
+          type: integer
+        noRealizedIncidents:
+          format: int32
+          type: integer
+        observables:
+          items:
+            $ref: '#/components/schemas/RESTObservable'
+            type: object
+          type: array
+        pending:
+          items:
+            type: string
+          type: array
+        rawData:
+          type: string
+        sourceName:
+          type: string
+        type:
+          type: string
+        updatedAt:
+          format: int32
+          type: integer
+        version:
+          type: string
+      type: object
+    LLCollectionTopic:
+      properties:
+        address:
+          type: string
+        contentBindings:
+          type: string
+        description:
+          type: string
+        hashMap:
+          $ref: '#/components/schemas/LLHashMap'
+          type: object
+        messageBinding:
+          type: string
+        name:
+          type: string
+        pollIntervalInMinutes:
+          format: int32
+          type: integer
+        protocolBinding:
+          type: string
+        subType:
+          type: string
+        type:
+          type: string
+      type: object
+    RESTIncident:
+      properties:
+        actionTaken:
+          type: string
+        description:
+          type: string
+        equation:
+          $ref: '#/components/schemas/RESTIndicatorEquationNode'
+          type: object
+        feedId:
+          type: string
+        id:
+          type: string
+        indicatorId:
+          type: string
+        indicatorName:
+          type: string
+        iteratorId:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        llincident:
+          $ref: '#/components/schemas/LLIncident'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        observations:
+          items:
+            $ref: '#/components/schemas/RESTObservation'
+            type: object
+          type: array
+        property:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        realizedAt:
+          format: int32
+          type: integer
+        sourceName:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        updatedAt:
+          format: int32
+          type: integer
+        version:
+          type: string
+      type: object
+    RESTIncidentListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/RESTIncident'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    LLObservable:
+      properties:
+        customProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        dbid:
+          type: string
+        effectiveProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        id:
+          type: string
+        indicatorCount:
+          format: int32
+          type: integer
+        inheritedProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        miscData:
+          $ref: '#/components/schemas/LLMiscData'
+          type: object
+        observableType:
+          type: string
+        type:
+          type: string
+        unEncryptedDBId:
+          type: string
+        updatedAt:
+          format: int32
+          type: integer
+        value:
+          type: string
+        version:
+          type: string
+      type: object
+    LLTags:
+      additionalProperties:
+        type: string
+      type: object
+    RESTObservationData:
+      properties:
+        actionTaken:
+          type: string
+        llobservationData:
+          $ref: '#/components/schemas/LLObservationData'
+          type: object
+        miscData:
+          $ref: '#/components/schemas/LLMiscData'
+          type: object
+        type:
+          type: string
+        value:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    LLStatusMsg:
+      additionalProperties:
+        $ref: '#/components/schemas/LLAdditionalProperties'
+        type: object
+      type: object
+    LLParams:
+      additionalProperties:
+        type: string
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    LLIndicator:
+      properties:
+        action:
+          type: string
+        customProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        description:
+          type: string
+        effectiveProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        equation:
+          $ref: '#/components/schemas/LLEquationNode'
+          type: object
+        expirationTime:
+          format: int32
+          type: integer
+        feedId:
+          type: string
+        fileId:
+          type: string
+        id:
+          type: string
+        indicatorVersion:
+          type: string
+        inheritedProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        invalid:
+          type: boolean
+        name:
+          type: string
+        noPartialIncidents:
+          format: int32
+          type: integer
+        noRealizedIncidents:
+          format: int32
+          type: integer
+        observables:
+          items:
+            $ref: '#/components/schemas/LLObservable'
+            type: object
+          type: array
+        pending:
+          items:
+            type: string
+          type: array
+        publish:
+          type: boolean
+        rawData:
+          type: string
+        sourceName:
+          type: string
+        stale:
+          type: boolean
+        tags:
+          $ref: '#/components/schemas/LLTags'
+          type: object
+        ttl:
+          format: int32
+          type: integer
+        type:
+          type: string
+        unsupported:
+          type: boolean
+        updatedAt:
+          format: int32
+          type: integer
+        version:
+          type: string
+      type: object
+    RESTDiscoveryInfo:
+      properties:
+        availableCollections:
+          items:
+            $ref: '#/components/schemas/RESTCollectionTopic'
+            type: object
+          type: array
+        caCert:
+          type: string
+        checksum:
+          type: string
+        clientCert:
+          type: string
+        clientPrivateKey:
+          type: string
+        consumedIndicators:
+          format: int32
+          type: integer
+        consumedObservables:
+          format: int32
+          type: integer
+        consumedUnsupportedObservables:
+          format: int32
+          type: integer
+        delivery:
+          type: string
+        description:
+          type: string
+        discardedIndicators:
+          format: int32
+          type: integer
+        discoveryInfo:
+          items:
+            $ref: '#/components/schemas/RESTCollectionTopic'
+            type: object
+          type: array
+        downloadOn:
+          type: boolean
+        feedConfig:
+          $ref: '#/components/schemas/LLFeedConfig'
+          type: object
+        feedContent:
+          type: string
+        feedStatus:
+          type: string
+        feedType:
+          type: string
+        finishTime:
+          format: int32
+          type: integer
+        id:
+          type: string
+        invalidObservables:
+          format: int32
+          type: integer
+        lastRun:
+          format: int32
+          type: integer
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        llfeedConfig:
+          $ref: '#/components/schemas/LLFeedConfig'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        nextRun:
+          format: int32
+          type: integer
+        params:
+          $ref: '#/components/schemas/LLParams'
+          type: object
+        passwd:
+          type: string
+        property:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        refresh:
+          format: int32
+          type: integer
+        runNow:
+          type: boolean
+        startHour:
+          format: int32
+          type: integer
+        statusMsg:
+          $ref: '#/components/schemas/LLStatusMsg'
+          type: object
+        subscribedCollections:
+          items:
+            $ref: '#/components/schemas/RESTCollectionTopic'
+            type: object
+          type: array
+        totalDiscardedIndicators:
+          format: int32
+          type: integer
+        totalIndicators:
+          format: int32
+          type: integer
+        totalInvalidObservables:
+          format: int32
+          type: integer
+        totalObservables:
+          format: int32
+          type: integer
+        totalUnsupportedObservables:
+          format: int32
+          type: integer
+        type:
+          type: string
+        uri:
+          type: string
+        username:
+          type: string
+        version:
+          type: string
+      type: object
+    RESTElementListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/RESTElement'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    LLFeedConfig:
+      properties:
+        availableCollections:
+          items:
+            $ref: '#/components/schemas/LLCollectionTopic'
+            type: object
+          type: array
+        caCert:
+          type: string
+        checksum:
+          type: string
+        clientCert:
+          type: string
+        clientPrivateKey:
+          type: string
+        consumedIndicators:
+          format: int32
+          type: integer
+        consumedObservables:
+          format: int32
+          type: integer
+        consumedUnsupportedObservables:
+          format: int32
+          type: integer
+        delivery:
+          type: string
+        description:
+          type: string
+        discardedIndicators:
+          format: int32
+          type: integer
+        discardedObservables:
+          format: int32
+          type: integer
+        discoveryInfo:
+          items:
+            $ref: '#/components/schemas/LLCollectionTopic'
+            type: object
+          type: array
+        downloadOn:
+          type: boolean
+        feedContent:
+          type: string
+        feedStatus:
+          type: string
+        feedType:
+          type: string
+        finishTime:
+          format: int32
+          type: integer
+        id:
+          type: string
+        inRunningState:
+          type: boolean
+        lastRun:
+          format: int32
+          type: integer
+        name:
+          type: string
+        nextRun:
+          format: int32
+          type: integer
+        params:
+          $ref: '#/components/schemas/LLParams'
+          type: object
+        passwd:
+          type: string
+        passwdAsIs:
+          type: string
+        password:
+          type: string
+        property:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        proxyURL:
+          type: string
+        recurring:
+          type: boolean
+        refresh:
+          format: int32
+          type: integer
+        refreshMin:
+          format: int32
+          type: integer
+        refreshSec:
+          format: int32
+          type: integer
+        runNow:
+          type: boolean
+        safeToDelete:
+          type: boolean
+        safeToUpdate:
+          type: boolean
+        startHour:
+          format: int32
+          type: integer
+        statusMsg:
+          $ref: '#/components/schemas/LLStatusMsg'
+          type: object
+        subscribedCollections:
+          items:
+            $ref: '#/components/schemas/LLCollectionTopic'
+            type: object
+          type: array
+        totalConsumedIndicators:
+          format: int32
+          type: integer
+        totalConsumedObservables:
+          format: int32
+          type: integer
+        totalDiscardedIndicators:
+          format: int32
+          type: integer
+        totalDiscardedObservables:
+          format: int32
+          type: integer
+        totalIndicators:
+          format: int32
+          type: integer
+        totalObservables:
+          format: int32
+          type: integer
+        totalUnsupportedObservables:
+          format: int32
+          type: integer
+        totalUpdatedIndicators:
+          format: int32
+          type: integer
+        totalUpdatedObservables:
+          format: int32
+          type: integer
+        type:
+          type: string
+        updatedIndicators:
+          format: int32
+          type: integer
+        updatedObservables:
+          format: int32
+          type: integer
+        uri:
+          type: string
+        username:
+          type: string
+        version:
+          type: string
+      type: object
+    RESTTidSource:
+      properties:
+        availableCollections:
+          items:
+            $ref: '#/components/schemas/RESTCollectionTopic'
+            type: object
+          type: array
+        caCert:
+          type: string
+        checksum:
+          type: string
+        clientCert:
+          type: string
+        clientPrivateKey:
+          type: string
+        consumedIndicators:
+          format: int32
+          type: integer
+        consumedObservables:
+          format: int32
+          type: integer
+        consumedUnsupportedObservables:
+          format: int32
+          type: integer
+        delivery:
+          type: string
+        description:
+          type: string
+        discardedIndicators:
+          format: int32
+          type: integer
+        discoveryInfo:
+          items:
+            $ref: '#/components/schemas/RESTCollectionTopic'
+            type: object
+          type: array
+        downloadOn:
+          type: boolean
+        feedConfig:
+          $ref: '#/components/schemas/LLFeedConfig'
+          type: object
+        feedContent:
+          type: string
+        feedStatus:
+          type: string
+        feedType:
+          type: string
+        finishTime:
+          format: int32
+          type: integer
+        id:
+          type: string
+        invalidObservables:
+          format: int32
+          type: integer
+        lastRun:
+          format: int32
+          type: integer
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        llfeedConfig:
+          $ref: '#/components/schemas/LLFeedConfig'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        nextRun:
+          format: int32
+          type: integer
+        params:
+          $ref: '#/components/schemas/LLParams'
+          type: object
+        passwd:
+          type: string
+        property:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        refresh:
+          format: int32
+          type: integer
+        runNow:
+          type: boolean
+        startHour:
+          format: int32
+          type: integer
+        statusMsg:
+          $ref: '#/components/schemas/LLStatusMsg'
+          type: object
+        subscribedCollections:
+          items:
+            $ref: '#/components/schemas/RESTCollectionTopic'
+            type: object
+          type: array
+        totalDiscardedIndicators:
+          format: int32
+          type: integer
+        totalIndicators:
+          format: int32
+          type: integer
+        totalInvalidObservables:
+          format: int32
+          type: integer
+        totalObservables:
+          format: int32
+          type: integer
+        totalUnsupportedObservables:
+          format: int32
+          type: integer
+        type:
+          type: string
+        uri:
+          type: string
+        username:
+          type: string
+        version:
+          type: string
+      type: object
+    RESTTidSourceListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/RESTTidSource'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    RESTObservation:
+      properties:
+        count:
+          format: int32
+          type: integer
+        data:
+          $ref: '#/components/schemas/RESTObservationData'
+          type: object
+        elementId:
+          type: string
+        elementName:
+          type: string
+        llobservation:
+          $ref: '#/components/schemas/LLObservation'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+        type:
+          type: string
+      type: object
+    RESTElement:
+      properties:
+        caCert:
+          type: string
+        capabilities:
+          items:
+            type: string
+          type: array
+        cert:
+          type: string
+        description:
+          type: string
+        host:
+          type: string
+        id:
+          type: string
+        key:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        llelement:
+          $ref: '#/components/schemas/LLElement'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        miscData:
+          $ref: '#/components/schemas/LLMiscData'
+          type: object
+        model:
+          type: string
+        name:
+          type: string
+        registrationDate:
+          format: int32
+          type: integer
+        status:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    RESTFeedProperty:
+      properties:
+        action:
+          type: string
+        allowlist:
+          type: boolean
+        expirationTime:
+          format: int32
+          type: integer
+        llfeedProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        publish:
+          type: boolean
+        tags:
+          $ref: '#/components/schemas/LLTags'
+          type: object
+        ttl:
+          format: int32
+          type: integer
+      type: object
+    RESTIndicatorListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/RESTIndicator'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+  parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cdfmc-openapi.yaml
+- cisco-secure-firewall-cdfmc-openapi.yml

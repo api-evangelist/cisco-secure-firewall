@@ -1,0 +1,1242 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall Search API
+  version: 1.13.0
+  description: 'Operations tagged Search across 4 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml,
+    cisco-secure-firewall-scc-firewall-manager-openapi.yml, scc-firewall-manager-openapi.yaml. Each path carries the servers
+    of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
+      schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
+    operation_coverage: 4/6
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: Search
+paths:
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/search/device:
+    get:
+      deprecated: false
+      description: '**Search for devices matching the specified text.**'
+      operationId: getGlobalDeviceSearch
+      parameters:
+      - description: Text used for filtering.
+        in: query
+        name: filter
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : GET /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/search/device?offset=0&limit=25&filter=FTD&expanded=true
+                  ( GET list of devices matching filter text "FTD" )'
+                : value:
+                    items:
+                    - category: DEVICE
+                      id: dd6e4972-360b-11ec-a044-85805db90dcf
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/devices/devicerecords/dd6e4972-360b-11ec-a044-85805db90dcf
+                      metadata:
+                        domain:
+                          id: e276abec-e0f2-11e3-8169-6d9ed49b625f
+                          name: Global
+                          type: Domain
+                      name: FTD01
+                      type: Device
+                      value: Cisco Firepower Threat Defense for VMware
+                    - category: DEVICE
+                      id: 2c455506-1b44-463f-9276-17969d566f3c
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/devices/devicerecords/2c455506-1b44-463f-9276-17969d566f3c
+                      metadata:
+                        domain:
+                          id: e276abec-e0f2-11e3-8169-6d9ed49b625f
+                          name: Global
+                          type: Domain
+                      name: FTD02
+                      type: Device
+                      value: Cisco Firepower Threat Defense for VMware
+                    links:
+                      self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/search/device?offset=0&limit=200&filter=text:FTD
+                    paging:
+                      count: 1
+                      limit: 200
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/GlobalDeviceSearchListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Search
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/search/global:
+    get:
+      deprecated: false
+      description: '**Search for objects and policies matching specified text or IP address.**'
+      operationId: getGlobalSearch
+      parameters:
+      - description: Text or IP address used for filtering.
+        in: query
+        name: filter
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /api/fmc_config/v1/domain/default/search/global ( GET ALL search )':
+                  value:
+                    items:
+                    - category: OBJECT
+                      id: 69fa2a3a-4487-4e3c-816f-4098f684826e
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/networkgroups/69fa2a3a-4487-4e3c-816f-4098f684826e
+                      metadata:
+                        domain:
+                          id: e276abec-e0f2-11e3-8169-6d9ed49b625f
+                          name: Global
+                          type: Domain
+                      name: any
+                      type: NetworkGroup
+                    - category: OBJECT
+                      id: 5fce8cce-aa67-11e5-816b-95eb712b72a1
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/isesecuritygrouptags/5fce8cce-aa67-11e5-816b-95eb712b72a1
+                      metadata:
+                        domain:
+                          id: e276abec-e0f2-11e3-8169-6d9ed49b625f
+                          name: Global
+                          type: Domain
+                      name: ANY
+                      type: ISESecurityGroupTag
+                    - category: OBJECT
+                      id: cb7116e8-66a6-480b-8f9b-295191a0940a
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/networks/cb7116e8-66a6-480b-8f9b-295191a0940a
+                      metadata:
+                        domain:
+                          id: e276abec-e0f2-11e3-8169-6d9ed49b625f
+                          name: Global
+                          type: Domain
+                      name: any-ipv4
+                      type: Network
+                      value: 0.0.0.0/0
+                    links:
+                      self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/search/global?offset=0&limit=4&filter=any&expanded=true
+                    paging:
+                      count: 3
+                      limit: 4
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/GlobalSearchListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Search
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/search/object:
+    get:
+      deprecated: false
+      description: '**Search for objects matching specified text or IP address.**'
+      operationId: getGlobalObjectSearch
+      parameters:
+      - description: Text or IP address used for filtering <br/>To search for objects that contain groups, follow this format:<br/>
+          <code>"text:searchText;types:Networks,Ports,etc;isAcpGlobalSearch:true;"</code> <br/>To perform multiple searches
+          simultaneously, follow this format:<br/> <code>"text:searchText1,searchText2;types:Networks,Ports,etc;isAcpGlobalSearch:true;isMultiObjectSearch:true;"</code>
+        in: query
+        name: filter
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : GET /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/search/object?offset=0&limit=25&filter=any&expanded=true
+                  ( GET list of objects matching filter text "any" )'
+                : value:
+                    items:
+                    - category: OBJECT
+                      id: 5fce8cce-aa67-11e5-816b-95eb712b72a1
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/isesecuritygrouptags/5fce8cce-aa67-11e5-816b-95eb712b72a1
+                      metadata:
+                        domain:
+                          id: e276abec-e0f2-11e3-8169-6d9ed49b625f
+                          name: Global
+                          type: Domain
+                      name: ANY
+                      type: ISESecurityGroupTag
+                    - category: OBJECT
+                      id: 69fa2a3a-4487-4e3c-816f-4098f684826e
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/networkgroups/69fa2a3a-4487-4e3c-816f-4098f684826e
+                      metadata:
+                        domain:
+                          id: e276abec-e0f2-11e3-8169-6d9ed49b625f
+                          name: Global
+                          type: Domain
+                      name: any
+                      type: NetworkGroup
+                    - category: OBJECT
+                      id: cb7116e8-66a6-480b-8f9b-295191a0940a
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/networks/cb7116e8-66a6-480b-8f9b-295191a0940a
+                      metadata:
+                        domain:
+                          id: e276abec-e0f2-11e3-8169-6d9ed49b625f
+                          name: Global
+                          type: Domain
+                      name: any-ipv4
+                      type: Network
+                      value: 0.0.0.0/0
+                    - category: OBJECT
+                      id: dde11d62-288b-4b4c-92e0-1dad0496f14b
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/hosts/dde11d62-288b-4b4c-92e0-1dad0496f14b
+                      metadata:
+                        domain:
+                          id: e276abec-e0f2-11e3-8169-6d9ed49b625f
+                          name: Global
+                          type: Domain
+                      name: any-ipv6
+                      type: Host
+                      value: ::/0
+                    - category: OBJECT
+                      id: 04ea3f1f-f5a9-4eca-b051-487ebeb4c97f
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/networks/04ea3f1f-f5a9-4eca-b051-487ebeb4c97f
+                      metadata:
+                        domain:
+                          id: e276abec-e0f2-11e3-8169-6d9ed49b625f
+                          name: Global
+                          type: Domain
+                      name: IPv6-to-IPv4-Relay-Anycast
+                      type: Network
+                      value: 192.88.99.0/24
+                    links:
+                      self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/search/object?offset=0&limit=25&filter=any&expanded=true
+                    paging:
+                      count: 5
+                      limit: 25
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/GlobalObjectSearchListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Search
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/search/policy:
+    get:
+      deprecated: false
+      description: '**Search for policies matching specified text or IP address, including values found in policies.**'
+      operationId: getGlobalPolicySearch
+      parameters:
+      - description: Text or IP address used for filtering.
+        in: query
+        name: filter
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : GET /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/search/policy?offset=0&limit=25&filter=global&expanded=true
+                  ( GET list of policies matching filter text "global" )'
+                : value:
+                    items:
+                    - category: POLICY
+                      id: 005056A9-9066-0ed3-0000-249108103339
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/policy/prefilterpolicies/005056A9-9066-0ed3-0000-249108103339
+                      name: Global Prefilter
+                      type: PrefilterPolicy
+                    - category: POLICY
+                      id: 005056A9-9066-0ed3-0000-038654705727
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/policy/accesspolicies/005056A9-9066-0ed3-0000-038654705727
+                      name: Global ACP
+                      type: AccessPolicy
+                    - category: POLICY
+                      id: 005056A9-9066-0ed3-0000-403726925915
+                      links:
+                        self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/policy/ftdnatpolicies/005056A9-9066-0ed3-0000-403726925915
+                      name: Global FTD NAT
+                      type: FTDNatPolicy
+                    links:
+                      self: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/search/policy?offset=0&limit=200&filter=text:global
+                    paging:
+                      count: 3
+                      limit: 200
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/GlobalPolicySearchListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Search
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/search:
+    get:
+      description: Search for devices, services, managers, objects and policies across the Security Cloud Control tenant.
+      operationId: search
+      parameters:
+      - description: This can be any non-empty string, and represents the search criteria. Spaces are allowed, but must be
+          URL encoded.
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalSearchResult'
+          description: Search Result
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Search
+      tags:
+      - Search
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/search/index:
+    post:
+      description: Initiate Full Indexing on the CDO tenant, to improve accuracy of search results. This operation is performed
+        automatically on a schedule by CDO, but can be triggered on demand too. This operation is asynchronous, but its progress
+        cannot be tracked using Security Cloud Control's API.
+      operationId: initiateFullIndexing
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the indexing operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Rebuild search index
+      tags:
+      - Search
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  schemas:
+    GlobalSearch:
+      description: A model representing global object search response.
+      properties:
+        description:
+          type: string
+        id:
+          description: Unique identifier of resource.
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/ISearchResult'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing related links.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata properties of response object.
+          type: object
+        name:
+          description: User chosen resource name.
+          type: string
+        searchCriteria:
+          type: string
+        type:
+          description: Type of resource.
+          type: string
+        version:
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    GlobalSearchListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/GlobalSearch'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    GlobalObjectSearch:
+      description: A model representing global object search response.
+      properties:
+        description:
+          type: string
+        id:
+          description: Unique identifier of resource.
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/ISearchResult'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing related links.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata properties of response object.
+          type: object
+        name:
+          description: User chosen resource name.
+          type: string
+        searchCriteria:
+          type: string
+        type:
+          description: Type of resource.
+          type: string
+        version:
+          type: string
+      type: object
+    ISearchResult:
+      properties:
+        category:
+          enum:
+          - GLOBALSEARCH
+          - GLOBAL
+          - OBJECT
+          - POLICY
+          - DEVICE
+          - DEVICE_TEMPLATE
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        subType:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    GlobalDeviceSearch:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/ISearchResult'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        searchCriteria:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    GlobalDeviceSearchListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/GlobalDeviceSearch'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    GlobalObjectSearchListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/GlobalObjectSearch'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    GlobalPolicySearch:
+      description: A model representing global policy search response.
+      properties:
+        description:
+          type: string
+        id:
+          description: Unique identifier of resource.
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/ISearchResult'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing related links.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata properties of response object.
+          type: object
+        name:
+          description: User chosen resource name.
+          type: string
+        searchCriteria:
+          type: string
+        type:
+          description: Type of resource.
+          type: string
+        version:
+          type: string
+      type: object
+    GlobalPolicySearchListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/GlobalPolicySearch'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    GlobalSearchResult:
+      properties:
+        cdFmcResult:
+          $ref: '#/components/schemas/CdFmcResult'
+          description: Results from the Cloud-delivered FMC devices, objects or policies that match the search term.
+        inventory:
+          $ref: '#/components/schemas/Inventory'
+          description: Results from the Security Cloud Control inventory that match the search term.
+        objects:
+          description: Results from the Security Cloud Control objects that match the search term.
+          items: {}
+          type: array
+        policies:
+          description: Results from the Security Cloud Control policies that match the search term.
+          items:
+            $ref: '#/components/schemas/Policy'
+          type: array
+      type: object
+    Policy:
+      properties:
+        name:
+          description: The name of the policy in Security Cloud Control.
+          example: my-example-policy
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the policy in Security Cloud Control.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    CdFmcObject:
+      properties:
+        link:
+          description: A URL to access the entity in Cloud-delivered FMC.
+          example: https://edge.us.cdo.cisco.com/api/platform/public-api/v1/cdfmc/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/devices/devicerecords/7131daad-e813-4b8f-8f42-be1e241e8cdb
+          type: string
+        name:
+          description: The name of the entity in Cloud-delivered FMC.
+          example: my-example-entity
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the entity in Cloud-delivered FMC.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    Inventory:
+      properties:
+        devices:
+          description: Devices that match the search term.
+          items:
+            $ref: '#/components/schemas/Entity'
+          type: array
+        managers:
+          description: Device Managers that match the search term.
+          items:
+            $ref: '#/components/schemas/Entity'
+          type: array
+        services:
+          description: Cloud Services that match the search term.
+          items:
+            $ref: '#/components/schemas/Entity'
+          type: array
+      type: object
+    Entity:
+      properties:
+        address:
+          description: The address of the entity.
+          example: my-example-device.example.com:443
+          type: string
+        matchingConfigurations:
+          description: (ASAs only) Parts of the ASA device configuration that match the search term.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name of the entity. Device names are unique in Security Cloud Control.
+          example: my-example-entity
+          type: string
+        type:
+          $ref: '#/components/schemas/EntityType'
+          description: The type of the entity.
+          example: ASA
+        uid:
+          description: The unique identifier, represented as a UUID, of the entity in Security Cloud Control.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    CdoTransaction:
+      properties:
+        cdoTransactionStatus:
+          description: The status of the transaction
+          enum:
+          - PENDING
+          - IN_PROGRESS
+          - DONE
+          - ERROR
+          example: IN_PROGRESS
+          type: string
+        entityUid:
+          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a
+            transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
+          example: f5f660d4-4b81-4374-877d-fbc4bee894e2
+          format: uuid
+          type: string
+        entityUrl:
+          description: A URL to access the entity that the transaction is triggered on. This can also be empty
+          example: https://edge.us.cdo.cisco.com/platform/public-api/v1/inventory/devices/f5f660d4-4b81-4374-877d-fbc4bee894e2
+          type: string
+        errorDetails:
+          additionalProperties:
+            type: string
+          description: Transaction error details, if any
+          type: object
+        errorMessage:
+          description: Transaction error message, if any
+          type: string
+        lastUpdatedTime:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the transaction status was last updated
+          example: 2023-12-13 08:15:44+00:00
+          format: date-time
+          type: string
+        submissionTime:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the transaction was triggered
+          example: 2023-12-13 05:15:44+00:00
+          format: date-time
+          type: string
+        tenantUid:
+          description: The unique identifier of the tenant that the transaction triggered on.
+          example: 5131daad-e813-4b8f-8f42-be1e241e2cdb
+          format: uuid
+          type: string
+        transactionDetails:
+          additionalProperties:
+            type: string
+          description: Transaction details, if any
+          type: object
+        transactionPollingUrl:
+          description: The URL to poll to track the progress of the transaction.
+          example: https://edge.us.cdo.cisco.com/platform/v1/transactions/7131daad-e813-4b8f-8f42-be1e241e8cdb
+          type: string
+        transactionType:
+          description: the type of the transaction
+          enum:
+          - ONBOARD_ASA
+          - ONBOARD_IOS
+          - ONBOARD_DUO_ADMIN_PANEL
+          - CREATE_FTD
+          - ONBOARD_FTD_ZTP
+          - REGISTER_FTD
+          - DELETE_CDFMC_MANAGED_FTD
+          - RECONNECT_ASA
+          - READ_ASA
+          - BULK_READ_ASA
+          - EXECUTE_CLI_COMMAND
+          - BULK_ACCEPT_ASA_CERTIFICATES
+          - DEPLOY_ASA_DEVICE_CHANGES
+          - DEPLOY_FTD_DEVICE_CHANGES
+          - INDEX_TENANT
+          - TERMINATE_DEVICE_RA_VPN_SESSIONS
+          - REFRESH_RA_VPN_SESSIONS
+          - TERMINATE_USER_RA_VPN_SESSIONS
+          - UPGRADE_ASA
+          - UPGRADE_FTD
+          - UPGRADE_FTD_CACHE
+          - MSP_UPGRADE_FTDS
+          - MSP_GET_COMPATIBLE_FTD_UPGRADE_PACKAGES
+          - CREATE_SDC
+          - SEND_AI_ASSISTANT_MESSAGE
+          - MSP_CREATE_TENANT
+          - MSP_ADD_USERS_TO_TENANT
+          - MSP_ADD_USER_GROUPS_TO_TENANT
+          - MSP_DELETE_USERS_FROM_TENANT
+          - MSP_DELETE_USER_GROUPS_FROM_TENANT
+          - MSP_ADD_EXISTING_TENANT
+          - MSP_ENABLE_MULTICLOUD_DEFENSE
+          - MSP_PROVISION_CDFMC
+          - CREATE_USERS
+          - DELETE_USERS
+          - EXECUTE_ASA_COMMAND
+          - ANALYZE_POLICIES
+          - TRIGGER_FMC_DATA_EXPORT
+          - EXPORT_DEVICES
+          - EXPORT_CLOUD_SERVICES
+          - EXPORT_MANAGERS
+          - EXPORT_TEMPLATES
+          - PROVISION_SDWAN_SAL_RESOURCES
+          - DEPROVISION_SDWAN_SAL_RESOURCES
+          - PROVISION_FIREWALL_SAL_RESOURCES
+          - DEPROVISION_FIREWALL_SAL_RESOURCES
+          - ASA_HEALTH_METRICS_TENANT_OPT_IN
+          - ASA_HEALTH_METRICS_TENANT_OPT_OUT
+          example: ONBOARD_ASA
+          type: string
+        transactionUid:
+          description: The unique identifier of the transaction triggered.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
+    CdFmcResult:
+      properties:
+        devices:
+          description: Devices that match the search term.
+          items:
+            $ref: '#/components/schemas/CdFmcObject'
+          type: array
+        objects:
+          description: Objects that match the search term.
+          items:
+            $ref: '#/components/schemas/CdFmcObject'
+          type: array
+        policies:
+          description: Policies that match the search term.
+          items:
+            $ref: '#/components/schemas/CdFmcObject'
+          type: array
+      type: object
+    EntityType:
+      enum:
+      - ASA
+      - CDFMC_MANAGED_FTD
+      - ONPREM_FMC_MANAGED_FTD
+      - ONPREM_FMC_MANAGED_FIREPOWER
+      - ONPREM_FMC_NGIPS
+      - FDM_MANAGED_FTD
+      - IOS
+      - ISR
+      - SSH_DEVICE
+      - GENERIC_DEVICE
+      - MERAKI_MX
+      - CLOUD_DNG
+      - SFCN
+      - SFCN_DNG
+      - SFCN_STS
+      - ONPREM_FMC
+      - CDFMC
+      - AWS_VPC
+      - AZURE_VNET
+      - DUO_ADMIN_PANEL
+      - UMBRELLA_ORGANIZATION
+      type: string
+  parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+  responses:
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
+    http405MethodNotAllowed:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Method not allowed.
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cdfmc-openapi.yaml
+- cisco-secure-firewall-cdfmc-openapi.yml
+- cisco-secure-firewall-scc-firewall-manager-openapi.yml
+- scc-firewall-manager-openapi.yaml

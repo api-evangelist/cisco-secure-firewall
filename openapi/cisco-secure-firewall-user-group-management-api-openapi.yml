@@ -1,0 +1,408 @@
+openapi: 3.2.0
+info:
+  version: 1.4.0
+  title: Identity and Access Management User group management API
+  description: APIs for creating and updating the customer enterprise, including user access control.
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/iam.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/iam.yaml
+servers:
+- url: https://api.int.security.cisco.com/identity
+  variables:
+    baseUrl:
+      default: https://api.int.security.cisco.com/identity
+    domain:
+      default: https://sso-apps-preview.myverysecuresignon.name/api
+security:
+- OpenID: []
+- bearerAuth: []
+tags:
+- name: User group management
+paths:
+  /enterprises/{id}/rbac/groups:
+    get:
+      tags:
+      - User group management
+      x-try-it-enabled: true
+      operationId: listRBACUserGroups
+      description: List all RBAC user groups related to the enterprise
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rbac_groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RBACGroup'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    post:
+      tags:
+      - User group management
+      x-try-it-enabled: true
+      operationId: createRBACUserGroup
+      description: Create new RBAC user group for the enterprise
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        description: the input parameters for the RBAC user group
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RBACGroupInputRequestBody'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RBACGroup'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /enterprises/{id}/rbac/groups/{groupId}:
+    put:
+      tags:
+      - User group management
+      x-try-it-enabled: true
+      operationId: updateRBACUserGroup
+      description: update RBAC user group by id for the enterprise
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: groupId
+        in: path
+        description: The RBAC user group Id to update
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        description: the input parameters for the RBAC user group
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RBACGroupInputRequestBody'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RBACGroup'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    delete:
+      tags:
+      - User group management
+      x-try-it-enabled: true
+      operationId: deleteRBACUserGroup
+      description: Deletes a RBAC user group by id from the enterprise
+      parameters:
+      - name: id
+        in: path
+        description: ID of enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: groupId
+        in: path
+        description: The RBAC user group Id to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /enterprises/{id}/rbac/users/{userId}/groups:
+    get:
+      tags:
+      - User group management
+      x-try-it-enabled: true
+      operationId: listRBACUserGroupAssignments
+      description: List all RBAC user group assignments related to the user
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: ID of the user from okta
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rbac_user_groups_assignments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RBACUserAssignmentGroup'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    post:
+      tags:
+      - User group management
+      x-try-it-enabled: true
+      operationId: createRBACUserGroupAssignment
+      description: Create new RBAC user group assignment
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: ID of the user from okta
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                groupId:
+                  $ref: '#/components/schemas/GroupAssignmentIdInput'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RBACUserAssignmentGroup'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /enterprises/{id}/rbac/users/{userId}/groups/{entityId}:
+    delete:
+      tags:
+      - User group management
+      x-try-it-enabled: true
+      operationId: deleteRBACUserGroupAssignment
+      description: Deletes a RBAC user group assignment by id
+      parameters:
+      - name: id
+        in: path
+        description: ID of enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: ID of the user from okta
+        required: true
+        schema:
+          type: string
+      - name: entityId
+        in: path
+        description: The RBAC user group assignment ID to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+components:
+  schemas:
+    RBACUserAssignmentGroup:
+      type: object
+      description: Represent entity of RBAC user group assignment
+      required:
+      - id
+      - userId
+      - enterpriseId
+      - groupId
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        enterpriseId:
+          type: string
+          format: uuid
+        groupId:
+          type: string
+          format: uuid
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    RBACGroupInputRequestBody:
+      type: object
+      description: Represent request body for RBAC user group
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+          enum:
+          - Local
+          - Federated
+          description: Specifies whether the group is local or federated. Defaults to Local
+    RBACGroup:
+      type: object
+      description: RBAC user group
+      required:
+      - id
+      - name
+      - description
+      - enterpriseId
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        enterpriseId:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum:
+          - Local
+          - Federated
+          description: Specifies whether the group is local or federated
+    GroupAssignmentIdInput:
+      type: string
+      format: uuid
+  responses:
+    NotFoundError:
+      description: Not Found
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request was invalid
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    GeneralError:
+      description: An unknown error occurred
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NoContent:
+      description: No content
+  headers:
+    Date:
+      schema:
+        type: string
+        pattern: ^.*$
+  securitySchemes:
+    OpenID:
+      type: openIdConnect
+      openIdConnectUrl: https://auth.example.com/.well-known/openid-configuration
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    piamServiceTokenSecurity:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.example.com/oauth/token
+          scopes:
+            security:duo:identity:mappings-migrate: Grants write and read access to product mappings migration APIs for Duo Security
+            security:etd:identity:mappings-migrate: Grants write and read access to Encrypted Traffic Analytics product mappings migration APIs
+            security:panoptica:identity:mappings-migrate: Grants write and read access to Panoptica product mappings migration APIs
+            security:secure-access:identity:mappings-migrate: Grants write and read access to Secure Access product mappings migration APIs
+            security:secure-endpoint:identity:mappings-migrate: Grants write and read access to Secure Endpoint product mappings migration APIs
+            security:secure-workload:identity:mappings-migrate: Grants write and read access to Secure Workload product mappings migration APIs
+            security:vuln-mgmt:identity:mappings-migrate: Grants write and read access to Vulnerability Management product mappings migration APIs
+            security:attack-surface-mgmt:identity:mappings-migrate: Grants write and read access to Attack Surface Management product mappings migration APIs
+            security:cdo:identity:mappings-migrate: Grants write and read access to CDO product mappings migration APIs
+            security:xdr:identity:mappings-migrate: Grants write and read access to XDR product mappings migration APIs
+            security:cdo:public-api: Grants write and read access to CDO Public Group Directory APIs

@@ -1,0 +1,41 @@
+generated: '2026-08-19'
+method: searched
+source: >-
+  openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml (CommonApiError enum),
+  https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/,
+  live probe of https://api.us.security.cisco.com/firewall/v1/meta (2026-08-19)
+limit_count: 0
+note: >-
+  Cisco publishes NO numeric rate limit for the cloud Secure Firewall APIs. The contract proves limits exist
+  — TOO_MANY_REQUESTS is a member of the published CommonApiError errorCode enum — but no window, no quota,
+  no burst allowance and no response header is documented anywhere in the developer documentation or either
+  OpenAPI. An integrator cannot size a client, and an agent cannot back off on anything but a bare 429.
+limits: []
+headers:
+  declared: []
+  note: >-
+    Neither published contract declares a single response header on any operation, so there is no
+    RateLimit-Limit / RateLimit-Remaining / RateLimit-Reset, no X-RateLimit-*, and no Retry-After.
+status_on_exhaustion: 429
+error_code: TOO_MANY_REQUESTS
+probe:
+  url: https://api.us.security.cisco.com/firewall/v1/meta
+  status: 401
+  headers_observed: none of RateLimit-*, X-RateLimit-*, Retry-After
+  note: >-
+    The endpoint is auth-gated, so no successful anonymous response was available to read live rate-limit
+    headers from. Absence in the 401 response is recorded but is not proof of absence on a 200.
+related_but_not_api_limits:
+  note: >-
+    The cdFMC contract contains RateLimitSettingsPolicy / rateLimitType schemas. Those are FIREWALL QoS
+    policy objects that the API manages — they are a product feature, not a limit on the API itself. Do not
+    read them as rate-limit documentation.
+on_premises:
+  note: >-
+    Cisco's on-premises Secure Firewall Management Center REST API quick-start guides on cisco.com do state
+    a per-IP message rate and a simultaneous-connection cap. Those pages returned HTTP 403 to our probe
+    (cisco.com/c/en/us/td/docs/... refuses automated clients), so no number is recorded here. The cloud
+    contract profiled above is a separate service with its own, undocumented, limits.
+  evidence:
+  - url: https://www.cisco.com/c/en/us/td/docs/security/firepower/760/api/REST/secure_firewall_management_center_rest_api_quick_start_guide_760/About_The_Firepower_Management_Center_REST_API.html
+    status: 403

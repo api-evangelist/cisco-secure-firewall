@@ -1,0 +1,1030 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall ASA Access Rules API
+  version: 1.13.0
+  contact:
+    name: Cisco Security Cloud Control TAC
+    email: cdo.tac@cisco.com
+  description: 'Operations tagged ASA Access Rules across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
+    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
+      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
+    operation_coverage: 5/5
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: ASA Access Rules
+paths:
+  /v1/policies/asa/accessrules:
+    get:
+      description: Get a list of ASA Access Rules.
+      operationId: listAccessRules
+      parameters:
+      - description: The number of results to retrieve.
+        in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 200
+          minimum: 0
+          type: string
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+        in: query
+        name: offset
+        required: false
+        schema:
+          minimum: 0
+          type: string
+      - description: The query to execute. Use the Lucene Query Syntax to construct your query.
+        example: fieldName:fieldValue
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+      - description: The fields to sort results by.
+        example: name:DESC
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessRulePage'
+          description: List of Access Rules.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get Access Rules
+      tags:
+      - ASA Access Rules
+    post:
+      description: Create an Access Rule in the Security Cloud Control tenant.
+      operationId: createAccessRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessRuleCreateInput'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessRule'
+          description: Security Cloud Control Access Rule.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Create Access Rule
+      tags:
+      - ASA Access Rules
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/policies/asa/accessrules/{accessRuleUid}:
+    delete:
+      description: Delete Access Rule by UID in the Security Cloud Control tenant.
+      operationId: deleteAccessRule
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the Access Rule in Security Cloud Control.
+        in: path
+        name: accessRuleUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Delete Access Rule
+      tags:
+      - ASA Access Rules
+    get:
+      description: Get a single ASA Access Rule by UUID.
+      operationId: fetchAccessRule
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the Access Rule in Security Cloud Control.
+        in: path
+        name: accessRuleUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessRule'
+          description: Access Rule object.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get Access Rule
+      tags:
+      - ASA Access Rules
+    patch:
+      description: Modify an Access Rule in the Security Cloud Control tenant by UID.
+      operationId: modifyAccessRule
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the Security Cloud Control Access Rule.
+        in: path
+        name: accessRuleUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessRuleUpdateInput'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessRule'
+          description: Security Cloud Control Access Rule
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Modify ASA Access Rule
+      tags:
+      - ASA Access Rules
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  schemas:
+    DestinationNetworkContent:
+      description: The destination network.
+      properties:
+        elements:
+          description: The list of elements.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name
+          example: any
+          type: string
+        type:
+          description: The type of the policy object.
+          enum:
+          - NETWORK_OBJECT
+          - IPV4_ADDRESS_POOL
+          - IPV6_ADDRESS_POOL
+          - NETWORK_GROUP
+          - SERVICE_OBJECT
+          - SERVICE_TCP_OBJECT
+          - SERVICE_UDP_OBJECT
+          - SERVICE_ICMPV4_OBJECT
+          - SERVICE_ICMPV6_OBJECT
+          - SERVICE_PROTOCOL_OBJECT
+          - SERVICE_GROUP
+          - SERVICE_FTD_GROUP
+          - PROTOCOL_GROUP
+          - ICMP_GROUP
+          - URL_OBJECT
+          - URL_GROUP
+          - APPLICATION_FILTER_OBJECT
+          - TIME_RANGE
+          example: NETWORK_OBJECT
+          type: string
+        uid:
+          description: The unique identifier.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - name
+      type: object
+    RuleTimeRangeContent:
+      description: The optional time range for which the access rule is active.
+      properties:
+        elements:
+          description: The list of elements.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name
+          example: any
+          type: string
+        type:
+          description: The type of the policy object.
+          enum:
+          - NETWORK_OBJECT
+          - IPV4_ADDRESS_POOL
+          - IPV6_ADDRESS_POOL
+          - NETWORK_GROUP
+          - SERVICE_OBJECT
+          - SERVICE_TCP_OBJECT
+          - SERVICE_UDP_OBJECT
+          - SERVICE_ICMPV4_OBJECT
+          - SERVICE_ICMPV6_OBJECT
+          - SERVICE_PROTOCOL_OBJECT
+          - SERVICE_GROUP
+          - SERVICE_FTD_GROUP
+          - PROTOCOL_GROUP
+          - ICMP_GROUP
+          - URL_OBJECT
+          - URL_GROUP
+          - APPLICATION_FILTER_OBJECT
+          - TIME_RANGE
+          example: NETWORK_OBJECT
+          type: string
+        uid:
+          description: The unique identifier.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - name
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
+    DestinationDynamicObjectContent:
+      description: The destination dynamic object.
+      properties:
+        elements:
+          description: The list of elements.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name
+          example: any
+          type: string
+        type:
+          description: The type of the policy object.
+          enum:
+          - NETWORK_OBJECT
+          - IPV4_ADDRESS_POOL
+          - IPV6_ADDRESS_POOL
+          - NETWORK_GROUP
+          - SERVICE_OBJECT
+          - SERVICE_TCP_OBJECT
+          - SERVICE_UDP_OBJECT
+          - SERVICE_ICMPV4_OBJECT
+          - SERVICE_ICMPV6_OBJECT
+          - SERVICE_PROTOCOL_OBJECT
+          - SERVICE_GROUP
+          - SERVICE_FTD_GROUP
+          - PROTOCOL_GROUP
+          - ICMP_GROUP
+          - URL_OBJECT
+          - URL_GROUP
+          - APPLICATION_FILTER_OBJECT
+          - TIME_RANGE
+          example: NETWORK_OBJECT
+          type: string
+        uid:
+          description: The unique identifier.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - name
+      type: object
+    DestinationPortContent:
+      description: The destination port.
+      properties:
+        elements:
+          description: The list of elements.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name
+          example: any
+          type: string
+        type:
+          description: The type of the policy object.
+          enum:
+          - NETWORK_OBJECT
+          - IPV4_ADDRESS_POOL
+          - IPV6_ADDRESS_POOL
+          - NETWORK_GROUP
+          - SERVICE_OBJECT
+          - SERVICE_TCP_OBJECT
+          - SERVICE_UDP_OBJECT
+          - SERVICE_ICMPV4_OBJECT
+          - SERVICE_ICMPV6_OBJECT
+          - SERVICE_PROTOCOL_OBJECT
+          - SERVICE_GROUP
+          - SERVICE_FTD_GROUP
+          - PROTOCOL_GROUP
+          - ICMP_GROUP
+          - URL_OBJECT
+          - URL_GROUP
+          - APPLICATION_FILTER_OBJECT
+          - TIME_RANGE
+          example: NETWORK_OBJECT
+          type: string
+        uid:
+          description: The unique identifier.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - name
+      type: object
+    AccessRulePage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/AccessRule'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    SourcePortContent:
+      description: The source port.
+      properties:
+        elements:
+          description: The list of elements.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name
+          example: any
+          type: string
+        type:
+          description: The type of the policy object.
+          enum:
+          - NETWORK_OBJECT
+          - IPV4_ADDRESS_POOL
+          - IPV6_ADDRESS_POOL
+          - NETWORK_GROUP
+          - SERVICE_OBJECT
+          - SERVICE_TCP_OBJECT
+          - SERVICE_UDP_OBJECT
+          - SERVICE_ICMPV4_OBJECT
+          - SERVICE_ICMPV6_OBJECT
+          - SERVICE_PROTOCOL_OBJECT
+          - SERVICE_GROUP
+          - SERVICE_FTD_GROUP
+          - PROTOCOL_GROUP
+          - ICMP_GROUP
+          - URL_OBJECT
+          - URL_GROUP
+          - APPLICATION_FILTER_OBJECT
+          - TIME_RANGE
+          example: NETWORK_OBJECT
+          type: string
+        uid:
+          description: The unique identifier.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - name
+      type: object
+    SourceDynamicObjectContent:
+      description: The source dynamic object.
+      properties:
+        elements:
+          description: The list of elements.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name
+          example: any
+          type: string
+        type:
+          description: The type of the policy object.
+          enum:
+          - NETWORK_OBJECT
+          - IPV4_ADDRESS_POOL
+          - IPV6_ADDRESS_POOL
+          - NETWORK_GROUP
+          - SERVICE_OBJECT
+          - SERVICE_TCP_OBJECT
+          - SERVICE_UDP_OBJECT
+          - SERVICE_ICMPV4_OBJECT
+          - SERVICE_ICMPV6_OBJECT
+          - SERVICE_PROTOCOL_OBJECT
+          - SERVICE_GROUP
+          - SERVICE_FTD_GROUP
+          - PROTOCOL_GROUP
+          - ICMP_GROUP
+          - URL_OBJECT
+          - URL_GROUP
+          - APPLICATION_FILTER_OBJECT
+          - TIME_RANGE
+          example: NETWORK_OBJECT
+          type: string
+        uid:
+          description: The unique identifier.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - name
+      type: object
+    AccessRuleUpdateInput:
+      properties:
+        destinationDynamicObject:
+          $ref: '#/components/schemas/DestinationDynamicObjectContent'
+        destinationNetwork:
+          $ref: '#/components/schemas/DestinationNetworkContent'
+        destinationPort:
+          $ref: '#/components/schemas/DestinationPortContent'
+        index:
+          description: Access rule index position in Access Group ordered rule list.
+          example: 1
+          format: int32
+          type: integer
+        isActiveRule:
+          description: Is active. True by default
+          example: false
+          type: boolean
+        logSettings:
+          $ref: '#/components/schemas/LogSettings'
+          description: The set of of interface and direction pairs or global resource.
+        protocol:
+          $ref: '#/components/schemas/ProtocolContent'
+          example:
+            elements:
+            - ip
+            name: ip
+            type: SERVICE_PROTOCOL_OBJECT
+            uid: null
+        remark:
+          description: A remark.
+          type: string
+        ruleAction:
+          description: 'The rule''s action: PERMIT or DENY.'
+          enum:
+          - PERMIT
+          - DENY
+          example: PERMIT
+          type: string
+        ruleTimeRange:
+          $ref: '#/components/schemas/AccessRuleDetailsContent'
+        sourceDynamicObject:
+          $ref: '#/components/schemas/SourceDynamicObjectContent'
+        sourceNetwork:
+          $ref: '#/components/schemas/SourceNetworkContent'
+        sourcePort:
+          $ref: '#/components/schemas/SourcePortContent'
+        uid:
+          description: The unique identifier, represented as a UUID, of the Access Rule.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - uid
+      type: object
+    LogSettings:
+      properties:
+        interval:
+          description: The interval
+          example: 1
+          format: int32
+          type: integer
+        level:
+          description: The level
+          example: 3
+          type: string
+      required:
+      - level
+      type: object
+    SourceNetworkContent:
+      description: The source network.
+      properties:
+        elements:
+          description: The list of elements.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name
+          example: any
+          type: string
+        type:
+          description: The type of the policy object.
+          enum:
+          - NETWORK_OBJECT
+          - IPV4_ADDRESS_POOL
+          - IPV6_ADDRESS_POOL
+          - NETWORK_GROUP
+          - SERVICE_OBJECT
+          - SERVICE_TCP_OBJECT
+          - SERVICE_UDP_OBJECT
+          - SERVICE_ICMPV4_OBJECT
+          - SERVICE_ICMPV6_OBJECT
+          - SERVICE_PROTOCOL_OBJECT
+          - SERVICE_GROUP
+          - SERVICE_FTD_GROUP
+          - PROTOCOL_GROUP
+          - ICMP_GROUP
+          - URL_OBJECT
+          - URL_GROUP
+          - APPLICATION_FILTER_OBJECT
+          - TIME_RANGE
+          example: NETWORK_OBJECT
+          type: string
+        uid:
+          description: The unique identifier.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - name
+      type: object
+    AccessRule:
+      properties:
+        accessGroupUid:
+          description: The unique identifier, represented as a UUID, of the Access Group associated with the Access Rule.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        createdDate:
+          description: The time (in UTC) at which Access Rule was created, represented using the RFC-3339 standard.
+          example: 2023-12-13 05:15:44+00:00
+          format: date-time
+          type: string
+        destinationDynamicObject:
+          $ref: '#/components/schemas/AccessRuleDetailsContent'
+          description: The destination dynamic object.
+        destinationNetwork:
+          $ref: '#/components/schemas/AccessRuleDetailsContent'
+          description: The destination network.
+        destinationPort:
+          $ref: '#/components/schemas/AccessRuleDetailsContent'
+          description: The destination port.
+        entityUid:
+          description: The unique identifier, represented as a UUID, of the device/manager associated with the Access Rule.
+            Points to shared Access Group in case of shared Rule
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        index:
+          description: Access rule index position in Access Group ordered rule list.
+          example: 1
+          format: int32
+          type: integer
+        isActiveRule:
+          description: Indicates whether this rule is active.
+          type: boolean
+        issues:
+          description: Indicates if rule has SHADOWED, SHARED or DUPLICATE (remark) issue.
+          items:
+            $ref: '#/components/schemas/AccessRuleIssue'
+          type: array
+          uniqueItems: true
+        logSettings:
+          $ref: '#/components/schemas/LogSettings'
+          description: The set of of interface and direction pairs or global resource.
+        protocol:
+          $ref: '#/components/schemas/AccessRuleDetailsContent'
+          description: The protocol.
+        remark:
+          description: A remark.
+          type: string
+        ruleAction:
+          description: Representation of the rule action.
+          enum:
+          - PERMIT
+          - DENY
+          type: string
+        ruleConfigurationLineNumber:
+          description: Representation of the rule's line number in configuration.
+          example: 1021
+          format: int64
+          type: integer
+        ruleConfigurationText:
+          description: Representation of the rule in configuration.
+          example: access-list ExampleList extended permit ip any any
+          type: string
+        ruleParsingError:
+          description: The error, if any, that was encountered when parsing the rule.
+          example: Could not parse [255.0.0.255]
+          type: string
+        ruleTimeRange:
+          $ref: '#/components/schemas/AccessRuleDetailsContent'
+          description: The rule time range.
+        ruleType:
+          description: The L3 level rule type. L3, L7 or CONTENT_FILTERING. Defaults to L3.
+          example: L3
+          type: string
+        sharedAccessGroupUid:
+          description: Optional unique identifier for the shared Access Group associated with a shared Access Rule.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        sourceDynamicObject:
+          $ref: '#/components/schemas/AccessRuleDetailsContent'
+          description: The source dynamic object.
+        sourceNetwork:
+          $ref: '#/components/schemas/AccessRuleDetailsContent'
+          description: The source network.
+        sourcePort:
+          $ref: '#/components/schemas/AccessRuleDetailsContent'
+          description: The source port.
+        uid:
+          description: The unique identifier, represented as a UUID, of Access Rule in Security Cloud Control.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        updatedDate:
+          description: The time (in UTC) at which Access Rule was updated, represented using the RFC-3339 standard.
+          example: 2023-12-13 05:15:44+00:00
+          format: date-time
+          type: string
+      required:
+      - accessGroupUid
+      - entityUid
+      - index
+      - uid
+      type: object
+    AccessRuleDetailsContent:
+      properties:
+        elements:
+          description: The list of elements.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name
+          example: any
+          type: string
+        type:
+          description: The type of the policy object.
+          enum:
+          - NETWORK_OBJECT
+          - IPV4_ADDRESS_POOL
+          - IPV6_ADDRESS_POOL
+          - NETWORK_GROUP
+          - SERVICE_OBJECT
+          - SERVICE_TCP_OBJECT
+          - SERVICE_UDP_OBJECT
+          - SERVICE_ICMPV4_OBJECT
+          - SERVICE_ICMPV6_OBJECT
+          - SERVICE_PROTOCOL_OBJECT
+          - SERVICE_GROUP
+          - SERVICE_FTD_GROUP
+          - PROTOCOL_GROUP
+          - ICMP_GROUP
+          - URL_OBJECT
+          - URL_GROUP
+          - APPLICATION_FILTER_OBJECT
+          - TIME_RANGE
+          example: NETWORK_OBJECT
+          type: string
+        uid:
+          description: The unique identifier.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - name
+      type: object
+    AccessRuleCreateInput:
+      properties:
+        accessGroupUid:
+          description: The unique identifier, represented as a UUID, of the Access Group associated with the Access Rule.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        activeRule:
+          type: boolean
+        destinationDynamicObject:
+          $ref: '#/components/schemas/DestinationDynamicObjectContent'
+        destinationNetwork:
+          $ref: '#/components/schemas/DestinationNetworkContent'
+        destinationPort:
+          $ref: '#/components/schemas/DestinationPortContent'
+        entityUid:
+          description: The unique identifier, represented as a UUID, of the device/manager associated with the Access Rule.
+            Points to the shared Access Group in the case of a shared Access Rule being created.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        index:
+          description: The position of the Access Rule in the orded list of rules in an Access Group.
+          example: 1
+          format: int32
+          type: integer
+        logSettings:
+          $ref: '#/components/schemas/LogSettings'
+          description: The level and interval of the log.
+        protocol:
+          $ref: '#/components/schemas/ProtocolContent'
+        remark:
+          description: A human-readable remark. This is typically used to describe the intentions of the access rule.
+          type: string
+        ruleAction:
+          description: The rule's action.
+          enum:
+          - PERMIT
+          - DENY
+          example: PERMIT
+          type: string
+        ruleTimeRange:
+          $ref: '#/components/schemas/RuleTimeRangeContent'
+        sourceDynamicObject:
+          $ref: '#/components/schemas/SourceDynamicObjectContent'
+        sourceNetwork:
+          $ref: '#/components/schemas/SourceNetworkContent'
+        sourcePort:
+          $ref: '#/components/schemas/SourcePortContent'
+      required:
+      - accessGroupUid
+      - entityUid
+      - index
+      type: object
+    ProtocolContent:
+      description: The protocol. Defaults to IP.
+      properties:
+        elements:
+          description: The list of elements.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name
+          example: any
+          type: string
+        type:
+          description: The type of the policy object.
+          enum:
+          - NETWORK_OBJECT
+          - IPV4_ADDRESS_POOL
+          - IPV6_ADDRESS_POOL
+          - NETWORK_GROUP
+          - SERVICE_OBJECT
+          - SERVICE_TCP_OBJECT
+          - SERVICE_UDP_OBJECT
+          - SERVICE_ICMPV4_OBJECT
+          - SERVICE_ICMPV6_OBJECT
+          - SERVICE_PROTOCOL_OBJECT
+          - SERVICE_GROUP
+          - SERVICE_FTD_GROUP
+          - PROTOCOL_GROUP
+          - ICMP_GROUP
+          - URL_OBJECT
+          - URL_GROUP
+          - APPLICATION_FILTER_OBJECT
+          - TIME_RANGE
+          example: NETWORK_OBJECT
+          type: string
+        uid:
+          description: The unique identifier.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - name
+      type: object
+    Cause:
+      description: Represents a specific cause for an access rule issue.
+      properties:
+        causeTypes:
+          description: A set of cause types for the issue.
+          example:
+          - SHADOWED_BY_NETWORK_ADDRESS
+          - SHADOWED_BY_ICMP
+          - DUPLICATE_REMARK
+          items:
+            enum:
+            - SHADOWED_BY_NETWORK_ADDRESS
+            - SHADOWED_BY_PORT
+            - SHADOWED_BY_ICMP
+            - SHADOWED_BY_ACTION
+            - DUPLICATE_REMARK
+            - UNKNOWN
+            type: string
+          type: array
+          uniqueItems: true
+        causingRule:
+          description: The rule that is causing the issue.
+          type: string
+        causingRuleIdx:
+          description: The index of the causing rule.
+          format: int32
+          type: integer
+      type: object
+    AccessRuleIssue:
+      description: Represents an access rule issue, including issue type and causes.
+      properties:
+        causes:
+          description: A list of the causes for the rule being marked with an issue.
+          example:
+          - causeTypes:
+            - SHADOWED_BY_NETWORK_ADDRESS
+            - SHADOWED_BY_ICMP
+            causingRule: Rule_1
+            causingRuleIdx: 5
+          items:
+            $ref: '#/components/schemas/Cause'
+          type: array
+        issueType:
+          description: Indicates if the rule has any known issue. For unknown issues, UNKNOWN value will be used.
+          enum:
+          - SHADOWED
+          - SHARED
+          - DUPLICATE
+          - UNKNOWN
+          type: string
+      type: object
+  responses:
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cisco-secure-firewall-scc-firewall-manager-openapi.yml
+- scc-firewall-manager-openapi.yaml

@@ -1,0 +1,261 @@
+generated: '2026-08-19'
+method: derived
+source: >-
+  mcp/cisco-secure-firewall-mcp.yml, https://github.com/CiscoDevNet/cisco-scc-mcp-community/blob/main/TOOLS.md,
+  openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml,
+  openapi/cisco-secure-firewall-cdfmc-openapi.yml
+note: >-
+  Binds the Firewall-scoped MCP tools to the operationIds in Cisco's two published OpenAPI documents. The
+  MCP servers are local-stdio and were not introspected live, so every binding is by declared REST path
+  (which the SCC server publishes per tool in TOOLS.md) matched against the spec — high confidence where the
+  path matches a published path exactly, medium where the server declares a path the published spec does not
+  carry. Those medium rows are the finding: the community server names FWM paths (/change-requests,
+  /connectors, /meta/regions, /monitoring/ra-vpn-sessions, /objects, /search, /transactions, /users) that do
+  not match the published v1 paths, which is consistent with the maintainer's own "7 path-broken" disclosure.
+surfaces:
+  openapi:
+  - file: openapi/cisco-secure-firewall-cdfmc-openapi.yml
+    operations: 1311
+  - file: openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml
+    operations: 160
+  graphql: null
+  mcp:
+    url: null
+    mode: local-stdio
+    gated: true
+    note: No hosted endpoint; tool schemas were read from the servers' published catalogs, not tools/list.
+crosswalk:
+- tool: fwm_list_devices
+  category: inventory
+  rest:
+  - getDevices
+  binding: GET /v1/inventory/devices
+  confidence: high
+- tool: fwm_get_device
+  category: inventory
+  rest:
+  - getDevice
+  binding: GET /v1/inventory/devices/{deviceUid}
+  confidence: high
+- tool: fwm_list_managers
+  category: inventory
+  rest:
+  - getDeviceManagers
+  binding: GET /v1/inventory/managers
+  confidence: high
+- tool: fwm_get_manager
+  category: inventory
+  rest:
+  - getDeviceManager
+  binding: GET /v1/inventory/managers/{deviceManagerUid}
+  confidence: high
+- tool: fwm_list_templates
+  category: inventory
+  rest:
+  - getTemplateDevices
+  binding: GET /v1/inventory/templates
+  confidence: medium
+  note: Tool declares /inventory/templates without the /v1 prefix the spec publishes.
+- tool: fwm_get_template
+  category: inventory
+  rest:
+  - getTemplateDevice
+  binding: GET /v1/inventory/templates/{templateDeviceUid}
+  confidence: medium
+- tool: fwm_list_objects
+  category: objects
+  rest:
+  - getObjects
+  binding: GET /v1/objects
+  confidence: medium
+- tool: fwm_get_object
+  category: objects
+  rest:
+  - getObject
+  binding: GET /v1/objects/{uid}
+  confidence: medium
+- tool: fwm_list_change_requests
+  category: change-management
+  rest:
+  - getChangeRequests
+  binding: GET /v1/changeRequests
+  confidence: medium
+  note: Tool declares /change-requests; the spec publishes /v1/changeRequests (camelCase, no hyphen).
+- tool: fwm_get_change_request
+  category: change-management
+  rest:
+  - getChangeRequest
+  binding: GET /v1/changeRequests/{changeRequestUid}
+  confidence: medium
+- tool: fwm_list_changelogs
+  category: change-management
+  rest:
+  - getChangelogs
+  binding: GET /v1/changelogs
+  confidence: medium
+- tool: fwm_get_changelog
+  category: change-management
+  rest:
+  - getChangelog
+  binding: GET /v1/changelogs/{changelogUid}
+  confidence: medium
+- tool: fwm_list_connectors
+  category: connectors
+  rest:
+  - getSdcs
+  binding: GET /v1/connectors/sdcs
+  confidence: medium
+  note: Tool declares /connectors; the spec publishes /v1/connectors/sdcs (Secure Device Connectors).
+- tool: fwm_get_connector
+  category: connectors
+  rest:
+  - getSdc
+  binding: GET /v1/connectors/sdcs/{sdcUid}
+  confidence: medium
+- tool: fwm_list_transactions
+  category: transactions
+  rest:
+  - getTransaction
+  binding: GET /v1/transactions/{transactionUid}
+  confidence: low
+  note: >-
+    The tool lists transactions; the published spec exposes only a single-transaction GET. No list operation
+    for transactions exists in the published contract.
+- tool: fwm_get_transaction
+  category: transactions
+  rest:
+  - getTransaction
+  binding: GET /v1/transactions/{transactionUid}
+  confidence: high
+- tool: fwm_list_users
+  category: users
+  rest:
+  - getUsers
+  binding: GET /v1/users
+  confidence: medium
+- tool: fwm_get_user
+  category: users
+  rest:
+  - getUser
+  binding: GET /v1/users/{userUid}
+  confidence: medium
+- tool: fwm_search
+  category: search
+  rest:
+  - search
+  binding: GET /v1/search
+  confidence: medium
+- tool: fwm_get_tenant_info
+  category: tenant
+  rest:
+  - getTenant
+  binding: GET /v1/tenants/{tenantUid}
+  confidence: high
+- tool: fwm_meta_get_regions
+  category: meta
+  rest:
+  - getRegions
+  binding: GET /v1/regions
+  confidence: medium
+  note: Tool declares /meta/regions; the spec publishes /v1/regions.
+- tool: fwm_meta_get_jwks
+  category: meta
+  rest:
+  - getJwks
+  binding: GET /.well-known/jwks.json
+  confidence: high
+- tool: fwm_list_ra_vpn_sessions
+  category: monitoring
+  rest:
+  - getRaVpnSessions
+  binding: GET /v1/vpnsessions
+  confidence: medium
+  note: Tool declares /monitoring/ra-vpn-sessions; the spec publishes /v1/vpnsessions.
+- tool: fwm_list_mfa_events
+  category: monitoring
+  rest:
+  - getMfaEvents
+  binding: GET /v1/mfaevents
+  confidence: medium
+- tool: fwm_cdfmc_list_access_policies
+  category: policy
+  rest:
+  - getAllAccessPolicy
+  binding: GET /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/policy/accesspolicies
+  confidence: high
+- tool: fwm_cdfmc_get_access_policy
+  category: policy
+  rest:
+  - getAccessPolicy
+  binding: GET /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/policy/accesspolicies/{objectId}
+  confidence: high
+- tool: fwm_cdfmc_list_access_rules
+  category: policy
+  rest:
+  - getAllAccessRule
+  binding: GET /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/policy/accesspolicies/{containerUUID}/accessrules
+  confidence: high
+- tool: fwm_cdfmc_get_access_rule
+  category: policy
+  rest:
+  - getAccessRule
+  binding: >-
+    GET /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/policy/accesspolicies/{containerUUID}/accessrules/{objectId}
+  confidence: high
+- tool: find_rules_by_ip_or_fqdn
+  category: policy
+  server: CiscoFMC-MCP-server-community
+  rest:
+  - getAllAccessRule
+  binding: composite over the on-prem FMC equivalent of GET .../accesspolicies/{containerUUID}/accessrules
+  confidence: medium
+  note: >-
+    Targets the on-premises FMC, whose contract is served per-appliance. Bound to the cdFMC published
+    equivalent because the two share the fmc_config/v1 path grammar.
+- tool: find_rules_for_target
+  category: policy
+  server: CiscoFMC-MCP-server-community
+  rest:
+  - getAllPolicyAssignment
+  - getAllAccessRule
+  binding: resolve device to assigned policies, then search rules
+  confidence: medium
+- tool: search_access_rules
+  category: policy
+  server: CiscoFMC-MCP-server-community
+  rest:
+  - getAllAccessRule
+  binding: FMC-wide access-rule search with indicator + policy filters
+  confidence: medium
+mcp_only:
+- tool: fwm_audit_ai_guardrails_coverage
+  reason: >-
+    Composite audit with no backing REST operation — walks every cdFMC access policy and rule and returns
+    rules carrying an aiDefensePolicy. Bridges firewall config to AI Defense; exists only in the MCP layer.
+- tool: fwm_meta_get_cloud_ips
+  reason: >-
+    Declares /meta/cloud-ips. No corresponding operation appears in either published OpenAPI, though the
+    Getting Started docs describe cloud-connector IPs as a meta endpoint.
+- tool: list_fmc_profiles
+  reason: >-
+    Server-local configuration listing (which FMC instances this MCP process is configured for). Not an API
+    operation at all.
+rest_only:
+  count: 1441
+  note: >-
+    1,471 published operations, 30 of which have an MCP tool binding. Everything write-shaped is REST-only:
+    both MCP servers are read-only by design, so no create/update/delete operation in either contract is
+    reachable through an agent tool. Whole product areas have no tool at all — Deployment
+    (createDeploymentRequest, getDeployableDevice, getPendingChanges), Device onboarding (createFtdDevice,
+    onboardAsaDevice, onboardFtdDeviceUsingZtp), Upgrades (upgradeFtdDevices, getCompatibleFtdVersions),
+    Object authoring (createMultipleNetworkObject, createMultipleHostObject), Chassis, Health, Intelligence,
+    Backup, Troubleshoot and Licensing.
+coverage:
+  rest_operations: 1471
+  mcp_tools_firewall_scoped: 34
+  bound: 30
+  mcp_only: 3
+  bound_high_confidence: 11
+  bound_medium_or_lower: 19
+  rest_uncovered: 1441
+  rest_coverage_pct: 2.0

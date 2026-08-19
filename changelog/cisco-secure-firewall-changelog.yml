@@ -1,0 +1,67 @@
+generated: '2026-08-19'
+method: searched
+source: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/api-changelog.md
+docs: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/api-changelog/
+scheme: semantic version + release date, grouped into Added / Improvements / Fixes
+current_version: 1.13.0
+current_version_date: '2025-05-23'
+note: >-
+  Cisco maintains a dated, structured API changelog in the same first-party repository that carries the
+  OpenAPI, so the change record and the contract move together. Recent window only — the file carries the
+  full history back to 1.0.
+entries:
+- version: 1.13.0
+  date: '2025-05-23'
+  breaking: false
+  additions:
+  - Endpoint to deploy changes to up to 50 FTDs simultaneously.
+  improvements:
+  - Upgrade up to 50 FTDs simultaneously via the Upgrade multiple FTD devices endpoint.
+  - Arbitrary metadata can now be stored on a device record in SCC Firewall Manager.
+- version: 1.12.0
+  date: '2025-05-06'
+  breaking: false
+  additions:
+  - Endpoint to rebuild the cache for cdFMC upgrade packages on a tenant.
+- version: 1.11.0
+  date: '2025-04-27'
+  breaking: false
+  additions:
+  - Endpoint to upgrade up to 10 FTDs simultaneously.
+  - Endpoint to read configuration from multiple ASAs.
+  - Endpoint to accept certificates on multiple ASAs.
+  - Endpoint to delete multiple users on a tenant.
+  fixes:
+  - Fixed a regression that prevented searching users by name.
+  - Fixed performance issues triggering deploys on FTDs managed by large cdFMCs.
+  - Fixed performance issues triggering upgrades on FTDs managed by large cdFMCs.
+- version: '1.10.0'
+  date: '2025-04-01'
+  breaking: false
+  additions:
+  - The cdFMC API documentation was folded into the Security Cloud Control Firewall Manager API docs.
+  improvements:
+  - Improved accuracy of S2S VPN tunnel and RA VPN session data from the cdFMC health endpoint.
+- version: 1.9.0
+  date: '2025-03-17'
+  breaking: false
+  additions:
+  - Endpoints to upgrade FTD devices, including compatible-version discovery.
+  - Endpoint to deploy changes to FTD devices.
+  - Endpoint to fetch API-only users on a tenant.
+  - Endpoint to fetch targets associated with an object.
+- version: 1.8.0
+  date: '2025-02-05'
+  breaking: false
+  improvements:
+  - >-
+    New regional base URLs https://api.<region>.security.cisco.com/firewall introduced; the previous
+    edge.<region>.cdo.cisco.com and <region>.manage.security.cisco.com URLs continue to work.
+  - Zero-touch provisioning of FTDs using cdFMC templates.
+- version: 1.7.0
+  date: '2025-01-24'
+  breaking: false
+  additions:
+  - Endpoints to upgrade ASA devices.
+  - Endpoints to execute arbitrary API endpoints on an on-prem FMC.
+  - Endpoint to fetch the raw configuration of an ASA.

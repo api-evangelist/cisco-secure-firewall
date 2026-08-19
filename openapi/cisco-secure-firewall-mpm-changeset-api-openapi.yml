@@ -1,0 +1,844 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine MPM Changeset API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: MPM Changeset
+paths:
+  /mpm/changeset:
+    post:
+      description: 'Roles allowed: support, mpm-rw'
+      operationId: createChangeset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpmChangesetUserApi'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+        '500':
+          description: Internal Server Error
+        '503':
+          description: Service Unavailable, Manual policy manager pipeline is yet to complete the initial setup, please retry in sometime
+      summary: Create Changeset
+      tags:
+      - MPM Changeset
+  /mpm/changeset/content/action/{action}:
+    post:
+      description: 'Roles allowed: support, mpm-rw'
+      operationId: createChangesetWithContent
+      parameters:
+      - in: path
+        name: action
+        required: true
+        schema:
+          enum:
+          - CREATE
+          - REBASE
+          - RESOLVE_CONFLICT
+          - VALIDATE
+          - RESOLVE_ERROR
+          - COMMIT
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpmCreateChangesetWithContentApi'
+        required: true
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+        '503':
+          description: Service Unavailable, Manual policy manager pipeline is yet to complete the initial setup, please retry in sometime
+      summary: 'Create Changeset with Content '
+      tags:
+      - MPM Changeset
+  /mpm/changeset/{changesetId}:
+    delete:
+      description: 'Roles allowed: support,mpm-rw'
+      operationId: deleteChangeset
+      parameters:
+      - in: path
+        name: changesetId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete the Changeset
+      tags:
+      - MPM Changeset
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getChangeset
+      parameters:
+      - in: path
+        name: changesetId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmChangeset'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get the Changeset using changesetId
+      tags:
+      - MPM Changeset
+    put:
+      description: 'Roles allowed: support, mpm-rw'
+      operationId: updateChangesetContent
+      parameters:
+      - in: path
+        name: changesetId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpmChangesetContent'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update Changeset content
+      tags:
+      - MPM Changeset
+  /mpm/changeset/{changesetId}/action/{action}:
+    post:
+      description: 'Roles allowed: support, mpm-rw'
+      operationId: changesetAction
+      parameters:
+      - in: path
+        name: changesetId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: action
+        required: true
+        schema:
+          enum:
+          - CREATE
+          - REBASE
+          - RESOLVE_CONFLICT
+          - VALIDATE
+          - RESOLVE_ERROR
+          - COMMIT
+          type: string
+      responses:
+        '202':
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Perform an action on the Changeset
+      tags:
+      - MPM Changeset
+  /mpm/changesets:
+    get:
+      description: 'Roles allowed: support, mpm-rw, mpm-ro'
+      operationId: getChangesets
+      parameters:
+      - in: query
+        name: status
+        schema:
+          enum:
+          - DRAFT
+          - SUBMITTED
+          - CONFLICT_DETECTED
+          - ERROR_DETECTED
+          - COMMITTED
+          type: string
+      - in: query
+        name: lastTimestamp
+        schema:
+          type: string
+      - in: query
+        name: lastChangesetId
+        schema:
+          format: uuid
+          type: string
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MpmChangesetsPage'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get all the changesets
+      tags:
+      - MPM Changeset
+components:
+  schemas:
+    MpmChangesetUserApi:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    EndpointGroupChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/EndpointGroupChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    PolicyRuleOrderChange:
+      properties:
+        newOrder:
+          items:
+            format: uuid
+            type: string
+          type: array
+        oldOrder:
+          items:
+            format: uuid
+            type: string
+          type: array
+      type: object
+    AppInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    ManagerInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    ManagerChangeBody:
+      properties:
+        apgs:
+          items:
+            $ref: '#/components/schemas/AppGroupChange'
+          type: array
+        aps:
+          items:
+            $ref: '#/components/schemas/AppChange'
+          type: array
+        epgs:
+          items:
+            $ref: '#/components/schemas/EndpointGroupChange'
+          type: array
+        eps:
+          items:
+            $ref: '#/components/schemas/EndpointChange'
+          type: array
+        info:
+          $ref: '#/components/schemas/ManagerInfoChange'
+        policies:
+          items:
+            $ref: '#/components/schemas/PolicyChange'
+          type: array
+      type: object
+    PolicyChangeBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/PolicyInfoChange'
+        natRules:
+          items:
+            $ref: '#/components/schemas/NatRuleChange'
+          type: array
+        ruleOrder:
+          $ref: '#/components/schemas/PolicyRuleOrderChange'
+        rules:
+          items:
+            $ref: '#/components/schemas/RuleChange'
+          type: array
+        targets:
+          $ref: '#/components/schemas/TargetRelationshipChanges'
+      type: object
+    AppGroupChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/AppGroupChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    NatRuleChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/NatRuleChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    PolicyInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+      type: object
+    EndpointChangeBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/EndpointInfoChange'
+      required:
+      - info
+      type: object
+    RuleChangeBody:
+      properties:
+        apgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        aps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstDgs:
+          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChanges'
+        dstEpgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstEps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        info:
+          $ref: '#/components/schemas/RuleInfoChange'
+        srcDgs:
+          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChanges'
+        srcEpgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        srcEps:
+          $ref: '#/components/schemas/RelationshipChanges'
+      type: object
+    MpmCreateChangesetWithContentApi:
+      properties:
+        changesetContent:
+          $ref: '#/components/schemas/MpmChangesetContent'
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - changesetContent
+      - name
+      type: object
+    AppGroupChangeBody:
+      properties:
+        apgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        aps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        info:
+          $ref: '#/components/schemas/AppGroupInfoChange'
+      type: object
+    RuleChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/RuleChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    PolicyChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/PolicyChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    NatMatchInfoChange:
+      properties:
+        apgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        aps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstEpgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstEps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        srcEpgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        srcEps:
+          $ref: '#/components/schemas/RelationshipChanges'
+      type: object
+    EndpointGroupInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    MpmChangesetMeta:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - REBASE
+          - RESOLVE_CONFLICT
+          - VALIDATE
+          - RESOLVE_ERROR
+          - COMMIT
+          type: string
+        baseRevision:
+          format: int32
+          type: integer
+        changesetId:
+          format: uuid
+          type: string
+        createdBy:
+          type: string
+        createdTime:
+          format: date-time
+          type: string
+        description:
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        name:
+          type: string
+        newRevision:
+          format: int32
+          type: integer
+        receivedTime:
+          format: date-time
+          type: string
+        status:
+          enum:
+          - DRAFT
+          - SUBMITTED
+          - CONFLICT_DETECTED
+          - ERROR_DETECTED
+          - COMMITTED
+          type: string
+      type: object
+    RelationshipChanges:
+      properties:
+        add:
+          items:
+            format: uuid
+            type: string
+          type: array
+        rem:
+          items:
+            format: uuid
+            type: string
+          type: array
+      type: object
+    NatRuleChangeBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/NatRuleInfoChange'
+        matchInfo:
+          $ref: '#/components/schemas/NatMatchInfoChange'
+        translatedInfo:
+          $ref: '#/components/schemas/NatTranslatedInfoChange'
+      type: object
+    MpmChangeset:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - REBASE
+          - RESOLVE_CONFLICT
+          - VALIDATE
+          - RESOLVE_ERROR
+          - COMMIT
+          type: string
+        baseRevision:
+          format: int32
+          type: integer
+        changesetContent:
+          $ref: '#/components/schemas/MpmChangesetContent'
+        changesetId:
+          format: uuid
+          type: string
+        createdBy:
+          type: string
+        createdTime:
+          format: date-time
+          type: string
+        description:
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        name:
+          type: string
+        newRevision:
+          format: int32
+          type: integer
+        receivedTime:
+          format: date-time
+          type: string
+        status:
+          enum:
+          - DRAFT
+          - SUBMITTED
+          - CONFLICT_DETECTED
+          - ERROR_DETECTED
+          - COMMITTED
+          type: string
+      type: object
+    RuleInfoChange:
+      properties:
+        action:
+          enum:
+          - PERMIT
+          - DENY
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+        fullyPinned:
+          type: boolean
+        onClose:
+          type: boolean
+        onInit:
+          type: boolean
+        ruleGroup:
+          type: string
+      type: object
+    AppChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/AppChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    TargetRelationshipChanges:
+      properties:
+        add:
+          items:
+            type: string
+          type: array
+        rem:
+          items:
+            type: string
+          type: array
+      type: object
+    NatTranslatedInfoChange:
+      properties:
+        ap:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstEp:
+          $ref: '#/components/schemas/RelationshipChanges'
+        srcEp:
+          $ref: '#/components/schemas/RelationshipChanges'
+      type: object
+    MpmChangesetsPage:
+      properties:
+        changesets:
+          items:
+            $ref: '#/components/schemas/MpmChangesetMeta'
+          type: array
+        lastChangesetId:
+          format: uuid
+          type: string
+        lastModifiedTimestamp:
+          format: date-time
+          type: string
+      type: object
+    MpmChangesetContent:
+      properties:
+        extIds:
+          items:
+            type: string
+          type: array
+        managers:
+          items:
+            $ref: '#/components/schemas/ManagerChange'
+          type: array
+      required:
+      - managers
+      type: object
+    EndpointChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/EndpointChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    MpmDynamicGroupRelationshipChanges:
+      properties:
+        add:
+          items:
+            type: string
+          type: array
+        rem:
+          items:
+            type: string
+          type: array
+      type: object
+    NatRuleInfoChange:
+      properties:
+        appNatType:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+        description:
+          type: string
+        dstNatType:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+        enabled:
+          type: boolean
+        ruleGroup:
+          type: string
+        srcNatType:
+          enum:
+          - MATCH
+          - STATIC
+          - HIDE
+          type: string
+      type: object
+    ManagerChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/ManagerChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    AppChangeBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/AppInfoChange'
+      required:
+      - info
+      type: object
+    EndpointGroupChangeBody:
+      properties:
+        epgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        eps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        info:
+          $ref: '#/components/schemas/EndpointGroupInfoChange'
+      type: object
+    EndpointInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    AppGroupInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

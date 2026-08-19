@@ -1,0 +1,444 @@
+openapi: 3.2.0
+info:
+  version: 1.4.0
+  title: Identity and Access Management Domains and Identity providers API
+  description: APIs for creating and updating the customer enterprise, including user access control.
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/iam.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/iam.yaml
+servers:
+- url: https://api.int.security.cisco.com/identity
+  variables:
+    baseUrl:
+      default: https://api.int.security.cisco.com/identity
+    domain:
+      default: https://sso-apps-preview.myverysecuresignon.name/api
+security:
+- OpenID: []
+- bearerAuth: []
+tags:
+- name: Domains and Identity providers
+paths:
+  /enterprises/{id}/domains/{domain}/verify:
+    post:
+      operationId: verifyPendingEnterpriseDomain
+      description: Will trigger the backend to attempt to verify the domain for the enterprise
+      parameters:
+      - name: id
+        in: path
+        description: ID of enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: domain
+        in: path
+        description: domain to verify
+        required: true
+        schema:
+          $ref: '#/components/schemas/DomainName'
+      responses:
+        '201':
+          description: Verification was successful, domain will be marked as verified
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Domain'
+        '400':
+          description: verification/claim was not successful
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+      tags:
+      - Domains and Identity providers
+  /enterprises/{id}/domains:
+    get:
+      tags:
+      - Domains and Identity providers
+      operationId: getEnterpriseDomains
+      description: Reads from the domains table first to see if it has any verified domains. If such a one exists, it returns that domain. Else this API will read from the pending_domains table and return all the unverified domains the enterprise has. After 30 days, if the domain is unverified, the entry will be deleted by the TTL in DDB and thus this API will not return it.
+      parameters:
+      - name: id
+        in: path
+        description: ID of enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: ''
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PendingDomain'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    post:
+      tags:
+      - Domains and Identity providers
+      operationId: initiatePendingEnterpriseDomain
+      description: Will begin the domain verification process for the enterprise. Action needs to done by the admin of the enterprise
+      parameters:
+      - name: id
+        in: path
+        description: ID of enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                domain:
+                  $ref: '#/components/schemas/DomainName'
+      responses:
+        '201':
+          description: success
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PendingDomain'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /enterprises/{id}/groupMappings:
+    put:
+      tags:
+      - Domains and Identity providers
+      operationId: createIdpGroupMapping
+      summary: Create or update an IDP group mapping, if a set of group mappings exist for the IDP already, this should be updated in-place. Requires enterprise admin to invoke this endpoint.
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the enterprise.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/IDPGroupMappingInput'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatedIDPGroupMapping'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /enterprises/{id}/authorizedExternalIdps:
+    get:
+      tags:
+      - Domains and Identity providers
+      summary: List authorize external IdP for this enterprise. Requires enterprise admin to invoke this endpoint.
+      operationId: listExternalIdp
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the enterprise.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ExternalIdpGroupMappingListResponse'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    post:
+      summary: Authorize external IdP for this enterprise. Requires enterprise admin to invoke this endpoint.
+      operationId: addExternalIdp
+      tags:
+      - Domains and Identity providers
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the enterprise.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/ExternalIdpGroupMappingInput'
+      responses:
+        '201':
+          description: 201 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalIdpGroupMappingCreateResponse'
+        default:
+          $ref: '#/components/responses/GeneralError'
+components:
+  schemas:
+    ExternalIdpGroupMappingListResponse:
+      type: object
+      properties:
+        idpName:
+          type: string
+        idpId:
+          type: string
+          format: uuid
+        enterpriseId:
+          type: string
+          format: uuid
+        groupMappings:
+          type: array
+          items:
+            type: object
+            required:
+            - idpGroupName
+            - rbacGroupId
+            properties:
+              idpGroupName:
+                type: string
+              rbacGroupId:
+                type: string
+                format: uuid
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    ExternalIdpGroupMappingInput:
+      type: object
+      description: Request body for authorizedExternalIdps endpoint
+      properties:
+        idpId:
+          type: string
+          format: uuid
+    Domain:
+      type: object
+      required:
+      - domain
+      - status
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainName'
+        status:
+          $ref: '#/components/schemas/DomainStatus'
+    DomainStatus:
+      type: string
+      enum:
+      - pending
+      - verified
+    ExternalIdpGroupMappingCreateResponse:
+      type: object
+      properties:
+        idpId:
+          type: string
+          format: uuid
+        enterpriseId:
+          type: string
+          format: uuid
+        samlIdpIssuer:
+          type: string
+    IDPGroupMappingInput:
+      type: object
+      description: Represent request body for idp group operation
+      required:
+      - groupMappings
+      properties:
+        groupMappings:
+          type: array
+          items:
+            type: object
+            required:
+            - idpGroupName
+            - rbacGroupId
+            properties:
+              isExternalIdp:
+                type: boolean
+                default: false
+              idpGroupName:
+                type: string
+              idpId:
+                type: string
+                format: uuid
+              rbacGroupId:
+                type: string
+                format: uuid
+    UpdatedIDPGroupMapping:
+      type: object
+      properties:
+        enterpriseId:
+          type: string
+          format: uuid
+        groupMappings:
+          type: array
+          items:
+            type: object
+            required:
+            - idpGroupName
+            - rbacGroupId
+            properties:
+              idpGroupName:
+                type: string
+              idpId:
+                type: string
+                format: uuid
+              rbacGroupId:
+                type: string
+                format: uuid
+    PendingDomain:
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        domain:
+          type: string
+        entityID:
+          type: string
+        expiresAt:
+          format: date-time
+          type: string
+        status:
+          $ref: '#/components/schemas/DomainStatus'
+        txtRecord:
+          example: _ciscosxsoverification.acme.com
+          type: string
+        txtRecordValue:
+          format: uuid
+          type: string
+      required:
+      - entityID
+      - domain
+      type: object
+    DomainName:
+      type: string
+      pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
+      example: cisco.com
+  responses:
+    ValidationError:
+      description: The request was invalid
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFoundError:
+      description: Not Found
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    GeneralError:
+      description: An unknown error occurred
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  headers:
+    Location:
+      schema:
+        type: string
+        format: uri
+    Date:
+      schema:
+        type: string
+        pattern: ^.*$
+  securitySchemes:
+    OpenID:
+      type: openIdConnect
+      openIdConnectUrl: https://auth.example.com/.well-known/openid-configuration
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    piamServiceTokenSecurity:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.example.com/oauth/token
+          scopes:
+            security:duo:identity:mappings-migrate: Grants write and read access to product mappings migration APIs for Duo Security
+            security:etd:identity:mappings-migrate: Grants write and read access to Encrypted Traffic Analytics product mappings migration APIs
+            security:panoptica:identity:mappings-migrate: Grants write and read access to Panoptica product mappings migration APIs
+            security:secure-access:identity:mappings-migrate: Grants write and read access to Secure Access product mappings migration APIs
+            security:secure-endpoint:identity:mappings-migrate: Grants write and read access to Secure Endpoint product mappings migration APIs
+            security:secure-workload:identity:mappings-migrate: Grants write and read access to Secure Workload product mappings migration APIs
+            security:vuln-mgmt:identity:mappings-migrate: Grants write and read access to Vulnerability Management product mappings migration APIs
+            security:attack-surface-mgmt:identity:mappings-migrate: Grants write and read access to Attack Surface Management product mappings migration APIs
+            security:cdo:identity:mappings-migrate: Grants write and read access to CDO product mappings migration APIs
+            security:xdr:identity:mappings-migrate: Grants write and read access to XDR product mappings migration APIs
+            security:cdo:public-api: Grants write and read access to CDO Public Group Directory APIs

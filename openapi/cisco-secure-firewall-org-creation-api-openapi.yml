@@ -1,0 +1,670 @@
+openapi: 3.2.0
+info:
+  version: 1.4.0
+  title: Identity and Access Management Org creation API
+  description: APIs for creating and updating the customer enterprise, including user access control.
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/iam.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/iam.yaml
+servers:
+- url: https://api.int.security.cisco.com/identity
+  variables:
+    baseUrl:
+      default: https://api.int.security.cisco.com/identity
+    domain:
+      default: https://sso-apps-preview.myverysecuresignon.name/api
+security:
+- OpenID: []
+- bearerAuth: []
+tags:
+- name: Org creation
+paths:
+  /enterprises:
+    get:
+      tags:
+      - Org creation
+      x-try-it-enabled: true
+      operationId: getEnterprises
+      description: With no parameters, returns the list of enterprises the caller is an administrator of
+      parameters:
+      - name: showAllMemberships
+        in: query
+        description: If this query param is present and is value is true, this will additionally return all the enterprises that the user is a member of (regardless of admin status or not)
+        schema:
+          type: string
+      - name: showOnlyAdminMemberships
+        in: query
+        description: If this query param is present and is value is true, this will only return all the enterprises that the user is an admin of. This is to accommodate a future change
+        schema:
+          type: string
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: enterprise response
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      anyOf:
+                      - $ref: '#/components/schemas/UserEnterprise'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    post:
+      tags:
+      - Org creation
+      x-try-it-enabled: true
+      description: API to create an enterprise
+      operationId: createEnterprise
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - name
+              - displayName
+              - region
+              properties:
+                email:
+                  type: string
+                name:
+                  type: string
+                displayName:
+                  type: string
+                region:
+                  type: object
+                  properties:
+                    label:
+                      type: string
+                    value:
+                      type: string
+                country:
+                  type: object
+                  properties:
+                    label:
+                      type: string
+                    value:
+                      type: string
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enterprise'
+          description: successful
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /enterprises/onboardDomain:
+    post:
+      tags:
+      - Org creation
+      x-try-it-enabled: true
+      operationId: createEnterpriseFromDomain
+      description: 'Use this method to create an enterprise via a claimed domain.
+
+        The authenticated user calling this method must have already completed the domain verification process for the domain being sent in the request body or else the enterprise creation will fail.
+
+        Once the enterprise has been created, the authenticated user will be made an admin of that enterprise and the domain ownership will transfer to the enterprise.
+
+        '
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                domain:
+                  $ref: '#/components/schemas/DomainName'
+      responses:
+        '200':
+          description: ''
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedEnterprise'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+  /enterprises/createFromUser:
+    post:
+      tags:
+      - Org creation
+      x-try-it-enabled: true
+      operationId: createEnterpriseFromUser
+      description: 'Use this method to create an enterprise by inferring a user from attached Authorization Token.
+
+        Once the enterprise has been created, the authenticated user will be made an admin of that enterprise.
+
+        '
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - displayName
+              - region
+              properties:
+                name:
+                  type: string
+                displayName:
+                  type: string
+                region:
+                  type: object
+                  properties:
+                    label:
+                      type: string
+                    value:
+                      type: string
+                country:
+                  type: object
+                  properties:
+                    label:
+                      type: string
+                    value:
+                      type: string
+      responses:
+        '200':
+          description: ''
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enterprise'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /enterprises/{id}:
+    get:
+      tags:
+      - Org creation
+      x-try-it-enabled: true
+      operationId: getEnterprise
+      description: Returns a single enterprise
+      parameters:
+      - name: id
+        in: path
+        description: ID of enterprise to fetch
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: ''
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/Enterprise'
+                - $ref: '#/components/schemas/DetailedEnterprise'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    put:
+      tags:
+      - Org creation
+      x-try-it-enabled: true
+      operationId: updateEnterprise
+      description: Updates different attributes of an existing enterprise
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEnterpriseRequestBody'
+      responses:
+        '200':
+          description: ''
+          headers:
+            Date:
+              $ref: '#/components/headers/Date'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/Enterprise'
+                - $ref: '#/components/schemas/DetailedEnterprise'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /enterprises/{id}/supportAccessStatus:
+    get:
+      tags:
+      - Org creation
+      x-try-it-enabled: true
+      summary: Get the enterprise's support access status
+      operationId: getEnterpriseSupportAccess
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Okta access token
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: API will return the object containing a bool with the allow status and timestamp indicating when the access will expire.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/EnterpriseSupportAccessStatusResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    patch:
+      tags:
+      - Org creation
+      x-try-it-enabled: true
+      summary: Update the enterprise's support access status
+      operationId: updateEnterpriseSupportAccess
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Okta access token
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnterpriseSupportAccessStatusRequest'
+      responses:
+        '200':
+          description: API will return the object containing a bool with the allow status and timestamp indicating when the access will expire.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/EnterpriseSupportAccessStatusResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+components:
+  schemas:
+    EnterpriseSupportAccessStatusRequest:
+      type: object
+      properties:
+        supportAccessUntil:
+          type: string
+          format: date-time
+          default: '2024-07-10T16:04:03Z'
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Enterprise:
+      type: object
+      description: Represents a specific enterprise, includes metadata all users associated with the enterprise would be permitted to see.
+      required:
+      - id
+      - name
+      - displayName
+      - region
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        displayName:
+          type: string
+        region:
+          type: object
+          properties:
+            label:
+              type: string
+            value:
+              type: string
+        country:
+          type: object
+          properties:
+            label:
+              type: string
+            value:
+              type: string
+        createdAt:
+          format: date-time
+          type: string
+        ManagerOrgIDs:
+          type: array
+          items:
+            type: string
+            format: uuid
+        ManagedOrgIDs:
+          type: array
+          items:
+            type: string
+            format: uuid
+    DetailedEnterprise:
+      type: object
+      description: An extension of enterprise that contains more sensitive metadata that only an admin would be permitted to see.
+      allOf:
+      - $ref: '#/components/schemas/Enterprise'
+      - type: object
+        required:
+        - id
+        - name
+        properties:
+          id:
+            type: string
+            format: uuid
+          name:
+            type: string
+          domains:
+            type: array
+            items:
+              $ref: '#/components/schemas/Domain'
+          idps:
+            type: array
+            items:
+              $ref: '#/components/schemas/Idp'
+          region:
+            type: object
+            properties:
+              label:
+                type: string
+              value:
+                type: string
+          country:
+            type: object
+            properties:
+              label:
+                type: string
+              value:
+                type: string
+          createdAt:
+            format: date-time
+            type: string
+    IdpOutputs:
+      type: object
+      required:
+      - acsUrl
+      - audienceUrl
+      - cert
+      - metadataUrl
+      - isEnabled
+      properties:
+        acsUrl:
+          type: string
+        audienceUrl:
+          type: string
+        cert:
+          type: string
+        metadataUrl:
+          type: string
+        isEnabled:
+          type: boolean
+    EnterpriseSupportAccessStatusResponse:
+      type: object
+      properties:
+        supportAccessAllowed:
+          type: boolean
+          default: false
+        supportAccessUntil:
+          type: string
+          format: date-time
+          default: '2024-07-10T16:04:03Z'
+    UserEnterprise:
+      type: object
+      description: Represents an enterprise and the requesting users role in it
+      required:
+      - id
+      - name
+      - userRole
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        displayName:
+          type: string
+        userRole:
+          type: string
+        region:
+          type: object
+          properties:
+            label:
+              type: string
+            value:
+              type: string
+        country:
+          type: object
+          properties:
+            label:
+              type: string
+            value:
+              type: string
+        createdAt:
+          format: date-time
+          type: string
+        managerOrgIDs:
+          type: array
+          items:
+            type: string
+            format: uuid
+        managedOrgIDs:
+          type: array
+          items:
+            type: string
+            format: uuid
+        isManager:
+          type: boolean
+    UpdateEnterpriseRequestBody:
+      type: object
+      description: Represent request body for updating enterprise name, displayName and region, required to have at least one param
+      properties:
+        name:
+          type: string
+        displayName:
+          type: string
+        region:
+          type: object
+          properties:
+            label:
+              type: string
+            value:
+              type: string
+        country:
+          type: object
+          properties:
+            label:
+              type: string
+            value:
+              type: string
+    Domain:
+      type: object
+      required:
+      - domain
+      - status
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainName'
+        status:
+          $ref: '#/components/schemas/DomainStatus'
+    DomainStatus:
+      type: string
+      enum:
+      - pending
+      - verified
+    IdpInputs:
+      type: object
+      required:
+      - idpName
+      - idpType
+      - requireMfa
+      - domain
+      properties:
+        idpName:
+          type: string
+        idpType:
+          type: string
+        requireMfa:
+          type: boolean
+        domain:
+          $ref: '#/components/schemas/DomainName'
+        metadataFile:
+          type: string
+        acsUrl:
+          type: string
+        audienceUrl:
+          type: string
+        cert:
+          type: string
+    DomainName:
+      type: string
+      pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
+      example: cisco.com
+    Idp:
+      type: object
+      required:
+      - id
+      - inputs
+      - outputs
+      properties:
+        id:
+          type: string
+          format: uuid
+        inputs:
+          $ref: '#/components/schemas/IdpInputs'
+        outputs:
+          $ref: '#/components/schemas/IdpOutputs'
+  responses:
+    NotFoundError:
+      description: Not Found
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request was invalid
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    GeneralError:
+      description: An unknown error occurred
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  headers:
+    Location:
+      schema:
+        type: string
+        format: uri
+    Date:
+      schema:
+        type: string
+        pattern: ^.*$
+  securitySchemes:
+    OpenID:
+      type: openIdConnect
+      openIdConnectUrl: https://auth.example.com/.well-known/openid-configuration
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    piamServiceTokenSecurity:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.example.com/oauth/token
+          scopes:
+            security:duo:identity:mappings-migrate: Grants write and read access to product mappings migration APIs for Duo Security
+            security:etd:identity:mappings-migrate: Grants write and read access to Encrypted Traffic Analytics product mappings migration APIs
+            security:panoptica:identity:mappings-migrate: Grants write and read access to Panoptica product mappings migration APIs
+            security:secure-access:identity:mappings-migrate: Grants write and read access to Secure Access product mappings migration APIs
+            security:secure-endpoint:identity:mappings-migrate: Grants write and read access to Secure Endpoint product mappings migration APIs
+            security:secure-workload:identity:mappings-migrate: Grants write and read access to Secure Workload product mappings migration APIs
+            security:vuln-mgmt:identity:mappings-migrate: Grants write and read access to Vulnerability Management product mappings migration APIs
+            security:attack-surface-mgmt:identity:mappings-migrate: Grants write and read access to Attack Surface Management product mappings migration APIs
+            security:cdo:identity:mappings-migrate: Grants write and read access to CDO product mappings migration APIs
+            security:xdr:identity:mappings-migrate: Grants write and read access to XDR product mappings migration APIs
+            security:cdo:public-api: Grants write and read access to CDO Public Group Directory APIs

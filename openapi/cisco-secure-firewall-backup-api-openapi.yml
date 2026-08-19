@@ -1,0 +1,927 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall Backup API
+  version: 1.13.0
+  contact:
+    name: Cisco Firepower TAC
+    email: ngfw-support@cisco.com
+  description: 'Operations tagged Backup across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml.
+    Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
+      schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
+    operation_coverage: 4/4
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: Backup
+paths:
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/backup/backuprecords:
+    get:
+      deprecated: false
+      description: '**Get all backup lists from the database.**'
+      operationId: getAllBackupRecord
+      parameters:
+      - description: Optional parameter to identify the backup type "Manager", "Device", and "All". Default will be "all"
+          type.
+        in: query
+        name: systemType
+        required: false
+        schema:
+          type: string
+      - description: Optional parameter to identify the oldest date of backup. Defaults to the oldest date of the backup.
+        in: query
+        name: startDate
+        required: false
+        schema:
+          type: string
+      - description: Date of the most recent backup. By default, this is the latest backup date.
+        in: query
+        name: endDate
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : GETALL /fmc_config/v1/domain/DomainUUID/backup/backuprecords ( GET all method for obtaining
+                  all the backup files details. )'
+                : value:
+                    items:
+                    - backupOptions:
+                      - CONFIG
+                      - EVENTS
+                      - TID
+                      creationDate: '1743003380'
+                      fileName: fmc_backup_testing-2024-09-03T12-19-54.tar
+                      id: 12ab_34cd_56ef_78xx
+                      links:
+                        self: https://www.cisco.com/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/backup/backuprecords/?systemtype=All
+                      name: firepower
+                      sizeInMB: 255
+                      storageLocation: REMOTE
+                      systemInformation: firepower Secure Firewall Management Center for VMware v7.7.0
+                      target:
+                        id: 6g5tf6a4c6-87d1-31wd-a420-992c0c0ded45y
+                        links:
+                          self: /fmc_platform/v1/info/serverversion/{deviceUUID}
+                        type: Manager
+                      targetId: e276abec-e0f2-11e3-8169-6d9ed49b625f
+                    - creationDate: '1743003380'
+                      fileName: CLUSTER_REST_API_TEST-20240831060227.tar.gz
+                      id: 4cc6a4c6-27d9-11ed-a420-992c0c0de4fe
+                      links:
+                        self: https://www.cisco.com/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/backup/backuprecords/?systemtype=All
+                      name: FTD1
+                      sizeInMB: 48
+                      storageLocation: LOCAL
+                      systemInformation: 'Cluster Backup Cisco Firepower Threat Defense for VMware '
+                      target:
+                        id: 4cc6a4c6-27d9-11ed-a420-992c0c0de4fe
+                        links:
+                          self: /fmc_platform/v1/info/serverversion/{deviceUUID}
+                        type: Device
+                    links:
+                      self: string
+                    paging:
+                      count: number
+                      limit: number
+                      offset: number
+                      pages: number
+                ? 'Example 2 : GETALL /fmc_config/v1/domain/DomainUUID/backup/backuprecords ( GET all method for obtaining
+                  all the backup files details. )'
+                : value:
+                    items:
+                    - backupOptions:
+                      - CONFIG
+                      - EVENTS
+                      - TID
+                      creationDate: '1743003380'
+                      fileName: fmc_backup_testing-2024-09-03T12-19-54.tar
+                      id: 12ab_34cd_56ef_78xx
+                      links:
+                        self: https://www.cisco.com/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/backup/backuprecords/?systemtype=All
+                      name: firepower
+                      sizeInMB: 255
+                      storageLocation: REMOTE
+                      systemInformation: firepower Secure Firewall Management Center for VMware v7.7.0
+                      target:
+                        id: 6g5tf6a4c6-87d1-31wd-a420-992c0c0ded45y
+                        links:
+                          self: /fmc_platform/v1/info/serverversion/{deviceUUID}
+                        type: Manager
+                      targetId: e276abec-e0f2-11e3-8169-6d9ed49b625f
+                    - creationDate: '1743003380'
+                      fileName: CLUSTER_REST_API_TEST-20240831060227.tar.gz
+                      id: 4cc6a4c6-27d9-11ed-a420-992c0c0de4fe
+                      links:
+                        self: https://www.cisco.com/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/backup/backuprecords/?systemtype=All
+                      name: FTD1
+                      sizeInMB: 48
+                      storageLocation: LOCAL
+                      systemInformation: 'Cluster Backup Cisco Firepower Threat Defense for VMware '
+                      target:
+                        id: 4cc6a4c6-27d9-11ed-a420-992c0c0de4fe
+                        links:
+                          self: /fmc_platform/v1/info/serverversion/{deviceUUID}
+                        type: Device
+                    links:
+                      self: string
+                    paging:
+                      count: number
+                      limit: number
+                      offset: number
+                      pages: number
+              schema:
+                $ref: '#/components/schemas/BackupRecordListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Backup
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/backup/backuprecords/{backupUUID}:
+    get:
+      deprecated: false
+      description: '**Get the specified backup details from the backup database.**'
+      operationId: getBackupRecord
+      parameters:
+      - description: UUID of the backup. This field is mandatory.
+        in: path
+        name: backupUUID
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/backup/backuprecords/{id} ( GET of backup files to fetch
+                  details for particular backup )'
+                : value:
+                    backupOptions:
+                    - CONFIG
+                    - EVENTS
+                    - TID
+                    creationDate: '1743003380'
+                    fileName: fmc_backup-2024-09-03T12-20-54.tar
+                    id: 4cc6a4c6-27d9-11ed-a420-992c0c0de4fe
+                    links:
+                      self: https://www.cisco.com/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/backup/backuprecords/4cc6a4c6-27d9-11ed-a420-992c0c0de4fe
+                    name: FTD1
+                    sizeInMB: 98
+                    storageLocation: LOCAL
+                    systemInformation: firepower Secure Firewall Management Center for VMware v7.7.0
+                    target:
+                      id: 6g5tf6a4c6-87d1-31wd-a420-992c0c0ded45y
+                      links:
+                        self: /fmc_platform/v1/info/serverversion/{deviceUUID}
+                      type: Manager
+              schema:
+                $ref: '#/components/schemas/BackupRecord'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Backup
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/backup/operational/devicebackup:
+    post:
+      deprecated: false
+      description: '**Create a backup. _Check the response section for applicable examples (if any)._**'
+      operationId: createDeviceBackup
+      parameters:
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceBackup'
+              type: object
+        description: The input device backup object model.
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceBackup'
+                type: object
+          description: Created
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Backup
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/backup/operational/fetchbackupurl:
+    get:
+      deprecated: false
+      description: '**Get the presigned URL of the download backup from the cloud.**'
+      operationId: getFetchBackupURL
+      parameters:
+      - description: Filter backup links by ID. For example <code>ids:backupUUID1-1,backupUUID1-2,backupUUID1-3</code>.
+        in: query
+        name: filter
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/backup/operational/fetchbackupurl ( GET of backup file
+                  download url link for the provided backup_uuid )'
+                : value:
+                    items:
+                    - deviceName: FTD1
+                      fileName: <backup-file-name>
+                      id: <backup-file-uuid>
+                      presignedUrl: <backup-file-url>
+                      targetID: <device-uuid>
+                    - deviceName: FTD2
+                      fileName: <backup-file-name>
+                      id: <backup-file-uuid>
+                      presignedUrl: <backup-file-url>
+                      targetID: <device-uuid>
+                    links:
+                      self: https://example.cisco.com/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/backup/operational/fetchbackupurl
+              schema:
+                $ref: '#/components/schemas/FetchBackupURLListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Backup
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+  schemas:
+    BackupRecord:
+      description: Get details of the backup when backupUUID is provided or get list of all backup.
+      properties:
+        backupOptions:
+          description: Type of the backup. Possible values are CONFIG, EVENTS, TID, or a combination of these.
+          items:
+            enum:
+            - CONFIG
+            - TID
+            - EVENTS
+            type: string
+          type: array
+        backupUUID:
+          type: string
+        creationDate:
+          description: Date and time when the backup was created.
+          type: string
+        description:
+          type: string
+        fileName:
+          description: Name of the backup file.
+          type: string
+        id:
+          description: UUID of the individual backup.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Link to the backup file.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the FMC, FTD or container.
+          type: string
+        sizeInMB:
+          description: Size of the backup in megabytes.
+          format: int32
+          type: integer
+        storageLocation:
+          description: Location where the backup is stored. Possible values are LOCAL and REMOTE.
+          enum:
+          - LOCAL
+          - REMOTE
+          type: string
+        systemInformation:
+          description: System details for the backup.
+          type: string
+        target:
+          $ref: '#/components/schemas/IReference'
+          description: Information about the backup target.
+          type: object
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    Domain:
+      description: The details about the domain.
+      properties:
+        id:
+          description: Unique UUID of this domain
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
+          type: object
+        name:
+          description: Name of the domain.
+          type: string
+        type:
+          description: Domain type definition (fixed).
+          type: string
+        uuid:
+          type: string
+      type: object
+    IReference:
+      description: Contains reference information.
+      properties:
+        id:
+          description: Unique identifier representing resource.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        name:
+          description: User chosen resource name.
+          type: string
+        type:
+          description: Response object associated with resource.
+          type: string
+      type: object
+    DeviceBackup:
+      description: Generates the backup for provided device uuid.
+      properties:
+        description:
+          type: string
+        devices:
+          items:
+            $ref: '#/components/schemas/IReference'
+            type: object
+          type: array
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/BackupMetadata'
+          type: object
+        name:
+          type: string
+        parentId:
+          type: string
+        retrieveToManagementCenter:
+          description: Boolean representing of a flag for transferring backup to manager.
+          type: boolean
+        type:
+          description: Define the type of backup.
+          type: string
+        version:
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    ITarget:
+      description: This is the target device.
+      properties:
+        description:
+          type: string
+        id:
+          description: Unique ID of the device.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the device.
+          type: string
+        type:
+          description: Device
+          type: string
+        version:
+          type: string
+      type: object
+    MetadataUser:
+      description: This object defines details about the user.
+      properties:
+        id:
+          description: The unique UUID of the user
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Contains the self referencing links to this resource
+          type: object
+        name:
+          description: Name of the user.
+          type: string
+        type:
+          description: The user type (fixed).
+          type: string
+      type: object
+    FetchBackupURL:
+      description: Get the download links for provided backup uuids
+      properties:
+        description:
+          type: string
+        fileName:
+          description: Name of the backup file.
+          type: string
+        id:
+          description: UUID of the individual backup.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        presignedUrl:
+          description: Provides the download link for the backup file as a presigned URL
+          type: string
+        target:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    BackupMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          type: object
+        task:
+          $ref: '#/components/schemas/TaskStatus'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    ISubTask:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        status:
+          type: string
+        target:
+          $ref: '#/components/schemas/ITarget'
+          type: object
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    FetchBackupURLListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/FetchBackupURL'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    TaskStatus:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        showDetailedDeviceStatus:
+          type: string
+        status:
+          type: string
+        subTasks:
+          items:
+            $ref: '#/components/schemas/ISubTask'
+            type: object
+          type: array
+        taskType:
+          enum:
+          - DEVICE_REGISTRATION
+          - SMART_LICENSE
+          - DEVICE_DEPLOYMENT
+          - DEVICE_ROLLBACK
+          - NGFWHA_OPERATIONS
+          - COPY_CONFIG_REQUEST
+          - HIT_COUNT_REFRESH
+          - FTD_CLUSTER_BOOTSTRAP
+          - FTD_CLUSTER_CREATE
+          - FTD_CLUSTER_BREAK
+          - FTD_CLUSTER_ADD_NODES
+          - FTD_CLUSTER_REMOVE_NODES
+          - DEVICE_BACKUP
+          - FTD_CLUSTER_UPDATE_BOOTSTRAP
+          - FTD_CLUSTER_COMMAND
+          - SSP_EPM_OIR
+          - SSP_EPM_BREAKOUT_DEPLOY
+          - DEVICE_EXPORT
+          - DEVICE_IMPORT
+          - POLICY_EXPORT
+          - CHASSIS_REGISTRATION
+          - CHANGE_MANAGER
+          - CONFIGURE_DEVICE_VALIDATE
+          - CONFIGURE_DEVICE
+          - CONFIGURE_MANAGER
+          - CONFIGURE_MANAGER_ADD
+          - CONFIGURE_MANAGER_DELETE
+          - INITIATE_MIGRATION
+          - DISCARD_MIGRATION
+          - SWITCH_TO_ANALYTICS
+          - DELETE_DEVICE
+          - GENERATE_REPORTS
+          - FLEXCONFIG_MIGRATION
+          - DEVICE_UNREGISTRATION
+          - PENDING_CHANGES_REQUEST
+          - DEVICE_TROUBLESHOOT
+          - DEVICE_MODEL_MIGRATION
+          - DEVICE_TEMPLATE_CREATION
+          - CHASSIS_CONVERSION_REQUEST
+          - SNORT_PROFILER
+          - CPU_PROFILER
+          - POLICY_REPORT_GENERATION
+          - DEVICE_TEMPLATE_APPLY
+          - LTP_ONBOARDING
+          - POLICY_CLONE_OPERATION
+          - DEVICE_CERTIFICATE_MANAGEMENT
+          - OOB_CHANGES_REQUEST
+          - UPLOAD_TROUBLESHOOT
+          type: string
+        type:
+          type: string
+      type: object
+    BackupRecordListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/BackupRecord'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
+      properties:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions
+            make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cdfmc-openapi.yaml
+- cisco-secure-firewall-cdfmc-openapi.yml

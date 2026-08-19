@@ -1,0 +1,116 @@
+openapi: 3.2.0
+info:
+  contact: {}
+  description: Provisioning APIs for activating and managing entitlements, subscriptions, and claim codes
+  title: Provisioning MSP Organizations Management API
+  version: 1.0.1
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/provisioning.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/provisioning.yaml
+servers:
+- url: https://api.int.security.cisco.com/provisioning
+tags:
+- name: MSP Organizations Management
+paths:
+  /enterprises/{managerOrgId}/revoke-info:
+    put:
+      security:
+      - EnterpriseAdminBearerAuth:
+        - security:enterprise:admin:{enterprise_id}
+      description: API for getting the revoked managed orgs info for a given manager enterprise and update the status as shown
+      tags:
+      - MSP Organizations Management
+      summary: Get the revoked managed orgs info for a given manager enterprise and update the status as shown
+      operationId: HandleMspRevokedManagedOrgsInfo
+      parameters:
+      - description: Id of the Manager Org whose Managed Orgs are revoked
+        name: managerOrgId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.MspRevokedManagedOrgsInfo'
+        '400':
+          description: Bad Request - invalid enterprise id provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - authentication failed or user is not the admin of the enterprise
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+components:
+  schemas:
+    model.ManagedOrg:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ManagedOrgProductsList'
+    model.Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    model.MspRevokedManagedOrgsInfo:
+      type: object
+      properties:
+        managedOrgs:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ManagedOrg'
+    model.ManagedOrgProductsList:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: integer
+  securitySchemes:
+    EnterpriseAdminBearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://id.cisco.com/oauth2/default/v1/token
+          scopes:
+            security:enterprise:admin:{enterprise_id}: Grants enterprise admin access with dynamic enterprise ID validation
+    ServiceTokenBearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://id.cisco.com/oauth2/default/v1/token
+          scopes:
+            security:provisioning:tenants:read: Grants read access to provisioning tenants
+            security:provisioning:subscriptions:write: Grants write access to provisioning subscriptions

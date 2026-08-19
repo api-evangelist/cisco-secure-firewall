@@ -1,0 +1,194 @@
+generated: '2026-08-19'
+method: derived
+source: >-
+  openapi/cisco-secure-firewall-cdfmc-openapi.yml (1,510 schemas, 4,134 $ref edges),
+  openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml (199 schemas, 178 $ref edges)
+note: >-
+  Two overlapping models describing one estate. The Security Cloud Control Firewall Manager model is a thin
+  FLEET model — Device, DeviceManager, CloudService, Template, Object, User, Tenant, Transaction — while the
+  cdFMC model is the deep CONFIGURATION model — Policy, AccessRule, interfaces, objects, VPN. They meet at
+  Device: the FWM `Device` carries `deviceRecordOnFmc` and `fmcAccessPolicy` references that resolve into the
+  cdFMC graph. Identifiers are UUIDs throughout; there are no typed id prefixes.
+identifiers:
+  style: UUID
+  fields:
+  - uid (Firewall Manager)
+  - id / objectId / containerUUID / domainUUID (cdFMC)
+  prefixes: none
+  note: >-
+    Nothing in an identifier tells a consumer what it points at. An agent holding a UUID cannot infer the
+    entity type; it must remember where the id came from.
+domains:
+- name: Firewall Manager (fleet)
+  spec: openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml
+  root_entities:
+  - Device
+  - DeviceManager
+  - CloudService
+  - TemplateDevice
+  - Object
+  - User
+  - Tenant
+  - Transaction
+  - Changelog
+  - ChangeRequest
+  - RaVpnSession
+  - MfaEvent
+  - Sdc
+- name: cdFMC (configuration)
+  spec: openapi/cisco-secure-firewall-cdfmc-openapi.yml
+  tag_areas:
+    Object: 508
+    Policy: 328
+    Devices: 223
+    Chassis: 43
+    Integration: 29
+    Templates: 29
+    Intelligence: 21
+    Troubleshoot: 18
+    Device HA Pairs: 13
+    Deployment: 11
+    Health: 11
+    Network Map: 10
+    Device Clusters: 9
+    Updates: 8
+    Analysis: 6
+    Change Management: 6
+    License: 6
+    Device Groups: 5
+    Policy Assignments: 4
+    Backup: 4
+    Search: 4
+    System Information: 4
+    Status: 3
+    Audit: 3
+    System Configuration: 3
+    Users: 2
+entities:
+- name: Device
+  domain: Firewall Manager
+  description: A firewall registered with Security Cloud Control — FTD, ASA, IOS, Meraki or an FMC-managed record.
+  relationships:
+  - has_one: FmcDeviceRecord
+    via: deviceRecordOnFmc
+    note: The bridge into the cdFMC configuration model.
+  - has_one: FmcAccessPolicyReference
+    via: fmcAccessPolicy
+  - has_one: CdFmcInfo
+    via: cdFmcInfo
+  - has_one: OnPremFmcInfo
+    via: onPremFmcInfo
+  - has_one: ConnectorType
+    via: connectorType
+  - has_one: ConnectivityState
+    via: connectivityState
+  - has_one: ConfigState
+    via: configState
+  - has_one: ConflictDetectionState
+    via: conflictDetectionState
+  - has_one: FtdHaInfo
+    via: ftdHaInfo
+  - has_one: FtdClusterInfo
+    via: ftdClusterInfo
+  - has_one: Labels
+    via: labels
+  - has_one: StateMachineDetails
+    via: stateMachineDetails
+- name: AccessPolicy
+  domain: cdFMC
+  description: An access control policy assigned to one or more threat-defense devices.
+  relationships:
+  - has_one: IAccessPolicyDefaultAction
+    via: defaultAction
+  - has_one: IACPolicyIdentityPolicySettings
+    via: identityPolicySetting
+  - has_one: IAccessPolicyPrefilterPolicySettingModel
+    via: prefilterPolicySetting
+  - has_one: IAccessPolicyDecryptionPolicySetting
+    via: decryptionPolicySetting
+  - has_one: IReference
+    via: securityIntelligence
+  - has_many: AccessRule
+    via: 'subresource: /accesspolicies/{containerUUID}/accessrules'
+- name: AccessRule
+  domain: cdFMC
+  description: >-
+    The richest entity in the contract — 28 outbound references. The unit an agent most often needs to read
+    or write, and the reason the object model matters.
+  relationships:
+  - has_one: INetworkObjectsContainer
+    via: sourceNetworks
+  - has_one: INetworkObjectsContainer
+    via: destinationNetworks
+  - has_one: IPortObjectsContainer
+    via: sourcePorts
+  - has_one: IPortObjectsContainer
+    via: destinationPorts
+  - has_one: ISecurityZoneContainer
+    via: destinationZones
+  - has_one: ISourceZoneContainer
+    via: sourceZones
+  - has_one: ISecurityGroupTagContainer
+    via: sourceSecurityGroupTags
+  - has_one: ISecurityGroupTagContainer
+    via: destinationSecurityGroupTags
+  - has_one: IDynamicObjectsContainer
+    via: sourceDynamicObjects
+  - has_one: IDynamicObjectsContainer
+    via: destinationDynamicObjects
+  - has_one: IApplicationsContainer
+    via: applications
+  - has_one: IUrlObjectsContainer
+    via: urls
+  - has_one: IUsersContainer
+    via: users
+  - has_one: IVLanTagsContainer
+    via: vlanTags
+  - has_one: IIntrusionPolicyModel
+    via: ipsPolicy
+  - has_one: IFilePolicy
+    via: filePolicy
+  - has_one: IVariableSet
+    via: variableSet
+  - has_one: ISyslogConfig
+    via: syslogConfig
+  - has_one: ISNMPConfig
+    via: snmpConfig
+  - has_many: ICommentHistory
+    via: commentHistoryList
+  - has_many: ITimeRangeModel
+    via: timeRangeObjects
+- name: Deployment
+  domain: cdFMC
+  description: >-
+    The write path. Configuration changes are staged and then deployed — getDeployableDevice lists what has
+    pending changes, getPendingChanges shows them, createDeploymentRequest pushes them, createRollbackRequest
+    reverses them, and getAllJobHistory records the outcome.
+- name: Object
+  domain: both
+  description: >-
+    Reusable network/port/URL/FQDN objects. The single largest tag area in the cdFMC contract (508
+    operations) and a first-class resource in Firewall Manager (/v1/objects) with duplicate detection,
+    usage lookup and target assignment.
+  relationships:
+  - has_many: Target
+    via: /v1/objects/{uid}/targets
+  - has_many: Usage
+    via: /v1/objects/{uid}/usage
+  - has_many: Duplicate
+    via: /v1/objects/{uid}/duplicates
+- name: Transaction
+  domain: Firewall Manager
+  description: >-
+    The async spine. Every action-verb POST returns a transaction; GET /v1/transactions/{transactionUid}
+    is how a client learns whether work finished.
+envelope_types:
+  note: >-
+    Four schemas account for most of the cdFMC $ref graph and carry no business meaning — they are envelope
+    and hypermedia scaffolding, and a consumer modelling the domain should skip them.
+  ILinks: 833 references
+  PagingContainer: 371 references
+  IReference: 277 references
+  Metadata: 234 references
+  IMetadata: 200 references
+render: null

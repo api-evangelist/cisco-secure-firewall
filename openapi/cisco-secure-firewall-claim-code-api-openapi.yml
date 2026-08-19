@@ -1,0 +1,335 @@
+openapi: 3.2.0
+info:
+  contact: {}
+  description: Provisioning APIs for activating and managing entitlements, subscriptions, and claim codes
+  title: Provisioning Claim Code API
+  version: 1.0.1
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/provisioning.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/provisioning.yaml
+servers:
+- url: https://api.int.security.cisco.com/provisioning
+tags:
+- name: Claim Code
+paths:
+  /claim-code/claim:
+    post:
+      security:
+      - EnterpriseAdminBearerAuth:
+        - security:enterprise:admin:{enterprise_id}
+      description: Process claim code to provision subscriptions and product instances for an enterprise
+      tags:
+      - Claim Code
+      summary: Claim Code for Subscription
+      operationId: claim-code-subscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.ClaimSubscription'
+        description: Claim code subscription details for processing
+        required: true
+      responses:
+        '200':
+          description: Successfully claimed and provisioned product instances
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Bad request - invalid input data, missing enterprise ID, or validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - invalid or missing authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '403':
+          description: Forbidden - user is not admin of the enterprise or claim is blocked
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '404':
+          description: Not found - claim code or enterprise not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '409':
+          description: Conflict - claim code already used or provisioning conflicts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal server error during provisioning
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+  /claim-code/read:
+    post:
+      security:
+      - EnterpriseAdminBearerAuth:
+        - security:enterprise:admin:{enterprise_id}
+      description: Retrieve product instances associated with a specific claim code for an enterprise
+      tags:
+      - Claim Code
+      summary: Get Product Instances by Claim Code
+      operationId: get-product-instances-by-claim-code
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.ClaimCodeReadRequest'
+        description: Claim code read request containing claim_code and enterprise_id
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved product instances
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.ProductInstancesAndRegionsAndServices'
+        '400':
+          description: Bad request - invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - invalid or missing authentication token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '403':
+          description: Forbidden - user is not admin of the enterprise
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '404':
+          description: Not found - claim code or enterprise not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+  /msp-claim-code/claim:
+    post:
+      security:
+      - EnterpriseAdminBearerAuth:
+        - security:enterprise:admin:{enterprise_id}
+      description: Process MSP-specific claim code to provision subscriptions and product instances for managed service provider environments
+      tags:
+      - Claim Code
+      summary: MSP Claim Code for Subscription
+      operationId: msp-claim-code-subscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.ClaimSubscription'
+        description: MSP claim code subscription details for processing
+        required: true
+      responses:
+        '200':
+          description: Successfully claimed and provisioned MSP product instances
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Bad request - validation errors, client-side errors, or invalid MSP configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - token issues or admin permission denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '403':
+          description: Forbidden - rate limits, trials, or SKU restrictions for MSP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '404':
+          description: Not found - MSP claim code or enterprise not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '409':
+          description: Conflict - MSP claim code already used or provisioning conflicts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal server error - database or provisioning failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+components:
+  schemas:
+    model.ProductInstancesAndRegionsAndServices:
+      type: object
+      properties:
+        all_regions:
+          $ref: '#/components/schemas/model.RegionalHierarchy'
+        productInstances:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProductInstance'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.Services'
+    model.Region:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+    model.ClaimCodeReadRequest:
+      type: object
+      properties:
+        claim_code:
+          type: string
+        enterprise_id:
+          type: string
+    model.ClaimSubscription:
+      type: object
+      properties:
+        claim_code:
+          type: string
+        enterprise_id:
+          type: string
+        enterprise_name:
+          type: string
+        enterprise_type:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ClaimCodeProduct'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ClaimCodeServices'
+    model.ClaimCodeProduct:
+      type: object
+      required:
+      - id
+      - region
+      properties:
+        id:
+          type: string
+        is_use_existing_tenant_set:
+          type: boolean
+        name:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
+    model.ProductInstance:
+      type: object
+      properties:
+        id:
+          type: string
+        external_tenant_id:
+          type: string
+        provisioning_status:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
+    model.Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    model.Services:
+      type: object
+      properties:
+        ID:
+          type: string
+        Name:
+          type: string
+        is_unified_onboarding_supported:
+          type: boolean
+        product_allowed_regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.Region'
+    model.RegionalHierarchy:
+      type: object
+      properties:
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.RegionalHierarchy'
+        description:
+          type: string
+        flat_priority:
+          type: integer
+        name:
+          type: string
+        priority:
+          type: integer
+        tier:
+          type: integer
+    model.ClaimCodeServices:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+        is_use_existing_tenant_set:
+          type: boolean
+        name:
+          type: string
+  securitySchemes:
+    EnterpriseAdminBearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://id.cisco.com/oauth2/default/v1/token
+          scopes:
+            security:enterprise:admin:{enterprise_id}: Grants enterprise admin access with dynamic enterprise ID validation
+    ServiceTokenBearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://id.cisco.com/oauth2/default/v1/token
+          scopes:
+            security:provisioning:tenants:read: Grants read access to provisioning tenants
+            security:provisioning:subscriptions:write: Grants write access to provisioning subscriptions

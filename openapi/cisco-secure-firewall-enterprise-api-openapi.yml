@@ -1,0 +1,308 @@
+openapi: 3.2.0
+info:
+  contact: {}
+  description: Provisioning APIs for activating and managing entitlements, subscriptions, and claim codes
+  title: Provisioning Enterprise API
+  version: 1.0.1
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/provisioning.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/provisioning.yaml
+servers:
+- url: https://api.int.security.cisco.com/provisioning
+tags:
+- name: Enterprise
+paths:
+  /customers:
+    get:
+      security:
+      - EnterpriseAdminBearerAuth:
+        - security:enterprise:admin:{enterprise_id}
+      description: Get all active Product Instance for a customer by Enterprise Id
+      tags:
+      - Enterprise
+      summary: Get Customer's Product Instance By Enterprise Id
+      operationId: GetCustomerProductInstances
+      parameters:
+      - description: Enterprise Id
+        name: enterprise_id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Product instances for the enterprise
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.ProductInstanceWithMetadata'
+        '400':
+          description: Bad Request - Invalid enterprise ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - User is not admin of the enterprise
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+  /enterprise/region-hierarchy:
+    get:
+      security:
+      - EnterpriseAdminBearerAuth:
+        - security:enterprise:admin:{enterprise_id}
+      description: API returns the regional hierarchy details of the enterprise
+      tags:
+      - Enterprise
+      summary: Get Regional Hierarchy
+      operationId: GetEnterpriseRegionHierarchy
+      responses:
+        '200':
+          description: Regional hierarchy details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.RegionalHierarchy'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - Invalid scope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '403':
+          description: Forbidden - The request is understood, but it has been refused or access is not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+  /enterprise/{enterpriseId}/products:
+    get:
+      security:
+      - ServiceTokenBearerAuth:
+        - security:provisioning:tenants:read
+      description: Retrieve a list of product instances for a specific enterprise, including enterprise details and product information
+      tags:
+      - Enterprise
+      summary: Get Product Instances for Enterprise
+      operationId: get-product-instances-for-enterprise
+      parameters:
+      - description: Enterprise ID (UUID format)
+        name: enterpriseId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved enterprise product instances with enterprise name, license state, and product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.EnterpriseProductInstances'
+        '400':
+          description: Bad request - invalid enterprise ID format or missing parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - authentication credentials were missing or incorrect
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '403':
+          description: Forbidden - the request is understood, but access is not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '404':
+          description: Not found - enterprise or product instances not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+  /enterprise/{enterpriseId}/platform-subscription:
+    post:
+      security:
+      - ServiceTokenBearerAuth:
+        - security:provisioning:tenants:read
+      description: Creates Customer Enterprise Record, Platform Bootstrap Subscription and provision Platform Bootstrap Products for given enterpriseId
+      tags:
+      - Enterprise
+      summary: Creates Platform Bootstrap Subscription and provision Platform Bootstrap Products for given enterpriseId
+      operationId: PostPlatformRoute
+      parameters:
+      - description: enterprise Id(uuid)
+        name: enterpriseId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/routes.PlatformBootstrapRequest'
+        description: Platform Bootstrap Payload
+        required: true
+      responses:
+        '200':
+          description: Success message
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Bad Request - Invalid request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - Authentication credentials were missing or incorrect
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+components:
+  schemas:
+    model.Region:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+    model.MergedProductInstancesInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        productName:
+          type: string
+        productType:
+          type: string
+        externalTenantId:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
+        provisioningStatus:
+          type: string
+        isPlatformProduct:
+          type: boolean
+    model.EnterpriseProductInstances:
+      type: object
+      properties:
+        enterpriseName:
+          type: string
+        isLicensed:
+          type: boolean
+        productInstancesInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.MergedProductInstancesInfo'
+    routes.PlatformBootstrapRequest:
+      type: object
+      required:
+      - enterprise_name
+      properties:
+        enterprise_name:
+          type: string
+        initial_admin:
+          type: string
+    model.Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    model.ProductInstanceWithMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+        external_tenant_id:
+          type: string
+        provisioning_status:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
+    model.RegionalHierarchy:
+      type: object
+      properties:
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.RegionalHierarchy'
+        description:
+          type: string
+        flat_priority:
+          type: integer
+        name:
+          type: string
+        priority:
+          type: integer
+        tier:
+          type: integer
+  securitySchemes:
+    EnterpriseAdminBearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://id.cisco.com/oauth2/default/v1/token
+          scopes:
+            security:enterprise:admin:{enterprise_id}: Grants enterprise admin access with dynamic enterprise ID validation
+    ServiceTokenBearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://id.cisco.com/oauth2/default/v1/token
+          scopes:
+            security:provisioning:tenants:read: Grants read access to provisioning tenants
+            security:provisioning:subscriptions:write: Grants write access to provisioning subscriptions

@@ -1,0 +1,708 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall Audit API
+  version: 1.13.0
+  contact:
+    name: Cisco Firepower TAC
+    email: ngfw-support@cisco.com
+  description: 'Operations tagged Audit across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml.
+    Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
+      schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
+    operation_coverage: 3/3
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: Audit
+paths:
+  /v1/cdfmc/api/fmc_platform/v1/domain/{domainUUID}/audit/auditrecords:
+    get:
+      deprecated: false
+      description: '**Get all audit records.**'
+      operationId: getAllAuditModel
+      parameters:
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_platform/v1/domain/default/audit/auditrecords ( GET ALL AuditInfo )':
+                  value:
+                    items:
+                    - domain: Global-domain-UUID
+                      message: 'New session source IP - 127.0.0.1:'
+                      source: 127.0.0.1
+                      subSystem: Session Expiration
+                      time: 1460055526.0
+                      username: admin
+                    - domain: Global-domain-UUID
+                      message: 'Login Success:'
+                      source: 127.0.0.1
+                      subSystem: Login
+                      time: 1460055526.0
+                      username: admin
+                    - domain: Global-domain-UUID
+                      message: 'GET https://example.cisco.com/api/fmc_platform/v1/domain/default/audit/auditrecords Unauthorized
+                        (401) - The request requires user authentication:'
+                      source: 10.150.162.23
+                      subSystem: API
+                      time: 1460055515.0
+                    - domain: Global-domain-UUID
+                      message: 'Login Success:'
+                      source: 127.0.0.1
+                      subSystem: Login
+                      time: 1460054229.0
+                      username: admin
+                    links:
+                      self: https://example.cisco.com/api/fmc_platform/v1/domain/default/audit/auditrecords?offset=0&limit=4
+                    paging:
+                      count: 4
+                      limit: 4
+                      offset: 0
+                      pages: 1
+                'Example 2 : GET /fmc_platform/v1/domain/default/audit/auditrecords?subSystem=API ( GET ALL AuditInfo )':
+                  value:
+                    items:
+                    - domain: Global-domain-UUID
+                      links: {}
+                      message: 'GET https://example.cisco.com/api/fmc_platform/v1/domain/default/audit/auditrecords Unauthorized
+                        (401) - The request requires user authentication:'
+                      source: 10.150.162.23
+                      subSystem: API
+                      time: 1460055515.0
+                    links:
+                      self: https://example.cisco.com/api/fmc_platform/v1/domain/default/audit/auditrecords?offset=0&limit=1
+                    paging:
+                      count: 1
+                      limit: 1
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/AuditModelListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Audit
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_platform/v1/domain/{domainUUID}/audit/auditrecords/{objectId}:
+    get:
+      deprecated: false
+      description: '**Get the audit record associated with the specified ID.**'
+      operationId: getAuditModel
+      parameters:
+      - description: Unique identifier of the specific object to be retrieved.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditModel'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Audit
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_platform/v1/domain/{domainUUID}/audit/configchanges:
+    get:
+      deprecated: false
+      description: '**Get configuration changes associated with audits.**'
+      operationId: getAuditConfigChanges
+      parameters:
+      - description: Unique identifier for a specific audit log.
+        in: query
+        name: auditLogId
+        required: true
+        schema:
+          type: string
+      - description: Unique identifier for a specific audit snapshot.
+        in: query
+        name: snapshotId
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/domainUUID'
+        name: domainUUID
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                'Example 1 : GET /fmc_platform/v1/domain/default/audit/configchanges ( GET ALL ConfigChanges response format )':
+                  value:
+                    items:
+                    - action: string
+                      entityName: string
+                      entityType: string
+                      entityUUID: string
+                      lastUpdatedByUsers: List<string>
+                      message: string
+                      parentUUID: string
+                      referencesAdded: List<IReferenceUpdate>
+                      referencesDeleted: List<IReferenceUpdate>
+                      type: string
+                      valueAdded: List<IValueAdd>
+                      valueDeleted: List<IValueDelete>
+                      valueUpdated: List<IValueUpdate>
+                    links:
+                      self: https://example.cisco.com/api/fmc_platform/v1/domain/default/audit/configchanges?offset=0&limit=4&auditLogId=0050568E-9B6A-0ed3-0000-000000000198&snapshotId=0050568E-9B6A-0ed3-0000-000000000092&expanded=true
+                    paging:
+                      count: 1
+                      limit: 4
+                      next: []
+                      offset: 0
+                      pages: 1
+                      prev: []
+                'Example 2 : GET /fmc_platform/v1/domain/default/audit/configchanges ( GET ALL ConfigChanges )':
+                  value:
+                    items:
+                    - action: update
+                      entityId: 67664832-29d5-11e9-a45b-1f8d0fee398b
+                      entityName: ACP1
+                      entityType: AccessPolicy
+                      lastUpdatedByUsers:
+                      - admin
+                      referencesAdded: []
+                      referencesDeleted: []
+                      type: entityupdate
+                      valuesAdded: []
+                      valuesDeleted: []
+                      valuesUpdated: []
+                    - action: update
+                      entityName: GeneralSettings
+                      entityType: GeneralSettings
+                      entityUUID: 1f5600bb-c45a-11e7-862c-4d1c2662442c
+                      parentUUID: 67664832-29d5-11e9-a45b-1f8d0fee398b
+                      referencesAdded: []
+                      referencesDeleted: []
+                      valuesAdded: []
+                      valuesDeleted: []
+                      valuesUpdated:
+                      - fieldName: byPassTime
+                        newValue: '604'
+                        oldValue: '601'
+                    links:
+                      self: https://u45c01p14-vrouter.cisco.com:10082/api/fmc_platform/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/audit/configchanges?offset=0&limit=25&auditLogId=0050568E-9B6A-0ed3-0000-000000000198&snapshotId=0050568E-9B6A-0ed3-0000-000000000092&expanded=true
+                    paging:
+                      count: 1
+                      limit: 10
+                      next: []
+                      offset: 0
+                      pages: 0
+                      prev: []
+                ? 'Example 3 : GET /fmc_platform/v1/domain/default/audit/configchanges ( GET ALL ConfigChanges when network
+                  object is modified )'
+                : value:
+                    items:
+                    - action: UPDATE
+                      entityType: Object
+                      entityUUID: 7b36848f-4a8d-44bc-abfb-6e234e4b2d4a
+                    - action: UPDATE
+                      entityName: tlk
+                      entityType: NetworkObject
+                      entityUUID: 0050568E-9B6A-0ed3-0000-008589934949
+                      parentUUID: 7b36848f-4a8d-44bc-abfb-6e234e4b2d4a
+                      valueUpdated:
+                      - fieldName: Modified
+                        newValue: '2022-11-23 22:35:33'
+                        oldValue: '2022-11-23 08:01:04'
+                      - fieldName: ' '
+                        newValue: 12.13.14.195
+                        oldValue: 12.13.14.18
+                    links:
+                      self: https://u45c01p14-vrouter.cisco.com:10082/api/fmc_platform/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/audit/configchanges?offset=0&limit=25&auditLogId=0050568E-9B6A-0ed3-0000-000000000198&snapshotId=0050568E-9B6A-0ed3-0000-000000000092&expanded=true
+                    paging:
+                      count: 2
+                      limit: 25
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/AuditConfigChangesListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - Audit
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+  schemas:
+    IValueDelete:
+      properties:
+        fieldName:
+          type: string
+        oldValue:
+          type: string
+      type: object
+    Domain:
+      description: The details about the domain.
+      properties:
+        id:
+          description: Unique UUID of this domain
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
+          type: object
+        name:
+          description: Name of the domain.
+          type: string
+        type:
+          description: Domain type definition (fixed).
+          type: string
+        uuid:
+          type: string
+      type: object
+    AuditConfigChanges:
+      properties:
+        action:
+          description: Action done on the entity
+          enum:
+          - ADD
+          - DELETE
+          - UPDATE
+          - NOCHANGE
+          type: string
+        entityName:
+          description: 'A name field value of modified Entity. '
+          type: string
+        entityType:
+          description: An Entity type type that has been modified.
+          type: string
+        entityUUID:
+          description: ' An identifier of entity which does not change with time.'
+          type: string
+        lastUpdatedByUsers:
+          description: List of users who have modified the entity after last successful deployment.
+          items:
+            type: string
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        message:
+          description: In case for an entity there is no diff, due to no modification or some error during generation proper
+            message will be given for that entity.
+          type: string
+        parentUUID:
+          description: UUID of the entity to which this entity is grouped to. If it's empty, it means the entity is the parent
+            entity.
+          type: string
+        referencesAdded:
+          description: References that were added compared to its other state.
+          items:
+            $ref: '#/components/schemas/IReferenceUpdate'
+            type: object
+          type: array
+        referencesDeleted:
+          description: References that were deleted compared to its other state.
+          items:
+            $ref: '#/components/schemas/IReferenceUpdate'
+            type: object
+          type: array
+        valueAdded:
+          description: 'Values that were added compared to its other state. '
+          items:
+            $ref: '#/components/schemas/IValueAdd'
+            type: object
+          type: array
+        valueDeleted:
+          description: Values that were deleted compared to its other state.
+          items:
+            $ref: '#/components/schemas/IValueDelete'
+            type: object
+          type: array
+        valueUpdated:
+          description: 'Values that were specified compared to its other state. '
+          items:
+            $ref: '#/components/schemas/IValueUpdate'
+            type: object
+          type: array
+        version:
+          type: string
+      type: object
+    Metadata:
+      description: Defines read only details about the object - whether it is system defined, last user who modified the object
+        etc.
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          description: Defines the domains this instance belongs to (if applicable).
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          description: The last user who modified this instance.
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          description: Details regarding the read only status of this instance
+          type: object
+        timestamp:
+          description: The last updated timestamp.
+          format: int32
+          type: integer
+      type: object
+    MetadataUser:
+      description: This object defines details about the user.
+      properties:
+        id:
+          description: The unique UUID of the user
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Contains the self referencing links to this resource
+          type: object
+        name:
+          description: Name of the user.
+          type: string
+        type:
+          description: The user type (fixed).
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    AuditModelListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/AuditModel'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    AuditConfigChangesListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/AuditConfigChanges'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IReferenceUpdate:
+      properties:
+        entityName:
+          type: string
+        entityType:
+          type: string
+        fieldName:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    AuditModel:
+      properties:
+        auditId:
+          type: string
+        description:
+          type: string
+        domain:
+          type: string
+        endTime:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        snapshotId:
+          type: string
+        source:
+          type: string
+        startTime:
+          type: string
+        subSystem:
+          type: string
+        time:
+          format: int32
+          type: integer
+        type:
+          type: string
+        username:
+          type: string
+        version:
+          type: string
+      type: object
+    IValueUpdate:
+      properties:
+        fieldName:
+          type: string
+        newValue:
+          type: string
+        oldValue:
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IValueAdd:
+      properties:
+        fieldName:
+          type: string
+        newValue:
+          type: string
+      type: object
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
+      properties:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions
+            make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cdfmc-openapi.yaml
+- cisco-secure-firewall-cdfmc-openapi.yml

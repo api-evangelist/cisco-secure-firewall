@@ -42,7 +42,7 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Cisco Secure Firewall, the product line built on the Sourcefire technology Cisco acquired in 2013, covers the Firepower/Secure Firewall appliances, the Secure Firewall Management Center (FMC), the device manager (FDM), and cloud-delivered FMC under Cisco Security Cloud Control. Management is automated through the FMC REST API, an Ansible collection, and a community MCP server. The contract is served by each customer's own management center, so there is no central anonymously fetchable specification.
+Cisco Secure Firewall is the product line built on the Sourcefire technology Cisco acquired in 2013 — Firepower/Secure Firewall appliances and Threat Defense (FTD) software, the Secure Firewall Management Center (FMC), the on-box device manager (FDM), and the cloud-delivered Firewall Management Center (cdFMC) operated under Cisco Security Cloud Control. Two first-party REST contracts are published: the cdFMC API (1,311 operations) and the Security Cloud Control Firewall Manager API (160 operations), both OpenAPI 3.0.1 and both committed by Cisco to github.com/CiscoDevNet/scc-public-api-docs. Automation is further supported by a Python SDK, an Ansible collection, a Terraform provider, Postman collections, an always-on DevNet sandbox, and community MCP servers.
 
 ## Ownership
 
@@ -50,7 +50,18 @@ Part of the Cisco family (acquired 2013).
 
 ## Contract status
 
-The contract is served by each customer's own on-premises controller, so there is no central anonymously fetchable specification. API Evangelist has not authored a substitute.
+**Corrected 2026-08-19.** An earlier round of this profile recorded "no central anonymously fetchable
+specification." That was wrong and has been retracted. Cisco publishes both cloud contracts first-party, in
+the open, in the repository that backs developer.cisco.com:
+
+- [`cdo/cdfmc-openapi.yaml`](https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml)
+  — Cloud-delivered Firewall Management Center API, OpenAPI 3.0.1, 706 paths, **1,311 operations**, 1,510 schemas.
+- [`cdo/openapi.yaml`](https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml)
+  — Security Cloud Control Firewall Manager API, OpenAPI 3.0.1, 119 paths, **160 operations**.
+
+Both are harvested verbatim into `openapi/_original/` with an `x-provenance` block recording where they came
+from. The on-premises Secure Firewall Management Center still serves its own OpenAPI per appliance at
+`/api/api-explorer`, and that copy remains customer-served — but the same contract surface is public.
 
 ## Verified links
 

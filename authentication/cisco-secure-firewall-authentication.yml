@@ -1,0 +1,109 @@
+generated: '2026-08-19'
+method: searched
+docs: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+source: >-
+  https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/,
+  https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/overview/authentication.md,
+  openapi/cisco-secure-firewall-cdfmc-openapi.yml,
+  openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml
+summary:
+  types:
+  - http
+  model: bearer JWT API token, tenant-scoped, role-based
+  oauth2: false
+  openid_connect: false
+  mutual_tls: false
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  header: 'Authorization: Bearer $API_TOKEN'
+  sources:
+  - openapi/cisco-secure-firewall-cdfmc-openapi.yml
+  - openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml
+token:
+  issuance: >-
+    Generated in the Security Cloud Control console under Settings -> User Management. Cisco recommends
+    creating a dedicated "API Only User" so scripts are not bound to a person's account.
+  format: JWT (RFC 7519)
+  claims:
+  - name: Roles
+    description: The Security Cloud Control roles assigned to the token's user.
+  - name: parentId
+    description: Unique identifier of the Security Cloud Control tenant the token was issued for.
+  - name: exp
+    description: Expiry. Absent in API tokens, which do not expire.
+  - name: clusterId
+    description: Unique identifier of the underlying Security Cloud Control cluster the tenant uses.
+  classes:
+  - name: API token
+    expires: false
+    note: >-
+      Non-expiring by design. Refresh or revoke is manual and super-admin only, from the User Management
+      page. A leaked API token is valid until a human revokes it — there is no TTL backstop.
+  - name: access token
+    expires: true
+    ttl: 1 hour
+    note: >-
+      Used by the console itself, refreshable via an associated refresh token. Cannot be minted through the
+      UI or API by an API user.
+  rotation_api:
+    generate: POST /v1/users/{apiUserUid}/apiToken/generate
+    revoke: POST /v1/users/{apiUserUid}/apiToken/revoke
+    read: GET /v1/token
+    revoke_current: POST /v1/token/revoke
+    note: Token lifecycle IS programmable, which partially offsets the non-expiring default.
+  jwks:
+    operationId: getJwks
+    path: GET /.well-known/jwks.json
+    anonymous: false
+    probe_status: 401
+    note: >-
+      Declared in the contract but gated. A JWKS document that requires a bearer token cannot be used by a
+      relying party to verify a token it does not yet have.
+authorization:
+  model: role-based (coarse). No OAuth scopes, no per-resource permissions in the contract.
+  roles:
+  - id: ROLE_SUPER_ADMIN
+    description: Complete access to all aspects of Security Cloud Control.
+  - id: ROLE_ADMIN
+    description: >-
+      Everything a super admin can do except creating user records and changing user roles.
+  - id: ROLE_READ_ONLY
+    description: Cannot make configuration changes.
+  - id: ROLE_EDIT_ONLY
+    description: >-
+      Can edit and save device configurations, read in out-of-band changes, and use Change Request
+      Management. Cannot deploy changes to devices.
+  - id: ROLE_DEPLOY_ONLY
+    description: Cannot make configuration changes, but can deploy changes already made.
+  - id: ROLE_VPN_SESSION_MANAGER
+    description: For administrators monitoring remote-access VPN connections.
+  note: >-
+    Six roles for 1,471 operations. There is no way to issue a token that can read devices but not users, or
+    deploy to one device group and not another — which is why scopes/ is intentionally absent from this repo
+    rather than empty.
+regions:
+  note: The token is region-scoped; a token minted in one region does not work against another.
+  hosts:
+  - region: US
+    api: https://api.us.security.cisco.com/firewall
+    console: https://www.defenseorchestrator.com or https://us.manage.security.cisco.com
+  - region: EU
+    api: https://api.eu.security.cisco.com/firewall
+    console: https://www.defenseorchestrator.eu or https://eu.manage.security.cisco.com
+  - region: APJ
+    api: https://api.apj.security.cisco.com/firewall
+    console: https://apj.cdo.cisco.com or https://apj.manage.security.cisco.com
+  - region: Australia
+    api: https://api.au.security.cisco.com/firewall
+    console: https://aus.cdo.cisco.com or https://aus.manage.security.cisco.com
+  - region: India
+    api: https://api.in.security.cisco.com/firewall
+    console: https://in.cdo.cisco.com or https://in.manage.security.cisco.com
+on_premises:
+  note: >-
+    The on-premises Secure Firewall Management Center uses its own local authentication (username/password
+    exchanged for X-auth-access-token and X-auth-refresh-token against /api/fmc_platform/v1/auth/generatetoken),
+    not the Security Cloud Control bearer token. The community FMC MCP connector authenticates that way.

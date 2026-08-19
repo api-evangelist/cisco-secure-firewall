@@ -1,0 +1,254 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine Adjacent Zone API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: Adjacent Zone
+paths:
+  /topology/zone-path/adj-zone-ds:
+    delete:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: deleteAdjacentZoneToGwSet
+      parameters:
+      - in: query
+        name: zoneOneId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: zoneTwoId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: deviceSetId
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Remove device set between adjacent zones
+      tags:
+      - Adjacent Zone
+    post:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: addAdjacentZonesToGwSets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdjacentZonesToGatewaySets'
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopologyRequestsResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '413':
+          description: Request Entity Too Large
+        '500':
+          description: Internal Server Error
+      summary: Add device set between adjacent zones
+      tags:
+      - Adjacent Zone
+  /topology/zone-path/adjacent-zones:
+    post:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: addAdjacentZones
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdjacentZones'
+        required: true
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Add Adjacent zones
+      tags:
+      - Adjacent Zone
+  /topology/zone-path/adjacent-zones/with-gateway-sets/zone/{id}:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getAdjacentZonesWithGWSet
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdjacentZonesToGatewaySets'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Adjacent zones with GW set
+      tags:
+      - Adjacent Zone
+  /topology/zone-path/adjacent-zones/zone/{id}:
+    get:
+      description: 'Roles allowed: support,topology-rw,topology-ro'
+      operationId: getAdjacentZones
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdjacentZones'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Adjacent zones
+      tags:
+      - Adjacent Zone
+components:
+  schemas:
+    ZonePair:
+      properties:
+        zoneOneId:
+          type: string
+        zoneTwoId:
+          type: string
+      required:
+      - zoneOneId
+      - zoneTwoId
+      type: object
+    AdjacentZones:
+      properties:
+        adjacentZones:
+          items:
+            $ref: '#/components/schemas/ZonePair'
+          type: array
+      type: object
+    AdjacentZoneToGatewaySet:
+      properties:
+        gatewaySetId:
+          type: string
+        zoneOneId:
+          type: string
+        zoneTwoId:
+          type: string
+      required:
+      - gatewaySetId
+      - zoneOneId
+      - zoneTwoId
+      type: object
+    AdjacentZonesToGatewaySets:
+      properties:
+        adjacentZonesToGatewaySets:
+          items:
+            $ref: '#/components/schemas/AdjacentZoneToGatewaySet'
+          type: array
+      type: object
+    ReqIdAndReqSystem:
+      properties:
+        id:
+          example: 03502bc3-c140-4951-b467-bd17312a9b0b
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    TopologyRequestsResponse:
+      properties:
+        requests:
+          items:
+            $ref: '#/components/schemas/ReqIdAndReqSystem'
+          type: array
+      type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

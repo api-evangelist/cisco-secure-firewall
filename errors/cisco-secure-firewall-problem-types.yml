@@ -1,0 +1,122 @@
+generated: '2026-08-19'
+method: derived
+source: >-
+  openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml (CommonApiError schema + 4xx/5xx responses),
+  openapi/cisco-secure-firewall-cdfmc-openapi.yml, plus a live unauthenticated probe of
+  https://api.us.security.cisco.com/firewall/v1/meta on 2026-08-19
+format: proprietary
+media_type: application/json
+note: >-
+  Two different error envelopes are in play and the published contract only documents one of them. This is
+  the sharpest contract defect in the profile.
+envelopes:
+- name: CommonApiError
+  documented: true
+  where: SCC Firewall Manager contract, every 4xx/5xx response
+  media_type: application/json
+  fields:
+  - name: errorCode
+    type: string
+    description: A unique code that describes the error. Enumerated in the schema.
+  - name: errorMsg
+    type: string
+    description: A human-readable error description in English.
+  - name: details
+    type: object
+    description: Additional details, if any, on the error.
+- name: gateway-error
+  documented: false
+  where: >-
+    Observed live on an unauthenticated GET to https://api.us.security.cisco.com/firewall/v1/meta
+    (HTTP 401, application/json) on 2026-08-19.
+  media_type: application/json
+  fields:
+  - name: timestamp
+    type: string
+    description: RFC 3339 timestamp.
+  - name: path
+    type: string
+    description: >-
+      The internal gateway path, e.g. /api/platform/scc-gateway/request/api/rest/v1/meta — note this leaks
+      the internal routing path rather than the requested one.
+  - name: status
+    type: integer
+  - name: error
+    type: string
+    description: HTTP reason phrase, e.g. Unauthorized.
+  - name: requestId
+    type: string
+    description: Correlation id for support.
+  note: >-
+    A client that codes against the published CommonApiError schema will fail to parse the very first error
+    it receives, because the edge gateway rejects unauthenticated requests with a different shape before the
+    documented service is reached.
+problem_types:
+- code: INVALID_INPUT
+  status: 400
+  title: Invalid input
+  remediation: Validate the request body and query parameters against the schema before retrying.
+- code: BAD_REQUEST
+  status: 400
+  title: Bad request
+- code: UNAUTHORIZED
+  status: 401
+  title: Unauthorized
+  remediation: >-
+    Supply Authorization: Bearer $API_TOKEN using a Security Cloud Control API token for the correct region.
+- code: FORBIDDEN
+  status: 403
+  title: Forbidden
+  remediation: >-
+    The token's role is insufficient. Roles are ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_READ_ONLY, ROLE_EDIT_ONLY,
+    ROLE_DEPLOY_ONLY and ROLE_VPN_SESSION_MANAGER.
+- code: NOT_FOUND
+  status: 404
+  title: Not found
+- code: METHOD_NOT_ALLOWED
+  status: 405
+  title: Method not allowed
+- code: CONFLICT
+  status: 409
+  title: Conflict
+- code: UNPROCESSABLE_ENTITY
+  status: 422
+  title: Unprocessable entity
+- code: TOO_MANY_REQUESTS
+  status: 429
+  title: Too many requests
+  remediation: >-
+    Back off and retry. No Retry-After or RateLimit-* header is declared anywhere in the contract, so the
+    client has no published signal for how long to wait.
+- code: SERVER_ERROR
+  status: 500
+  title: Server error
+- code: PROXY_ERROR
+  status: 502
+  title: Proxy error
+response_code_coverage:
+  scc_firewall_manager:
+    '200': 94
+    '201': 9
+    '202': 45
+    '204': 16
+    '400': 126
+    '401': 119
+    '403': 126
+    '404': 45
+    '405': 30
+    '409': 4
+    '422': 3
+    '500': 160
+  cdfmc:
+    '200': 1091
+    '201': 200
+    '202': 21
+    '204': 1
+    '422': 2
+    default: 1311
+    note: >-
+      GAP. The cdFMC contract declares a `default` response on all 1,311 operations and only two explicit
+      4xx responses in the entire document. There is no per-operation error contract: a generated client has
+      nothing to switch on. The 160-operation Firewall Manager contract, by contrast, enumerates 400/401/403/
+      404/405/409/422/500 per operation.

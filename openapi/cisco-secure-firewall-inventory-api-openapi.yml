@@ -1,0 +1,3519 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall Inventory API
+  version: 1.13.0
+  contact:
+    name: Cisco Security Cloud Control TAC
+    email: cdo.tac@cisco.com
+  description: 'Operations tagged Inventory across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
+    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
+      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
+    operation_coverage: 34/34
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: Inventory
+paths:
+  /v1/inventory/devices:
+    get:
+      description: Get a list of devices in the Security Cloud Control tenant.
+      operationId: getDevices
+      parameters:
+      - description: The number of results to retrieve.
+        in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 200
+          minimum: 0
+          type: string
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+        in: query
+        name: offset
+        required: false
+        schema:
+          minimum: 0
+          type: string
+      - description: The query to execute. Use the Lucene Query Syntax to construct your query.
+        example: fieldName:fieldValue
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+      - description: The fields to sort results by.
+        example: name:DESC
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevicePage'
+          description: List of Device objects
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get Devices
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/{deviceUid}:
+    delete:
+      description: Delete a device by UID in the Security Cloud Control tenant. On-prem FMCs and cloud-delivered FMCs cannot
+        be deleted using this endpoint.
+      operationId: deleteDevice
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the device in Security Cloud Control.
+        in: path
+        name: deviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Delete Device
+      tags:
+      - Inventory
+    get:
+      description: Get a device by UID in the Security Cloud Control tenant
+      operationId: getDevice
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the device in Security Cloud Control.
+        in: path
+        name: deviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: Device object
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get Device
+      tags:
+      - Inventory
+    patch:
+      description: Modify a device in the Security Cloud Control tenant
+      operationId: modifyDevice
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the device in Security Cloud Control.
+        in: path
+        name: deviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevicePatchInput'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: Device object
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Modify Device
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/asas:
+    post:
+      description: This is an asynchronous operation to onboard an ASA to a Security Cloud Control tenant. This operation
+        returns a link to a transaction object that can be used to monitor the progress of the operation.
+      operationId: onboardAsaDevice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AsaCreateOrUpdateInput'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the onboarding
+            operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Onboard ASA device
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/asas/{deviceUid}/configs:
+    get:
+      description: Fetches the ASA configuration for a specified device by its unique identifier, represented as a UUID. This
+        endpoint returns both the current configuration from the device ('configOnDevice') and the configuration stored in
+        Security Cloud Control ('configOnCloud').
+      operationId: getAsaConfiguration
+      parameters:
+      - in: path
+        name: deviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsaConfig'
+          description: Successfully retrieved ASA configuration details from both device and Security Cloud Control.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get ASA configuration details
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/asas/{deviceUid}/deploy:
+    post:
+      description: This is an asynchronous operation to deploy changes made to an ASA device's configuration on Security Cloud
+        Control to the device. This operation returns a link to a transaction object that can be used to monitor the progress
+        of the operation.
+      operationId: deployAsaDeviceChanges
+      parameters:
+      - in: path
+        name: deviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the ASA deploy
+            operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Deploy ASA device changes
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/asas/{deviceUid}/read:
+    post:
+      description: This is an asynchronous operation to read the latest configuration on an ASA device in to the Security
+        Cloud Control tenant. This operation returns a link to a transaction object that can be used to monitor the progress
+        of the operation.
+      operationId: readAsaDeviceConfiguration
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the ASA device in Security Cloud Control.
+        in: path
+        name: deviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the read operation
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Read ASA device configuration
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/asas/{deviceUid}/reconnect:
+    post:
+      description: This is an asynchronous operation to re-establish the connection between an ASA and the Security Cloud
+        Control cloud. This operation returns a link to a transaction object that can be used to monitor the progress of the
+        operation.
+      operationId: reconnectAsaDevice
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the ASA device in Security Cloud Control.
+        in: path
+        name: deviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the reconnecting
+            operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Reconnect ASA device
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/asas/acceptCert:
+    post:
+      description: This is an asynchronous operation to accept certificates for multiple ASA devices. This operation returns
+        a link to a transaction object that can be used to monitor the progress of the operation for all devices.<br/>**Warning:**
+        This operation will accept the certificates for the ASA devices in the body without providing the user with the ability
+        to view the certificates. It is recommended to use this operation only when you are sure that all certificates are
+        valid.
+      operationId: bulkAcceptAsaCertificates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkOperationAsaDeviceRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the accept certificates
+            operation
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Accept certificates for multiple ASA devices
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/asas/read:
+    post:
+      description: This is an asynchronous operation to read the latest configurations for multiple ASA devices into the Security
+        Cloud Control tenant. This operation returns a link to a transaction object that can be used to monitor the progress
+        of the operation for all devices.
+      operationId: bulkReadAsaDeviceConfigurations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkOperationAsaDeviceRequest'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the read operation
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Read configurations for multiple ASA devices
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/duoAdminPanels:
+    post:
+      description: Onboard a Duo Admin Panel to the CDO tenant. The credentials to onboard the Duo Admin Panel to Security
+        Cloud Control must be generated by creating an Admin API application on https://www.duo.com. This operation returns
+        a link to a transaction object that can be used to monitor the progress of the operation.
+      operationId: createDuoAdminPanel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DuoAdminPanelCreateOrUpdateInput'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the onboarding
+            operation
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Onboard Duo Admin Panel
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/ftds:
+    post:
+      description: 'This is an asynchronous operation to generate a registration key for a cdFMC managed FTD device in the
+        CDO tenant. This operation returns a link to a transaction object that can be used to monitor the progress of the
+        operation. Onboarding a cdFMC managed FTD device is a two-step process: the first step, handled by this operation,
+        creates an FTD device with a configure manager string that must be pasted into the FTD device''s Command-Line Interface.
+        The FTD then uses this information to register itself with the Security Cloud Control tenant.'
+      operationId: createFtdDevice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FtdCreateOrUpdateInput'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the creation operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Onboard FTD device
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/ftds/{deviceUid}/deploy:
+    post:
+      description: 'This is an asynchronous operation to deploy changes made to a cdFMC-managed FTD device''s configuration
+        on Security Cloud Control to the device. This operation returns a link to a transaction object that can be used to
+        monitor the progress of the operation.
+
+
+        Notes:
+
+
+        - This operation is only supported for cdFMC-managed FTD devices.
+
+
+        - This operation will only deploy changes to the device if there are pending changes to deploy.
+
+
+        - Once this operation is finished, it can take up to 10 minutes for the [device](https://developer.cisco.com/docs/cisco-security-cloud-control/device/)
+        [configState](https://developer.cisco.com/docs/cisco-security-cloud-control/configstate/) to be updated from `SYNCED`
+        to `NOT_SYNCED` on Security Cloud Control.
+
+        '
+      operationId: deployFtdDeviceChanges
+      parameters:
+      - in: path
+        name: deviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FtdDeploymentInput'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the creation operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: (cdFMC-managed FTDs only) Deploy FTD device changes
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/ftds/cdfmcManaged/{deviceUid}/delete:
+    post:
+      description: This is an asynchronous operation to delete cdFMC managed FTD device in the CDO tenant. This operation
+        returns a link to a transaction object that can be used to monitor the progress of the operation. The reason this
+        operation is asynchronous is because the device is first removed from the cdFMC, following which it is deleted from
+        the Security Cloud Control tenant.
+      operationId: deleteCdFmcManagedFtdDevice
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the cdFMC managed FTD device in Security Cloud Control.
+        in: path
+        name: deviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the deletion operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Delete cdFMC managed FTD device
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/ftds/deploy:
+    post:
+      description: 'This is an asynchronous operation to deploy changes made to the configurations of multiple cdFMC-managed
+        FTD devices on Security Cloud Control. This operation returns a link to a transaction object that can be used to monitor
+        the progress of the operation.
+
+
+        Notes:
+
+
+        - This operation is only supported for cdFMC-managed FTD devices.
+
+
+        - This operation will only deploy changes to the device if there are pending changes to deploy.
+
+
+
+        '
+      operationId: deployChangesToMultipleFtdDevices
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FtdMultiDeviceDeploymentInput'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the creation operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: (cdFMC-managed FTDs only) Deploy changes to multiple FTD devices
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/ftds/register:
+    post:
+      description: Complete registration of an FTD device managed by an FMC to the Security Cloud Control tenant. Call this
+        API endpoint after you have created an FTD and pasted the generated CLI output in the FTD. This operation returns
+        a link to a transaction object that can be used to monitor the progress of the operation.
+      operationId: finishOnboardingFtdDevice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FtdRegistrationInput'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the creation operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Register FTD device to FMC
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/ftds/ztp:
+    post:
+      description: 'This is an asynchronous operation to onboard a cdFMC managed FTD using Zero-Touch Provisioning. The operation
+        returns a transaction object that can be used to track the progress of the onboarding operation. Note: Zero-Touch
+        Onboarding can be done with Secure Firewall 1xxx, 2xxx, and 3xxx Series devices. This operation will be marked as
+        complete once CDO is ready to handle a response from the device once it is plugged in and connected to the Internet;
+        it does not wait for the device to communicate back to Security Cloud Control.'
+      operationId: onboardFtdDeviceUsingZtp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZtpOnboardingInput'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the creation operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Onboard FTD device using Zero-Touch Provisioning
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/devices/ios:
+    post:
+      description: Onboard a IOS device in the Security Cloud Control tenant. This operation returns a link to a transaction
+        object that can be used to monitor the progress of the operation.
+      operationId: onboardIosDevice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IosCreateOrUpdateInput'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the progress of the onboarding
+            operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Onboard IOS Device
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/managers:
+    get:
+      description: Fetch a list of Device Managers (on-prem FMCs and cloud-delivered FMCs) in the Security Cloud Control tenant.
+      operationId: getDeviceManagers
+      parameters:
+      - description: The number of results to retrieve.
+        in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 200
+          minimum: 0
+          type: string
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+        in: query
+        name: offset
+        required: false
+        schema:
+          minimum: 0
+          type: string
+      - description: The query to execute. Use the Lucene Query Syntax to construct your query.
+        example: fieldName:fieldValue
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+      - description: The fields to sort results by.
+        example: name:DESC
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevicePage'
+          description: List of Device Manager objects
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get Device Managers
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/managers/{deviceManagerUid}:
+    delete:
+      description: Delete a Device Manager by UID in the Security Cloud Control tenant.
+      operationId: deleteDeviceManager
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the device manager in Security Cloud Control.
+        in: path
+        name: deviceManagerUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Delete Device Manager
+      tags:
+      - Inventory
+    get:
+      description: Get a Device Manager by UID in the Security Cloud Control tenant.
+      operationId: getDeviceManager
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the device manager in Security Cloud Control.
+        in: path
+        name: deviceManagerUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: Device Manager
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get Device Manager
+      tags:
+      - Inventory
+    patch:
+      description: Modify a device manager by UID in the Security Cloud Control tenant.
+      operationId: modifyDeviceManager
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the device manager in Security Cloud Control.
+        in: path
+        name: deviceManagerUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevicePatchInput'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: Device manager
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Modify Device Manager
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/managers/{fmcUid}/health/metrics:
+    get:
+      description: 'Get metrics that indicate the current health of all devices managed by the cdFMC. Note: For specific health
+        metrics to be available for a given device under management of the cdFMC, the health policy for that device should
+        be configured to collect those metrics. For example, CPU metrics will be unavailable for a device if the health policy
+        applied to that device has CPU metric collection turned off. Note: This endpoint can only be queried twice every minute.'
+      operationId: getFmcHealth
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the FMC in Security Cloud Control.
+        in: path
+        name: fmcUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: The time range for which results should be retrieved.
+        in: query
+        name: timeRange
+        required: false
+        schema:
+          enum:
+          - 5m
+          - 15m
+          - 30m
+          - 1h
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/FmcHealthMetrics'
+                type: array
+          description: FMC health metrics
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '405':
+          $ref: '#/components/responses/http405MethodNotAllowed'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get health metrics on devices managed by the FMC (cdFMC only)
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/managers/cdfmc:
+    post:
+      description: This is an asynchronous operation to provision a cloud-delivered FMC in a tenant. This operation can only
+        be performed as a super-admin user.
+      operationId: provisionCdFmc
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the status of the operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '409':
+          $ref: '#/components/responses/http409Conflict'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Provision cdFMC
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/managers/mcd:
+    post:
+      description: This is an asynchronous operation to Enable Multicloud Defense for the Security Cloud Control tenant. This
+        operation returns a link to a transaction object that can be used to monitor the progress of the operation.
+      operationId: enableMulticloudDefense
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdoTransaction'
+          description: Security Cloud Control Transaction object that can be used to track the status of the operation.
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '409':
+          $ref: '#/components/responses/http409Conflict'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Enable Multicloud Defense
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/services:
+    get:
+      description: Get a list of Cloud Services in the Security Cloud Control tenant.
+      operationId: getCloudServices
+      parameters:
+      - description: The number of results to retrieve.
+        in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 200
+          minimum: 0
+          type: string
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+        in: query
+        name: offset
+        required: false
+        schema:
+          minimum: 0
+          type: string
+      - description: The query to execute. Use the Lucene Query Syntax to construct your query.
+        example: fieldName:fieldValue
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+      - description: The fields to sort results by.
+        example: name:DESC
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevicePage'
+          description: List of Cloud Services
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get Cloud Services
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/services/{cloudServiceUid}:
+    delete:
+      description: Delete a Cloud Service by UID in the Security Cloud Control tenant.
+      operationId: deleteCloudService
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the cloud service in Security Cloud Control.
+        in: path
+        name: cloudServiceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Delete Cloud Service
+      tags:
+      - Inventory
+    get:
+      description: Get a Cloud Service by UID in the Security Cloud Control tenant.
+      operationId: getCloudService
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the cloud service in Security Cloud Control.
+        in: path
+        name: cloudServiceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: Cloud Service
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get Cloud Service
+      tags:
+      - Inventory
+    patch:
+      description: Modify a Cloud Service by UID in the Security Cloud Control tenant.
+      operationId: modifyCloudService
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the cloud service in Security Cloud Control.
+        in: path
+        name: cloudServiceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevicePatchInput'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: Cloud Service
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Modify Cloud Service
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/templates:
+    get:
+      description: Get a list of template devices in the Security Cloud Control tenant.
+      operationId: getTemplateDevices
+      parameters:
+      - description: The number of results to retrieve.
+        in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 200
+          minimum: 0
+          type: string
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+        in: query
+        name: offset
+        required: false
+        schema:
+          minimum: 0
+          type: string
+      - description: The query to execute. Use the Lucene Query Syntax to construct your query.
+        example: fieldName:fieldValue
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+      - description: The fields to sort results by.
+        example: name:DESC
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevicePage'
+          description: List of Template Devices
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get Template Devices
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/inventory/templates/{templateDeviceUid}:
+    delete:
+      description: Delete a template device by UID in the Security Cloud Control tenant.
+      operationId: deleteTemplateDevice
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the template device in Security Cloud Control.
+        in: path
+        name: templateDeviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Delete Template Device
+      tags:
+      - Inventory
+    get:
+      description: Get a template device by UID in the Security Cloud Control tenant.
+      operationId: getTemplateDevice
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the template device in Security Cloud Control.
+        in: path
+        name: templateDeviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: Template Device object
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Get Template Device
+      tags:
+      - Inventory
+    patch:
+      description: Modify a template device in the Security Cloud Control tenant.
+      operationId: modifyTemplateDevice
+      parameters:
+      - description: The unique identifier, represented as a UUID, of the template device in Security Cloud Control.
+        in: path
+        name: templateDeviceUid
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevicePatchInput'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+          description: Template Device object
+        '400':
+          $ref: '#/components/responses/http400BadRequest'
+        '401':
+          $ref: '#/components/responses/http401Unauthorised'
+        '403':
+          $ref: '#/components/responses/http403Forbidden'
+        '404':
+          $ref: '#/components/responses/http404NotFound'
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonApiError'
+          description: Internal server error.
+      security:
+      - bearerAuth: []
+      summary: Modify Template Device
+      tags:
+      - Inventory
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  schemas:
+    HaNode:
+      properties:
+        chassisSerial:
+          description: The serial number of the chassis on the device.
+          example: FTX20131xxx
+          type: string
+        serial:
+          description: The serial number of the node on the device. This is typically used for licensing, and is not the same
+            as the chassis' serial number.
+          example: JAD24500xxx
+          type: string
+        softwareVersion:
+          description: The version of the software running on the device.
+          example: 7.4.1
+          type: string
+        status:
+          description: The status of the HA node.
+          enum:
+          - NORMAL
+          - ERROR
+          - WARNING
+          - DISABLED
+          - UNKNOWN
+          example: NORMAL
+          type: string
+        uidOnFmc:
+          description: The unique identifier, represented as a UUID, of the device on the FMC.
+          example: 6131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    DeviceRole:
+      enum:
+      - FTD_RA_VPN_HEADEND
+      - ASA_RA_VPN_HEADEND
+      - MFA_PROVIDER
+      - ZTNA_PROVIDER
+      - ANYCONNECT_VPN_HEAD_END
+      - UNIVERSAL_ZTNA_HEADEND
+      type: string
+    SseDeviceData:
+      properties:
+        sseDeviceId:
+          type: string
+        sseProtocolVersion:
+          enum:
+          - ONE
+          - TWO
+          type: string
+      type: object
+    AsaFailoverMate:
+      properties:
+        chassisSerial:
+          description: (High Availability ASAs only) The serial number of the chassis.
+          example: FTX20131xxx
+          type: string
+        failoverState:
+          description: (High Availability ASAs only) Failover state of this device.
+          example: Primary - Active
+          type: string
+        serial:
+          description: (High Availability ASAs only) The serial number of the device. This is typically used for licensing,
+            and is not the same as the chassis' serial number.
+          example: JAD24500xxx
+          type: string
+        softwareVersion:
+          description: (High Availability ASAs only) The version of the software running on the device.
+          example: 9.18.8
+          type: string
+      type: object
+    FmcTemplateVariable:
+      properties:
+        name:
+          description: Specify the name of the object to override.
+          minLength: 1
+          type: string
+        value:
+          description: Specify the value of the template variable. The value specified should be valid for the template variable,
+            as defined in the template configuration.
+          minLength: 1
+          type: string
+      required:
+      - name
+      - value
+      type: object
+    AsaCreateOrUpdateInput:
+      properties:
+        connectorName:
+          description: The name of the Secure Device Connector (SDC) that will be used to communicate with the device. This
+            value is not required if the connector type selected is Cloud Connector (CDG).
+          example: SDC-1
+          type: string
+        connectorType:
+          $ref: '#/components/schemas/ConnectorType'
+          description: The type of the connector that will be used to communicate with the device. CDO can communicate with
+            your device using either a Cloud Connector (CDG) or a Secure Device Connector (SDC); see the Security Cloud Control
+            documentation to learn more.
+          example: SDC
+        deviceAddress:
+          description: The address of the device to onboard, specified in the format `host:port`.
+          example: 10.2.2.5:443
+          type: string
+        ignoreCertificate:
+          default: false
+          description: Set this attribute to true if you do not want Security Cloud Control to validate the certificate of
+            this device before onboarding.
+          example: false
+          type: boolean
+        labels:
+          $ref: '#/components/schemas/Labels'
+          description: Specify a set of labels to identify the device as part of a group. Refer to the CDO documentation for
+            details on how labels are used in Security Cloud Control.
+          example: '{"ungroupedLabels", ["ra-vpn-headend"]}'
+        name:
+          description: A human-readable name for the device.
+          example: My ASA
+          minLength: 1
+          type: string
+        password:
+          description: The password used to authenticate with the device.
+          example: Cisco@23
+          minLength: 1
+          type: string
+        username:
+          description: The username used to authenticate with the device.
+          example: admin
+          minLength: 1
+          type: string
+      required:
+      - connectorType
+      - name
+      - password
+      - username
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
+    Staged:
+      properties:
+        autoDeployEnabled:
+          description: 'Specifies whether changes to ZTNA settings are automatically deployed to the device. Note: This applies
+            only to ZTNA-specific changes and does not affect the deployment of other pending changes.'
+          example: false
+          type: boolean
+        domainSettings:
+          description: Configuration that defines how Secure Client communicates with the device.
+          items:
+            $ref: '#/components/schemas/DomainSettings'
+          type: array
+      type: object
+    ZtpOnboardingInput:
+      properties:
+        adminPassword:
+          description: Specify the initial provisioning password. This is required for setting up the FTD, and can be ignored
+            if password is already set on the device.
+          type: string
+        deviceGroupUid:
+          description: Specify the unique identifier, represented as a UUID, of the device group which the device will be
+            a part of after it finishes registering with Security Cloud Control.
+          format: uuid
+          type: string
+        fmcAccessPolicyUid:
+          description: 'Specify the unique identifier, represented as a UUID, of the FMC access policy to apply to this device.
+            If this field is specified, the ''templates'' field must remain unspecified. Note: If both ''fmcAccessPolicyUid''
+            and ''template'' fields are unspecified, the operation will fail.'
+          format: uuid
+          type: string
+        licenses:
+          description: Specify a set of licenses to apply to the device.
+          example:
+          - BASE
+          - CARRIER
+          items:
+            enum:
+            - BASE
+            - CARRIER
+            - THREAT
+            - MALWARE
+            - URLFilter
+            type: string
+          minItems: 1
+          type: array
+          uniqueItems: true
+        name:
+          description: Specify a human-readable name for the device.
+          example: My Zero-touch FTD
+          minLength: 1
+          type: string
+        serialNumber:
+          description: Specify the serial number of the FTD device to be onboarded. When a device with this serial number
+            is plugged in and connected to the Internet, it will automatically be registered to this Security Cloud Control
+            tenant.
+          minLength: 1
+          type: string
+        template:
+          $ref: '#/components/schemas/ZtpOnboardingTemplateConfiguration'
+          description: 'Specify the template to apply to this device. If this field is specified, the ''fmcAccessPolicyUid''
+            field must remain unspecified. Note: If both ''fmcAccessPolicyUid'' and ''template'' fields are unspecified, the
+            operation will fail.'
+      required:
+      - licenses
+      - name
+      - serialNumber
+      type: object
+    FmcObjectOverride:
+      properties:
+        name:
+          description: Specify the name of the object to override.
+          minLength: 1
+          type: string
+        type:
+          description: Specify the type of the object to override. The type should match the type of the object used in the
+            template.
+          enum:
+          - Network
+          - Host
+          - FQDN
+          - Range
+          example: Network
+          type: string
+        uid:
+          description: Specify the unique identifier, represented as a UUID, of the object to override.
+          example: 0d0cc559-43a0-449a-84a9-28310ede72ec
+          format: uuid
+          type: string
+        value:
+          description: Specify the value to override the object with.
+          minLength: 1
+          type: string
+      required:
+      - name
+      - type
+      - uid
+      - value
+      type: object
+    DevicePage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/Device'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
+            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    OnPremFmcInfo:
+      properties:
+        link:
+          description: The endpoint to access this resource from.
+          example: https://us.manage.security.cisco.com/api/rest/v1/inventory/managers/7e9789b4-8389-4029-933f-ec7e385335ef
+          type: string
+        location:
+          description: The fully-qualified domain name or IP address of the on-prem FMC managing this device.
+          example: my-example-fmc.example.com
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the on-prem FMC that manages this device.
+          example: 7e9789b4-8389-4029-933f-ec7e385335ef
+          format: uuid
+          type: string
+      type: object
+    Labels:
+      description: Labels used to identify/tag Security Cloud Control entities.
+      properties:
+        groupedLabels:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+            uniqueItems: true
+          description: Groups of labels used to identify/tag Security Cloud Control entities.
+          example:
+            group1:
+            - label-1
+            - label-2
+            group2:
+            - label-1
+            - label-2
+          type: object
+        ungroupedLabels:
+          description: Set of free-labels used to identify/tag Security Cloud Control entities.
+          example:
+          - label-a
+          - label-b
+          - label-c
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    ConflictDetectionState:
+      enum:
+      - CONFLICT_DETECTED
+      - NO_CONFLICTS
+      type: string
+    ChassisStatsHealthMetrics:
+      properties:
+        fan1RpmAvg:
+          description: The average speed of fan 1, if present, crucial for assessing the effectiveness of the system’s cooling
+            mechanism under operational load.
+          type: number
+        fan2RpmAvg:
+          description: The average speed of fan 2, if present, crucial for assessing the effectiveness of the system’s cooling
+            mechanism under operational load.
+          type: number
+        fan3RpmAvg:
+          description: The average speed of fan 3, if present, crucial for assessing the effectiveness of the system’s cooling
+            mechanism under operational load.
+          type: number
+        fan4RpmAvg:
+          description: The average speed of fan 4, if present, crucial for assessing the effectiveness of the system’s cooling
+            mechanism under operational load.
+          type: number
+        psu1FanStatus:
+          enum:
+          - UP
+          - DOWN
+          type: string
+        psu1InputStatus:
+          enum:
+          - UP
+          - DOWN
+          type: string
+        psu1OutputStatus:
+          enum:
+          - UP
+          - DOWN
+          type: string
+        psu2FanStatus:
+          enum:
+          - UP
+          - DOWN
+          type: string
+        psu2InputStatus:
+          enum:
+          - UP
+          - DOWN
+          type: string
+        psu2OutputStatus:
+          enum:
+          - UP
+          - DOWN
+          type: string
+      type: object
+    InterfaceHealthMetrics:
+      properties:
+        bufferOverrunsAvg:
+          description: Monitors the average number of times where incoming data exceeded buffer capacity, potentially leading
+            to data loss.
+          type: number
+        bufferUnderrunsAvg:
+          description: Tracks the average number of times the data buffer was insufficient to handle outgoing traffic, possibly
+            causing transmission delays.
+          type: number
+        dropPacketsAvg:
+          description: Average number of packets dropped by the interface due to network congestion, buffer overflow, or errors.
+          type: number
+        duplexMode:
+          description: Configuration of the interface regarding data transmission, indicating whether it is set to full, half,
+            or auto-duplex.
+          type: string
+        inputBytesAvg:
+          description: Total amount of data received through the interface, providing insights into the volume of inbound
+            traffic.
+          type: number
+        inputErrorsAvg:
+          description: The average rate of erroneous packets received, indicative of issues like corruption or transmission
+            errors.
+          type: number
+        inputPacketSizeAvg:
+          description: Average size of packets received, useful for analysing the nature of inbound traffic.
+          type: number
+        interface:
+          description: Identifier for a specific network interface on the FTD device, used for network traffic management
+            and monitoring.
+          type: string
+        interfaceName:
+          description: The name assigned to the interface, facilitating easier identification and configuration.
+          type: string
+        interfaceType:
+          description: The physical or logical type of the interface (e.g., Ethernet, virtual, management).
+          type: string
+        l2DecodeDropsAvg:
+          description: The average number of packets that could not be processed due to issues at the Data Link layer, including
+            protocol mismatches or corruption.
+          type: number
+        linkStatus:
+          description: Indicates whether the physical link of the network interface is active (UP) or inactive (DOWN). The
+            interface will be marked as DOWN if there is no traffic through the interface.
+          type: string
+        operationalStatus:
+          description: Current state of the interface from a functional standpoint, influenced by both administrative settings
+            and physical connectivity.
+          type: string
+        outputBytesAvg:
+          description: Total data sent out through the interface, useful for tracking outbound traffic levels.
+          type: number
+        outputErrorsAvg:
+          description: Average count of error-ridden packets sent from the device, pointing to problems in packet formation
+            or hardware issues.
+          type: number
+        outputPacketSizeAvg:
+          description: Average size of packets sent. Helps in understanding the traffic distribution and network load.
+          type: number
+      type: object
+    FmcHealthMetrics:
+      properties:
+        chassisStatsHealthMetrics:
+          $ref: '#/components/schemas/ChassisStatsHealthMetrics'
+          description: The chassis health metrics for the device.
+        cpuHealthMetrics:
+          $ref: '#/components/schemas/CpuHealthMetrics'
+          description: The CPU health metrics for the device. This value will be available only if the health policy on the
+            device has CPU monitoring enabled.
+        deviceName:
+          description: The name of the device in Security Cloud Control.
+          example: Burak's FTD device
+          type: string
+        deviceUid:
+          description: The unique identifier, represented as a UUID, of the device in Security Cloud Control.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        diskHealthMetrics:
+          $ref: '#/components/schemas/DiskHealthMetrics'
+          description: The disk health metrics for the device.
+        endTime:
+          description: The end of the time period (inclusive) for which the health metrics were retrieved for this device.
+          format: date-time
+          type: string
+        haHealthMetrics:
+          $ref: '#/components/schemas/HaHealthMetrics'
+          description: The HA health metrics for the device. This value will be available only if the device is part of an
+            HA pair.
+        interfaceHealthMetrics:
+          description: The interface health metrics for the device.
+          items:
+            $ref: '#/components/schemas/InterfaceHealthMetrics'
+          type: array
+        memoryHealthMetrics:
+          $ref: '#/components/schemas/MemoryHealthMetrics'
+          description: The memory health metrics for the device.
+        raVpnSessionHealthMetrics:
+          $ref: '#/components/schemas/RaVpnSessionHealthMetrics'
+          description: The RA VPN session health metrics for the device.
+        s2sVpnTunnelHealthMetrics:
+          description: The S2S VPN tunnel health metrics for the device. The maximum number of tunnels retrieved is 1000.
+          items:
+            $ref: '#/components/schemas/S2sVpnTunnelHealthMetrics'
+          type: array
+        startTime:
+          description: The start of the time period (inclusive) for which the health metrics were retrieved for this device.
+          format: date-time
+          type: string
+      type: object
+    CpuHealthMetrics:
+      properties:
+        linaUsageAvg:
+          description: Measures the average CPU utilisation by the LINA (Cisco's ASA software running natively). Expressed
+            as a percentage value between 0 and 100.
+          type: number
+        snortUsageAvg:
+          description: Indicates the average CPU usage by the Snort process, responsible for threat detection, including intrusion
+            prevention and advanced malware protection. Expressed as a percentage value between 0 and 100.
+          type: number
+        systemUsageAvg:
+          description: Represents the total average CPU load utilised by the FTD system, including both firewall and threat
+            defense mechanisms. Expressed as a percentage value between 0 and 100.
+          type: number
+      type: object
+    StateMachineError:
+      properties:
+        actionIdentifier:
+          type: string
+        errorCode:
+          type: string
+        errorMessage:
+          type: string
+      type: object
+    DomainSettings:
+      properties:
+        certificate:
+          $ref: '#/components/schemas/FmcObjectReference'
+          description: Reference to the Public Key Infrastructure (PKI) certificate object on the FMC. This certificate is
+            used to authenticate communication between the Secure Client and the device.
+        fqdn:
+          description: The fully qualified domain name (FQDN) of the device. Secure Client uses this to communicate with the
+            device.
+          example: myftd.cisco.com
+          type: string
+        interfaces:
+          description: List of references to interface objects on the FMC, which defines the interfaces on the device that
+            are used for ZTNA.
+          items:
+            $ref: '#/components/schemas/FmcObjectReference'
+          type: array
+      type: object
+    CdFmcInfo:
+      properties:
+        cliKey:
+          description: The CLI key to paste into the FTD CLI to register the FTD with a cdFMC. You need to paste this value
+            in only once, when the FTD is being onboarded. Refer to the [Security Cloud Control Documentation](https://www.cisco.com/c/en/us/td/docs/security/cdo/cloud-delivered-firewall-management-center-in-cdo/managing-firewall-threat-defense-services-with-cisco-defense-orchestrator/m-onboard-for-ftd-management.html)
+            for details.
+          example: configure manager add acme.app.us.cdo.cisco.com E2jsyiZggyeCfFfCUaMK2kD1a1bxxx 5Do6FwUaXY4EFlyraC2yVnxodLxhuxxx
+            acme.app.us.cdo.cisco.com
+          type: string
+        link:
+          description: The endpoint to access this resource from.
+          example: https://us.manage.security.cisco.com/api/rest/v1/inventory/managers/7e9789b4-8389-4029-933f-ec7e385335ef
+          type: string
+        natId:
+          description: The Registration Key of this FTD. Refer to the [Security Cloud Control Documentation](https://www.cisco.com/c/en/us/td/docs/security/cdo/cloud-delivered-firewall-management-center-in-cdo/managing-firewall-threat-defense-services-with-cisco-defense-orchestrator/m-onboard-for-ftd-management.html)
+            for details.
+          example: 5Do6FwUaXY4EFlyraC2yVnxodLxhuxxx
+          type: string
+        regKey:
+          description: The Network Address Translation (NAT) ID of this FTD. Refer to the [Security Cloud Control Documentation](https://www.cisco.com/c/en/us/td/docs/security/cdo/cloud-delivered-firewall-management-center-in-cdo/managing-firewall-threat-defense-services-with-cisco-defense-orchestrator/m-onboard-for-ftd-management.html)
+            for details.
+          example: E2jsyiZggyeCfFfCUaMK2kD1a1bxxx
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the cdFMC that manages this device.
+          example: my-example-fmc
+          format: uuid
+          type: string
+      type: object
+    ConnectorType:
+      enum:
+      - SDC
+      - CDG
+      type: string
+    FtdMultiDeviceDeploymentInput:
+      properties:
+        deploymentNotes:
+          description: Specify notes, if any, for the deployment.
+          example: 'This deployment addresses ticket #12345.'
+          type: string
+        description:
+          description: Specify a human-readable description for the deployment.
+          example: This deployment is for the branch office in San Francisco.
+          type: string
+        deviceUids:
+          description: The set of unique identifiers, represented as UUIDs, of the devices to upgrade in Security Cloud Control.
+            All of the devices in the list have to be compatible with the upgrade package.
+          example:
+          - 256461f6-bd60-11ef-8beb-6cf1610cf55d
+          items:
+            format: uuid
+            type: string
+          maxItems: 50
+          minItems: 1
+          type: array
+          uniqueItems: true
+        ignoreWarnings:
+          default: false
+          description: 'Specify whether to ignore warnings generated during the pre-validation of the deployment job and proceed
+            with the deployment regardless. **Warning**: Do not set this to `true` unless you know what you are doing.'
+          type: boolean
+      required:
+      - deviceUids
+      type: object
+    FtdRegistrationInput:
+      properties:
+        ftdUid:
+          description: The unique identifier, represented as a UUID, of the FTD device in Security Cloud Control for which
+            registration should be triggered.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        skipInitialDeployment:
+          default: false
+          description: Boolean flag to specify initial deployment should be triggered or not after device onboarding is completed.
+            Defaults to false if not provided.
+          type: boolean
+      required:
+      - ftdUid
+      type: object
+    MemoryHealthMetrics:
+      properties:
+        linaUsageAvg:
+          description: Average memory utilisation by the LINA process. Expressed as a percentage value between 0 and 100.
+          type: number
+        snortUsageAvg:
+          description: Average memory usage by the Snort engine. Expressed as a percentage value between 0 and 100.
+          type: number
+        systemUsageAvg:
+          description: Provides an overview of the overall memory usage by the FTD system, useful for monitoring system health
+            and detecting potential resource bottlenecks. Expressed as a percentage value between 0 and 100.
+          type: number
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    StateMachineDetails:
+      properties:
+        identifier:
+          type: string
+        lastError:
+          $ref: '#/components/schemas/StateMachineError'
+      type: object
+    MerakiDeploymentMode:
+      enum:
+      - ROUTED
+      - PASSTHROUGH
+      type: string
+    ZtpOnboardingTemplateConfiguration:
+      properties:
+        objectOverrides:
+          description: 'Specify a list of objects to override. All objects that have been marked as overridable in the template
+            must be defined here. Note: Any overrides defined here that are not present in the template configuration will
+            be ignored.'
+          items:
+            $ref: '#/components/schemas/FmcObjectOverride'
+          type: array
+        templateVariables:
+          description: 'Specify the list of template variables configured on the template. All required template variables
+            must be defined here, and should have values valid for the type of the variable. Any invalid input will result
+            in the template not being applied to the device upon onboarding. Note: Any variables defined here that are not
+            present in the template will be ignored.'
+          items:
+            $ref: '#/components/schemas/FmcTemplateVariable'
+          type: array
+        uid:
+          description: Specify the unique identifier, represented as a UUID, of the template to apply to the onboarded device.
+          example: 2cadad15-dc8b-4bc4-899f-b9badcfc56a3
+          format: uuid
+          type: string
+      required:
+      - uid
+      type: object
+    FmcDeviceRecord:
+      properties:
+        link:
+          description: The endpoint to access this resource from on the FMC.
+          example: https://fmc.example.com/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/devices/devicerecords/6131daad-e813-4b8f-8f42-be1e241e8cdb
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the device on the FMC.
+          example: 6131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    Deployed:
+      properties:
+        autoDeployEnabled:
+          description: 'Specifies whether changes to ZTNA settings are automatically deployed to the device. Note: This applies
+            only to ZTNA-specific changes and does not affect the deployment of other pending changes.'
+          example: false
+          type: boolean
+        domainSettings:
+          description: Configuration that defines how Secure Client communicates with the device.
+          items:
+            $ref: '#/components/schemas/DomainSettings'
+          type: array
+      type: object
+    ClusterNode:
+      properties:
+        serial:
+          description: The serial number of the node on the device. This is typically used for licensing, and is not the same
+            as the chassis' serial number.
+          example: JAD24500xxx
+          type: string
+        softwareVersion:
+          description: The version of the software running on the device.
+          example: 7.4.1
+          type: string
+        status:
+          description: The status of the cluster node.
+          enum:
+          - ADDED_OUT_OF_BOX
+          - DISABLED
+          - JOINING
+          - NORMAL
+          - NOT_AVAILABLE
+          - UNKNOWN
+          example: NORMAL
+          type: string
+        uidOnFmc:
+          description: The unique identifier, represented as a UUID, of the device on the FMC.
+          example: 6131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    ConnectivityState:
+      enum:
+      - ONLINE
+      - UNREACHABLE
+      - BAD_CREDENTIALS
+      - UNKNOWN
+      - PENDING_SETUP
+      - PENDING
+      - NEW_CERT_DETECTED
+      type: string
+    FtdClusterInfo:
+      properties:
+        clusterName:
+          description: The name of the cluster on the FMC.
+          type: string
+        clusterNodeStatus:
+          description: '(on-prem FMC-managed FTDs only) Information on the type of this node in the FTD cluster. Note: Each
+            node in an on-prem-FMC-managed FTD cluster is represented as a separate device entry in the API.'
+          enum:
+          - ADDED_OUT_OF_BOX
+          - DISABLED
+          - JOINING
+          - NORMAL
+          - NOT_AVAILABLE
+          - UNKNOWN
+          type: string
+        clusterNodeType:
+          description: '(on-prem FMC-managed FTDs only) Information on the type of this node in the FTD cluster. Note: Each
+            node in an on-prem-FMC-managed FTD cluster is represented as a separate device entry in the API.'
+          enum:
+          - CONTROL
+          - DATA
+          type: string
+        clusterUid:
+          description: The unique identifier, represented as a UUID, of the cluster, on the FMC
+          format: uuid
+          type: string
+        controlNode:
+          $ref: '#/components/schemas/ClusterNode'
+          description: (cdFMC-managed FTDs only) Information on the control node, which is responsible for managing, coordinating,
+            and synchronizing the operations of multiple firewall units within the cluster.
+        dataNodes:
+          description: (cdFMC-managed FTDs only) Information on the data nodes, which are individual units within a cluster
+            that process and forward network traffic based on policies and configurations managed by the control node.
+          items:
+            $ref: '#/components/schemas/ClusterNode'
+          type: array
+      type: object
+    AsaFailoverMode:
+      enum:
+      - 'OFF'
+      - ACTIVE_STANDBY
+      - ACTIVE_ACTIVE
+      type: string
+    CdoTransaction:
+      properties:
+        cdoTransactionStatus:
+          description: The status of the transaction
+          enum:
+          - PENDING
+          - IN_PROGRESS
+          - DONE
+          - ERROR
+          example: IN_PROGRESS
+          type: string
+        entityUid:
+          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a
+            transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
+          example: f5f660d4-4b81-4374-877d-fbc4bee894e2
+          format: uuid
+          type: string
+        entityUrl:
+          description: A URL to access the entity that the transaction is triggered on. This can also be empty
+          example: https://edge.us.cdo.cisco.com/platform/public-api/v1/inventory/devices/f5f660d4-4b81-4374-877d-fbc4bee894e2
+          type: string
+        errorDetails:
+          additionalProperties:
+            type: string
+          description: Transaction error details, if any
+          type: object
+        errorMessage:
+          description: Transaction error message, if any
+          type: string
+        lastUpdatedTime:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the transaction status was last updated
+          example: 2023-12-13 08:15:44+00:00
+          format: date-time
+          type: string
+        submissionTime:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the transaction was triggered
+          example: 2023-12-13 05:15:44+00:00
+          format: date-time
+          type: string
+        tenantUid:
+          description: The unique identifier of the tenant that the transaction triggered on.
+          example: 5131daad-e813-4b8f-8f42-be1e241e2cdb
+          format: uuid
+          type: string
+        transactionDetails:
+          additionalProperties:
+            type: string
+          description: Transaction details, if any
+          type: object
+        transactionPollingUrl:
+          description: The URL to poll to track the progress of the transaction.
+          example: https://edge.us.cdo.cisco.com/platform/v1/transactions/7131daad-e813-4b8f-8f42-be1e241e8cdb
+          type: string
+        transactionType:
+          description: the type of the transaction
+          enum:
+          - ONBOARD_ASA
+          - ONBOARD_IOS
+          - ONBOARD_DUO_ADMIN_PANEL
+          - CREATE_FTD
+          - ONBOARD_FTD_ZTP
+          - REGISTER_FTD
+          - DELETE_CDFMC_MANAGED_FTD
+          - RECONNECT_ASA
+          - READ_ASA
+          - BULK_READ_ASA
+          - EXECUTE_CLI_COMMAND
+          - BULK_ACCEPT_ASA_CERTIFICATES
+          - DEPLOY_ASA_DEVICE_CHANGES
+          - DEPLOY_FTD_DEVICE_CHANGES
+          - INDEX_TENANT
+          - TERMINATE_DEVICE_RA_VPN_SESSIONS
+          - REFRESH_RA_VPN_SESSIONS
+          - TERMINATE_USER_RA_VPN_SESSIONS
+          - UPGRADE_ASA
+          - UPGRADE_FTD
+          - UPGRADE_FTD_CACHE
+          - MSP_UPGRADE_FTDS
+          - MSP_GET_COMPATIBLE_FTD_UPGRADE_PACKAGES
+          - CREATE_SDC
+          - SEND_AI_ASSISTANT_MESSAGE
+          - MSP_CREATE_TENANT
+          - MSP_ADD_USERS_TO_TENANT
+          - MSP_ADD_USER_GROUPS_TO_TENANT
+          - MSP_DELETE_USERS_FROM_TENANT
+          - MSP_DELETE_USER_GROUPS_FROM_TENANT
+          - MSP_ADD_EXISTING_TENANT
+          - MSP_ENABLE_MULTICLOUD_DEFENSE
+          - MSP_PROVISION_CDFMC
+          - CREATE_USERS
+          - DELETE_USERS
+          - EXECUTE_ASA_COMMAND
+          - ANALYZE_POLICIES
+          - TRIGGER_FMC_DATA_EXPORT
+          - EXPORT_DEVICES
+          - EXPORT_CLOUD_SERVICES
+          - EXPORT_MANAGERS
+          - EXPORT_TEMPLATES
+          - PROVISION_SDWAN_SAL_RESOURCES
+          - DEPROVISION_SDWAN_SAL_RESOURCES
+          - PROVISION_FIREWALL_SAL_RESOURCES
+          - DEPROVISION_FIREWALL_SAL_RESOURCES
+          - ASA_HEALTH_METRICS_TENANT_OPT_IN
+          - ASA_HEALTH_METRICS_TENANT_OPT_OUT
+          example: ONBOARD_ASA
+          type: string
+        transactionUid:
+          description: The unique identifier of the transaction triggered.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    HaHealthMetrics:
+      properties:
+        nodeStatus:
+          description: The status of the HA node.
+          enum:
+          - NORMAL
+          - ERROR
+          - WARNING
+          - DISABLED
+          - UNKNOWN
+          example: NORMAL
+          type: string
+        nodeType:
+          description: Indicates whether the device is a primary or secondary node in an HA pair.
+          enum:
+          - PRIMARY
+          - SECONDARY
+          example: PRIMARY
+          type: string
+      type: object
+    EntityType:
+      enum:
+      - ASA
+      - CDFMC_MANAGED_FTD
+      - ONPREM_FMC_MANAGED_FTD
+      - ONPREM_FMC_MANAGED_FIREPOWER
+      - ONPREM_FMC_NGIPS
+      - FDM_MANAGED_FTD
+      - IOS
+      - ISR
+      - SSH_DEVICE
+      - GENERIC_DEVICE
+      - MERAKI_MX
+      - CLOUD_DNG
+      - SFCN
+      - SFCN_DNG
+      - SFCN_STS
+      - ONPREM_FMC
+      - CDFMC
+      - AWS_VPC
+      - AZURE_VNET
+      - DUO_ADMIN_PANEL
+      - UMBRELLA_ORGANIZATION
+      type: string
+    FmcAccessPolicyReference:
+      properties:
+        link:
+          description: The endpoint to access this resource from.
+          example: https://us.manage.security.cisco.com/api/rest/v1/cdfmc/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/policy/accesspolicies/0276f012-3875-0ed3-0000-004294981364
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the FMC Access Policy in Security Cloud Control.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    DeviceMetadata:
+      properties:
+        additional:
+          additionalProperties:
+            type: string
+          description: Additional metadata as a map of key-value pairs.
+          type: object
+        secureAccess:
+          $ref: '#/components/schemas/SecureAccessMetadata'
+          description: Structured [Cisco Secure Access](https://www.cisco.com/site/uk/en/products/security/secure-access/index.html)
+            metadata (applicable to UZTNA-enabled FTDs only).
+      type: object
+    FmcObjectReference:
+      properties:
+        link:
+          description: The endpoint to access this resource from.
+          example: https://us.manage.security.cisco.com/api/rest/v1/cdfmc/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/object/networks/0276f012-3875-0ed3-0000-004294981364
+          type: string
+        name:
+          description: The name of the FMC Object.
+          type: string
+        type:
+          description: The type of the FMC Object.
+          example: PhysicalInterface
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the FMC Object.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    BulkOperationAsaDeviceRequest:
+      properties:
+        deviceUids:
+          description: A collection of up to 50 unique identifiers (UUIDs) for the ASA devices in Security Cloud Control.
+          items:
+            format: uuid
+            type: string
+          maxItems: 50
+          minItems: 1
+          type: array
+      type: object
+    DevicePatchInput:
+      properties:
+        deviceMetadata:
+          $ref: '#/components/schemas/DeviceMetadata'
+          description: Specify metadata for the device. This field contains a combination of structured service-specific metadata
+            persisted by other Cisco services and arbitrary metadata.
+        labels:
+          $ref: '#/components/schemas/Labels'
+          description: Specify a set of labels to identify the device as part of a group. Refer to the CDO documentation for
+            details on how labels are used in Security Cloud Control.
+        name:
+          description: A human-readable name for the device.
+          example: My ASA
+          type: string
+        optedInToAsaHealthMetrics:
+          description: Specify whether to enable or disable health metrics collection (SDC-managed ASA devices only).
+          example: true
+          type: boolean
+      type: object
+    AsaConfig:
+      properties:
+        configOnCloud:
+          description: The configuration of the ASA device in Security Cloud Control. This may include changes staged on Security
+            Cloud Control that have not been deployed to the device.
+          type: string
+        configOnDevice:
+          description: 'The running configuration on the ASA device. Note: this may not include changes made out-of-band directly
+            on the device since the last Out-of-Band check ran on Security Cloud Control.'
+          type: string
+      type: object
+    UniversalZtnaSettings:
+      properties:
+        deployed:
+          $ref: '#/components/schemas/Deployed'
+          description: Indicates that the settings have been successfully configured and deployed.
+        staged:
+          $ref: '#/components/schemas/Staged'
+          description: Indicates that the settings have been configured but are not yet deployed.
+        universalZtnaConfigured:
+          description: Indicates whether a device is configured for Zero Trust Network Access (ZTNA).
+          example: true
+          type: boolean
+        universalZtnaEnabled:
+          description: Indicates whether a device is enabled for Zero Trust Network Access (ZTNA).
+          example: true
+          type: boolean
+        universalZtnaSupported:
+          description: Indicates whether a device supports Zero Trust Network Access (ZTNA).
+          example: true
+          type: boolean
+      type: object
+    IosCreateOrUpdateInput:
+      properties:
+        connectorName:
+          description: The name of the Secure Device Connector (SDC) that will be used to communicate with the device.
+          example: SDC-1
+          minLength: 1
+          type: string
+        deviceAddress:
+          description: The address of the device to onboard, specified in the format `host:port`.
+          example: 10.2.2.5:443
+          type: string
+        ignoreCertificate:
+          default: false
+          description: Set this attribute to true if you do not want Security Cloud Control to validate the certificate of
+            this device before onboarding.
+          example: false
+          type: boolean
+        labels:
+          $ref: '#/components/schemas/Labels'
+          description: Specify a set of labels to identify the device as part of a group. Refer to the CDO documentation for
+            details on how labels are used in Security Cloud Control.
+          example: '{"ungroupedLabels", ["ra-vpn-headend"]}'
+        name:
+          description: A human-readable name for the device.
+          example: My IOS
+          minLength: 1
+          type: string
+        password:
+          description: The password used to authenticate with the device.
+          example: Cisco@23
+          minLength: 1
+          type: string
+        username:
+          description: The username used to authenticate with the device.
+          example: admin
+          minLength: 1
+          type: string
+      required:
+      - connectorName
+      - name
+      - password
+      - username
+      type: object
+    FtdHaInfo:
+      properties:
+        currentRole:
+          description: '(on-prem FMC-managed FTDs only) Information on the current role of the node in the HA Pair. Note:
+            Each node in an on-prem-FMC-managed FTD HA Pair is represented as a separate device entry in the API response.'
+          enum:
+          - ACTIVE
+          - STANDBY
+          type: string
+        haNodeType:
+          description: '(on-prem FMC-managed FTDs only) Information on the type of this node in the HA Pair. Note: Each node
+            in an on-prem-FMC-managed FTD HA Pair is represented as a separate device entry in the API response.'
+          enum:
+          - PRIMARY
+          - SECONDARY
+          type: string
+        haPairName:
+          description: The name of the HA Pair on the FMC.
+          type: string
+        haPairUid:
+          description: The unique identifier, represented as a UUID, of the HA Pair, on the FMC
+          format: uuid
+          type: string
+        primaryNode:
+          $ref: '#/components/schemas/HaNode'
+          description: 'Information on the primary unit in the FTD HA Pair. Note: for an on-prem FMC managed FTD, this information
+            is available only if the `cdfmc_and_onprem_fmc_enhanced_flow` feature flag is enabled on your tenant.'
+        secondaryNode:
+          $ref: '#/components/schemas/HaNode'
+          description: 'Information on the secondary unit in the FTD HA Pair. Note: for an on-prem FMC managed FTD, this information
+            is available only if the `cdfmc_and_onprem_fmc_enhanced_flow` feature flag is enabled on your tenant.'
+      type: object
+    ConfigState:
+      enum:
+      - NO_CONFIG
+      - SYNCED
+      - NOT_SYNCED
+      - UNKNOWN
+      type: string
+    FtdCreateOrUpdateInput:
+      properties:
+        deviceType:
+          description: Specify the type of the FTD. The only supported type of FTD is CDFMC_MANAGED_FTD
+          enum:
+          - CDFMC_MANAGED_FTD
+          type: string
+        fmcAccessPolicyUid:
+          description: Specify the unique identifier, represented as a UUID, of the FMC access policy to apply to this device.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        labels:
+          $ref: '#/components/schemas/Labels'
+          description: Specify a set of labels to identify the device as part of a group. Refer to the CDO documentation for
+            details on how labels are used in Security Cloud Control.
+          example: '{"ungroupedLabels", ["ra-vpn-headend"]}'
+        licenses:
+          description: Specify a set of licenses to apply to the device.
+          example:
+          - BASE
+          - CARRIER
+          items:
+            enum:
+            - BASE
+            - CARRIER
+            - THREAT
+            - MALWARE
+            - URLFilter
+            type: string
+          type: array
+          uniqueItems: true
+        name:
+          description: Specify a human-readable name for the device.
+          example: My FTD
+          minLength: 1
+          type: string
+        performanceTier:
+          description: Specify the performance tier of the FTDv (required only if isVirtual is set to true)
+          enum:
+          - FTDv5
+          - FTDv10
+          - FTDv20
+          - FTDv30
+          - FTDv50
+          - FTDv100
+          - FTDv
+          type: string
+        virtual:
+          description: Indicate whether the FTD is a virtual or a physical device.
+          example: true
+          type: boolean
+      required:
+      - deviceType
+      - fmcAccessPolicyUid
+      - licenses
+      - name
+      type: object
+    DuoAdminPanelCreateOrUpdateInput:
+      properties:
+        host:
+          description: The address of the Duo Admin Panel to onboard.
+          example: api-1aa2bbb3.duosecurity.com
+          type: string
+        integrationKey:
+          description: The integration key of the Admin API application used to authenticate with Duo Admin Panel.
+          example: EIVJAJFK1Y25B1BWVSO
+          minLength: 1
+          type: string
+        labels:
+          $ref: '#/components/schemas/Labels'
+          description: Specify a set of labels to identify the device as part of a group. Refer to the CDO documentation for
+            details on how labels are used in Security Cloud Control.
+          example: '{"ungroupedLabels", ["ra-vpn-headend"]}'
+        name:
+          description: A human-readable name for the device.
+          example: My Duo Admin Panel
+          minLength: 1
+          type: string
+        secretKey:
+          description: The secret key of the Admin API application used to authenticate with Duo Admin Panel.
+          example: b2Ln2DrBioS2sTI7dqRYh7DPoLsvYDm0wn5UbIKi
+          minLength: 1
+          type: string
+      required:
+      - integrationKey
+      - name
+      - secretKey
+      type: object
+    Device:
+      properties:
+        address:
+          description: The address of the device, in `host:port` format. Security Cloud Control connects to the device at
+            this address.
+          example: my-example-device.example.com:443
+          type: string
+        asaFailoverMate:
+          $ref: '#/components/schemas/AsaFailoverMate'
+          description: (High Availability ASAs only) Information on the failover mate of this device.
+        asaFailoverMode:
+          $ref: '#/components/schemas/AsaFailoverMode'
+          description: (ASAs only) Failover mode of the device.
+          example: ACTIVE_STANDBY
+        asaFailoverState:
+          description: (High Availability ASAs only) Failover state of this device.
+          example: Primary - Active
+          type: string
+        asaLicenseEntitlements:
+          additionalProperties:
+            type: string
+          description: (ASAs only) Map of ASA License entitlements.
+          type: object
+        asdmVersion:
+          description: (ASAs only) Version of the ASDM device manager running on the device.
+          example: 7.6(2)
+          type: string
+        cdFmcInfo:
+          $ref: '#/components/schemas/CdFmcInfo'
+          description: (FTDs managed by cdFMC only) Information on the cloud-delivered FMC managing this FTD. This information
+            is not available for FTDs managed using FDM or on-prem FMCs.
+        chassisSerial:
+          description: The serial number on the chassis of the device (ASA-only). This is typically used to type up to Cisco
+            SmartNet, and is not the same as the serial number.
+          example: JMX2450Xxxx
+          type: string
+        configState:
+          $ref: '#/components/schemas/ConfigState'
+          description: The state of the device configuration in CDO. CDO stages configuration changes which have to be manually
+            applied to the device; this field indicates whether the configuration on CDO does not match the configuration
+            on the device, which indicates whether there are changes to be deployed from Security Cloud Control to the device.
+          example: SYNCED
+        conflictDetectionState:
+          $ref: '#/components/schemas/ConflictDetectionState'
+          description: Indicates whether there have been changes made to the device's configuration outside of Security Cloud
+            Control.
+          example: NO_CONFLICTS
+        connectivityState:
+          $ref: '#/components/schemas/ConnectivityState'
+          description: The connectivity state of the device to CDO. A connectivity state that is not ONLINE can indicate either
+            a problem with the device, or the communication pathways between the device and Security Cloud Control.
+          example: ONLINE
+        connectorType:
+          $ref: '#/components/schemas/ConnectorType'
+          description: The type of the connector that will be used to communicate with the device. Security Cloud Control
+            can communicate with your device using either a Cloud Connector (CDG) or a Secure Device Connector (SDC).
+          example: CDG
+        connectorUid:
+          description: The unique identifier, represented as a UUID, of the Secure Device Connector (SDC) that will be used
+            to communicate with the device. This value is not required if the connector type selected is Cloud Connector (CDG)The
+            name of the Secure Device Connector (SDC) that will be used to communicate with the device. This value is not
+            required if the connector type selected is Cloud Connector (CDG).
+          example: 3af473a8-d70f-4090-bcdb-853981696478
+          format: uuid
+          type: string
+        deviceMetadata:
+          $ref: '#/components/schemas/DeviceMetadata'
+          description: Metadata for the device. This field contains a combination of structured service-specific metadata
+            persisted by other Cisco services and arbitrary metadata.
+        deviceRecordOnFmc:
+          $ref: '#/components/schemas/FmcDeviceRecord'
+          description: (FMC-managed FTDs only) The device record in FMC. A FMC-managed device on SCC can also be accessed
+            directly using the FMC APIs; this field provides details.
+        deviceRole:
+          $ref: '#/components/schemas/DeviceRole'
+          deprecated: true
+          description: The role this device performs on the network.
+          example: ASA_RA_VPN_HEADEND
+        deviceRoles:
+          description: The roles that this device performs on the network.
+          example: ASA_RA_VPN_HEADEND
+          items:
+            $ref: '#/components/schemas/DeviceRole'
+          type: array
+        deviceType:
+          $ref: '#/components/schemas/EntityType'
+          description: The type of the device.
+          example: CDFMC_MANAGED_FTD
+        fmcAccessPolicy:
+          $ref: '#/components/schemas/FmcAccessPolicyReference'
+          description: (FMC-managed FTDs only) The FMC Access Policy applied to the device.
+          example: 6131daad-e813-4b8f-8f42-be1e241e8cdb
+        fmcDomainUid:
+          description: (FMC device managers only) The unique identifier, represented as a UUID, of the [FMC domain](https://www.cisco.com/c/en/us/td/docs/security/secure-firewall/management-center/admin/740/management-center-admin-74/system-domains.html).
+          format: uuid
+          type: string
+        ftdClusterInfo:
+          $ref: '#/components/schemas/FtdClusterInfo'
+          description: '(Device Clusters managed by FMC only) Clustering information. Note: Security Cloud Control represents
+            all of the nodes on an FTD cluster in a single device record with the UID of the cluster control node.'
+        ftdHaInfo:
+          $ref: '#/components/schemas/FtdHaInfo'
+          description: '(High Availability Devices managed by FMC only) High-Available information information. Note: Security
+            Cloud Control represents all of the nodes on an FTD cluster in a single device record with the UID of the cluster
+            control node.'
+        ftdLicenses:
+          description: (FTDs only) List of FTD License entitlements.
+          items:
+            type: string
+          type: array
+        ftdPerformanceTier:
+          description: (FTDvs only) The FTDv supports performance-tiered licensing that provides different throughput levels
+            and VPN connection limits based on deployment requirements. This field specifies the performance tier of the FTD.
+          type: string
+        hardwareModel:
+          description: (ASAs, FDM-managed FTDs, and FMC-managed FTDs only) The hardware model of the device
+          type: string
+        labels:
+          $ref: '#/components/schemas/Labels'
+          description: The labels associated with the device.
+        merakiDeploymentMode:
+          $ref: '#/components/schemas/MerakiDeploymentMode'
+          description: (Meraki devices only) The deployment mode of the Meraki device.
+          example: ROUTED
+        merakiNetwork:
+          $ref: '#/components/schemas/Network'
+          description: (Meraki devices only) The [Dashboard Network](https://documentation.meraki.com/General_Administration/Organizations_and_Networks/Creating_and_Deleting_Dashboard_Networks)
+            the device is deployed in.
+        modelNumber:
+          description: The hardware, or virtualized hardware platform, that the device is running on (ASA-only). This field
+            can be missing in the case of a partially onboarded device.
+          type: string
+        name:
+          description: The name of the device. Device names are unique in Security Cloud Control.
+          example: my-example-device
+          type: string
+        notes:
+          description: Free-form notes on the device.
+          example: This is an example note on the device.
+          type: string
+        onPremFmcInfo:
+          $ref: '#/components/schemas/OnPremFmcInfo'
+          description: (Devices managed by on-prem FMC only) Information on the on-prem FMC managing this device.
+        optedInToAsaHealthMetrics:
+          description: Indicates whether the device has been opted in to collect ASA health metrics (SDC-managed ASAs only).
+          example: true
+          type: boolean
+        redundancyMode:
+          description: 'The redundancy mode this firewall is running in. Note: for High Availability pairs and clusters, Security
+            Cloud Control represents all of the devices as part of one record.'
+          enum:
+          - HA
+          - CLUSTER
+          - STANDALONE
+          type: string
+        serial:
+          description: The serial number of the device. This is typically used for licensing, and is not the same as the chassis'
+            serial number.
+          example: JAD24500xxx
+          type: string
+        snortVersion:
+          description: (FTDs only) List of FTD License entitlements.
+          type: string
+        softwareVersion:
+          description: The version of the software running on the device.
+          example: 7.4.1
+          type: string
+        sseDeviceData:
+          $ref: '#/components/schemas/SseDeviceData'
+          description: SSX related info for the registered device
+        state:
+          description: The device state.
+          type: string
+        stateMachineDetails:
+          $ref: '#/components/schemas/StateMachineDetails'
+          deprecated: true
+          description: The device state machine details.
+        uid:
+          description: The unique identifier, represented as a UUID, of the device in Security Cloud Control.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        uidOnFmc:
+          deprecated: true
+          description: (FMC-managed FTDs only) The unique identifier, represented as a UUID, of the device on a cdFMC. This
+            field is deprecated. Please see `deviceRecordOnFmc`.
+          example: 6131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        universalZtnaSettings:
+          $ref: '#/components/schemas/UniversalZtnaSettings'
+          description: (FMC-managed FTDs only) Universal Zero-Trust Network Access (ZTNA) configuration.
+        ztpOnboardingJobId:
+          description: The unique identifier, represented as a UUID, for an internal job that orchestrates the onboarding
+            of devices through Zero-Touch Provisioning. This applies to devices managed by both on-premises and Cloud-delivered
+            FMC.
+          example: 7e9789b4-8389-4029-933f-ec7e385335ef
+          format: uuid
+          type: string
+      required:
+      - deviceType
+      - name
+      type: object
+    RaVpnSessionHealthMetrics:
+      properties:
+        activeRavpnSessionsAvg:
+          description: The average number of active RA VPN sessions.
+          type: number
+        inactiveRavpnSessionsAvg:
+          description: The average number of inactive or down RA VPN sessions.
+          type: number
+        peakConcurRavpnSessions:
+          description: The peak concurrent RA VPN sessions active since the last reset.
+          type: number
+      type: object
+    S2sVpnTunnelHealthMetrics:
+      properties:
+        tunnelId:
+          description: The unique identifier of the S2S VPN tunnel.
+          type: string
+        tunnelName:
+          description: The name assigned to the S2S VPN tunnel.
+          type: string
+        tunnelState:
+          description: The state of the S2S VPN tunnel. The possible values are TUNNEL_UP, TUNNEL_DOWN, and UNKNOWN.
+          enum:
+          - TUNNEL_UP
+          - TUNNEL_DOWN
+          - UNKNOWN
+          type: string
+      type: object
+    DiskHealthMetrics:
+      properties:
+        totalDiskUsageAvg:
+          description: The average utilisation of disk space, important for monitoring log storage, reporting, and archiving
+            activities which are critical for audit and diagnostics. Expressed as a percentage value between 0 and 100.
+          type: number
+      type: object
+    SecureAccessMetadata:
+      properties:
+        commitStatus:
+          description: The deployment status of the Secure Access configuration associated with the device.
+          enum:
+          - CREATED
+          - VALIDATION_FAILED
+          - QUEUED
+          - IN_PROGRESS
+          - SKIPPED
+          - PARTIALLY_SUCCESSFUL
+          - SUCCESSFULLY_COMPLETED
+          - FAILED
+          - UNKNOWN
+          type: string
+        numResources:
+          description: The number of private Cisco Secure Access resources associated with the device.
+          format: int32
+          type: integer
+        numRules:
+          description: The number of Cisco Secure Access rules associated with the device.
+          format: int32
+          type: integer
+      type: object
+    Network:
+      properties:
+        id:
+          description: The unique identifier, represented as a UUID, of the Meraki Dashboard Network.
+          example: L_583779101697901532
+          type: string
+        name:
+          description: The name of the Meraki Dashboard Network.
+          example: meraki-network
+          type: string
+        timezone:
+          description: The timezone of the Meraki Dashboard Network.
+          example: UTC +0
+          type: string
+      type: object
+    FtdDeploymentInput:
+      properties:
+        deploymentNotes:
+          description: Specify notes, if any, for the deployment.
+          example: 'This deployment addresses ticket #12345.'
+          type: string
+        description:
+          description: Specify a human-readable description for the deployment.
+          example: This deployment is for the branch office in San Francisco.
+          type: string
+        ignoreWarnings:
+          default: false
+          description: 'Specify whether to ignore warnings generated during the pre-validation of the deployment job and proceed
+            with the deployment regardless. **Warning**: Do not set this to `true` unless you know what you are doing.'
+          type: boolean
+      type: object
+  responses:
+    http405MethodNotAllowed:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Method not allowed.
+    http409Conflict:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Conflict.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cisco-secure-firewall-scc-firewall-manager-openapi.yml
+- scc-firewall-manager-openapi.yaml

@@ -1,0 +1,443 @@
+openapi: 3.2.0
+info:
+  contact: {}
+  description: Provisioning APIs for activating and managing entitlements, subscriptions, and claim codes
+  title: Provisioning MSP Entitlements Management API
+  version: 1.0.1
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/provisioning.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/provisioning.yaml
+servers:
+- url: https://api.int.security.cisco.com/provisioning
+tags:
+- name: MSP Entitlements Management
+paths:
+  /organizations/{managerId}/entitlements:
+    get:
+      security:
+      - EnterpriseAdminBearerAuth:
+        - security:enterprise:admin:{enterprise_id}
+      description: Retrieves entitlements for a specific managed organization. User must be admin of the organization. Supports pagination and search.
+      tags:
+      - MSP Entitlements Management
+      summary: Get organization entitlements
+      operationId: GetOrgEntitlements
+      parameters:
+      - description: Manager Organization ID (UUID)
+        name: managerId
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: 'Number of records to return (default: 10)'
+        name: limit
+        in: query
+        schema:
+          type: integer
+      - description: 'Number of records to skip (default: 0)'
+        name: offset
+        in: query
+        schema:
+          type: integer
+      - description: Search term for filtering entitlements
+        name: search
+        in: query
+        schema:
+          type: string
+      - description: Managed organization ID for filtering
+        name: managedOrgId
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Organization entitlements
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.OrgEntitlements'
+        '400':
+          description: Bad request - Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - User not admin of organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+  /organizations/{managerId}/managed/{managedId}/entitlements:
+    get:
+      security:
+      - EnterpriseAdminBearerAuth:
+        - security:enterprise:admin:{enterprise_id}
+      description: List all active entitlements at the SKU level between a manager and managed organization
+      tags:
+      - MSP Entitlements Management
+      summary: Get Entitlements for Managed Organization
+      operationId: get-managed-entitlements
+      parameters:
+      - description: Manager organization ID (UUID format)
+        name: managerId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - description: Managed organization ID (UUID format)
+        name: managedId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - description: Number of results per page (default 10)
+        name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
+      - description: Pagination offset (default 0)
+        name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+      responses:
+        '200':
+          description: Successfully retrieved organization entitlements
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.OrgEntitlements'
+        '400':
+          description: Bad request - invalid enterprise ID, limit, or offset value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - user is not admin of the organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '403':
+          description: Forbidden - access to entitlements is not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '404':
+          description: Not found - manager or managed organization not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+    delete:
+      security:
+      - ServiceTokenBearerAuth:
+        - security:provisioning:subscriptions:write
+      description: Revoke all entitlemendts shared from a manager organization to a managed organization
+      tags:
+      - MSP Entitlements Management
+      summary: Revoke entitlements for an organization
+      operationId: delete-managed-entitlements
+      parameters:
+      - description: ManagerID(UUID)
+        name: managerId
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: ManagedID(UUID)
+        name: managedId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.RevokeAPIResponse'
+        '400':
+          description: Invalid Org ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: Unauthorized - User is not admin of the manager organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+    patch:
+      security:
+      - EnterpriseAdminBearerAuth:
+        - security:enterprise:admin:{enterprise_id}
+      description: Updates the quantity of entitlements shared from a manager organization to a managed organization
+      tags:
+      - MSP Entitlements Management
+      summary: Update entitlements between manager and managed organizations
+      operationId: update-managed-entitlements
+      parameters:
+      - description: Manager Organization ID (UUID)
+        name: managerId
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Managed Organization ID (UUID)
+        name: managedId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/model.UpdateEntitlementsRequest'
+        description: Request body containing subscription and SKU details to update
+        required: true
+      responses:
+        '200':
+          description: Successfully updated entitlements
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.UpdateEntitlementResponse'
+        '400':
+          description: Invalid UUID format, request body, minimum quantity not met, or managed org not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '401':
+          description: User is not an admin of manager or managed org
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/model.Error'
+components:
+  schemas:
+    model.ProvisionedSKU:
+      type: object
+      properties:
+        name:
+          type: string
+        productInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProductInfo'
+    model.PaginationInfo:
+      type: object
+      properties:
+        limit:
+          type: integer
+        offset:
+          type: integer
+        totalRecords:
+          type: integer
+    model.UserSubscription:
+      type: object
+      properties:
+        id:
+          type: string
+        skus:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.SKU'
+    model.SharedEntitlement:
+      type: object
+      properties:
+        assignedEntitlements:
+          type: integer
+        managedOrgId:
+          type: string
+        productsList:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProductConf'
+    model.OrgEntitlements:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/model.PaginationInfo'
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.SubnSku'
+    model.UpdateEntitlementsRequest:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.UserSubscription'
+    model.MspSku:
+      type: object
+      properties:
+        availableEntitlements:
+          type: integer
+        minEntitlementsQuantity:
+          type: integer
+        productsList:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProductConf'
+        reservedEntitlements:
+          type: integer
+        sharedEntitlements:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.SharedEntitlement'
+        skuName:
+          type: string
+    model.ProductConf:
+      type: object
+      properties:
+        activationStatus:
+          type: string
+        name:
+          type: string
+        operand:
+          type: integer
+        operator:
+          type: string
+        region:
+          type: string
+    model.ProvisionedSubscription:
+      type: object
+      properties:
+        endDate:
+          type: string
+        id:
+          type: string
+        licenseType:
+          type: string
+        skus:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProvisionedSKU'
+    model.Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    model.ProductInfo:
+      type: object
+      properties:
+        assignedEntitlements:
+          type: integer
+        product:
+          type: string
+        productRegion:
+          type: string
+    model.UpdateEntitlementResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        provisioningErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.SubscriptionProvisioningError'
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProvisionedSubscription'
+    model.SubscriptionProvisioningError:
+      type: object
+      properties:
+        error:
+          type: string
+        subscriptionId:
+          type: string
+    model.SKU:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: integer
+    model.SubnSku:
+      type: object
+      properties:
+        endDate:
+          type: string
+        externalSubscriptionId:
+          type: string
+        licenseType:
+          type: string
+        skus:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/model.MspSku'
+    model.RevokeAPIResponse:
+      type: object
+      properties:
+        revokedSubscriptions:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    EnterpriseAdminBearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://id.cisco.com/oauth2/default/v1/token
+          scopes:
+            security:enterprise:admin:{enterprise_id}: Grants enterprise admin access with dynamic enterprise ID validation
+    ServiceTokenBearerAuth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://id.cisco.com/oauth2/default/v1/token
+          scopes:
+            security:provisioning:tenants:read: Grants read access to provisioning tenants
+            security:provisioning:subscriptions:write: Grants write access to provisioning subscriptions

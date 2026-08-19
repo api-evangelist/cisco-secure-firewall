@@ -1,0 +1,125 @@
+openapi: 3.2.0
+info:
+  description: APIs for interacting with AI Assistant
+  title: AI Assistant Feedback API
+  version: 2.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/ai-assistant.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/ai-assistant.yaml
+servers:
+- description: AI Assistant Production API Server (NAM region)
+  url: https://api.security.cisco.com/api/ai-assistant
+tags:
+- description: Feedback APIs
+  name: Feedback
+paths:
+  /v2/feedback/quickpicks:
+    get:
+      operationId: listQuickPicks
+      parameters:
+      - description: Client product identifier
+        in: header
+        name: x-aiassistant-client-product
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/quickPicks'
+          description: Quick pick feedback options retrieved successfully.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Bad request or missing fields
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+          description: Not found
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+      summary: GetQuickPicks gets all quick pick feedback options for a given integration.
+      tags:
+      - Feedback
+components:
+  schemas:
+    errorResponse:
+      description: error response
+      properties:
+        code:
+          description: Error code
+          type: integer
+        details:
+          description: Additional details about the error
+          type: object
+        message:
+          description: Error message
+          type: string
+      type: object
+    quickPicks:
+      description: quick pick feedbacks object
+      properties:
+        quickPicks:
+          additionalProperties:
+            $ref: '#/components/schemas/quickPickFeedbacks'
+          description: Map containing model_type <> quick picks.
+          type: object
+      type: object
+    quickPickFeedback:
+      description: quick pick feedback object
+      properties:
+        deleted:
+          description: Indicates if the quick pick feedback is deleted.
+          type: boolean
+        displayString:
+          description: The display string for the quick pick feedback.
+          type: string
+        id:
+          description: The unique identifier for the quick pick feedback.
+          type: string
+      type: object
+    quickPickFeedbacks:
+      description: quick pick feedbacks object
+      properties:
+        quickPickFeedback:
+          description: A list of quick pick feedback items.
+          items:
+            $ref: '#/components/schemas/quickPickFeedback'
+          type: array
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      description: bearer token security scheme
+      scheme: bearer
+      type: http

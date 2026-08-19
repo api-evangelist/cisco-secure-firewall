@@ -1,0 +1,22 @@
+generated: '2026-08-19'
+method: searched
+source: >-
+  https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/,
+  https://www.cisco.com/c/en/us/products/collateral/security/security-cloud-control/security-cloud-control-firewall-management-og.html
+plan_count: 0
+note: >-
+  Cisco publishes no self-serve plans, tiers or list prices for Cisco Secure Firewall or for Security Cloud
+  Control. The product is sold through Cisco sales and channel partners against an ordering guide and
+  subscription licence terms, and there is no sign-up-and-pay path a developer can take. The API is not
+  separately priced: access is included with a Security Cloud Control tenant, and the licence attaches to the
+  firewall estate rather than to API consumption. There is no free tier and no published API metering.
+plans: []
+evidence:
+- url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  status: 200
+  finding: No pricing section anywhere in the API documentation set.
+- url: https://www.cisco.com/c/en/us/products/collateral/security/security-cloud-control/security-cloud-control-firewall-management-og.html
+  status: 403
+  finding: >-
+    The Security Cloud Control Firewall Management Ordering Guide exists but cisco.com refused our probe
+    (403), so no tier names or prices are recorded rather than guessed.

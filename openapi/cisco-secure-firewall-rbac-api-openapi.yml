@@ -1,0 +1,506 @@
+openapi: 3.2.0
+info:
+  version: 1.4.0
+  title: Identity and Access Management RBAC API
+  description: APIs for creating and updating the customer enterprise, including user access control.
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/iam.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/iam.yaml
+servers:
+- url: https://api.int.security.cisco.com/identity
+  variables:
+    baseUrl:
+      default: https://api.int.security.cisco.com/identity
+    domain:
+      default: https://sso-apps-preview.myverysecuresignon.name/api
+security:
+- OpenID: []
+- bearerAuth: []
+tags:
+- name: RBAC
+paths:
+  /enterprises/{id}/rbac/users/{userId}/roles:
+    get:
+      tags:
+      - RBAC
+      x-try-it-enabled: true
+      operationId: listRBACUserRolesAssignments
+      description: List all RBAC user roles assignments related to the user
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: ID of the user from okta
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rbac_user_roles_assignments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RBACUserAssignmentRole'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    post:
+      tags:
+      - RBAC
+      x-try-it-enabled: true
+      operationId: createRBACUserRoleAssignment
+      description: Create new RBAC user role assignment
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: ID of the user from okta
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roleId:
+                  $ref: '#/components/schemas/RoleAssignmentIdInput'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RBACUserAssignmentRole'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    delete:
+      tags:
+      - RBAC
+      x-try-it-enabled: true
+      operationId: DeleteRBACUserDirectRolesAssignmentsForProduct
+      description: Delete Product Direct User Roles related to the user
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: user ID from okta
+        required: true
+        schema:
+          type: string
+      - name: product
+        in: query
+        description: productkey
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '412':
+          $ref: '#/components/responses/PredefinedFailed'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /enterprises/{id}/rbac/groups/{groupId}/roles:
+    get:
+      tags:
+      - RBAC
+      x-try-it-enabled: true
+      operationId: listRBACGroupRolesAssignments
+      description: List all RBAC group roles assignments related to the group
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: groupId
+        in: path
+        description: ID of the group
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rbac_group_roles:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RBACGroupAssignmentRole'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    post:
+      tags:
+      - RBAC
+      x-try-it-enabled: true
+      operationId: createRBACGroupRoleAssignment
+      description: Create new RBAC group role assignment
+      parameters:
+      - name: id
+        in: path
+        description: ID of the enterprise
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: groupId
+        in: path
+        description: ID of the group
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: ''
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roleId:
+                  $ref: '#/components/schemas/RoleAssignmentIdInput'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RBACGroupAssignmentRole'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+  /enterprises/{id}/rbac/customRoles/{roleId}:
+    delete:
+      tags:
+      - RBAC
+      x-try-it-enabled: true
+      summary: Delete a custom role.
+      operationId: deleteCustomRole
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the enterprise.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: roleId
+        in: path
+        description: The ID of the custom role.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+    put:
+      tags:
+      - RBAC
+      x-try-it-enabled: true
+      summary: Update a custom role.
+      operationId: updateCustomRole
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the enterprise.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: roleId
+        in: path
+        description: The ID of the custom role.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roleId:
+                  $ref: '#/components/schemas/RBACCustomRoleInput'
+      responses:
+        '200':
+          description: success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RBACCustomRole'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/GeneralError'
+components:
+  schemas:
+    RBACCustomRole:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        enterpriseId:
+          type: string
+          format: uuid
+        productId:
+          type: integer
+        roleDisplayName:
+          type: string
+        roleDescription:
+          type: string
+        scopes:
+          type: array
+          items:
+            type: string
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    RBACUserAssignmentRole:
+      type: object
+      description: Represent entity of RBAC user role assignment
+      required:
+      - id
+      - userId
+      - enterpriseId
+      - tenantId
+      - roleId
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        enterpriseId:
+          type: string
+          format: uuid
+        tenantId:
+          type: string
+          format: uuid
+        roleId:
+          type: string
+          format: uuid
+    RBACCustomRoleInput:
+      type: object
+      properties:
+        product:
+          type: integer
+        roleDisplayName:
+          type: string
+        roleDescription:
+          type: string
+        scopes:
+          type: array
+          items:
+            type: string
+        applicationScopeIdToScope:
+          type: object
+          properties:
+            applicationScope:
+              type: string
+            scopes:
+              type: array
+              items:
+                type: string
+    RoleAssignmentIdInput:
+      type: object
+      description: role and its tenant id input
+      required:
+      - roleId
+      - tenantId
+      properties:
+        roleId:
+          type: string
+          format: uuid
+        tenantId:
+          type: string
+          format: uuid
+    RBACGroupAssignmentRole:
+      type: object
+      description: Represent entity of RBAC group role assignment
+      required:
+      - id
+      - groupId
+      - roleId
+      - tenantId
+      properties:
+        id:
+          type: string
+          format: uuid
+        groupId:
+          type: string
+          format: uuid
+        roleId:
+          type: string
+          format: uuid
+        tenantId:
+          type: string
+          format: uuid
+  responses:
+    Unauthorized:
+      description: The request is not able to be authorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    PredefinedFailed:
+      description: Predefined Failed - if group role exit for user. it will be returned
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NoContent:
+      description: No content
+    Forbidden:
+      description: Insufficient permissions to complete the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request was invalid
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFoundError:
+      description: Not Found
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    GeneralError:
+      description: An unknown error occurred
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: Internal Server Error - The server encountered an unexpected condition which prevented it from fulfilling the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  headers:
+    Date:
+      schema:
+        type: string
+        pattern: ^.*$
+  securitySchemes:
+    OpenID:
+      type: openIdConnect
+      openIdConnectUrl: https://auth.example.com/.well-known/openid-configuration
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    piamServiceTokenSecurity:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.example.com/oauth/token
+          scopes:
+            security:duo:identity:mappings-migrate: Grants write and read access to product mappings migration APIs for Duo Security
+            security:etd:identity:mappings-migrate: Grants write and read access to Encrypted Traffic Analytics product mappings migration APIs
+            security:panoptica:identity:mappings-migrate: Grants write and read access to Panoptica product mappings migration APIs
+            security:secure-access:identity:mappings-migrate: Grants write and read access to Secure Access product mappings migration APIs
+            security:secure-endpoint:identity:mappings-migrate: Grants write and read access to Secure Endpoint product mappings migration APIs
+            security:secure-workload:identity:mappings-migrate: Grants write and read access to Secure Workload product mappings migration APIs
+            security:vuln-mgmt:identity:mappings-migrate: Grants write and read access to Vulnerability Management product mappings migration APIs
+            security:attack-surface-mgmt:identity:mappings-migrate: Grants write and read access to Attack Surface Management product mappings migration APIs
+            security:cdo:identity:mappings-migrate: Grants write and read access to CDO product mappings migration APIs
+            security:xdr:identity:mappings-migrate: Grants write and read access to XDR product mappings migration APIs
+            security:cdo:public-api: Grants write and read access to CDO Public Group Directory APIs

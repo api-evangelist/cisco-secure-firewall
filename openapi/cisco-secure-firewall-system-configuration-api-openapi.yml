@@ -1,0 +1,451 @@
+openapi: 3.2.0
+info:
+  title: Cisco Secure Firewall System Configuration API
+  version: 1.13.0
+  contact:
+    name: Cisco Firepower TAC
+    email: ngfw-support@cisco.com
+  description: 'Operations tagged System Configuration across 2 of this provider''s published API definitions: cdfmc-openapi.yaml,
+    cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
+  x-provenance:
+    method: harvested
+    first_party: true
+    harvested: '2026-08-19'
+    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
+      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
+      Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
+      schemas are the provider's, unmodified; only the partition is ours.
+    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
+    operation_coverage: 3/3
+  x-evidence:
+    fetched: '2026-08-19'
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
+    http_status: 200
+servers:
+- url: https://api.us.security.cisco.com/firewall
+  description: US
+- url: https://api.eu.security.cisco.com/firewall
+  description: EU
+- url: https://api.apj.security.cisco.com/firewall
+  description: APJ
+- url: https://api.au.security.cisco.com/firewall
+  description: AUS
+- url: https://api.in.security.cisco.com/firewall
+  description: IN
+- url: https://api.int.security.cisco.com/firewall
+  description: Staging
+- url: https://scale.manage.security.cisco.com/api/rest
+  description: Scale
+- url: https://ci.manage.security.cisco.com/api/rest
+  description: CI
+- url: https://manage.stg.secure.cisco/api/rest
+  description: Stgf9
+tags:
+- name: System Configuration
+paths:
+  /v1/cdfmc/api/fmc_platform/v1/systemconfiguration/changemanagementconfigs:
+    get:
+      deprecated: false
+      description: '**Get change management configuration.**'
+      operationId: getAllChangeManagementSystemConfig
+      parameters:
+      - $ref: '#/components/parameters/offset'
+        name: offset
+      - $ref: '#/components/parameters/limit'
+        name: limit
+      - $ref: '#/components/parameters/expanded'
+        name: expanded
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : GET ​/api​/fmc_config​/v1​/domain​/GlobalDomainUUID​/systemconfiguration​/changemanagementconfigs
+                  ( Success: Test GET ALL SystemConfiguration Change Management to check current status  )'
+                : value:
+                    items:
+                    - changeMgmtWorkflowEnabled: true
+                      id: '1'
+                      noOfApprover: 1
+                      senderEmail: def@cisco.com
+                      ticketApproverEmail: abc@cisco.com,pqr@domain.com
+                      ticketPurgeInterval: 5
+                      type: ChangeManagementSystemConfig
+                    links:
+                      self: https://u32c01p06-vrouter.cisco.com:20509/api​/fmc_config​/v1​/domain​/Globaldomainuuid/changemanagement​/changemanagementconfigs?offset=0&limit=25&expanded=true
+                    paging:
+                      count: 1
+                      limit: 25
+                      offset: 0
+                      pages: 1
+              schema:
+                $ref: '#/components/schemas/ChangeManagementSystemConfigListContainer'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - System Configuration
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+  /v1/cdfmc/api/fmc_platform/v1/systemconfiguration/changemanagementconfigs/{objectId}:
+    get:
+      deprecated: false
+      description: '**Get the change management configuration associated with the specified ID.**'
+      operationId: getChangeManagementSystemConfig
+      parameters:
+      - description: Identification of the configuration. The default value is 1.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : GET /api​/fmc_config​/v1​/domain​/GlobalDomainUUID/systemconfiguration​/changemanagementconfigs/1
+                  ( Success: Test GET SystemConfiguration Change Management to check current status  )'
+                : value:
+                    changeMgmtWorkflowEnabled: true
+                    id: '1'
+                    noOfApprover: 1
+                    senderEmail: def@domain.com
+                    ticketApproverEmail: abc@domain.com,pqr@domain.com
+                    ticketPurgeInterval: 5
+                    type: ChangeManagementSystemConfig
+              schema:
+                $ref: '#/components/schemas/ChangeManagementSystemConfig'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - System Configuration
+    put:
+      deprecated: false
+      description: '**Modify the change management configuration associated with the specified ID. _Check the response section
+        for applicable examples (if any)._**'
+      operationId: updateChangeManagementSystemConfig
+      parameters:
+      - description: Identification of the configuration. The default value is 1.
+        in: path
+        name: objectId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            examples:
+              ? 'Example 1 : PUT ​/api​/fmc_config​/v1​/domain​/GlobalUUID/systemconfiguration​/changemanagementconfigs/1
+                ( Enable PUT Change management )'
+              : value:
+                  changeMgmtWorkflowEnabled: true
+                  id: '1'
+                  noOfApprover: 1
+                  senderEmail: def@domain.com
+                  ticketApproverEmail: abc@domain.com,pqr@domain.com
+                  ticketPurgeInterval: 5
+                  type: ChangeManagementSystemConfig
+            schema:
+              $ref: '#/components/schemas/ChangeManagementSystemConfig'
+              type: object
+        description: Payload representing configuration.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                ? 'Example 1 : PUT ​/api​/fmc_config​/v1​/domain​/GlobalUUID/systemconfiguration​/changemanagementconfigs/1
+                  ( Enable PUT Change management )'
+                : value:
+                    changeMgmtWorkflowEnabled: true
+                    id: '1'
+                    noOfApprover: 1
+                    senderEmail: def@domain.com
+                    ticketApproverEmail: abc@domain.com,pqr@domain.com
+                    ticketPurgeInterval: 5
+                    type: ChangeManagementSystemConfig
+              schema:
+                $ref: '#/components/schemas/ChangeManagementSystemConfig'
+                type: object
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+          description: Error
+      tags:
+      - System Configuration
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
+components:
+  schemas:
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ChangeManagementSystemConfig:
+      description: Contains information about the global system configuration for change management workflow.
+      properties:
+        changeMgmtWorkflowEnabled:
+          description: Indicates whether the change management workflow is enabled
+          type: boolean
+        description:
+          type: string
+        id:
+          description: Unique identifier representing response object, Its always 1 for this
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        noOfApprover:
+          description: Number of approvals required for a ticket to be approved.
+          format: int32
+          type: integer
+        senderEmail:
+          description: This is the email id of the sender that will be used to send the automated emails from the system
+          type: string
+        ticketApproverEmail:
+          description: Contains the recipients which will receive a notice when the change management ticket is submitted.
+            Can be a mail alias or a comma-separated list of email addresses.
+          type: string
+        ticketPurgeInterval:
+          description: Number of days approved tickets persist on the Secure Firewall Management Center.
+          format: int32
+          type: integer
+        type:
+          description: Type associated with resource:ChangeManagementSystemConfig
+          type: string
+        version:
+          type: string
+      required:
+      - changeMgmtWorkflowEnabled
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ChangeManagementSystemConfigListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ChangeManagementSystemConfig'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+  parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+x-refined-from:
+- cdfmc-openapi.yaml
+- cisco-secure-firewall-cdfmc-openapi.yml

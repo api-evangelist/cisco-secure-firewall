@@ -1,0 +1,87 @@
+generated: '2026-08-19'
+method: searched
+source: >-
+  https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/,
+  openapi/cisco-secure-firewall-cdfmc-openapi.yml,
+  openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml,
+  https://www.cisco.com/.well-known/security.txt
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: >-
+    Both published contracts declare openapi 3.0.1 — cdFMC (1,311 operations, 706 paths, 1,510 schemas) and
+    SCC Firewall Manager (160 operations, 119 paths, 199 schemas). Every operation carries a unique
+    operationId; there are zero missing operationIds in either document.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No oauth2 securityScheme in either contract. Authentication is a bearer JWT minted in the Security Cloud
+    Control console as a non-expiring API token; there is no authorization server, no token endpoint that a
+    client drives, and no scope grammar.
+- id: oidc
+  conforms: false
+  evidence: >-
+    /.well-known/openid-configuration returns 404 on api.us.security.cisco.com and an HTML SPA shell on the
+    console host. No OpenID Provider metadata is published.
+- id: jwt-rfc7519
+  conforms: true
+  evidence: >-
+    The Authentication page documents the token as a JWT and enumerates its claims (Roles, parentId, exp,
+    clusterId). A JWKS document is declared in the contract as operationId getJwks at
+    GET /.well-known/jwks.json, though the gateway requires a bearer token to read it (probed 401).
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    Errors are not application/problem+json. The Firewall Manager contract declares a CommonApiError schema
+    with errorCode/errorMsg/details served as application/json; the gateway's own 401, observed live, uses a
+    third shape entirely (timestamp/path/status/error/requestId).
+- id: json-api
+  conforms: false
+  evidence: Plain application/json envelopes; no JSON:API media type or document structure.
+- id: pagination
+  conforms: true
+  evidence: >-
+    The Firewall Manager contract uses offset/limit consistently (30 operations each declare `limit` and
+    `offset`), and the documented list envelope returns count/limit/offset/items. The cdFMC contract inherits
+    FMC-style paging.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header, no idempotency scope, and no retry-safety contract anywhere in either
+    specification. The Getting Started page states only that DELETE operations are idempotent, which is HTTP
+    method semantics rather than an idempotency mechanism. Asynchronous POST operations are tracked through
+    the transaction API instead.
+- id: rate-limit-headers
+  conforms: false
+  evidence: >-
+    Neither contract declares a single response header. TOO_MANY_REQUESTS is a member of the CommonApiError
+    errorCode enum, so the API can signal exhaustion, but no RateLimit-*, X-RateLimit-* or Retry-After header
+    is documented.
+- id: fedramp
+  conforms: true
+  evidence: >-
+    Cisco publishes on its own API documentation: "All Security Cloud Control Firewall Manager APIs are
+    available on FedRAMP at https://manage.secure.cisco/api/rest, with the exception of the MSP APIs."
+    Fetched from https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/ (HTTP 200).
+- id: security-txt-rfc9116
+  conforms: true
+  evidence: >-
+    www.cisco.com/.well-known/security.txt returns 200, PGP-signed, with Canonical, Contact, Encryption,
+    Policy, CSAF and Expires fields. Corporate scope (Cisco PSIRT), not Secure Firewall specific.
+- id: csaf
+  conforms: true
+  evidence: >-
+    security.txt advertises a CSAF provider metadata document at
+    https://www.cisco.com/.well-known/csaf/provider-metadata.json. Our own probe of that URL was refused
+    (403), so the advertisement is verified but the document itself was not read.
+compliance:
+  programs:
+  - name: FedRAMP
+    scope: Security Cloud Control Firewall Manager APIs, excluding the MSP APIs
+    endpoint: https://manage.secure.cisco/api/rest
+    source: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  trust_center: https://trustportal.cisco.com/
+  note: >-
+    Cisco operates a corporate Trust Portal covering certifications for its cloud services. Only the FedRAMP
+    availability statement is published on the Secure Firewall API documentation itself; the other named
+    certifications sit behind the Trust Portal's own document-selection flow and were not enumerated here.

@@ -1,0 +1,1418 @@
+openapi: 3.2.0
+info:
+  title: Mesh Policy Engine Support API
+  version: 6.0.0
+  x-provenance:
+    method: harvested
+    authored_by: Cisco Security Cloud Control
+    harvested_by: API Evangelist
+    harvested_on: '2026-08-19'
+    first_party: true
+    note: Published by Cisco. Retrieved unmodified except for this x-provenance block.
+    provider_published: true
+  x-evidence:
+  - type: source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/specs/mesh-policy.yaml
+  - type: raw
+    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/specs/mesh-policy.yaml
+servers:
+- url: https://api.security.cisco.com/pinacl/api
+security:
+- BearerJWT: []
+tags:
+- name: Support
+paths:
+  /support/all-pinacl-candidate-policies:
+    delete:
+      description: 'Roles allowed: support'
+      operationId: clearGwSetPolicyResults
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '405':
+          description: Method Not Allowed
+        '500':
+          description: Internal Server Error
+      summary: Delete all gateway set policies
+      tags:
+      - Support
+  /support/gateway-set/{gwSetId}/reset-lock-counter:
+    patch:
+      description: 'Roles allowed: support'
+      operationId: resetLockCounterForGatewaySet
+      parameters:
+      - in: path
+        name: gwSetId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: '204'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Reset lock counter for gateway set id to allow policy push. Resetting the locks acquired by different systems internally, can lead to unexpected behaviour.
+      tags:
+      - Support
+  /support/gateway-set/{gwSetId}/sub-request/priority/{priority}:
+    put:
+      description: 'Roles allowed: support'
+      operationId: updatePriorityForSubRequestsByGatewaySetId
+      parameters:
+      - in: path
+        name: gwSetId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: priority
+        required: true
+        schema:
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                format: int32
+                type: integer
+          description: Number of sub-requests whose priorities got updated
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Update the priority value of sub-requests for gateway set
+      tags:
+      - Support
+  /support/pinacl-candidate-policy/{gwSetId}:
+    get:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: retrieveLatestPolicyByGwSetId
+      parameters:
+      - in: path
+        name: gwSetId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GwSetPolicyResponse'
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '405':
+          description: Method Not Allowed
+        '500':
+          description: Internal Server Error
+      summary: Retrieve latest policy by gateway set id
+      tags:
+      - Support
+  /support/push-gateway-set/{id}:
+    post:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: pushGatewaySet
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PushGatewaySetResponse'
+          description: Accepted
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Push latest policy for gateway set
+      tags:
+      - Support
+  /support/requests:
+    get:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: getRequests
+      parameters:
+      - in: query
+        name: reqSystem
+        schema:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      - in: query
+        name: reqStatus
+        schema:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+      - in: query
+        name: user
+        schema:
+          type: string
+      - description: ISO-8601 formatted timestamp
+        examples:
+          first:
+            description: time component in minute resolution
+            value: 2023-06-07T07:54
+          second:
+            description: time component in second resolution
+            value: '2023-06-07T07:54:37'
+          third:
+            description: time component in millisecond resolution
+            value: '2023-06-07T07:54:37.124Z'
+        in: query
+        name: startTime
+        schema:
+          format: date-time
+          type: string
+      - description: ISO-8601 formatted timestamp
+        examples:
+          first:
+            description: time component in minute resolution
+            value: 2023-06-07T07:54
+          second:
+            description: time component in second resolution
+            value: '2023-06-07T07:54:37'
+          third:
+            description: time component in millisecond resolution
+            value: '2023-06-07T07:54:37.124Z'
+        in: query
+        name: endTime
+        schema:
+          format: date-time
+          type: string
+      - in: query
+        name: errorCode
+        schema:
+          enum:
+          - INPUT_VALIDATION_ERROR
+          - INPUT_VALIDATION_ERROR_OBJECT_DOES_NOT_EXIST
+          - INPUT_VALIDATION_ERROR_OBJECT_ALREADY_EXISTS
+          - INPUT_VALIDATION_ERROR_INVALID_REVISION
+          - INPUT_VALIDATION_ERROR_EP_WITH_NO_ZONE
+          - INPUT_VALIDATION_ERROR_PARSING_FAILED
+          type: string
+      - description: ISO-8601 formatted timestamp
+        examples:
+          first:
+            description: time component in minute resolution
+            value: 2023-06-07T07:54
+          second:
+            description: time component in second resolution
+            value: '2023-06-07T07:54:37'
+          third:
+            description: time component in millisecond resolution
+            value: '2023-06-07T07:54:37.124Z'
+        in: query
+        name: cursor
+        schema:
+          format: date-time
+          type: string
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestsResponsePage'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get Requests
+      tags:
+      - Support
+  /support/requests/{requestId}:
+    get:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: getRequest2
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullRequestDetails'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get request details
+      tags:
+      - Support
+  /support/requests/{requestId}/gateway-sets/{gatewaySetId}/status/complete:
+    patch:
+      description: 'Roles allowed: support'
+      operationId: completeSubRequestStatus
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - in: path
+        name: gatewaySetId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Complete sub-request status
+      tags:
+      - Support
+  /support/requests/{requestId}/parent:
+    get:
+      description: 'Roles allowed: support'
+      operationId: getParentRequest
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentChildRequestPair'
+          description: Parent and child ids and requesting system
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get parent request for child request
+      tags:
+      - Support
+  /support/requests/{requestId}/status:
+    get:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: getRequestStatus2
+      parameters:
+      - in: path
+        name: requestId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestStatusResponse'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get request status
+      tags:
+      - Support
+  /support/reviveSubRequestsByGatewaySetId/{gwSetId}:
+    put:
+      description: 'Roles allowed: support'
+      operationId: reviveSubRequestsByGatewaySetId
+      parameters:
+      - in: path
+        name: gwSetId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Ok
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Revive the sub-request count for gateway set id
+      tags:
+      - Support
+  /support/sub-requests/queue:
+    get:
+      description: 'Roles allowed: support,topology-rw'
+      operationId: getSubRequestsQueue
+      parameters:
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      - in: query
+        name: status
+        schema:
+          enum:
+          - READY
+          - IN_PROGRESS
+          - HELD
+          - SKIPPED
+          - SUCCEEDED
+          - ERRORED
+          type: string
+      - in: query
+        name: gwSetId
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubRequestQueueResponse'
+          description: 'Sub-requests queue grouped by gateway-set and sorted by priority value and queued time.
+
+            Includes only sub-requests in ''READY''/''IN_PROGRESS'' when status param is not provided.
+
+            Includes cursor which should be provided in the next call, if the response is multiple pages.'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get sub-requests queue - sorted by priority value and queued time
+      tags:
+      - Support
+  /topology/support/decommission-queue:
+    get:
+      description: 'Roles allowed: support'
+      operationId: getDecommissionQueueEntries
+      parameters:
+      - in: query
+        name: count
+        required: true
+        schema:
+          format: int32
+          maximum: 256
+          minimum: 1
+          type: integer
+      - in: query
+        name: cursor
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecomGwQueueEntry'
+          description: Ok
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Get all gwset entries in decommission queue
+      tags:
+      - Support
+  /topology/support/decommission-queue/{gwSetId}:
+    delete:
+      description: 'Roles allowed: support'
+      operationId: deleteEntryFromDecomQueue
+      parameters:
+      - in: path
+        name: gwSetId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content:
+            application/json: {}
+          description: No Content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      summary: Delete gwset entry from decommission queue
+      tags:
+      - Support
+components:
+  schemas:
+    ProtocolWithPort:
+      properties:
+        dstPortEnd:
+          format: int32
+          type: integer
+        dstPortStart:
+          format: int32
+          type: integer
+        dstPostStart:
+          format: int32
+          type: integer
+          writeOnly: true
+        protocol:
+          enum:
+          - '{"number":1,"name":"icmp"}'
+          - '{"number":2,"name":"igmp"}'
+          - '{"number":89,"name":"ospfigp"}'
+          - '{"number":112,"name":"vrrp"}'
+          - '{"number":57,"name":"skip"}'
+          - '{"number":103,"name":"pim"}'
+          - '{"number":47,"name":"gre"}'
+          - '{"number":50,"name":"esp"}'
+          - '{"number":51,"name":"ah"}'
+          - '{"number":6,"name":"tcp"}'
+          - '{"number":17,"name":"udp"}'
+          type: string
+        timeout:
+          format: int32
+          type: integer
+      type: object
+    NatRule:
+      properties:
+        destinationNat:
+          $ref: '#/components/schemas/DestinationNat'
+        serviceNat:
+          $ref: '#/components/schemas/ServiceNat'
+        sourceNat:
+          $ref: '#/components/schemas/SourceNat'
+      type: object
+    SdiRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        externalReqPayload:
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        manualStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqType:
+          enum:
+          - PROVISION_FLOWS
+          type: string
+        sdiReqId:
+          type: string
+      type: object
+    SubRequestInQueue:
+      properties:
+        errors:
+          type: string
+        executionCount:
+          format: int32
+          type: integer
+        gatewaySetInfo:
+          enum:
+          - ACTIVE
+          - HELD
+          - SKIPPED
+          - UNMANAGED
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        position:
+          format: int32
+          type: integer
+        priorityValue:
+          format: int32
+          type: integer
+        queuedTime:
+          format: date-time
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+        retryThreshold:
+          format: int32
+          type: integer
+        status:
+          enum:
+          - READY
+          - IN_PROGRESS
+          - HELD
+          - SKIPPED
+          - SUCCEEDED
+          - ERRORED
+          type: string
+      type: object
+    Rule:
+      properties:
+        action:
+          enum:
+          - PERMIT
+          - DENY
+          type: string
+        destinations:
+          items:
+            $ref: '#/components/schemas/IpV4Address'
+          type: array
+        ruleOptions:
+          $ref: '#/components/schemas/RuleOptions'
+        services:
+          $ref: '#/components/schemas/Services'
+        sources:
+          items:
+            $ref: '#/components/schemas/IpV4Address'
+          type: array
+      type: object
+    ParentChildRequestPair:
+      properties:
+        child:
+          $ref: '#/components/schemas/ReqIdAndSystem'
+        parent:
+          $ref: '#/components/schemas/ReqIdAndSystem'
+      type: object
+    OtherInternetProtocol:
+      properties:
+        protocol:
+          enum:
+          - '{"number":1,"name":"icmp"}'
+          - '{"number":2,"name":"igmp"}'
+          - '{"number":89,"name":"ospfigp"}'
+          - '{"number":112,"name":"vrrp"}'
+          - '{"number":57,"name":"skip"}'
+          - '{"number":103,"name":"pim"}'
+          - '{"number":47,"name":"gre"}'
+          - '{"number":50,"name":"esp"}'
+          - '{"number":51,"name":"ah"}'
+          - '{"number":6,"name":"tcp"}'
+          - '{"number":17,"name":"udp"}'
+          type: string
+        timeout:
+          format: int32
+          type: integer
+      type: object
+    TopologyChangeRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        externalReqPayload:
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        reqId:
+          format: uuid
+          type: string
+      type: object
+    PushGatewayRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        objectIdRef:
+          type: string
+        reqId:
+          format: uuid
+          type: string
+      type: object
+    PcmRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        externalReqPayload:
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        manualStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        objectIdRef:
+          type: string
+        reqAction:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqType:
+          enum:
+          - POLICY
+          - APP_GROUP
+          - ENDPOINT_GROUP
+          type: string
+        revision:
+          format: int32
+          type: integer
+      type: object
+    RuleOptions:
+      properties:
+        logOnClose:
+          type: boolean
+        logOnInit:
+          type: boolean
+      type: object
+    MpmGovernancePolicyDynamicGroupRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        dynamicGroupId:
+          type: string
+        id:
+          format: uuid
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+      type: object
+    GwSetPolicyResponse:
+      properties:
+        credentialName:
+          type: string
+        gwSetId:
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        policy:
+          $ref: '#/components/schemas/Policy'
+      type: object
+    ZoneTopologyRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        externalReqPayload:
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        reqAction:
+          enum:
+          - ADD
+          - DELETE
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqType:
+          enum:
+          - ADDRESS
+          - TAG
+          type: string
+        zoneId:
+          type: string
+      type: object
+    SubRequestQueueResponse:
+      properties:
+        cursor:
+          type: string
+        queue:
+          items:
+            $ref: '#/components/schemas/SubRequestsInQueueByGatewaySet'
+          type: array
+      type: object
+    FullRequestDetails:
+      properties:
+        details:
+          $ref: '#/components/schemas/RequestingSystemRequestDetails'
+        errCode:
+          enum:
+          - INPUT_VALIDATION_ERROR
+          - INPUT_VALIDATION_ERROR_OBJECT_DOES_NOT_EXIST
+          - INPUT_VALIDATION_ERROR_OBJECT_ALREADY_EXISTS
+          - INPUT_VALIDATION_ERROR_INVALID_REVISION
+          - INPUT_VALIDATION_ERROR_EP_WITH_NO_ZONE
+          - INPUT_VALIDATION_ERROR_PARSING_FAILED
+          type: string
+        errMsg:
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        reqSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+        username:
+          type: string
+      type: object
+    RequestStatusResponse:
+      properties:
+        details:
+          items:
+            $ref: '#/components/schemas/GatewaySetDetails'
+          type: array
+        errCode:
+          enum:
+          - INPUT_VALIDATION_ERROR
+          - INPUT_VALIDATION_ERROR_OBJECT_DOES_NOT_EXIST
+          - INPUT_VALIDATION_ERROR_OBJECT_ALREADY_EXISTS
+          - INPUT_VALIDATION_ERROR_INVALID_REVISION
+          - INPUT_VALIDATION_ERROR_EP_WITH_NO_ZONE
+          - INPUT_VALIDATION_ERROR_PARSING_FAILED
+          type: string
+        errMsg:
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        manualStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        reqSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+        sdiReqId:
+          type: string
+      type: object
+    ServiceNat:
+      properties:
+        any:
+          type: boolean
+        original:
+          items:
+            $ref: '#/components/schemas/ProtocolWithPort'
+          type: array
+        translation:
+          $ref: '#/components/schemas/ProtocolWithPort'
+        type:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+      type: object
+    SourceNat:
+      properties:
+        original:
+          items:
+            $ref: '#/components/schemas/IpV4Address'
+          type: array
+        translation:
+          $ref: '#/components/schemas/IpV4Address'
+        type:
+          enum:
+          - MATCH
+          - STATIC
+          - HIDE
+          type: string
+      type: object
+    DestinationNat:
+      properties:
+        original:
+          items:
+            $ref: '#/components/schemas/IpV4Address'
+          type: array
+        translation:
+          $ref: '#/components/schemas/IpV4Address'
+        type:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+      type: object
+    RequestingSystemRequestDetails:
+      properties:
+        hasRequestDetail:
+          type: boolean
+        mpmGovernanceDynamicGroupRequest:
+          $ref: '#/components/schemas/MpmGovernancePolicyDynamicGroupRequest'
+        mpmRequest:
+          items:
+            $ref: '#/components/schemas/MpmRequest'
+          type: array
+        pcmRequest:
+          $ref: '#/components/schemas/PcmRequest'
+        pushGatewayRequest:
+          $ref: '#/components/schemas/PushGatewayRequest'
+        sdiRequest:
+          $ref: '#/components/schemas/SdiRequest'
+        topologyChangeRequest:
+          $ref: '#/components/schemas/TopologyChangeRequest'
+        topologyRequest:
+          $ref: '#/components/schemas/ZoneTopologyRequest'
+      type: object
+    RequestQueryApiResponse:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        errCode:
+          enum:
+          - INPUT_VALIDATION_ERROR
+          - INPUT_VALIDATION_ERROR_OBJECT_DOES_NOT_EXIST
+          - INPUT_VALIDATION_ERROR_OBJECT_ALREADY_EXISTS
+          - INPUT_VALIDATION_ERROR_INVALID_REVISION
+          - INPUT_VALIDATION_ERROR_EP_WITH_NO_ZONE
+          - INPUT_VALIDATION_ERROR_PARSING_FAILED
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        reqSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+        username:
+          type: string
+      type: object
+    MpmRequest:
+      properties:
+        createdBy:
+          type: string
+        createdTime:
+          format: date-time
+          type: string
+        gatewaySetId:
+          type: string
+        id:
+          format: uuid
+          type: string
+        lockAcquired:
+          type: boolean
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        managerId:
+          format: uuid
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+        revisionId:
+          format: int32
+          type: integer
+      type: object
+    Icmp:
+      properties:
+        code:
+          format: int32
+          type: integer
+        protocol:
+          enum:
+          - '{"number":1,"name":"icmp"}'
+          - '{"number":2,"name":"igmp"}'
+          - '{"number":89,"name":"ospfigp"}'
+          - '{"number":112,"name":"vrrp"}'
+          - '{"number":57,"name":"skip"}'
+          - '{"number":103,"name":"pim"}'
+          - '{"number":47,"name":"gre"}'
+          - '{"number":50,"name":"esp"}'
+          - '{"number":51,"name":"ah"}'
+          - '{"number":6,"name":"tcp"}'
+          - '{"number":17,"name":"udp"}'
+          type: string
+        timeout:
+          format: int32
+          type: integer
+        type:
+          format: int32
+          type: integer
+      type: object
+    PushGatewaySetResponse:
+      properties:
+        gatewaySetId:
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    RequestsResponsePage:
+      properties:
+        cursor:
+          example: '2023-06-01T10:20:32.234Z'
+          title: Timestamp cursor for the last record on page
+          type: string
+        requests:
+          items:
+            $ref: '#/components/schemas/RequestQueryApiResponse'
+          type: array
+      type: object
+    Policy:
+      properties:
+        natRules:
+          items:
+            $ref: '#/components/schemas/NatRule'
+          type: array
+        rules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+        version:
+          format: int64
+          type: integer
+      type: object
+    GatewaySetDetails:
+      properties:
+        errMsg:
+          type: string
+        gwSetId:
+          type: string
+        subRequestStatus:
+          type: string
+      type: object
+    ApplicationProtocolImpl:
+      properties:
+        applicationProtocolType:
+          enum:
+          - '{"applicationProtocolName":"ftp","validProtocols":[{"number":6,"name":"tcp"}]}'
+          - '{"applicationProtocolName":"sqlnetv2","validProtocols":[{"number":6,"name":"tcp"}]}'
+          - '{"applicationProtocolName":"tftp","validProtocols":[{"number":17,"name":"udp"}]}'
+          - '{"applicationProtocolName":"sip","validProtocols":[{"number":6,"name":"tcp"},{"number":17,"name":"udp"}]}'
+          - '{"applicationProtocolName":"rtsp","validProtocols":[{"number":6,"name":"tcp"}]}'
+          - '{"applicationProtocolName":"sunrpc","validProtocols":[{"number":6,"name":"tcp"},{"number":17,"name":"udp"}]}'
+          - '{"applicationProtocolName":"msrpc","validProtocols":[{"number":6,"name":"tcp"},{"number":17,"name":"udp"}]}'
+          - '{"applicationProtocolName":"dns","validProtocols":[{"number":6,"name":"tcp"},{"number":17,"name":"udp"}]}'
+          type: string
+        protocolWithPort:
+          $ref: '#/components/schemas/ProtocolWithPort'
+      type: object
+    DecomGwQueueEntry:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        gwSetId:
+          type: string
+        updatedTime:
+          format: date-time
+          type: string
+      type: object
+    LongRange:
+      properties:
+        endLong:
+          format: int64
+          type: integer
+        singularAddress:
+          type: boolean
+        startLong:
+          format: int64
+          type: integer
+      type: object
+    IpV4Address:
+      properties:
+        address:
+          type: string
+        addressSpace:
+          format: int64
+          type: integer
+        addressType:
+          enum:
+          - PREFIX
+          - RANGE
+          type: string
+        anyAddress:
+          type: boolean
+        binaryString:
+          type: string
+        longRange:
+          $ref: '#/components/schemas/LongRange'
+        mask:
+          format: int32
+          type: integer
+        type:
+          enum:
+          - PREFIX
+          - RANGE
+          type: string
+      type: object
+    ReqIdAndSystem:
+      properties:
+        reqId:
+          format: uuid
+          type: string
+        reqSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    SubRequestsInQueueByGatewaySet:
+      properties:
+        gatewaySetId:
+          type: string
+        subRequestsInQueue:
+          items:
+            $ref: '#/components/schemas/SubRequestInQueue'
+          type: array
+      type: object
+    Services:
+      properties:
+        applicationProtocols:
+          items:
+            $ref: '#/components/schemas/ApplicationProtocolImpl'
+          type: array
+        icmps:
+          items:
+            $ref: '#/components/schemas/Icmp'
+          type: array
+        isAnyService:
+          type: boolean
+        otherInternetProtocols:
+          items:
+            $ref: '#/components/schemas/OtherInternetProtocol'
+          type: array
+        protocolWithPorts:
+          items:
+            $ref: '#/components/schemas/ProtocolWithPort'
+          type: array
+        servicesAsCanonicalStrings:
+          items:
+            type: string
+          type: array
+      type: object
+  securitySchemes:
+    BearerJWT:
+      bearerFormat: jwt
+      scheme: bearer
+      type: http

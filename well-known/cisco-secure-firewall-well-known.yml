@@ -1,0 +1,70 @@
+generated: '2026-08-19'
+method: probed
+source: live HTTP probes, 2026-08-19
+note: >-
+  The API hosts serve no /.well-known documents at all — api.us.security.cisco.com returns a real JSON 404
+  envelope (not an SPA shell) for every path probed, which is falsifiable evidence of absence rather than a
+  soft 404. The tenant console host us.manage.security.cisco.com answers 200 with an HTML single-page-app
+  shell for /.well-known/openid-configuration; that is NOT a document and is recorded as a miss. The only
+  real hit anywhere in the estate is the corporate PGP-signed security.txt on www.cisco.com, which is
+  Cisco-wide rather than Secure Firewall specific.
+probes:
+- host: api.us.security.cisco.com
+  paths:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /firewall/.well-known/jwks.json
+    status: 401
+    note: >-
+      Declared in the published OpenAPI as operationId getJwks, but the gateway requires a bearer token even
+      for the JWKS document, so it is not anonymously readable.
+- host: developer.cisco.com
+  paths:
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: us.manage.security.cisco.com
+  paths:
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    document: false
+    note: SPA catch-all returning the console HTML shell; not a document. Treated as a miss.
+- host: www.cisco.com
+  paths:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    document: true
+    file: well-known/cisco-secure-firewall-security.txt
+  - path: /.well-known/csaf/provider-metadata.json
+    status: 403
+    note: Referenced by security.txt as Cisco's CSAF provider metadata, but our probe was refused (403).
+security_txt:
+  served_by: www.cisco.com
+  scope: corporate (Cisco-wide PSIRT), not Secure Firewall specific
+  signed: true
+  contact: mailto:psirt@cisco.com
+  policy: https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html
+  encryption: https://cscrdr.cloudapps.cisco.com/cscrdr/security/center/files/Cisco_PSIRT_PGP_Public_Key.asc
+  csaf: https://www.cisco.com/.well-known/csaf/provider-metadata.json
+  expires: '2027-01-01T00:00:00.000Z'

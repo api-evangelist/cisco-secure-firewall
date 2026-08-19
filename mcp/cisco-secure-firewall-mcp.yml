@@ -1,0 +1,73 @@
+generated: '2026-08-19'
+method: searched
+source: >-
+  https://github.com/CiscoDevNet/CiscoFMC-MCP-server-community,
+  https://github.com/CiscoDevNet/cisco-scc-mcp-community
+status: published
+note: >-
+  Cisco publishes no HOSTED/remote MCP endpoint for Secure Firewall. Two MCP servers exist, both in Cisco's
+  own CiscoDevNet GitHub organization and both explicitly labelled "community": one for the on-premises
+  Secure Firewall Management Center, one for Security Cloud Control (which includes the Firewall Manager and
+  cdFMC surface). Both are local-stdio: an operator installs and runs them with their own credentials. No
+  agent can reach Cisco Secure Firewall over MCP without that install step.
+deployment:
+  mode: local-stdio
+  endpoint: null
+  install: 'pip install -r requirements.txt && MCP_TRANSPORT=stdio python -m sfw_mcp_fmc.server'
+  package: https://github.com/CiscoDevNet/CiscoFMC-MCP-server-community
+  auth: api-key
+  verified: searched
+  note: >-
+    The FMC connector also supports a self-hosted `http` transport serving /mcp on MCP_HOST:MCP_PORT (Docker
+    compose), but that is a customer-operated deployment, not a Cisco-operated endpoint, so `mode` stays
+    local-stdio. Credentials are FMC username/password (or, for the SCC server, an SCC API token).
+servers:
+- name: Cisco Secure Firewall FMC MCP Connector
+  repo: https://github.com/CiscoDevNet/CiscoFMC-MCP-server-community
+  vendor_org: CiscoDevNet
+  official: false
+  designation: community
+  license: MIT
+  language: python
+  last_push: '2026-06-23'
+  target: on-premises Secure Firewall Management Center (FMC) REST API
+  transport:
+  - stdio
+  - http (self-hosted, /mcp)
+  auth: FMC username + password per profile (FMC_BASE_URL / FMC_USERNAME / FMC_PASSWORD)
+  tools:
+  - name: list_fmc_profiles
+    description: Discover configured FMC instances.
+  - name: find_rules_by_ip_or_fqdn
+    description: Search a specific access policy for rules matching an IP or FQDN.
+  - name: find_rules_for_target
+    description: Resolve an FTD device/HA pair/cluster to its assigned policies and search them.
+  - name: search_access_rules
+    description: >-
+      FMC-wide access-rule search with indicator + policy filters, including identity indicators
+      (SGT, realm user/group).
+- name: Community Cisco Security Cloud Control MCP server
+  repo: https://github.com/CiscoDevNet/cisco-scc-mcp-community
+  vendor_org: CiscoDevNet
+  official: false
+  designation: community
+  license: Apache-2.0
+  language: python
+  version: 0.1.0.dev0
+  last_push: '2026-07-08'
+  target: >-
+    Security Cloud Control federation — SCC Platform, Mesh Policy Engine, Firewall Manager (fwm_*) and
+    AI Defense Management
+  transport:
+  - stdio
+  auth: >-
+    Firewall Manager uses a static JWT API token (SCC_FWM_API_TOKEN); SCC Platform and Mesh Policy Engine
+    use a refresh token exchanged for an 18-hour access token; AI Defense uses a tenant API key header.
+  posture: read-only by construction (mutating tools are not registered unless SCC_ENABLE_WRITES=true)
+  tool_count: 85
+  firewall_tool_count: 30
+  install: pip install -e '.[dev]' && cisco-scc-mcp
+  note: >-
+    Self-reported live-smoke results are published in the repo: of the 30 Firewall Manager tools, 15 pass,
+    1 is denied on auth, 7 are path-broken and 6 were skipped on a dependency. Recorded verbatim as the
+    maintainer's own accuracy disclosure, not as an API Evangelist assessment.
