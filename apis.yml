@@ -1,0 +1,52 @@
+aid: cisco-secure-firewall
+name: Cisco Secure Firewall
+description: Cisco Secure Firewall, the product line built on the Sourcefire technology Cisco acquired in 2013,
+  covers the Firepower/Secure Firewall appliances, the Secure Firewall Management Center (FMC), the device manager
+  (FDM), and cloud-delivered FMC under Cisco Security Cloud Control. Management is automated through the FMC REST
+  API, an Ansible collection, and a community MCP server. The contract is served by each customer's own management
+  center, so there is no central anonymously fetchable specification.
+url: https://raw.githubusercontent.com/api-evangelist/cisco-secure-firewall/refs/heads/main/apis.yml
+type: Index
+access: 3rd-Party
+position: Consumer
+x-type: company
+x-source: cisco-family-buildout:2026-08-19
+x-parent: cisco
+x-relationship: acquisition
+x-contract-status: on-prem
+x-contract-note: The contract is served by each customer's own on-premises controller, so there is no central anonymously
+  fetchable specification. API Evangelist has not authored a substitute.
+specificationVersion: '0.23'
+created: '2026-08-19'
+modified: '2026-08-19'
+tags:
+- Security
+- Firewall
+- Network Security
+- Threat Defense
+- Policy
+- Enterprise
+apis: []
+common:
+- type: Portal
+  url: https://developer.cisco.com/docs/security-cloud-control/
+- type: Documentation
+  url: https://developer.cisco.com/docs/security-cloud-control/
+- type: APIReference
+  url: https://developer.cisco.com/docs/security-cloud-control/
+- type: ParentCompany
+  url: https://apis.io/providers/cisco/
+  name: Cisco
+  x-acquired: 2013
+- type: Ansible
+  url: https://github.com/CiscoDevNet/FMCAnsible
+- type: MCPServer
+  url: https://github.com/CiscoDevNet/CiscoFMC-MCP-server-community
+- type: Portal
+  url: https://developer.cisco.com/
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+- FN: APIs.json
+  email: info@apis.io
+x-acquired: 2013
