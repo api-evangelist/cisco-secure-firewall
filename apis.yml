@@ -1,21 +1,30 @@
 aid: cisco-secure-firewall
 name: Cisco Secure Firewall
-description: Cisco Secure Firewall, the product line built on the Sourcefire technology Cisco acquired in 2013,
-  covers the Firepower/Secure Firewall appliances, the Secure Firewall Management Center (FMC), the device manager
-  (FDM), and cloud-delivered FMC under Cisco Security Cloud Control. Management is automated through the FMC REST
-  API, an Ansible collection, and a community MCP server. The contract is served by each customer's own management
-  center, so there is no central anonymously fetchable specification.
+description: 'Cisco Secure Firewall is the product line built on the Sourcefire technology Cisco acquired in 2013
+  — the Firepower/Secure Firewall appliances and Threat Defense (FTD) software, the Secure Firewall Management Center
+  (FMC), the on-box device manager (FDM), and the cloud-delivered Firewall Management Center (cdFMC) operated under
+  Cisco Security Cloud Control. Programmatic management runs through two published REST contracts: the cdFMC API
+  (1,311 operations across 706 paths, covering devices, policy, objects, deployment, health, licensing and analysis)
+  and the Security Cloud Control Firewall Manager API (160 operations covering inventory, connectors, transactions,
+  changelogs, search and remote-access VPN monitoring). Both are bearer-JWT authenticated, region-scoped across
+  US/EU/APJ/AU/IN, and published first-party by Cisco in the CiscoDevNet scc-public-api-docs repository that backs
+  developer.cisco.com. Automation is further supported by a Python SDK, an Ansible collection, a Terraform provider,
+  Postman collections and community MCP servers.'
 url: https://raw.githubusercontent.com/api-evangelist/cisco-secure-firewall/refs/heads/main/apis.yml
 type: Index
 access: 3rd-Party
 position: Consumer
+image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 x-type: company
 x-source: cisco-family-buildout:2026-08-19
 x-parent: cisco
 x-relationship: acquisition
-x-contract-status: on-prem
-x-contract-note: The contract is served by each customer's own on-premises controller, so there is no central anonymously
-  fetchable specification. API Evangelist has not authored a substitute.
+x-contract-status: published
+x-contract-note: 'Corrected 2026-08-19. The on-premises Secure Firewall Management Center still serves its OpenAPI
+  from each customer''s own appliance at /api/api-explorer, but Cisco ALSO publishes the same contract surface publicly:
+  the cloud-delivered FMC (cdFMC) and Security Cloud Control Firewall Manager OpenAPI documents are committed first-party
+  to https://github.com/CiscoDevNet/scc-public-api-docs and rendered at developer.cisco.com. The earlier "no central
+  anonymously fetchable specification" note was wrong and has been retracted.'
 specificationVersion: '0.23'
 created: '2026-08-19'
 modified: '2026-08-19'
@@ -26,24 +35,164 @@ tags:
 - Threat Defense
 - Policy
 - Enterprise
-apis: []
+- Firewall Management
+- Cloud Security
+- Networking
+- Automation
+apis:
+- aid: cisco-secure-firewall:cdfmc
+  name: Cisco Cloud-delivered Firewall Management Center (cdFMC) API
+  description: The REST API of the Cloud-delivered Firewall Management Center — the cloud-operated form of the Secure
+    Firewall Management Center. 1,311 operations across 706 paths and 1,510 schemas, tagged into 26 product areas
+    including Devices, Policy, Object, Deployment, Device Clusters, Device HA Pairs, Health, Intelligence, License,
+    Network Map, Search, System Configuration, Templates, Troubleshoot and Updates. Bearer JWT authentication using
+    a Security Cloud Control API token.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Firewall Management
+  - Policy
+  - Threat Defense
+  - Devices
+  - Security
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-cdfmc-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+- aid: cisco-secure-firewall:scc-firewall-manager
+  name: Cisco Security Cloud Control Firewall Manager API
+  description: The Security Cloud Control Firewall Manager REST API — 160 operations across 119 paths for inventory
+    management (FTD, ASA, device managers, on-prem FMC), connector management, object management, user and tenant
+    management, remote-access VPN and MFA monitoring, changelogs, change requests, transaction tracking for asynchronous
+    operations, fleet-wide command execution and Lucene-syntax search across the tenant. Bearer JWT authentication
+    using a non-expiring Security Cloud Control API token.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Firewall Management
+  - Inventory
+  - Deployment
+  - VPN
+  - Security
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
 common:
-- type: Portal
-  url: https://developer.cisco.com/docs/security-cloud-control/
-- type: Documentation
-  url: https://developer.cisco.com/docs/security-cloud-control/
-- type: APIReference
-  url: https://developer.cisco.com/docs/security-cloud-control/
+- type: Authentication
+  url: authentication/cisco-secure-firewall-authentication.yml
+- type: VulnerabilityDisclosure
+  url: security/cisco-secure-firewall-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/cisco-secure-firewall-domain-security.yml
 - type: ParentCompany
   url: https://apis.io/providers/cisco/
   name: Cisco
+  x-relationship: acquisition
+  x-generated-by: cisco-family:2026-08-19
   x-acquired: 2013
-- type: Ansible
-  url: https://github.com/CiscoDevNet/FMCAnsible
-- type: MCPServer
-  url: https://github.com/CiscoDevNet/CiscoFMC-MCP-server-community
+- type: DeveloperPortal
+  url: https://developer.cisco.com/secure-firewall/
 - type: Portal
   url: https://developer.cisco.com/
+- type: Documentation
+  url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+- type: APIReference
+  url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+- type: GettingStarted
+  url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+- type: Blog
+  url: https://blogs.cisco.com/tag/cisco-secure-firewall
+- type: GitHubOrganization
+  url: https://github.com/CiscoDevNet
+- type: Support
+  url: https://mycase.cloudapps.cisco.com/
+- type: SignUp
+  url: https://us.manage.security.cisco.com/
+- type: TermsOfService
+  url: https://www.cisco.com/c/en/us/about/legal/cloud-and-software/end_user_license_agreement.html
+- type: PrivacyPolicy
+  url: https://www.cisco.com/c/en/us/about/legal/privacy-full.html
+- type: Postman
+  url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- type: Ansible
+  url: https://github.com/CiscoDevNet/FMCAnsible
+- type: Terraform
+  url: https://registry.terraform.io/providers/CiscoDevNet/fmc/latest
+- type: Packages
+  url: packages/cisco-secure-firewall-packages.yml
+- type: SDKs
+  url: packages/cisco-secure-firewall-packages.yml
+- type: Python SDK
+  url: https://pypi.org/project/scc-firewall-manager-sdk/
+- type: WellKnown
+  url: well-known/cisco-secure-firewall-well-known.yml
+- type: SecurityTxt
+  url: well-known/cisco-secure-firewall-security.txt
+- type: MCPServer
+  url: mcp/cisco-secure-firewall-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/cisco-secure-firewall-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/cisco-secure-firewall-llms.txt
+- type: Overlay
+  url: overlays/cisco-secure-firewall-cdfmc-overlay.yaml
+- type: Overlay
+  url: overlays/cisco-secure-firewall-scc-firewall-manager-overlay.yaml
+- type: Conformance
+  url: conformance/cisco-secure-firewall-conformance.yml
+- type: Compliance
+  url: conformance/cisco-secure-firewall-conformance.yml
+- type: ErrorCatalog
+  url: errors/cisco-secure-firewall-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/cisco-secure-firewall-lifecycle.yml
+- type: StatusPage
+  url: https://status.security.cisco.com/
+- type: Deprecation
+  url: lifecycle/cisco-secure-firewall-lifecycle.yml
+- type: Security
+  url: security/cisco-secure-firewall-vulnerability-disclosure.yml
+- type: TrustCenter
+  url: security/cisco-secure-firewall-trust-center.yml
+- type: Sandbox
+  url: sandbox/cisco-secure-firewall-sandbox.yml
+- type: Conventions
+  url: conventions/cisco-secure-firewall-conventions.yml
+- type: ChangeLog
+  url: changelog/cisco-secure-firewall-changelog.yml
+- type: DataModel
+  url: data-model/cisco-secure-firewall-data-model.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: AgenticAccess
+  url: agentic-access/cisco-secure-firewall-agentic-access.yml
+- type: Plans
+  url: plans/cisco-secure-firewall-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/cisco-secure-firewall-rate-limits.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
