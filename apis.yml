@@ -19,12 +19,10 @@ x-type: company
 x-source: cisco-family-buildout:2026-08-19
 x-parent: cisco
 x-relationship: acquisition
-x-contract-status: published
-x-contract-note: 'Corrected 2026-08-19. The on-premises Secure Firewall Management Center still serves its OpenAPI
-  from each customer''s own appliance at /api/api-explorer, but Cisco ALSO publishes the same contract surface publicly:
-  the cloud-delivered FMC (cdFMC) and Security Cloud Control Firewall Manager OpenAPI documents are committed first-party
-  to https://github.com/CiscoDevNet/scc-public-api-docs and rendered at developer.cisco.com. The earlier "no central
-  anonymously fetchable specification" note was wrong and has been retracted.'
+x-contract-status: real
+x-contract-note: github.com/CiscoDevNet/scc-public-api-docs publishes a 9.5MB cloud-delivered Firewall Management
+  Center OpenAPI (1,311 operations) plus the Security Cloud Control Firewall Manager API and twelve further SCC
+  specifications — 1,833 operations in total.
 specificationVersion: '0.23'
 created: '2026-08-19'
 modified: '2026-08-19'
@@ -40,24 +38,16 @@ tags:
 - Networking
 - Automation
 apis:
-- aid: cisco-secure-firewall:cdfmc
-  name: Cisco Cloud-delivered Firewall Management Center (cdFMC) API
-  description: The REST API of the Cloud-delivered Firewall Management Center — the cloud-operated form of the Secure
-    Firewall Management Center. 1,311 operations across 706 paths and 1,510 schemas, tagged into 26 product areas
-    including Devices, Policy, Object, Deployment, Device Clusters, Device HA Pairs, Health, Intelligence, License,
-    Network Map, Search, System Configuration, Templates, Troubleshoot and Updates. Bearer JWT authentication using
-    a Security Cloud Control API token.
+- aid: cisco-secure-firewall:cisco-secure-firewall-access-groups-api
+  name: Cisco Secure Firewall Access Groups API
+  description: The Access Groups API from Cisco Secure Firewall — 2 operation(s) for access groups.
   humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
   baseURL: https://api.us.security.cisco.com/firewall
   tags:
-  - Firewall Management
-  - Policy
-  - Threat Defense
-  - Devices
-  - Security
+  - Access Groups
   properties:
   - type: OpenAPI
-    url: openapi/cisco-secure-firewall-cdfmc-openapi.yml
+    url: openapi/cisco-secure-firewall-access-groups-api-openapi.yml
   - type: OpenAPI Source
     url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
   - type: Documentation
@@ -70,34 +60,3014 @@ apis:
     url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
   - type: Postman
     url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
-- aid: cisco-secure-firewall:scc-firewall-manager
-  name: Cisco Security Cloud Control Firewall Manager API
-  description: The Security Cloud Control Firewall Manager REST API — 160 operations across 119 paths for inventory
-    management (FTD, ASA, device managers, on-prem FMC), connector management, object management, user and tenant
-    management, remote-access VPN and MFA monitoring, changelogs, change requests, transaction tracking for asynchronous
-    operations, fleet-wide command execution and Lucene-syntax search across the tenant. Bearer JWT authentication
-    using a non-expiring Security Cloud Control API token.
-  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
-  baseURL: https://api.us.security.cisco.com/firewall
-  tags:
-  - Firewall Management
-  - Inventory
-  - Deployment
-  - VPN
-  - Security
-  properties:
-  - type: OpenAPI
-    url: openapi/cisco-secure-firewall-scc-firewall-manager-openapi.yml
   - type: OpenAPI Source
     url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-access-token-api
+  name: Cisco Secure Firewall Access Token API
+  description: The Access Token API from Cisco Secure Firewall — 1 operation(s) for access token.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Access Token
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-access-token-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
   - type: Documentation
     url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
   - type: APIReference
-    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
   - type: GettingStarted
     url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
   - type: Authentication
     url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-action-api
+  name: Cisco Secure Firewall Action API
+  description: Action APIs
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Action
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-action-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-adjacent-zone-api
+  name: Cisco Secure Firewall Adjacent Zone API
+  description: The Adjacent Zone API from Cisco Secure Firewall — 4 operation(s) for adjacent zone.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Adjacent Zone
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-adjacent-zone-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-ai-assistant-api
+  name: Cisco Secure Firewall AI Assistant API
+  description: The AI Assistant API from Cisco Secure Firewall — 3 operation(s) for ai assistant.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - AI Assistant
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-ai-assistant-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-analysis-api
+  name: Cisco Secure Firewall Analysis API
+  description: The Analysis API from Cisco Secure Firewall — 3 operation(s) for analysis.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Analysis
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-analysis-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-api-entitlement-api
+  name: Cisco Secure Firewall API Entitlement API
+  description: The API Entitlement API from Cisco Secure Firewall — 5 operation(s) for api entitlement.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - API Entitlement
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-api-entitlement-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-apikeys-api
+  name: Cisco Secure Firewall API Keys API
+  description: The ApiKeys API from Cisco Secure Firewall — 2 operation(s) for apikeys.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - ApiKeys
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-apikeys-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-app-group-api
+  name: Cisco Secure Firewall App Group API
+  description: The App Group API from Cisco Secure Firewall — 3 operation(s) for app group.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - App Group
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-app-group-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-asa-access-rules-api
+  name: Cisco Secure Firewall ASA Access Rules API
+  description: The ASA Access Rules API from Cisco Secure Firewall — 2 operation(s) for asa access rules.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - ASA Access Rules
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-asa-access-rules-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-audit-api
+  name: Cisco Secure Firewall Audit API
+  description: The Audit API from Cisco Secure Firewall — 3 operation(s) for audit.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Audit
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-audit-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-audit-logs-api
+  name: Cisco Secure Firewall Audit Logs API
+  description: The Audit Logs API from Cisco Secure Firewall — 1 operation(s) for audit logs.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Audit Logs
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-audit-logs-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-authentication-api
+  name: Cisco Secure Firewall Authentication API
+  description: The Authentication API from Cisco Secure Firewall — 5 operation(s) for authentication.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-authentication-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-aws-client-credentials-api
+  name: Cisco Secure Firewall AWS Client Credentials API
+  description: The AWS Client Credentials API from Cisco Secure Firewall — 1 operation(s) for aws client credentials.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - AWS Client Credentials
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-aws-client-credentials-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-backup-api
+  name: Cisco Secure Firewall Backup API
+  description: The Backup API from Cisco Secure Firewall — 4 operation(s) for backup.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Backup
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-backup-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-change-management-api
+  name: Cisco Secure Firewall Change Management API
+  description: The Change Management API from Cisco Secure Firewall — 4 operation(s) for change management.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Change Management
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-change-management-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-change-requests-api
+  name: Cisco Secure Firewall Change Requests API
+  description: The Change Requests API from Cisco Secure Firewall — 2 operation(s) for change requests.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Change Requests
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-change-requests-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-changelogs-api
+  name: Cisco Secure Firewall Changelogs API
+  description: The Changelogs API from Cisco Secure Firewall — 2 operation(s) for changelogs.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Changelogs
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-changelogs-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-chassis-api
+  name: Cisco Secure Firewall Chassis API
+  description: The Chassis API from Cisco Secure Firewall — 32 operation(s) for chassis.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Chassis
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-chassis-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-child-zone-api
+  name: Cisco Secure Firewall Child Zone API
+  description: The Child Zone API from Cisco Secure Firewall — 2 operation(s) for child zone.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Child Zone
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-child-zone-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-claim-code-api
+  name: Cisco Secure Firewall Claim Code API
+  description: The Claim Code API from Cisco Secure Firewall — 3 operation(s) for claim code.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Claim Code
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-claim-code-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-command-line-interface-api
+  name: Cisco Secure Firewall Command Line Interface API
+  description: The Command Line Interface API from Cisco Secure Firewall — 6 operation(s) for command line interface.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Command Line Interface
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-command-line-interface-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-commands-api
+  name: Cisco Secure Firewall Commands API
+  description: The Commands API from Cisco Secure Firewall — 3 operation(s) for commands.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Commands
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-commands-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-config-api
+  name: Cisco Secure Firewall Config API
+  description: Configuration APIs
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Config
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-config-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-connectors-api
+  name: Cisco Secure Firewall Connectors API
+  description: The Connectors API from Cisco Secure Firewall — 2 operation(s) for connectors.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Connectors
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-connectors-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-conversation-api
+  name: Cisco Secure Firewall Conversation API
+  description: Conversation APIs
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Conversation
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-conversation-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-deployment-api
+  name: Cisco Secure Firewall Deployment API
+  description: The Deployment API from Cisco Secure Firewall — 10 operation(s) for deployment.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Deployment
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-deployment-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-device-clusters-api
+  name: Cisco Secure Firewall Device Clusters API
+  description: The Device Clusters API from Cisco Secure Firewall — 5 operation(s) for device clusters.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Device Clusters
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-device-clusters-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-device-groups-api
+  name: Cisco Secure Firewall Device Groups API
+  description: The Device Groups API from Cisco Secure Firewall — 2 operation(s) for device groups.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Device Groups
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-device-groups-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-device-ha-pairs-api
+  name: Cisco Secure Firewall Device HA Pairs API
+  description: The Device HA Pairs API from Cisco Secure Firewall — 6 operation(s) for device ha pairs.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Device HA Pairs
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-device-ha-pairs-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-device-health-api
+  name: Cisco Secure Firewall Device Health API
+  description: The Device Health API from Cisco Secure Firewall — 2 operation(s) for device health.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Device Health
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-device-health-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-device-upgrades-api
+  name: Cisco Secure Firewall Device Upgrades API
+  description: The Device Upgrades API from Cisco Secure Firewall — 7 operation(s) for device upgrades.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Device Upgrades
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-device-upgrades-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-devices-api
+  name: Cisco Secure Firewall Devices API
+  description: The Devices API from Cisco Secure Firewall — 108 operation(s) for devices.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Devices
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-devices-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-domains-and-identity-providers-api
+  name: Cisco Secure Firewall Domains and Identity providers API
+  description: The Domains and Identity providers API from Cisco Secure Firewall — 4 operation(s) for domains and
+    identity providers.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Domains and Identity providers
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-domains-and-identity-providers-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-dynamic-group-api
+  name: Cisco Secure Firewall Dynamic Group API
+  description: The Dynamic Group API from Cisco Secure Firewall — 2 operation(s) for dynamic group.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Dynamic Group
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-dynamic-group-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-endpoint-group-api
+  name: Cisco Secure Firewall Endpoint Group API
+  description: The Endpoint Group API from Cisco Secure Firewall — 6 operation(s) for endpoint group.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Endpoint Group
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-endpoint-group-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-enterprise-api
+  name: Cisco Secure Firewall Enterprise API
+  description: The Enterprise API from Cisco Secure Firewall — 4 operation(s) for enterprise.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Enterprise
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-enterprise-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-feedback-api
+  name: Cisco Secure Firewall Feedback API
+  description: Feedback APIs
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Feedback
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-feedback-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-gateway-api
+  name: Cisco Secure Firewall Gateway API
+  description: The Gateway API from Cisco Secure Firewall — 4 operation(s) for gateway.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Gateway
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-gateway-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-gateway-policy-optimization-api
+  name: Cisco Secure Firewall Gateway Policy Optimization API
+  description: The Gateway Policy Optimization API from Cisco Secure Firewall — 2 operation(s) for gateway policy
+    optimization.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Gateway Policy Optimization
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-gateway-policy-optimization-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-gateway-status-api
+  name: Cisco Secure Firewall Gateway Status API
+  description: The Gateway Status API from Cisco Secure Firewall — 4 operation(s) for gateway status.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Gateway Status
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-gateway-status-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-health-api
+  name: Cisco Secure Firewall Health API
+  description: The Health API from Cisco Secure Firewall — 12 operation(s) for health.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-health-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-install-target-api
+  name: Cisco Secure Firewall Install Target API
+  description: The Install Target API from Cisco Secure Firewall — 2 operation(s) for install target.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Install Target
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-install-target-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-integration-api
+  name: Cisco Secure Firewall Integration API
+  description: The Integration API from Cisco Secure Firewall — 21 operation(s) for integration.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Integration
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-integration-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-integration-health-api
+  name: Cisco Secure Firewall Integration Health API
+  description: The Integration Health API from Cisco Secure Firewall — 1 operation(s) for integration health.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Integration Health
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-integration-health-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-integrations-api
+  name: Cisco Secure Firewall Integrations API
+  description: The Integrations API from Cisco Secure Firewall — 7 operation(s) for integrations.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Integrations
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-integrations-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-intelligence-api
+  name: Cisco Secure Firewall Intelligence API
+  description: The Intelligence API from Cisco Secure Firewall — 13 operation(s) for intelligence.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Intelligence
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-intelligence-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-intermediary-manager-api
+  name: Cisco Secure Firewall Intermediary Manager API
+  description: The Intermediary Manager API from Cisco Secure Firewall — 47 operation(s) for intermediary manager.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Intermediary Manager
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-intermediary-manager-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-inventory-api
+  name: Cisco Secure Firewall Inventory API
+  description: The Inventory API from Cisco Secure Firewall — 26 operation(s) for inventory.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Inventory
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-inventory-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-license-api
+  name: Cisco Secure Firewall License API
+  description: The License API from Cisco Secure Firewall — 3 operation(s) for license.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - License
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-license-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-manageentitlements-api
+  name: Cisco Secure Firewall Manage Entitlements API
+  description: The ManageEntitlements API from Cisco Secure Firewall — 1 operation(s) for manageentitlements.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - ManageEntitlements
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-manageentitlements-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-management-relationships-api
+  name: Cisco Secure Firewall Management Relationships API
+  description: The Management Relationships API from Cisco Secure Firewall — 5 operation(s) for management relationships.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Management Relationships
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-management-relationships-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-meta-api
+  name: Cisco Secure Firewall Meta API
+  description: The Meta API from Cisco Secure Firewall — 3 operation(s) for meta.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Meta
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-meta-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-app-api
+  name: Cisco Secure Firewall MPM App API
+  description: The MPM App API from Cisco Secure Firewall — 7 operation(s) for mpm app.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM App
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-app-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-app-group-api
+  name: Cisco Secure Firewall MPM App Group API
+  description: The MPM App Group API from Cisco Secure Firewall — 5 operation(s) for mpm app group.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM App Group
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-app-group-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-changeset-api
+  name: Cisco Secure Firewall MPM Changeset API
+  description: The MPM Changeset API from Cisco Secure Firewall — 5 operation(s) for mpm changeset.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM Changeset
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-changeset-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-changeset-rebase-api
+  name: Cisco Secure Firewall MPM Changeset Rebase API
+  description: The MPM Changeset Rebase API from Cisco Secure Firewall — 1 operation(s) for mpm changeset rebase.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM Changeset Rebase
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-changeset-rebase-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-changeset-validation-api
+  name: Cisco Secure Firewall MPM Changeset Validation API
+  description: The MPM Changeset Validation API from Cisco Secure Firewall — 1 operation(s) for mpm changeset validation.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM Changeset Validation
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-changeset-validation-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-endpoint-api
+  name: Cisco Secure Firewall MPM Endpoint API
+  description: The MPM Endpoint API from Cisco Secure Firewall — 5 operation(s) for mpm endpoint.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM Endpoint
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-endpoint-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-endpoint-group-api
+  name: Cisco Secure Firewall MPM Endpoint Group API
+  description: The MPM Endpoint Group API from Cisco Secure Firewall — 5 operation(s) for mpm endpoint group.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM Endpoint Group
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-endpoint-group-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-entities-revision-diff-api
+  name: Cisco Secure Firewall MPM Entities Revision Diff API
+  description: The MPM Entities Revision Diff API from Cisco Secure Firewall — 5 operation(s) for mpm entities revision
+    diff.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM Entities Revision Diff
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-entities-revision-diff-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-manager-api
+  name: Cisco Secure Firewall MPM Manager API
+  description: The MPM Manager API from Cisco Secure Firewall — 5 operation(s) for mpm manager.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM Manager
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-manager-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-policy-api
+  name: Cisco Secure Firewall MPM Policy API
+  description: The MPM Policy API from Cisco Secure Firewall — 4 operation(s) for mpm policy.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-policy-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-policy-push-api
+  name: Cisco Secure Firewall MPM Policy Push API
+  description: The MPM Policy Push API from Cisco Secure Firewall — 3 operation(s) for mpm policy push.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM Policy Push
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-policy-push-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-revision-api
+  name: Cisco Secure Firewall MPM Revision API
+  description: The MPM Revision API from Cisco Secure Firewall — 2 operation(s) for mpm revision.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM Revision
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-revision-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-rule-api
+  name: Cisco Secure Firewall MPM Rule API
+  description: The MPM Rule API from Cisco Secure Firewall — 2 operation(s) for mpm rule.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM Rule
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-rule-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-mpm-search-api
+  name: Cisco Secure Firewall MPM Search API
+  description: The MPM Search API from Cisco Secure Firewall — 8 operation(s) for mpm search.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MPM Search
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-mpm-search-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-msp-api
+  name: Cisco Secure Firewall MSP API
+  description: The MSP API from Cisco Secure Firewall — 28 operation(s) for msp.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MSP
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-msp-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-msp-entitlements-management-api
+  name: Cisco Secure Firewall MSP Entitlements Management API
+  description: The MSP Entitlements Management API from Cisco Secure Firewall — 2 operation(s) for msp entitlements
+    management.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MSP Entitlements Management
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-msp-entitlements-management-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-msp-organizations-management-api
+  name: Cisco Secure Firewall MSP Organizations Management API
+  description: The MSP Organizations Management API from Cisco Secure Firewall — 1 operation(s) for msp organizations
+    management.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - MSP Organizations Management
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-msp-organizations-management-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-network-map-api
+  name: Cisco Secure Firewall Network Map API
+  description: The Network Map API from Cisco Secure Firewall — 4 operation(s) for network map.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Network Map
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-network-map-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-notification-api
+  name: Cisco Secure Firewall Notification API
+  description: Notification APIs
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Notification
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-notification-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-object-api
+  name: Cisco Secure Firewall Object API
+  description: The Object API from Cisco Secure Firewall — 262 operation(s) for object.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Object
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-object-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-object-management-api
+  name: Cisco Secure Firewall Object Management API
+  description: The Object Management API from Cisco Secure Firewall — 7 operation(s) for object management.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Object Management
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-object-management-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-org-creation-api
+  name: Cisco Secure Firewall Org creation API
+  description: The Org creation API from Cisco Secure Firewall — 5 operation(s) for org creation.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Org creation
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-org-creation-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-policy-api
+  name: Cisco Secure Firewall Policy API
+  description: The Policy API from Cisco Secure Firewall — 164 operation(s) for policy.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-policy-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-policy-assignments-api
+  name: Cisco Secure Firewall Policy Assignments API
+  description: The Policy Assignments API from Cisco Secure Firewall — 2 operation(s) for policy assignments.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Policy Assignments
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-policy-assignments-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-policy-based-access-control-privilege-api
+  name: Cisco Secure Firewall Policy Based Access Control Privilege API
+  description: The Policy Based Access Control Privilege API from Cisco Secure Firewall — 6 operation(s) for policy
+    based access control privilege.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Policy Based Access Control Privilege
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-policy-based-access-control-privilege-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-policy-based-access-control-role-api
+  name: Cisco Secure Firewall Policy Based Access Control Role API
+  description: The Policy Based Access Control Role API from Cisco Secure Firewall — 2 operation(s) for policy based
+    access control role.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Policy Based Access Control Role
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-policy-based-access-control-role-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-policy-based-access-control-user-api
+  name: Cisco Secure Firewall Policy Based Access Control User API
+  description: The Policy Based Access Control User API from Cisco Secure Firewall — 4 operation(s) for policy based
+    access control user.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Policy Based Access Control User
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-policy-based-access-control-user-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-policy-import-service-api
+  name: Cisco Secure Firewall Policy Import Service API
+  description: The Policy Import Service API from Cisco Secure Firewall — 2 operation(s) for policy import service.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Policy Import Service
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-policy-import-service-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-product-instance-api
+  name: Cisco Secure Firewall Product Instance API
+  description: The Product Instance API from Cisco Secure Firewall — 3 operation(s) for product instance.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Product Instance
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-product-instance-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-provision-api
+  name: Cisco Secure Firewall Provision API
+  description: The Provision API from Cisco Secure Firewall — 2 operation(s) for provision.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Provision
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-provision-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-rbac-api
+  name: Cisco Secure Firewall RBAC API
+  description: The RBAC API from Cisco Secure Firewall — 3 operation(s) for rbac.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - RBAC
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-rbac-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-remote-access-monitoring-api
+  name: Cisco Secure Firewall Remote Access Monitoring API
+  description: The Remote Access Monitoring API from Cisco Secure Firewall — 7 operation(s) for remote access monitoring.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Remote Access Monitoring
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-remote-access-monitoring-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-request-api
+  name: Cisco Secure Firewall Request API
+  description: The Request API from Cisco Secure Firewall — 12 operation(s) for request.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Request
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-request-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-search-api
+  name: Cisco Secure Firewall Search API
+  description: The Search API from Cisco Secure Firewall — 6 operation(s) for search.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-search-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-status-api
+  name: Cisco Secure Firewall Status API
+  description: The Status API from Cisco Secure Firewall — 3 operation(s) for status.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-status-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-support-api
+  name: Cisco Secure Firewall Support API
+  description: The Support API from Cisco Secure Firewall — 14 operation(s) for support.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Support
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-support-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-system-configuration-api
+  name: Cisco Secure Firewall System Configuration API
+  description: The System Configuration API from Cisco Secure Firewall — 2 operation(s) for system configuration.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - System Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-system-configuration-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-system-info-api
+  name: Cisco Secure Firewall System Info API
+  description: The System Info API from Cisco Secure Firewall — 2 operation(s) for system info.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - System Info
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-system-info-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-system-information-api
+  name: Cisco Secure Firewall System Information API
+  description: The System Information API from Cisco Secure Firewall — 4 operation(s) for system information.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - System Information
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-system-information-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-templates-api
+  name: Cisco Secure Firewall Templates API
+  description: The Templates API from Cisco Secure Firewall — 17 operation(s) for templates.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Templates
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-templates-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-tenant-management-api
+  name: Cisco Secure Firewall Tenant Management API
+  description: The Tenant Management API from Cisco Secure Firewall — 4 operation(s) for tenant management.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Tenant Management
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-tenant-management-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-terminal-zone-api
+  name: Cisco Secure Firewall Terminal Zone API
+  description: The Terminal Zone API from Cisco Secure Firewall — 2 operation(s) for terminal zone.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Terminal Zone
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-terminal-zone-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-topology-tag-api
+  name: Cisco Secure Firewall Topology Tag API
+  description: The Topology Tag API from Cisco Secure Firewall — 1 operation(s) for topology tag.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Topology Tag
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-topology-tag-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-topology-tag-key-api
+  name: Cisco Secure Firewall Topology Tag Key API
+  description: The Topology Tag Key API from Cisco Secure Firewall — 1 operation(s) for topology tag key.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Topology Tag Key
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-topology-tag-key-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-transactions-api
+  name: Cisco Secure Firewall Transactions API
+  description: The Transactions API from Cisco Secure Firewall — 1 operation(s) for transactions.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-transactions-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-troubleshoot-api
+  name: Cisco Secure Firewall Troubleshoot API
+  description: The Troubleshoot API from Cisco Secure Firewall — 12 operation(s) for troubleshoot.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Troubleshoot
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-troubleshoot-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-updates-api
+  name: Cisco Secure Firewall Updates API
+  description: The Updates API from Cisco Secure Firewall — 7 operation(s) for updates.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Updates
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-updates-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-usage-api
+  name: Cisco Secure Firewall Usage API
+  description: Usage APIs
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Usage
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-usage-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-user-group-management-api
+  name: Cisco Secure Firewall User group management API
+  description: The User group management API from Cisco Secure Firewall — 4 operation(s) for user group management.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - User group management
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-user-group-management-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-user-management-api
+  name: Cisco Secure Firewall User Management API
+  description: The User Management API from Cisco Secure Firewall — 3 operation(s) for user management.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - User Management
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-user-management-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-users-api
+  name: Cisco Secure Firewall Users API
+  description: The Users API from Cisco Secure Firewall — 13 operation(s) for users.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-users-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-zone-address-api
+  name: Cisco Secure Firewall Zone Address API
+  description: The Zone Address API from Cisco Secure Firewall — 2 operation(s) for zone address.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Zone Address
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-zone-address-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-zone-api
+  name: Cisco Secure Firewall Zone API
+  description: The Zone API from Cisco Secure Firewall — 5 operation(s) for zone.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Zone
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-zone-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-zone-path-api
+  name: Cisco Secure Firewall Zone Path API
+  description: The Zone Path API from Cisco Secure Firewall — 5 operation(s) for zone path.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Zone Path
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-zone-path-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
+- aid: cisco-secure-firewall:cisco-secure-firewall-zone-tag-api
+  name: Cisco Secure Firewall Zone Tag API
+  description: The Zone Tag API from Cisco Secure Firewall — 2 operation(s) for zone tag.
+  humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  baseURL: https://api.us.security.cisco.com/firewall
+  tags:
+  - Zone Tag
+  properties:
+  - type: OpenAPI
+    url: openapi/cisco-secure-firewall-zone-tag-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-openapi.yaml
+  - type: Documentation
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
+  - type: GettingStarted
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/getting-started/
+  - type: Authentication
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/authentication/
+  - type: Postman
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/cdfmc-postman-collection.json
+  - type: OpenAPI Source
+    url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/openapi.yaml
+  - type: APIReference
+    url: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/
   - type: Postman
     url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
 common:
@@ -199,3 +3169,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 x-acquired: 2013
+x-enrichment:
+  date: '2026-08-19'
+  status: enriched
+  artifacts_added: 26
+  pass: local-v1
