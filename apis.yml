@@ -13,6 +13,18 @@ description: 'Cisco Secure Firewall is the product line built on the Sourcefire 
 url: https://raw.githubusercontent.com/api-evangelist/cisco-secure-firewall/refs/heads/main/apis.yml
 type: Index
 access: 3rd-Party
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 position: Consumer
 image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 x-type: company
