@@ -3,7 +3,7 @@ provider: Cisco Secure Firewall
 generated_by: planning/capability-mapping/scripts/classify_capabilities.py
 model: claude-opus-5
 frame:
-- Software & Technology
+- Telecommunications
 min_confidence: 0.7
 capability_model:
   source: https://github.com/vincentmakes/turbo-ea-capabilities
@@ -11,268 +11,206 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 26
+edge_count: 20
 edges:
-- tag: Policy Based Access Control User
-  spec_file: cisco-secure-firewall-policy-based-access-control-user-api-openapi.yml
-  capability_id: BC-620.20
-  capability_id_l1: BC-620
-  capability_name: Identity & Access Management
-  confidence: 0.88
-  evidence: '"Assign roles for user", "Get roles for user", schema PbacUserToRolesRequest'
-  reason: User-to-role assignment and revocation is core identity and access management, not a business-domain
-    capability.
-- tag: RBAC
-  spec_file: cisco-secure-firewall-rbac-api-openapi.yml
-  capability_id: BC-620.20
-  capability_id_l1: BC-620
-  capability_name: Identity & Access Management
-  confidence: 0.88
-  evidence: '"APIs for creating and updating the customer enterprise, including user access control";
-    createRBACUserRoleAssignment, updateCustomRole, schema RBACCustomRole'
-  reason: Role assignment to users/groups and custom role maintenance is identity and access management.
 - tag: User group management
   spec_file: cisco-secure-firewall-user-group-management-api-openapi.yml
   capability_id: BC-620.20
   capability_id_l1: BC-620
   capability_name: Identity & Access Management
-  confidence: 0.88
-  evidence: POST /enterprises/{id}/rbac/groups createRBACUserGroup; POST /enterprises/{id}/rbac/users/{userId}/groups
-    createRBACUserGroupAssignment; schema RBACGroup
-  reason: Role-based access control group definition and user-to-group assignment — squarely Identity
-    & Access Management, not a domain business object.
+  confidence: 0.9
+  evidence: listRBACUserGroups, createRBACUserGroupAssignment, schemas RBACGroup, RBACUserAssignmentGroup
+  reason: Role-based access control groups and user-to-group assignments for the tenant — squarely identity
+    and access management.
+- tag: API Entitlement
+  spec_file: cisco-secure-firewall-api-entitlement-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: GET /security/roleassignments getAllRoleAssignments 'Get roles assigned to all users'; 'Assign
+    admin role to user'; schema UserToRole
+  reason: Operations manage role assignments for users (RBAC) — squarely identity and access management,
+    not a business-entitlement/billing capability despite the tag name.
 - tag: Intelligence
   spec_file: cisco-secure-firewall-intelligence-api-openapi.yml
   capability_id: BC-620.30
   capability_id_l1: BC-620
   capability_name: Threat Detection & Response Management
   confidence: 0.85
-  evidence: getAllRESTIndicator, getAllRESTIncident, getAllRESTObservable, /fmc_tid/v1/domain/{domainUUID}/taxiiconfig/collections
-  reason: 'Threat Intelligence Director: STIX/TAXII feeds, indicators, observables and security incidents
-    — clearly threat detection and response within Cybersecurity Management.'
+  evidence: getAllRESTIncident, getAllRESTIndicator, getAllRESTObservable, createRESTTaxiiCollection;
+    schemas RESTIndicator, RESTIncident
+  reason: Threat Intelligence Director surface — TAXII feeds, indicators, observables and security incidents;
+    this is threat detection and response tooling.
 - tag: Policy Based Access Control Privilege
   spec_file: cisco-secure-firewall-policy-based-access-control-privilege-api-openapi.yml
   capability_id: BC-620.20
   capability_id_l1: BC-620
   capability_name: Identity & Access Management
   confidence: 0.85
-  evidence: '"Add new privileges for a role", "Get privileges for user for entity", schema PbacPrivilegeRequest'
-  reason: Operations manage privileges granted to roles, users and entities — role-based access control
-    administration, which is Identity & Access Management.
+  evidence: POST /security/pbac/create-privileges "Add new privileges for a role"; GET /security/pbac/privileges/users
+  reason: Privilege administration for roles and users in a policy-based access control engine — squarely
+    identity and access management.
 - tag: Policy Based Access Control Role
   spec_file: cisco-secure-firewall-policy-based-access-control-role-api-openapi.yml
   capability_id: BC-620.20
   capability_id_l1: BC-620
   capability_name: Identity & Access Management
   confidence: 0.85
-  evidence: '"Create new PBAC role", "Delete existing PBAC role", schema PbacRole'
-  reason: CRUD over policy-based access control roles is access-rights administration, mapping to Identity
-    & Access Management.
+  evidence: POST /security/pbac/roles "Create new PBAC role"; schema PbacRole
+  reason: Role lifecycle management for access control — identity and access management.
+- tag: Policy Based Access Control User
+  spec_file: cisco-secure-firewall-policy-based-access-control-user-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /security/pbac/create-user-roles "Assign roles for user"; schema PbacUserToRolesRequest
+  reason: User-to-role assignment operations are core identity and access management.
+- tag: RBAC
+  spec_file: cisco-secure-firewall-rbac-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /enterprises/{id}/rbac/users/{userId}/roles createRBACUserRoleAssignment; PUT .../rbac/customRoles/{roleId}
+    "Update a custom role."
+  reason: 'Role-based access control: user/group role assignments and custom role maintenance — identity
+    and access management.'
 - tag: User Management
   spec_file: cisco-secure-firewall-user-management-api-openapi.yml
   capability_id: BC-620.20
   capability_id_l1: BC-620
   capability_name: Identity & Access Management
   confidence: 0.85
-  evidence: '"APIs for creating and updating the customer enterprise, including user access control";
-    POST /enterprises/{id}/users addEnterpriseUser; POST /enterprises/{id}/users/{userId}/lifecycle/enable'
-  reason: CRUD plus enable/disable lifecycle over enterprise user accounts with explicit access control
-    framing — joiners-movers-leavers identity administration, i.e. Identity & Access Management.
-- tag: API Entitlement
-  spec_file: cisco-secure-firewall-api-entitlement-api-openapi.yml
-  capability_id: BC-620.20
-  capability_id_l1: BC-620
-  capability_name: Identity & Access Management
-  confidence: 0.82
-  evidence: PUT /security/roleassignments/{roleId}/users/{userId}  addUserToRole  Assign role to user;
-    getUserRoles  Get roles of user
-  reason: Despite the 'Entitlement' tag name, operations assign and revoke user roles for platform access
-    — role-based access administration, i.e. Identity & Access Management, not subscription entitlement.
-- tag: Provision
-  spec_file: cisco-secure-firewall-provision-api-openapi.yml
-  capability_id: BC-4230.10
-  capability_id_l1: BC-4230
-  capability_name: Tenant Provisioning & Lifecycle
-  confidence: 0.82
-  evidence: POST /Tenants "Create Context Service Tenant"; PUT /Tenants/{id} "Update Context Service Tenant"
-  reason: Creating and updating tenants on a multi-tenant cloud platform is tenant provisioning and lifecycle
-    management.
+  evidence: APIs for creating and updating the customer enterprise, including user access control; addEnterpriseUser,
+    enableEnterpriseUser, schema EnterpriseUserProfile
+  reason: Full lifecycle of enterprise user accounts and their access on the security platform — create,
+    update, remove, enable. This is Identity & Access Management (joiner-mover-leaver on the platform),
+    not HR employee records.
 - tag: Users
   spec_file: cisco-secure-firewall-users-api-openapi.yml
   capability_id: BC-620.20
   capability_id_l1: BC-620
   capability_name: Identity & Access Management
-  confidence: 0.82
-  evidence: POST /v1/users createUser 'Create User in Security Cloud Control Tenant'; DELETE /v1/users/{userUid}
-    deleteUser; schemas UserRole, ActiveDirectoryGroup, ApiTokenInfo
-  reason: Tenant user account provisioning/deletion, roles, AD group linkage and token issuance/revocation
-    for administrative access to the firewall management platform — access administration (IAM). Some
-    overlap with developer credential management via apiToken endpoints, but the dominant surface is user
-    account and role administration.
-- tag: MPM Policy
-  spec_file: cisco-secure-firewall-mpm-policy-api-openapi.yml
-  capability_id: BC-620
-  capability_id_l1: BC-620
-  capability_name: Cybersecurity Management
-  confidence: 0.8
-  evidence: GET /mpm/manager/{managerId}/policy/{policyId}/{revisionId}  Get the policy in a manager at
-    revision; schemas MpmPolicyObj, MpmRuleObj, MpmNatRuleObj
-  reason: Firewall security policies with rules and NAT rules — clearly cybersecurity control management;
-    no candidate L2 precisely covers network security policy authoring.
+  confidence: 0.85
+  evidence: getUsers Get Tenant Users, createUser Create User in Security Cloud Control Tenant, generateApiToken
+    Generate Token for API-only user, schemas UserRole, ActiveDirectoryGroup
+  reason: Tenant/FMC user accounts, roles, AD group mapping and API token issuance/revocation — administration
+    of identities and their access rights to the security platform.
 - tag: MSP Entitlements Management
   spec_file: cisco-secure-firewall-msp-entitlements-management-api-openapi.yml
   capability_id: BC-4240
   capability_id_l1: BC-4240
   capability_name: Subscription Lifecycle Management
-  confidence: 0.8
-  evidence: '"Get organization entitlements", "Revoke entitlements for an organization", "Update entitlements
-    between manager and managed organizations"; schemas "model.ProvisionedSubscription", "model.SharedEntitlement",
-    "model.SKU"'
-  reason: Operations read, update and revoke entitlements and provisioned SKUs/subscriptions for organizations,
-    and the document describes itself as "Provisioning APIs for activating and managing entitlements,
-    subscriptions, and claim codes". That is subscription/entitlement lifecycle. Left at L1 because granting,
-    changing and revoking spans provisioning, modification and termination sub-capabilities.
+  confidence: 0.78
+  evidence: '''Get organization entitlements'', ''Revoke entitlements for an organization'', ''Update
+    entitlements between manager and managed organizations''; schemas model.ProvisionedSubscription, model.SharedEntitlement,
+    model.SKU'
+  reason: Provisioning, sharing and revocation of subscriptions/SKUs and entitlements across organisations
+    — subscription and entitlement lifecycle. Spans design, provisioning and revocation, so L1 only.
 - tag: ManageEntitlements
   spec_file: cisco-secure-firewall-manageentitlements-api-openapi.yml
   capability_id: BC-4240
   capability_id_l1: BC-4240
   capability_name: Subscription Lifecycle Management
-  confidence: 0.8
-  evidence: '"Get entitlements for an organization", "Update entitlements between manager and managed
-    organizations"; schemas "model.ProvisionedSKU", "model.UserSubscription", "model.SharedEntitlement"'
-  reason: 'Same entitlement surface as the provisioning spec: reading and updating provisioned SKUs, subscriptions
-    and shared entitlements between manager and managed organisations. This is commercial entitlement/subscription
-    lifecycle, not a security control. L1 only because the ops straddle provisioning and in-life modification.'
-- tag: Claim Code
-  spec_file: cisco-secure-firewall-claim-code-api-openapi.yml
-  capability_id: BC-4240.30
-  capability_id_l1: BC-4240
-  capability_name: Subscription Provisioning
   confidence: 0.78
-  evidence: '"Provisioning APIs for activating and managing entitlements, subscriptions, and claim codes";
-    POST /claim-code/claim "Claim Code for Subscription"; schema model.ClaimSubscription'
-  reason: Redeeming a claim code activates a subscription entitlement and returns product instances —
-    subscription provisioning/activation. Some chance the better fit is plan & entitlement design, hence
-    not higher.
-- tag: Domains and Identity providers
-  spec_file: cisco-secure-firewall-domains-and-identity-providers-api-openapi.yml
-  capability_id: BC-620.20
-  capability_id_l1: BC-620
-  capability_name: Identity & Access Management
-  confidence: 0.75
-  evidence: addExternalIdp 'Authorize external IdP for this enterprise'; createIdpGroupMapping; verifyPendingEnterpriseDomain
-  reason: Enterprise domain verification, authorisation of external identity providers and IdP group-to-role
-    mappings — federation and access control, i.e. Identity & Access Management. Tenant Identity Federation
-    (BC-4230.50) is a close alternative, which is why confidence is 0.75 rather than higher.
-- tag: Inventory
-  spec_file: cisco-secure-firewall-inventory-api-openapi.yml
-  capability_id: BC-600.50
-  capability_id_l1: BC-600
-  capability_name: IT Infrastructure Management
-  confidence: 0.75
-  evidence: GET /v1/inventory/devices  Get Devices; POST /v1/inventory/devices/asas  Onboard ASA device;
-    Deploy ASA device changes
-  reason: Onboarding, inventory and configuration deployment for firewall appliances — infrastructure
-    device estate management, not stock/materials inventory.
-- tag: MPM Policy Push
-  spec_file: cisco-secure-firewall-mpm-policy-push-api-openapi.yml
-  capability_id: BC-620
-  capability_id_l1: BC-620
-  capability_name: Cybersecurity Management
-  confidence: 0.75
-  evidence: POST /mpm/policy/request  createPolicyPushRequest  Create Policy Push Request; GET /mpm/policy/request/gateway-set/{gwSetId}
-  reason: Deployment of security policy to firewall gateway sets — enforcement of security controls, part
-    of Cybersecurity Management; L1 only as no L2 covers firewall policy deployment.
-- tag: MPM Rule
-  spec_file: cisco-secure-firewall-mpm-rule-api-openapi.yml
-  capability_id: BC-620
-  capability_id_l1: BC-620
-  capability_name: Cybersecurity Management
-  confidence: 0.75
-  evidence: Get the Rule Objects in pagination for Manager Id, Policy ID and Revision ID; schemas MpmRuleObj,
-    MpmNatRuleObj
-  reason: Firewall rule objects within security policies; supports cybersecurity control configuration.
-    L1 only, as the candidate L2s do not cover network firewall rule management.
+  evidence: '''Get entitlements for an organization'' / ''Update entitlements between manager and managed
+    organizations''; schemas model.ProvisionedSubscription, model.UserSubscription, model.OrgEntitlements'
+  reason: Same entitlement/subscription allocation surface as the MSP entitlements API — reading and modifying
+    provisioned SKUs and subscriptions per organisation is subscription lifecycle/entitlement management.
 - tag: ASA Access Rules
   spec_file: cisco-secure-firewall-asa-access-rules-api-openapi.yml
   capability_id: BC-620
   capability_id_l1: BC-620
   capability_name: Cybersecurity Management
+  confidence: 0.75
+  evidence: POST /v1/policies/asa/accessrules createAccessRule 'Create Access Rule'; schemas AccessRule,
+    LogSettings, SourceNetworkContent
+  reason: 'CRUD on firewall access-control policy rules — a cybersecurity control capability. Sub-capability
+    is ambiguous between security architecture/design and operational control enforcement, so only L1
+    asserted. Not telecom network operations: this is enterprise firewall policy tooling.'
+- tag: MPM Policy
+  spec_file: cisco-secure-firewall-mpm-policy-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.72
+  evidence: getPolicies  Get the policies in a manager at revision; schemas MpmPolicyObj, MpmRuleObj,
+    MpmNatRuleObj
+  reason: Retrieval of firewall security policies with their rules and NAT rules — administration of cybersecurity
+    controls. L1 only, as no candidate L2 covers firewall rule-base management specifically.
+- tag: Provision
+  spec_file: cisco-secure-firewall-provision-api-openapi.yml
+  capability_id: BC-4230.10
+  capability_id_l1: BC-4230
+  capability_name: Tenant Provisioning & Lifecycle
+  confidence: 0.72
+  evidence: POST /Tenants "Create Context Service Tenant"; PUT /Tenants/{id} "Update Context Service Tenant"
+  reason: Explicit tenant creation and update in a multi-tenant cloud service — tenant provisioning and
+    lifecycle.
+- tag: Access Groups
+  spec_file: cisco-secure-firewall-access-groups-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
   confidence: 0.7
-  evidence: POST /v1/policies/asa/accessrules  createAccessRule  Create Access Rule; schemas SourceNetworkContent,
-    DestinationPortContent, LogSettings
-  reason: Manages firewall access-control rule policy (source/destination networks, ports, logging) —
-    a cybersecurity control administration surface; evidence does not clearly single out one L2 sub-capability.
-- tag: Change Management
-  spec_file: cisco-secure-firewall-change-management-api-openapi.yml
-  capability_id: BC-600.30
-  capability_id_l1: BC-600
-  capability_name: IT Service Management
-  confidence: 0.7
-  evidence: POST .../changemanagement/tickets createTicket; GET .../changemanagement/tickets/{containerUUID}/previewchanges;
-    .../validationresults getTicketValidationResult
-  reason: Ticket-based approval workflow with change preview and validation before firewall configuration
-    changes are applied — this is IT change management within ITSM. L2 chosen because BC-600.30 explicitly
-    covers change; not BC-910 which is organisational change.
-- tag: Chassis
-  spec_file: cisco-secure-firewall-chassis-api-openapi.yml
-  capability_id: BC-600.50
-  capability_id_l1: BC-600
-  capability_name: IT Infrastructure Management
-  confidence: 0.7
-  evidence: getAllFMCManagedChassis; getAllEtherChannelInterface; schemas ChassisInterface, ChassisInventorySummary,
-    ChassisStorageLocalDisk, NetworkModuleSync
-  reason: Operations configure and inventory physical firewall chassis, network modules, interfaces and
-    etherchannels — network/compute infrastructure management, not a security-programme capability.
+  evidence: POST /v1/policies/asa/accessgroups createAccessGroup 'Create Access Group'; path /v1/policies/asa/accessgroups
+  reason: Manages ASA access groups (binding of access lists) within firewall policy — a cybersecurity
+    control configuration surface. L2 not determinable from the thin evidence.
 - tag: Device Health
   spec_file: cisco-secure-firewall-device-health-api-openapi.yml
   capability_id: BC-600.40
   capability_id_l1: BC-600
   capability_name: IT Operations Management
   confidence: 0.7
-  evidence: getAsaHealthMetrics 'Get time-series health metrics for one or more ASA devices'; getAsaInterfaceHealthMetrics
-  reason: Time-series health and interface metrics for managed network security appliances, with opt-in/opt-out
-    of metric collection — monitoring of running infrastructure, i.e. IT Operations Management. Not the
-    vendor's own SaaS observability, so BC-4220.20 is not the right fit.
-- tag: Health
-  spec_file: cisco-secure-firewall-health-api-openapi.yml
-  capability_id: BC-600.40
+  evidence: '"Get time-series health metrics for one or more ASA devices", "Get time-series interface
+    metrics for an ASA device"'
+  reason: 'Time-series health and interface metrics collection for managed firewall devices, with opt-in/opt-out
+    of metric collection — monitoring of IT infrastructure, i.e. IT Operations Management. Deliberately
+    not telecom Network Performance Management: these are enterprise firewall appliances, not carrier
+    network elements.'
+- tag: Devices
+  spec_file: cisco-secure-firewall-devices-api-openapi.yml
+  capability_id: BC-600.50
   capability_id_l1: BC-600
-  capability_name: IT Operations Management
+  capability_name: IT Infrastructure Management
   confidence: 0.7
-  evidence: getHealthMetric, getHealthAlertModel, getAllTunnelStatus, GET /ping  Get Server Health
-  reason: Health metrics, alerts, tunnel and interface status monitoring of firewall devices — operational
-    monitoring of IT estate, i.e. IT Operations Management. Not financial-crime alerting despite 'alerts'.
-- tag: MPM Changeset
-  spec_file: cisco-secure-firewall-mpm-changeset-api-openapi.yml
+  evidence: getAllDevice on "/devices/devicerecords", createFTDBridgeGroupInterface, getDeviceDDNSSettingModel,
+    getDeviceCertificateModel
+  reason: Large surface for registering and configuring firewall appliances — device records, interfaces,
+    DHCP/DDNS, routing, certificates. This is configuration and management of network security infrastructure,
+    mapping to Cross-Industry IT Infrastructure Management rather than any telecom carrier-network capability.
+- tag: Inventory
+  spec_file: cisco-secure-firewall-inventory-api-openapi.yml
   capability_id: BC-620
   capability_id_l1: BC-620
   capability_name: Cybersecurity Management
   confidence: 0.7
-  evidence: POST /mpm/changeset createChangeset ... schemas RuleChange, NatRuleChange, PolicyChange
-  reason: Changesets here bundle firewall security policy/rule/NAT changes in Cisco's Mesh Policy Manager,
-    so the surface serves security control administration (Cybersecurity Management). No L2 clearly fits
-    firewall policy authoring, so L1 only.
+  evidence: '"Onboard ASA device"; "Deploy ASA device changes"; "Read ASA device configuration"; schemas
+    Device, FtdDeploymentInput'
+  reason: Onboarding, configuration read and change deployment for firewall/security appliances (ASA,
+    FTD, cdFMC, Duo panels) — management of the enterprise's security control estate. Could arguably be
+    IT infrastructure, so L1 only.
+- tag: Object
+  spec_file: cisco-secure-firewall-object-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.7
+  evidence: POST /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/object/anyconnectcustomattributes  createAnyConnectCustomAttributeModel;
+    schemas ProtocolPortObject, ExternalCACertificate, ISESecurityGroupTagListContainer
+  reason: CRUD over the Firewall Management Center configuration object library (network/port objects,
+    certificates, VPN packages, security group tags) used to build security policy — enterprise cybersecurity
+    configuration. Breadth of object types prevents a confident single L2.
 - tag: Policy
   spec_file: cisco-secure-firewall-policy-api-openapi.yml
   capability_id: BC-620
   capability_id_l1: BC-620
   capability_name: Cybersecurity Management
   confidence: 0.7
-  evidence: '"getAllAccessPolicy", "createMultipleAccessRule"; schemas "FTDNatPolicyListContainer", "DecryptionPolicyMetadata",
-    "UniversalZeroTrustRule"'
-  reason: CRUD over firewall access control policies and rules, NAT policies, decryption policies and
-    zero-trust rules on Threat Defense devices. Plainly a cybersecurity control-configuration surface;
-    kept at L1 since firewall rule administration is not squarely any single listed sub-capability (it
-    is neither security governance documentation nor IAM).
-- tag: Policy Assignments
-  spec_file: cisco-secure-firewall-policy-assignments-api-openapi.yml
-  capability_id: BC-620
-  capability_id_l1: BC-620
-  capability_name: Cybersecurity Management
-  confidence: 0.7
-  evidence: POST .../assignment/policyassignments createPolicyAssignment; schemas IPolicyModel, PolicyAssignment,
-    ITarget
-  reason: Assigning firewall/access-control policies to target devices in Secure Firewall Management Center
-    is security control configuration, i.e. cybersecurity management; no single L2 clearly fits (governance
-    vs architecture), so L1 only.
+  evidence: POST /policy/accesspolicies createAccessPolicy; getAllAccessRule; schemas FTDNatPolicyListContainer,
+    DecryptionPolicyMetadata, UniversalZeroTrustRule
+  reason: CRUD over firewall access policies, access rules, NAT and decryption policies — enterprise security
+    control configuration, not telecom network security ops. Mapped at L1 as no L2 covers firewall rule
+    management exactly.
