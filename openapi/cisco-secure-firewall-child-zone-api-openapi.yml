@@ -80,24 +80,19 @@ paths:
       - Child Zone
 components:
   schemas:
+    ChildZoneIds:
+      properties:
+        childZoneIds:
+          items:
+            type: string
+          type: array
+      type: object
     ParentChildZonePair:
       properties:
         childZoneId:
           type: string
         parentZoneId:
           type: string
-      type: object
-    IdValue:
-      properties:
-        id:
-          type: string
-      type: object
-    GatewaySets:
-      properties:
-        gatewaySets:
-          items:
-            $ref: '#/components/schemas/IdValue'
-          type: array
       type: object
     ParentChildZonePairs:
       properties:
@@ -106,12 +101,17 @@ components:
             $ref: '#/components/schemas/ParentChildZonePair'
           type: array
       type: object
-    ChildZoneIds:
+    GatewaySets:
       properties:
-        childZoneIds:
+        gatewaySets:
           items:
-            type: string
+            $ref: '#/components/schemas/IdValue'
           type: array
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
       type: object
   securitySchemes:
     BearerJWT:

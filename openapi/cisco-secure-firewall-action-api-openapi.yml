@@ -502,17 +502,23 @@ paths:
       - Action
 components:
   schemas:
-    commonMetadata:
-      description: metadata which can be common across all actions
-      properties:
-        entities:
-          $ref: '#/components/schemas/entityParams'
-        error:
-          description: store custom error which will be reflected on UI
-          type: string
-        incompleteEntities:
-          $ref: '#/components/schemas/incompleteEntities'
-      type: object
+    actionStatus:
+      description: action status
+      enum:
+      - NO_ACTION_STATUS
+      - DISABLED
+      - VALIDATION
+      - CONFIRMATION
+      - IN_PROGRESS
+      - COMPLETE
+      - FAILED
+      - CANCELLED
+      - VALIDATION_IN_PROGRESS
+      - UNDO_IN_PROGRESS
+      - UNDO_COMPLETE
+      - UNDO_FAILED
+      - INVALID
+      type: string
     messageAction:
       description: action details for a message
       properties:
@@ -532,34 +538,32 @@ components:
           description: action title
           type: string
       type: object
-    actionValidateResponse:
-      description: validate action API response body
+    entityParams:
+      description: leaf entity details
       properties:
-        common_metadata:
-          description: action metadata
-          type: object
-        error:
-          description: action validation error
+        actionStepId:
+          description: action step id
           type: string
-        status:
-          $ref: '#/components/schemas/actionStatus'
-      type: object
-    interObjectOptions:
-      description: InterObjectOptions is used to provide options for the ambiguity in the inter-object params.
-      properties:
-        options:
-          $ref: '#/components/schemas/entityParams'
+        details:
+          description: details related to entity
+          format: byte
+          type: string
+        id:
+          description: id of the entity
+          type: string
+        isSelected:
+          description: is entity selected by user
+          type: boolean
+        name:
+          description: name of the entity
+          type: string
         type:
-          description: this type is used to disambiguate between Application, URL, and other types
+          description: type of the entity
+          type: string
+        value:
+          description: value of the entity
           type: string
       type: object
-    actionStepType:
-      default: DEFAULT
-      description: action step type
-      enum:
-      - DEFAULT
-      - API
-      type: string
     actionGetResponse:
       description: response body for getAction API
       properties:
@@ -611,6 +615,12 @@ components:
               type: string
           type: object
       type: object
+    getActionsByConversationIDResponse:
+      description: response structure for getting actions for a single conversation
+      properties:
+        msgActions:
+          $ref: '#/components/schemas/messageActions'
+      type: object
     errorResponse:
       description: error response
       properties:
@@ -624,22 +634,133 @@ components:
           description: Error message
           type: string
       type: object
-    actionStepStatus:
-      default: UNKNOWN
-      description: status of action step
+    actionName:
+      description: action name
       enum:
-      - UNKNOWN
-      - CREATED
-      - EXECUTION_IN_PROGRESS
-      - EXECUTION_COMPLETE
-      - EXECUTION_FAILED
-      - EXECUTION_CANCELLED
+      - NONE
+      - FPA_CREATE_RULE
+      - FPA_PAO_REMEDIATION_ENQUEUE
+      - DISPLAY
+      - PROMPT
       type: string
+    actionStepAPIMetadata:
+      description: all details to trigger action step of type API
+      properties:
+        endpoint:
+          description: endpoint of the API
+          type: string
+        headers:
+          description: headers for the API request
+          type: object
+        method:
+          description: http method for API
+          type: string
+        payload:
+          description: payload for the API request
+          format: byte
+          type: string
+      type: object
+    commonMetadata:
+      description: metadata which can be common across all actions
+      properties:
+        entities:
+          $ref: '#/components/schemas/entityParams'
+        error:
+          description: store custom error which will be reflected on UI
+          type: string
+        incompleteEntities:
+          $ref: '#/components/schemas/incompleteEntities'
+      type: object
+    messageActions:
+      description: list of actions for a message
+      properties:
+        actions:
+          description: list of actions
+          items:
+            $ref: '#/components/schemas/messageAction'
+          type: array
+        messageId:
+          description: message ID
+          type: string
+      type: object
     actionUpdateResponse:
       description: action update response body
       properties:
         error:
           description: update error
+          type: string
+      type: object
+    incompleteEntities:
+      description: list of incomplete entities where we need user interaction
+      properties:
+        interObjects:
+          $ref: '#/components/schemas/interObjectParams'
+        intraObject:
+          $ref: '#/components/schemas/intraObjectParams'
+        invalidParams:
+          $ref: '#/components/schemas/missedInvalidSingleValuedParams'
+        missedParams:
+          $ref: '#/components/schemas/missedInvalidSingleValuedParams'
+        singleValuedParams:
+          $ref: '#/components/schemas/missedInvalidSingleValuedParams'
+      type: object
+    actionValidateResponse:
+      description: validate action API response body
+      properties:
+        common_metadata:
+          description: action metadata
+          type: object
+        error:
+          description: action validation error
+          type: string
+        status:
+          $ref: '#/components/schemas/actionStatus'
+      type: object
+    actionUpdateRequest:
+      description: action update API request body
+      properties:
+        common_metadata:
+          description: action metadata
+          type: object
+        description:
+          description: action description
+          type: string
+        status:
+          $ref: '#/components/schemas/actionStatus'
+      required:
+      - status
+      type: object
+    actionInvokeResponse:
+      description: invoke action response body
+      properties:
+        error:
+          description: action invocation error
+          type: string
+        status:
+          $ref: '#/components/schemas/actionStatus'
+        taskId:
+          description: async task ID for action execution
+          type: string
+        taskUrl:
+          description: URL to async task
+          type: string
+      type: object
+    listActionStepResponse:
+      description: response containing list of action steps
+      properties:
+        actionSteps:
+          description: list of action step objects
+          items:
+            $ref: '#/components/schemas/actionStep'
+          type: array
+      type: object
+    interObjectOptions:
+      description: InterObjectOptions is used to provide options for the ambiguity in the inter-object params.
+      properties:
+        options:
+          $ref: '#/components/schemas/entityParams'
+        type:
+          description: this type is used to disambiguate between Application, URL, and other types
           type: string
       type: object
     actionStep:
@@ -690,14 +811,16 @@ components:
           format: date-time
           type: string
       type: object
-    actionName:
-      description: action name
+    actionStepStatus:
+      default: UNKNOWN
+      description: status of action step
       enum:
-      - NONE
-      - FPA_CREATE_RULE
-      - FPA_PAO_REMEDIATION_ENQUEUE
-      - DISPLAY
-      - PROMPT
+      - UNKNOWN
+      - CREATED
+      - EXECUTION_IN_PROGRESS
+      - EXECUTION_COMPLETE
+      - EXECUTION_FAILED
+      - EXECUTION_CANCELLED
       type: string
     missedInvalidSingleValuedParams:
       description: represents the ambiguity in Missed, Invalid, and SingleValued params.
@@ -720,79 +843,6 @@ components:
           description: type of the entity
           type: string
       type: object
-    pollActionExecutionStatusResponse:
-      description: response to getActionStatus API
-      properties:
-        responseMessage:
-          description: response message
-          type: string
-        status:
-          $ref: '#/components/schemas/actionStatus'
-      type: object
-    entityParams:
-      description: leaf entity details
-      properties:
-        actionStepId:
-          description: action step id
-          type: string
-        details:
-          description: details related to entity
-          format: byte
-          type: string
-        id:
-          description: id of the entity
-          type: string
-        isSelected:
-          description: is entity selected by user
-          type: boolean
-        name:
-          description: name of the entity
-          type: string
-        type:
-          description: type of the entity
-          type: string
-        value:
-          description: value of the entity
-          type: string
-      type: object
-    actionStepAPIMetadata:
-      description: all details to trigger action step of type API
-      properties:
-        endpoint:
-          description: endpoint of the API
-          type: string
-        headers:
-          description: headers for the API request
-          type: object
-        method:
-          description: http method for API
-          type: string
-        payload:
-          description: payload for the API request
-          format: byte
-          type: string
-      type: object
-    getActionsByConversationIDResponse:
-      description: response structure for getting actions for a single conversation
-      properties:
-        msgActions:
-          $ref: '#/components/schemas/messageActions'
-      type: object
-    actionInvokeResponse:
-      description: invoke action response body
-      properties:
-        error:
-          description: action invocation error
-          type: string
-        status:
-          $ref: '#/components/schemas/actionStatus'
-        taskId:
-          description: async task ID for action execution
-          type: string
-        taskUrl:
-          description: URL to async task
-          type: string
-      type: object
     intraObjectParams:
       description: represents the ambiguity in the intra-object params like RickMiles1, RickMiles2, etc.
       properties:
@@ -805,78 +855,12 @@ components:
           description: type of the entity
           type: string
       type: object
-    listActionStepResponse:
-      description: response containing list of action steps
-      properties:
-        actionSteps:
-          description: list of action step objects
-          items:
-            $ref: '#/components/schemas/actionStep'
-          type: array
-      type: object
-    actionUpdateRequest:
-      description: action update API request body
-      properties:
-        common_metadata:
-          description: action metadata
-          type: object
-        description:
-          description: action description
-          type: string
-        status:
-          $ref: '#/components/schemas/actionStatus'
-      required:
-      - status
-      type: object
     actionOperation:
       description: action operation
       enum:
       - EXECUTE
       - UNDO
       type: string
-    actionStatus:
-      description: action status
-      enum:
-      - NO_ACTION_STATUS
-      - DISABLED
-      - VALIDATION
-      - CONFIRMATION
-      - IN_PROGRESS
-      - COMPLETE
-      - FAILED
-      - CANCELLED
-      - VALIDATION_IN_PROGRESS
-      - UNDO_IN_PROGRESS
-      - UNDO_COMPLETE
-      - UNDO_FAILED
-      - INVALID
-      type: string
-    incompleteEntities:
-      description: list of incomplete entities where we need user interaction
-      properties:
-        interObjects:
-          $ref: '#/components/schemas/interObjectParams'
-        intraObject:
-          $ref: '#/components/schemas/intraObjectParams'
-        invalidParams:
-          $ref: '#/components/schemas/missedInvalidSingleValuedParams'
-        missedParams:
-          $ref: '#/components/schemas/missedInvalidSingleValuedParams'
-        singleValuedParams:
-          $ref: '#/components/schemas/missedInvalidSingleValuedParams'
-      type: object
-    messageActions:
-      description: list of actions for a message
-      properties:
-        actions:
-          description: list of actions
-          items:
-            $ref: '#/components/schemas/messageAction'
-          type: array
-        messageId:
-          description: message ID
-          type: string
-      type: object
     interObjectParams:
       description: represents the ambiguity in the inter-object params like Application or URL
       properties:
@@ -892,6 +876,22 @@ components:
           description: raw value of the entity which can be used for UI display
           type: string
       type: object
+    pollActionExecutionStatusResponse:
+      description: response to getActionStatus API
+      properties:
+        responseMessage:
+          description: response message
+          type: string
+        status:
+          $ref: '#/components/schemas/actionStatus'
+      type: object
+    actionStepType:
+      default: DEFAULT
+      description: action step type
+      enum:
+      - DEFAULT
+      - API
+      type: string
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

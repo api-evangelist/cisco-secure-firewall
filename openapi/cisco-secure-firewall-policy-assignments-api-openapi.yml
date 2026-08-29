@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Policy Assignments across 2 of this provider''s published API definitions: cdfmc-openapi.yaml,
-    cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Policy Assignments across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 4/4
   x-evidence:
@@ -47,6 +43,25 @@ tags:
 - name: Policy Assignments
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/assignment/policyassignments:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       deprecated: false
       description: '**Get the list of all policy assignments to target devices.**'
@@ -81,8 +96,7 @@ paths:
                       limit: 2
                       offset: 0
                       pages: 1
-                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/assignment/policyassignments?expanded=true ( Success:
-                  Test GET ALL success with expanded=true )'
+                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/assignment/policyassignments?expanded=true ( Success: Test GET ALL success with expanded=true )'
                 : value:
                     items:
                     - id: NatPolUuid
@@ -161,8 +175,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/assignment/policyassignments ( POST request to assign device
-                to an FTDPlatformSettings policy )'
+              ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/assignment/policyassignments ( POST request to assign device to an FTDPlatformSettings policy )'
               : value:
                   policy:
                     id: ftdplatformsettingspolicyUUID
@@ -176,8 +189,7 @@ paths:
                     name: FTD_Device2
                     type: Device
                   type: PolicyAssignment
-              ? 'Example 2 : POST /fmc_config/v1/domain/DomainUUID/assignment/policyassignments ( POST request to assign device
-                to an AC policy )'
+              ? 'Example 2 : POST /fmc_config/v1/domain/DomainUUID/assignment/policyassignments ( POST request to assign device to an AC policy )'
               : value:
                   policy:
                     id: accesspolicyUUID
@@ -191,8 +203,7 @@ paths:
                     name: FTD_Device2
                     type: Device
                   type: PolicyAssignment
-              ? 'Example 3 : POST /fmc_config/v1/domain/DomainUUID/assignment/policyassignments ( POST request to assign device
-                to an FlexConfig policy )'
+              ? 'Example 3 : POST /fmc_config/v1/domain/DomainUUID/assignment/policyassignments ( POST request to assign device to an FlexConfig policy )'
               : value:
                   policy:
                     id: flexconfigpolicyUUID
@@ -206,8 +217,7 @@ paths:
                     name: FTD_Device2
                     type: Device
                   type: PolicyAssignment
-              ? 'Example 4 : POST /fmc_config/v1/domain/DomainUUID/assignment/policyassignments ( POST request to assign device(s)
-                to a NAT policy )'
+              ? 'Example 4 : POST /fmc_config/v1/domain/DomainUUID/assignment/policyassignments ( POST request to assign device(s) to a NAT policy )'
               : value:
                   policy:
                     id: NatPol1_uuid
@@ -243,6 +253,7 @@ paths:
           description: Error
       tags:
       - Policy Assignments
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/assignment/policyassignments/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -262,7 +273,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/assignment/policyassignments/{objectId}:
     get:
       deprecated: false
       description: '**Get the policy assignment associated with the specified ID.**'
@@ -281,8 +291,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( GET
-                  by id on AC policy )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( GET by id on AC policy )'
                 : value:
                     id: policyassignmentUUID
                     links:
@@ -297,8 +306,7 @@ paths:
                       name: FTD_Device1
                       type: Device
                     type: PolicyAssignment
-                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( GET
-                  by id on NAT policy )'
+                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( GET by id on NAT policy )'
                 : value:
                     id: NatPolUuid
                     links:
@@ -320,8 +328,7 @@ paths:
                       prohibitPacketTransfer: false
                       type: Device
                     type: PolicyAssignment
-                ? 'Example 3 : GET /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( GET
-                  by id on FlexConfig policy )'
+                ? 'Example 3 : GET /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( GET by id on FlexConfig policy )'
                 : value:
                     id: policyassignmentUUID
                     links:
@@ -336,8 +343,7 @@ paths:
                       name: FTD_Device1
                       type: Device
                     type: PolicyAssignment
-                ? 'Example 4 : GET /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( GET
-                  by id on PlatformSettings policy )'
+                ? 'Example 4 : GET /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( GET by id on PlatformSettings policy )'
                 : value:
                     id: policyassignmentUUID
                     links:
@@ -367,8 +373,7 @@ paths:
       - Policy Assignments
     put:
       deprecated: false
-      description: '**Modify the policy assignment associated with the specified ID. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Modify the policy assignment associated with the specified ID. _Check the response section for applicable examples (if any)._**'
       operationId: updatePolicyAssignment
       parameters:
       - description: Unique identifier of the policy assignment.
@@ -383,8 +388,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( PUT
-                request to modify policy assignment of FTDPlatformSettings policy )'
+              ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( PUT request to modify policy assignment of FTDPlatformSettings policy )'
               : value:
                   id: policyassignmentUUID
                   policy:
@@ -396,8 +400,7 @@ paths:
                     name: FTD_Device1
                     type: Device
                   type: PolicyAssignment
-              ? 'Example 2 : PUT /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( PUT
-                request to modify policy assignment of AC policy )'
+              ? 'Example 2 : PUT /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( PUT request to modify policy assignment of AC policy )'
               : value:
                   id: policyassignmentUUID
                   policy:
@@ -409,8 +412,7 @@ paths:
                     name: FTD_Device1
                     type: Device
                   type: PolicyAssignment
-              ? 'Example 3 : PUT /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( PUT
-                request to modify policy assignment of FlexConfig policy )'
+              ? 'Example 3 : PUT /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( PUT request to modify policy assignment of FlexConfig policy )'
               : value:
                   id: policyassignmentUUID
                   policy:
@@ -422,8 +424,7 @@ paths:
                     name: FTD_Device1
                     type: Device
                   type: PolicyAssignment
-              ? 'Example 4 : PUT /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( PUT
-                request to modify policy assignment of NAT policy )'
+              ? 'Example 4 : PUT /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( PUT request to modify policy assignment of NAT policy )'
               : value:
                   id: policyassignmentUUID
                   policy:
@@ -438,8 +439,7 @@ paths:
                     name: FTD_Device2
                     type: Device
                   type: PolicyAssignment
-              ? 'Example 5 : PUT /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( PUT
-                request to delete policy assignments of NAT policy )'
+              ? 'Example 5 : PUT /fmc_config/v1/domain/DomainUUID/assignment/policyassignments/policyassignmentUUID ( PUT request to delete policy assignments of NAT policy )'
               : value:
                   id: policyassignmentUUID
                   policy:
@@ -469,46 +469,12 @@ paths:
           description: Error
       tags:
       - Policy Assignments
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
     limit:
       description: Number of items to return.
       in: query
       name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
       required: false
       schema:
         format: int32
@@ -520,7 +486,120 @@ components:
       required: true
       schema:
         type: string
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   schemas:
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    Links:
+      properties:
+        parent:
+          type: string
+        self:
+          type: string
+      type: object
+    IPolicyModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
     Domain:
       description: The details about the domain.
       properties:
@@ -540,67 +619,20 @@ components:
         uuid:
           type: string
       type: object
-    Metadata:
-      description: Defines read only details about the object - whether it is system defined, last user who modified the object
-        etc.
+    PagingContainer:
       properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          description: Defines the domains this instance belongs to (if applicable).
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          description: The last user who modified this instance.
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          description: Details regarding the read only status of this instance
-          type: object
-        timestamp:
-          description: The last updated timestamp.
+        count:
           format: int32
           type: integer
-      type: object
-    Links:
-      properties:
-        parent:
-          type: string
-        self:
-          type: string
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    MetadataUser:
-      description: This object defines details about the user.
-      properties:
-        id:
-          description: The unique UUID of the user
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Contains the self referencing links to this resource
-          type: object
-        name:
-          description: Name of the user.
-          type: string
-        type:
-          description: The user type (fixed).
-          type: string
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
       type: object
     ITarget:
       description: This is the target device.
@@ -625,60 +657,82 @@ components:
         version:
           type: string
       type: object
-    PolicyAssignmentListContainer:
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
       properties:
-        items:
-          $ref: '#/components/schemas/PolicyAssignment'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
       type: object
-    IMetadataUser:
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    Metadata:
+      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          description: Defines the domains this instance belongs to (if applicable).
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          description: The last user who modified this instance.
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          description: Details regarding the read only status of this instance
+          type: object
+        timestamp:
+          description: The last updated timestamp.
+          format: int32
+          type: integer
+      type: object
+    MetadataUser:
+      description: This object defines details about the user.
       properties:
         id:
+          description: The unique UUID of the user
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
+          description: Contains the self referencing links to this resource
           type: object
         name:
+          description: Name of the user.
           type: string
         type:
-          type: string
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
+          description: The user type (fixed).
           type: string
       type: object
     PolicyAssignment:
@@ -708,114 +762,39 @@ components:
         version:
           type: string
       type: object
-    PagingContainer:
+    PolicyAssignmentListContainer:
       properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
+        items:
+          $ref: '#/components/schemas/PolicyAssignment'
           type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        name:
-          type: string
-        type:
-          type: string
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
       type: object
-    ErrorMessagesContainer:
+    ErrorResponse:
       properties:
-        bulkPayloadIndex:
-          description: More details about the error.
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
           type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
         severity:
           description: Specifies the Highest level severity among all the error messages.
           enum:
           - ERROR
           - WARN
           type: string
-      type: object
-    IPolicyModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    ReadOnly:
-      description: Defines the read only conditions if the referenced resource is read only.
-      properties:
-        reason:
-          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions
-            make it read only) or DOMAIN (if resource is read only in current domain).
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          description: True if this resource us read only and false otherwise.
-          type: boolean
       type: object
   securitySchemes:
     bearerAuth:

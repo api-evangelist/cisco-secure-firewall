@@ -95,6 +95,15 @@ components:
           description: Map containing model_type <> quick picks.
           type: object
       type: object
+    quickPickFeedbacks:
+      description: quick pick feedbacks object
+      properties:
+        quickPickFeedback:
+          description: A list of quick pick feedback items.
+          items:
+            $ref: '#/components/schemas/quickPickFeedback'
+          type: array
+      type: object
     quickPickFeedback:
       description: quick pick feedback object
       properties:
@@ -107,15 +116,6 @@ components:
         id:
           description: The unique identifier for the quick pick feedback.
           type: string
-      type: object
-    quickPickFeedbacks:
-      description: quick pick feedbacks object
-      properties:
-        quickPickFeedback:
-          description: A list of quick pick feedback items.
-          items:
-            $ref: '#/components/schemas/quickPickFeedback'
-          type: array
       type: object
   securitySchemes:
     bearerAuth:

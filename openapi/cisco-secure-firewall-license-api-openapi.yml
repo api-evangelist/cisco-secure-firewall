@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged License across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml.
-    Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged License across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 6/6
   x-evidence:
@@ -47,6 +43,25 @@ tags:
 - name: License
 paths:
   /v1/cdfmc/api/fmc_platform/v1/license/devicelicenses:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       deprecated: false
       description: '**Get all device licenses.**'
@@ -187,6 +202,7 @@ paths:
           description: Error
       tags:
       - License
+  /v1/cdfmc/api/fmc_platform/v1/license/devicelicenses/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -206,7 +222,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_platform/v1/license/devicelicenses/{objectId}:
     get:
       deprecated: false
       description: '**Get the device license associated with the specified ID.**'
@@ -248,8 +263,7 @@ paths:
       - License
     put:
       deprecated: false
-      description: '**Modify the device license associated with the specified ID. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Modify the device license associated with the specified ID. _Check the response section for applicable examples (if any)._**'
       operationId: updateDeviceLicense
       parameters:
       - description: Unique identifier associated with the device license.
@@ -334,6 +348,7 @@ paths:
           description: Error
       tags:
       - License
+  /v1/cdfmc/api/fmc_platform/v1/license/smartlicenses:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -353,7 +368,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_platform/v1/license/smartlicenses:
     get:
       deprecated: false
       description: '**Get the list of all Smart Licenses and associated information.**'
@@ -479,27 +493,67 @@ paths:
           description: Error
       tags:
       - License
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   schemas:
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
     DeviceLicense:
       description: API's to trigger retrieving and updating the Smart License operations on devices.
       properties:
@@ -615,65 +669,14 @@ components:
         version:
           type: string
       type: object
-    IDomain:
+    ILinks:
+      description: This defines the self referencing links for the given resource.
       properties:
-        id:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
           type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
+        self:
+          description: Full resource URL path to reference this particular resource.
           type: string
       type: object
     ErrorMessagesContainer:
@@ -702,27 +705,6 @@ components:
           - ERROR
           - WARN
           type: string
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
       type: object
     ISmartLicenseMetaData:
       properties:
@@ -768,15 +750,13 @@ components:
           type: string
       type: object
     SmartLicense:
-      description: API's to trigger Smart License related operations like evaluation, registration, de-registration and Smart
-        License operations on devices.
+      description: API's to trigger Smart License related operations like evaluation, registration, de-registration and Smart License operations on devices.
       properties:
         description:
           description: More information about the Smart License.
           type: string
         force:
-          description: true | false, if true, Overwrite FMC instance in Smart Software Manager if instance already exists.
-            default is false
+          description: true | false, if true, Overwrite FMC instance in Smart Software Manager if instance already exists. default is false
           type: string
         id:
           type: string
@@ -813,14 +793,38 @@ components:
           description: SmartLicense
           type: string
       type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
+    DeviceLicenseListContainer:
       properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
+        items:
+          $ref: '#/components/schemas/DeviceLicense'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
           type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
           type: string
       type: object
     SmartLicenseListContainer:
@@ -835,30 +839,27 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    DeviceLicenseListContainer:
+    IMetadataUser:
       properties:
-        items:
-          $ref: '#/components/schemas/DeviceLicense'
-          type: array
+        id:
+          type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
+        name:
           type: string
-        state:
-          type: boolean
+        type:
+          type: string
       type: object
   parameters:
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
     expanded:
       description: If set to true, the GET response displays a list of objects with additional attributes.
       in: query
@@ -870,14 +871,6 @@ components:
       description: Number of items to return.
       in: query
       name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
       required: false
       schema:
         format: int32

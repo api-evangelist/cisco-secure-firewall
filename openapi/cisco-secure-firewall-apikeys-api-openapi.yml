@@ -109,6 +109,20 @@ paths:
       - ApiKeys
 components:
   schemas:
+    CreateApiKeyRequest:
+      properties:
+        apiKeyName:
+          description: The name of the API key to be created.
+          type: string
+        description:
+          description: A brief description of the API key.
+          type: string
+        permissions:
+          description: A list of permissions to be assigned to the API key.
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
+      type: object
     ApiKey:
       properties:
         createdDate:
@@ -151,18 +165,6 @@ components:
           description: The expiration date and time of the token.
           type: string
       type: object
-    CreateApiKeyResponse:
-      properties:
-        accessToken:
-          description: The access token generated for the API key.
-          type: string
-        cuiMachineAccountId:
-          description: The unique identifier for the CUI machine account.
-          type: string
-        refreshToken:
-          description: The refresh token generated for the API key.
-          type: string
-      type: object
     ErrorResponse:
       properties:
         message:
@@ -181,19 +183,17 @@ components:
       - message
       - timestamp
       type: object
-    CreateApiKeyRequest:
+    CreateApiKeyResponse:
       properties:
-        apiKeyName:
-          description: The name of the API key to be created.
+        accessToken:
+          description: The access token generated for the API key.
           type: string
-        description:
-          description: A brief description of the API key.
+        cuiMachineAccountId:
+          description: The unique identifier for the CUI machine account.
           type: string
-        permissions:
-          description: A list of permissions to be assigned to the API key.
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
+        refreshToken:
+          description: The refresh token generated for the API key.
+          type: string
       type: object
     Permission:
       properties:

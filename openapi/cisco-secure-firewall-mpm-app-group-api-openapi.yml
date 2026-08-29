@@ -264,22 +264,6 @@ paths:
       - MPM App Group
 components:
   schemas:
-    MpmPolicyMetadataToRules:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        policyId:
-          format: uuid
-          type: string
-        ruleIds:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
     MpmAppObj:
       properties:
         alg:
@@ -313,6 +297,22 @@ components:
           type: integer
         value:
           type: string
+      type: object
+    MpmPolicyMetadataToRules:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        ruleIds:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
       type: object
     MpmAppGroupObj:
       properties:

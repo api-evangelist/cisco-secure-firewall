@@ -563,6 +563,134 @@ paths:
       - Support
 components:
   schemas:
+    PcmRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        externalReqPayload:
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        manualStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        objectIdRef:
+          type: string
+        reqAction:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqType:
+          enum:
+          - POLICY
+          - APP_GROUP
+          - ENDPOINT_GROUP
+          type: string
+        revision:
+          format: int32
+          type: integer
+      type: object
+    GwSetPolicyResponse:
+      properties:
+        credentialName:
+          type: string
+        gwSetId:
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        policy:
+          $ref: '#/components/schemas/Policy'
+      type: object
+    PushGatewayRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        objectIdRef:
+          type: string
+        reqId:
+          format: uuid
+          type: string
+      type: object
+    Policy:
+      properties:
+        natRules:
+          items:
+            $ref: '#/components/schemas/NatRule'
+          type: array
+        rules:
+          items:
+            $ref: '#/components/schemas/Rule'
+          type: array
+        version:
+          format: int64
+          type: integer
+      type: object
+    IpV4Address:
+      properties:
+        address:
+          type: string
+        addressSpace:
+          format: int64
+          type: integer
+        addressType:
+          enum:
+          - PREFIX
+          - RANGE
+          type: string
+        anyAddress:
+          type: boolean
+        binaryString:
+          type: string
+        longRange:
+          $ref: '#/components/schemas/LongRange'
+        mask:
+          format: int32
+          type: integer
+        type:
+          enum:
+          - PREFIX
+          - RANGE
+          type: string
+      type: object
     ProtocolWithPort:
       properties:
         dstPortEnd:
@@ -593,6 +721,70 @@ components:
           format: int32
           type: integer
       type: object
+    GatewaySetDetails:
+      properties:
+        errMsg:
+          type: string
+        gwSetId:
+          type: string
+        subRequestStatus:
+          type: string
+      type: object
+    DecomGwQueueEntry:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        gwSetId:
+          type: string
+        updatedTime:
+          format: date-time
+          type: string
+      type: object
+    MpmRequest:
+      properties:
+        createdBy:
+          type: string
+        createdTime:
+          format: date-time
+          type: string
+        gatewaySetId:
+          type: string
+        id:
+          format: uuid
+          type: string
+        lockAcquired:
+          type: boolean
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        managerId:
+          format: uuid
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+        revisionId:
+          format: int32
+          type: integer
+      type: object
     NatRule:
       properties:
         destinationNat:
@@ -601,6 +793,15 @@ components:
           $ref: '#/components/schemas/ServiceNat'
         sourceNat:
           $ref: '#/components/schemas/SourceNat'
+      type: object
+    SubRequestsInQueueByGatewaySet:
+      properties:
+        gatewaySetId:
+          type: string
+        subRequestsInQueue:
+          items:
+            $ref: '#/components/schemas/SubRequestInQueue'
+          type: array
       type: object
     SdiRequest:
       properties:
@@ -641,6 +842,64 @@ components:
           type: string
         sdiReqId:
           type: string
+      type: object
+    ServiceNat:
+      properties:
+        any:
+          type: boolean
+        original:
+          items:
+            $ref: '#/components/schemas/ProtocolWithPort'
+          type: array
+        translation:
+          $ref: '#/components/schemas/ProtocolWithPort'
+        type:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+      type: object
+    PushGatewaySetResponse:
+      properties:
+        gatewaySetId:
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    RequestsResponsePage:
+      properties:
+        cursor:
+          example: '2023-06-01T10:20:32.234Z'
+          title: Timestamp cursor for the last record on page
+          type: string
+        requests:
+          items:
+            $ref: '#/components/schemas/RequestQueryApiResponse'
+          type: array
+      type: object
+    RuleOptions:
+      properties:
+        logOnClose:
+          type: boolean
+        logOnInit:
+          type: boolean
       type: object
     SubRequestInQueue:
       properties:
@@ -700,159 +959,6 @@ components:
           - ERRORED
           type: string
       type: object
-    Rule:
-      properties:
-        action:
-          enum:
-          - PERMIT
-          - DENY
-          type: string
-        destinations:
-          items:
-            $ref: '#/components/schemas/IpV4Address'
-          type: array
-        ruleOptions:
-          $ref: '#/components/schemas/RuleOptions'
-        services:
-          $ref: '#/components/schemas/Services'
-        sources:
-          items:
-            $ref: '#/components/schemas/IpV4Address'
-          type: array
-      type: object
-    ParentChildRequestPair:
-      properties:
-        child:
-          $ref: '#/components/schemas/ReqIdAndSystem'
-        parent:
-          $ref: '#/components/schemas/ReqIdAndSystem'
-      type: object
-    OtherInternetProtocol:
-      properties:
-        protocol:
-          enum:
-          - '{"number":1,"name":"icmp"}'
-          - '{"number":2,"name":"igmp"}'
-          - '{"number":89,"name":"ospfigp"}'
-          - '{"number":112,"name":"vrrp"}'
-          - '{"number":57,"name":"skip"}'
-          - '{"number":103,"name":"pim"}'
-          - '{"number":47,"name":"gre"}'
-          - '{"number":50,"name":"esp"}'
-          - '{"number":51,"name":"ah"}'
-          - '{"number":6,"name":"tcp"}'
-          - '{"number":17,"name":"udp"}'
-          type: string
-        timeout:
-          format: int32
-          type: integer
-      type: object
-    TopologyChangeRequest:
-      properties:
-        createdTime:
-          format: date-time
-          type: string
-        externalReqPayload:
-          type: string
-        managedStatus:
-          enum:
-          - RECEIVED
-          - VALIDATED
-          - IN_PROGRESS
-          - PENDING
-          - SUCCEEDED
-          - REJECTED
-          - NOT_APPLICABLE
-          type: string
-        modifiedTime:
-          format: date-time
-          type: string
-        reqId:
-          format: uuid
-          type: string
-      type: object
-    PushGatewayRequest:
-      properties:
-        createdTime:
-          format: date-time
-          type: string
-        managedStatus:
-          enum:
-          - RECEIVED
-          - VALIDATED
-          - IN_PROGRESS
-          - PENDING
-          - SUCCEEDED
-          - REJECTED
-          - NOT_APPLICABLE
-          type: string
-        modifiedTime:
-          format: date-time
-          type: string
-        objectIdRef:
-          type: string
-        reqId:
-          format: uuid
-          type: string
-      type: object
-    PcmRequest:
-      properties:
-        createdTime:
-          format: date-time
-          type: string
-        externalReqPayload:
-          type: string
-        managedStatus:
-          enum:
-          - RECEIVED
-          - VALIDATED
-          - IN_PROGRESS
-          - PENDING
-          - SUCCEEDED
-          - REJECTED
-          - NOT_APPLICABLE
-          type: string
-        manualStatus:
-          enum:
-          - RECEIVED
-          - VALIDATED
-          - IN_PROGRESS
-          - PENDING
-          - SUCCEEDED
-          - REJECTED
-          - NOT_APPLICABLE
-          type: string
-        modifiedTime:
-          format: date-time
-          type: string
-        objectIdRef:
-          type: string
-        reqAction:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        reqId:
-          format: uuid
-          type: string
-        reqType:
-          enum:
-          - POLICY
-          - APP_GROUP
-          - ENDPOINT_GROUP
-          type: string
-        revision:
-          format: int32
-          type: integer
-      type: object
-    RuleOptions:
-      properties:
-        logOnClose:
-          type: boolean
-        logOnInit:
-          type: boolean
-      type: object
     MpmGovernancePolicyDynamicGroupRequest:
       properties:
         createdTime:
@@ -877,17 +983,14 @@ components:
           format: date-time
           type: string
       type: object
-    GwSetPolicyResponse:
+    SubRequestQueueResponse:
       properties:
-        credentialName:
+        cursor:
           type: string
-        gwSetId:
-          type: string
-        modifiedTime:
-          format: date-time
-          type: string
-        policy:
-          $ref: '#/components/schemas/Policy'
+        queue:
+          items:
+            $ref: '#/components/schemas/SubRequestsInQueueByGatewaySet'
+          type: array
       type: object
     ZoneTopologyRequest:
       properties:
@@ -925,61 +1028,135 @@ components:
         zoneId:
           type: string
       type: object
-    SubRequestQueueResponse:
+    RequestingSystemRequestDetails:
       properties:
-        cursor:
-          type: string
-        queue:
+        hasRequestDetail:
+          type: boolean
+        mpmGovernanceDynamicGroupRequest:
+          $ref: '#/components/schemas/MpmGovernancePolicyDynamicGroupRequest'
+        mpmRequest:
           items:
-            $ref: '#/components/schemas/SubRequestsInQueueByGatewaySet'
+            $ref: '#/components/schemas/MpmRequest'
+          type: array
+        pcmRequest:
+          $ref: '#/components/schemas/PcmRequest'
+        pushGatewayRequest:
+          $ref: '#/components/schemas/PushGatewayRequest'
+        sdiRequest:
+          $ref: '#/components/schemas/SdiRequest'
+        topologyChangeRequest:
+          $ref: '#/components/schemas/TopologyChangeRequest'
+        topologyRequest:
+          $ref: '#/components/schemas/ZoneTopologyRequest'
+      type: object
+    Rule:
+      properties:
+        action:
+          enum:
+          - PERMIT
+          - DENY
+          type: string
+        destinations:
+          items:
+            $ref: '#/components/schemas/IpV4Address'
+          type: array
+        ruleOptions:
+          $ref: '#/components/schemas/RuleOptions'
+        services:
+          $ref: '#/components/schemas/Services'
+        sources:
+          items:
+            $ref: '#/components/schemas/IpV4Address'
           type: array
       type: object
-    FullRequestDetails:
+    Services:
       properties:
-        details:
-          $ref: '#/components/schemas/RequestingSystemRequestDetails'
-        errCode:
+        applicationProtocols:
+          items:
+            $ref: '#/components/schemas/ApplicationProtocolImpl'
+          type: array
+        icmps:
+          items:
+            $ref: '#/components/schemas/Icmp'
+          type: array
+        isAnyService:
+          type: boolean
+        otherInternetProtocols:
+          items:
+            $ref: '#/components/schemas/OtherInternetProtocol'
+          type: array
+        protocolWithPorts:
+          items:
+            $ref: '#/components/schemas/ProtocolWithPort'
+          type: array
+        servicesAsCanonicalStrings:
+          items:
+            type: string
+          type: array
+      type: object
+    SourceNat:
+      properties:
+        original:
+          items:
+            $ref: '#/components/schemas/IpV4Address'
+          type: array
+        translation:
+          $ref: '#/components/schemas/IpV4Address'
+        type:
           enum:
-          - INPUT_VALIDATION_ERROR
-          - INPUT_VALIDATION_ERROR_OBJECT_DOES_NOT_EXIST
-          - INPUT_VALIDATION_ERROR_OBJECT_ALREADY_EXISTS
-          - INPUT_VALIDATION_ERROR_INVALID_REVISION
-          - INPUT_VALIDATION_ERROR_EP_WITH_NO_ZONE
-          - INPUT_VALIDATION_ERROR_PARSING_FAILED
+          - MATCH
+          - STATIC
+          - HIDE
           type: string
-        errMsg:
-          type: string
-        reqId:
-          format: uuid
-          type: string
-        reqStatus:
+      type: object
+    ParentChildRequestPair:
+      properties:
+        child:
+          $ref: '#/components/schemas/ReqIdAndSystem'
+        parent:
+          $ref: '#/components/schemas/ReqIdAndSystem'
+      type: object
+    ApplicationProtocolImpl:
+      properties:
+        applicationProtocolType:
           enum:
-          - RECEIVED
-          - VALIDATED
-          - IN_PROGRESS
-          - PENDING
-          - SUCCEEDED
-          - REJECTED
-          - NOT_APPLICABLE
+          - '{"applicationProtocolName":"ftp","validProtocols":[{"number":6,"name":"tcp"}]}'
+          - '{"applicationProtocolName":"sqlnetv2","validProtocols":[{"number":6,"name":"tcp"}]}'
+          - '{"applicationProtocolName":"tftp","validProtocols":[{"number":17,"name":"udp"}]}'
+          - '{"applicationProtocolName":"sip","validProtocols":[{"number":6,"name":"tcp"},{"number":17,"name":"udp"}]}'
+          - '{"applicationProtocolName":"rtsp","validProtocols":[{"number":6,"name":"tcp"}]}'
+          - '{"applicationProtocolName":"sunrpc","validProtocols":[{"number":6,"name":"tcp"},{"number":17,"name":"udp"}]}'
+          - '{"applicationProtocolName":"msrpc","validProtocols":[{"number":6,"name":"tcp"},{"number":17,"name":"udp"}]}'
+          - '{"applicationProtocolName":"dns","validProtocols":[{"number":6,"name":"tcp"},{"number":17,"name":"udp"}]}'
           type: string
-        reqSystem:
+        protocolWithPort:
+          $ref: '#/components/schemas/ProtocolWithPort'
+      type: object
+    Icmp:
+      properties:
+        code:
+          format: int32
+          type: integer
+        protocol:
           enum:
-          - PCM
-          - SDI
-          - MPM
-          - RED
-          - SEEDING
-          - TOPOLOGY
-          - PCM_TOPOLOGY_CHANGE
-          - SDI_TOPOLOGY_CHANGE
-          - MPM_SECURITY_TOPOLOGY_CHANGE
-          - MPM_POLICY_IMPORT
-          - ZONE_PATH_TOPOLOGY_CHANGE
-          - MPM_MULTI_POLICY_PUSH
-          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          - '{"number":1,"name":"icmp"}'
+          - '{"number":2,"name":"igmp"}'
+          - '{"number":89,"name":"ospfigp"}'
+          - '{"number":112,"name":"vrrp"}'
+          - '{"number":57,"name":"skip"}'
+          - '{"number":103,"name":"pim"}'
+          - '{"number":47,"name":"gre"}'
+          - '{"number":50,"name":"esp"}'
+          - '{"number":51,"name":"ah"}'
+          - '{"number":6,"name":"tcp"}'
+          - '{"number":17,"name":"udp"}'
           type: string
-        username:
-          type: string
+        timeout:
+          format: int32
+          type: integer
+        type:
+          format: int32
+          type: integer
       type: object
     RequestStatusResponse:
       properties:
@@ -1050,71 +1227,118 @@ components:
         sdiReqId:
           type: string
       type: object
-    ServiceNat:
+    TopologyChangeRequest:
       properties:
-        any:
-          type: boolean
-        original:
-          items:
-            $ref: '#/components/schemas/ProtocolWithPort'
-          type: array
-        translation:
-          $ref: '#/components/schemas/ProtocolWithPort'
-        type:
+        createdTime:
+          format: date-time
+          type: string
+        externalReqPayload:
+          type: string
+        managedStatus:
           enum:
-          - MATCH
-          - STATIC
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        reqId:
+          format: uuid
           type: string
       type: object
-    SourceNat:
+    FullRequestDetails:
       properties:
-        original:
-          items:
-            $ref: '#/components/schemas/IpV4Address'
-          type: array
-        translation:
-          $ref: '#/components/schemas/IpV4Address'
-        type:
+        details:
+          $ref: '#/components/schemas/RequestingSystemRequestDetails'
+        errCode:
           enum:
-          - MATCH
-          - STATIC
-          - HIDE
+          - INPUT_VALIDATION_ERROR
+          - INPUT_VALIDATION_ERROR_OBJECT_DOES_NOT_EXIST
+          - INPUT_VALIDATION_ERROR_OBJECT_ALREADY_EXISTS
+          - INPUT_VALIDATION_ERROR_INVALID_REVISION
+          - INPUT_VALIDATION_ERROR_EP_WITH_NO_ZONE
+          - INPUT_VALIDATION_ERROR_PARSING_FAILED
+          type: string
+        errMsg:
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        reqSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+        username:
           type: string
       type: object
-    DestinationNat:
+    OtherInternetProtocol:
       properties:
-        original:
-          items:
-            $ref: '#/components/schemas/IpV4Address'
-          type: array
-        translation:
-          $ref: '#/components/schemas/IpV4Address'
-        type:
+        protocol:
           enum:
-          - MATCH
-          - STATIC
+          - '{"number":1,"name":"icmp"}'
+          - '{"number":2,"name":"igmp"}'
+          - '{"number":89,"name":"ospfigp"}'
+          - '{"number":112,"name":"vrrp"}'
+          - '{"number":57,"name":"skip"}'
+          - '{"number":103,"name":"pim"}'
+          - '{"number":47,"name":"gre"}'
+          - '{"number":50,"name":"esp"}'
+          - '{"number":51,"name":"ah"}'
+          - '{"number":6,"name":"tcp"}'
+          - '{"number":17,"name":"udp"}'
           type: string
+        timeout:
+          format: int32
+          type: integer
       type: object
-    RequestingSystemRequestDetails:
+    ReqIdAndSystem:
       properties:
-        hasRequestDetail:
-          type: boolean
-        mpmGovernanceDynamicGroupRequest:
-          $ref: '#/components/schemas/MpmGovernancePolicyDynamicGroupRequest'
-        mpmRequest:
-          items:
-            $ref: '#/components/schemas/MpmRequest'
-          type: array
-        pcmRequest:
-          $ref: '#/components/schemas/PcmRequest'
-        pushGatewayRequest:
-          $ref: '#/components/schemas/PushGatewayRequest'
-        sdiRequest:
-          $ref: '#/components/schemas/SdiRequest'
-        topologyChangeRequest:
-          $ref: '#/components/schemas/TopologyChangeRequest'
-        topologyRequest:
-          $ref: '#/components/schemas/ZoneTopologyRequest'
+        reqId:
+          format: uuid
+          type: string
+        reqSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
       type: object
     RequestQueryApiResponse:
       properties:
@@ -1162,159 +1386,18 @@ components:
         username:
           type: string
       type: object
-    MpmRequest:
+    DestinationNat:
       properties:
-        createdBy:
-          type: string
-        createdTime:
-          format: date-time
-          type: string
-        gatewaySetId:
-          type: string
-        id:
-          format: uuid
-          type: string
-        lockAcquired:
-          type: boolean
-        managedStatus:
-          enum:
-          - RECEIVED
-          - VALIDATED
-          - IN_PROGRESS
-          - PENDING
-          - SUCCEEDED
-          - REJECTED
-          - NOT_APPLICABLE
-          type: string
-        managerId:
-          format: uuid
-          type: string
-        modifiedTime:
-          format: date-time
-          type: string
-        policyId:
-          format: uuid
-          type: string
-        policyType:
-          enum:
-          - SECURITY
-          - GOVERNANCE_PREPEND
-          - GOVERNANCE_APPEND
-          - NAT
-          type: string
-        revisionId:
-          format: int32
-          type: integer
-      type: object
-    Icmp:
-      properties:
-        code:
-          format: int32
-          type: integer
-        protocol:
-          enum:
-          - '{"number":1,"name":"icmp"}'
-          - '{"number":2,"name":"igmp"}'
-          - '{"number":89,"name":"ospfigp"}'
-          - '{"number":112,"name":"vrrp"}'
-          - '{"number":57,"name":"skip"}'
-          - '{"number":103,"name":"pim"}'
-          - '{"number":47,"name":"gre"}'
-          - '{"number":50,"name":"esp"}'
-          - '{"number":51,"name":"ah"}'
-          - '{"number":6,"name":"tcp"}'
-          - '{"number":17,"name":"udp"}'
-          type: string
-        timeout:
-          format: int32
-          type: integer
+        original:
+          items:
+            $ref: '#/components/schemas/IpV4Address'
+          type: array
+        translation:
+          $ref: '#/components/schemas/IpV4Address'
         type:
-          format: int32
-          type: integer
-      type: object
-    PushGatewaySetResponse:
-      properties:
-        gatewaySetId:
-          type: string
-        reqId:
-          format: uuid
-          type: string
-        requestingSystem:
           enum:
-          - PCM
-          - SDI
-          - MPM
-          - RED
-          - SEEDING
-          - TOPOLOGY
-          - PCM_TOPOLOGY_CHANGE
-          - SDI_TOPOLOGY_CHANGE
-          - MPM_SECURITY_TOPOLOGY_CHANGE
-          - MPM_POLICY_IMPORT
-          - ZONE_PATH_TOPOLOGY_CHANGE
-          - MPM_MULTI_POLICY_PUSH
-          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
-          type: string
-      type: object
-    RequestsResponsePage:
-      properties:
-        cursor:
-          example: '2023-06-01T10:20:32.234Z'
-          title: Timestamp cursor for the last record on page
-          type: string
-        requests:
-          items:
-            $ref: '#/components/schemas/RequestQueryApiResponse'
-          type: array
-      type: object
-    Policy:
-      properties:
-        natRules:
-          items:
-            $ref: '#/components/schemas/NatRule'
-          type: array
-        rules:
-          items:
-            $ref: '#/components/schemas/Rule'
-          type: array
-        version:
-          format: int64
-          type: integer
-      type: object
-    GatewaySetDetails:
-      properties:
-        errMsg:
-          type: string
-        gwSetId:
-          type: string
-        subRequestStatus:
-          type: string
-      type: object
-    ApplicationProtocolImpl:
-      properties:
-        applicationProtocolType:
-          enum:
-          - '{"applicationProtocolName":"ftp","validProtocols":[{"number":6,"name":"tcp"}]}'
-          - '{"applicationProtocolName":"sqlnetv2","validProtocols":[{"number":6,"name":"tcp"}]}'
-          - '{"applicationProtocolName":"tftp","validProtocols":[{"number":17,"name":"udp"}]}'
-          - '{"applicationProtocolName":"sip","validProtocols":[{"number":6,"name":"tcp"},{"number":17,"name":"udp"}]}'
-          - '{"applicationProtocolName":"rtsp","validProtocols":[{"number":6,"name":"tcp"}]}'
-          - '{"applicationProtocolName":"sunrpc","validProtocols":[{"number":6,"name":"tcp"},{"number":17,"name":"udp"}]}'
-          - '{"applicationProtocolName":"msrpc","validProtocols":[{"number":6,"name":"tcp"},{"number":17,"name":"udp"}]}'
-          - '{"applicationProtocolName":"dns","validProtocols":[{"number":6,"name":"tcp"},{"number":17,"name":"udp"}]}'
-          type: string
-        protocolWithPort:
-          $ref: '#/components/schemas/ProtocolWithPort'
-      type: object
-    DecomGwQueueEntry:
-      properties:
-        createdTime:
-          format: date-time
-          type: string
-        gwSetId:
-          type: string
-        updatedTime:
-          format: date-time
+          - MATCH
+          - STATIC
           type: string
       type: object
     LongRange:
@@ -1327,89 +1410,6 @@ components:
         startLong:
           format: int64
           type: integer
-      type: object
-    IpV4Address:
-      properties:
-        address:
-          type: string
-        addressSpace:
-          format: int64
-          type: integer
-        addressType:
-          enum:
-          - PREFIX
-          - RANGE
-          type: string
-        anyAddress:
-          type: boolean
-        binaryString:
-          type: string
-        longRange:
-          $ref: '#/components/schemas/LongRange'
-        mask:
-          format: int32
-          type: integer
-        type:
-          enum:
-          - PREFIX
-          - RANGE
-          type: string
-      type: object
-    ReqIdAndSystem:
-      properties:
-        reqId:
-          format: uuid
-          type: string
-        reqSystem:
-          enum:
-          - PCM
-          - SDI
-          - MPM
-          - RED
-          - SEEDING
-          - TOPOLOGY
-          - PCM_TOPOLOGY_CHANGE
-          - SDI_TOPOLOGY_CHANGE
-          - MPM_SECURITY_TOPOLOGY_CHANGE
-          - MPM_POLICY_IMPORT
-          - ZONE_PATH_TOPOLOGY_CHANGE
-          - MPM_MULTI_POLICY_PUSH
-          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
-          type: string
-      type: object
-    SubRequestsInQueueByGatewaySet:
-      properties:
-        gatewaySetId:
-          type: string
-        subRequestsInQueue:
-          items:
-            $ref: '#/components/schemas/SubRequestInQueue'
-          type: array
-      type: object
-    Services:
-      properties:
-        applicationProtocols:
-          items:
-            $ref: '#/components/schemas/ApplicationProtocolImpl'
-          type: array
-        icmps:
-          items:
-            $ref: '#/components/schemas/Icmp'
-          type: array
-        isAnyService:
-          type: boolean
-        otherInternetProtocols:
-          items:
-            $ref: '#/components/schemas/OtherInternetProtocol'
-          type: array
-        protocolWithPorts:
-          items:
-            $ref: '#/components/schemas/ProtocolWithPort'
-          type: array
-        servicesAsCanonicalStrings:
-          items:
-            type: string
-          type: array
       type: object
   securitySchemes:
     BearerJWT:

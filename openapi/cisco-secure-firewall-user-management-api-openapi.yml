@@ -230,16 +230,25 @@ paths:
           $ref: '#/components/responses/GeneralError'
 components:
   schemas:
-    Error:
+    EnterpriseUserProfile:
       type: object
       required:
-      - code
-      - message
+      - firstName
+      - lastName
+      - login
+      - email
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        login:
+          type: string
+        email:
+          type: string
+        mobilePhone:
+          type: string
+        secondEmail:
           type: string
     ResponsibleActor:
       type: object
@@ -258,6 +267,17 @@ components:
         firstName:
           type: string
         lastName:
+          type: string
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
           type: string
     EnterpriseUser:
       type: object
@@ -317,27 +337,9 @@ components:
           description: it is referencing same type as [provider object's type](https://developer.okta.com/docs/reference/api/users/#provider-object)
         profile:
           $ref: '#/components/schemas/EnterpriseUserProfile'
-    EnterpriseUserProfile:
-      type: object
-      required:
-      - firstName
-      - lastName
-      - login
-      - email
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        login:
-          type: string
-        email:
-          type: string
-        mobilePhone:
-          type: string
-        secondEmail:
-          type: string
   responses:
+    NoContent:
+      description: No content
     NotFoundError:
       description: Not Found
       headers:
@@ -356,8 +358,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NoContent:
-      description: No content
   headers:
     Date:
       schema:

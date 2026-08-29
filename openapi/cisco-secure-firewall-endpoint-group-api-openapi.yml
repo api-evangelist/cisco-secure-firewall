@@ -333,14 +333,45 @@ paths:
       - Endpoint Group
 components:
   schemas:
-    EndpointGroupPageApi:
+    ReqIdAndReqSystem:
       properties:
-        cursor:
+        id:
+          example: 03502bc3-c140-4951-b467-bd17312a9b0b
           type: string
-        epgs:
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    EndpointWithTagApi:
+      properties:
+        ip:
+          example: 1.1.1.1/32
+          format: IP should be valid IPV4 address in CIDR notation
+          type: string
+        tags:
+          example:
+          - key:value
+          format: 'Tag should match this regex: ^[A-Za-z0-9~.]+:[A-Za-z0-9~.]+$'
           items:
-            $ref: '#/components/schemas/EndpointGroupApi'
+            example: '["key:value"]'
+            format: 'Tag should match this regex: ^[A-Za-z0-9~.]+:[A-Za-z0-9~.]+$'
+            type: string
           type: array
+      required:
+      - ip
       type: object
     ExistingAndMissingEndpointGroupsApi:
       properties:
@@ -353,18 +384,6 @@ components:
             $ref: '#/components/schemas/IdValue'
           type: array
       type: object
-    EndpointGroupListApi:
-      properties:
-        epgs:
-          items:
-            $ref: '#/components/schemas/EndpointGroupApi'
-          type: array
-      type: object
-    IdValue:
-      properties:
-        id:
-          type: string
-      type: object
     GroupReferences:
       properties:
         groupIds:
@@ -375,31 +394,6 @@ components:
         policies:
           items:
             $ref: '#/components/schemas/PolicyReference'
-          type: array
-      type: object
-    EndpointGroupIdListUserApi:
-      properties:
-        endpointGroupIds:
-          items:
-            type: string
-          type: array
-      type: object
-    EndpointGroupUserApi:
-      properties:
-        description:
-          type: string
-        memberEndpoints:
-          items:
-            $ref: '#/components/schemas/EndpointWithTagApi'
-          type: array
-        memberGroups:
-          example:
-          - memberGroup1
-          format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
-          items:
-            example: '["memberGroup1"]'
-            format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
-            type: string
           type: array
       type: object
     EndpointGroupApi:
@@ -427,27 +421,17 @@ components:
           format: int32
           type: integer
       type: object
-    ReqIdAndReqSystem:
+    TopologyRequestResponse:
       properties:
-        id:
-          example: 03502bc3-c140-4951-b467-bd17312a9b0b
-          type: string
-        requestingSystem:
-          enum:
-          - PCM
-          - SDI
-          - MPM
-          - RED
-          - SEEDING
-          - TOPOLOGY
-          - PCM_TOPOLOGY_CHANGE
-          - SDI_TOPOLOGY_CHANGE
-          - MPM_SECURITY_TOPOLOGY_CHANGE
-          - MPM_POLICY_IMPORT
-          - ZONE_PATH_TOPOLOGY_CHANGE
-          - MPM_MULTI_POLICY_PUSH
-          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
-          type: string
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
+      type: object
+    EndpointGroupIdListUserApi:
+      properties:
+        endpointGroupIds:
+          items:
+            type: string
+          type: array
       type: object
     EndpointGroupIdPageApi:
       properties:
@@ -458,23 +442,26 @@ components:
             $ref: '#/components/schemas/IdValue'
           type: array
       type: object
-    EndpointWithTagApi:
+    EndpointGroupPageApi:
       properties:
-        ip:
-          example: 1.1.1.1/32
-          format: IP should be valid IPV4 address in CIDR notation
+        cursor:
           type: string
-        tags:
-          example:
-          - key:value
-          format: 'Tag should match this regex: ^[A-Za-z0-9~.]+:[A-Za-z0-9~.]+$'
+        epgs:
           items:
-            example: '["key:value"]'
-            format: 'Tag should match this regex: ^[A-Za-z0-9~.]+:[A-Za-z0-9~.]+$'
-            type: string
+            $ref: '#/components/schemas/EndpointGroupApi'
           type: array
-      required:
-      - ip
+      type: object
+    EndpointGroupListApi:
+      properties:
+        epgs:
+          items:
+            $ref: '#/components/schemas/EndpointGroupApi'
+          type: array
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
       type: object
     PolicyReference:
       properties:
@@ -486,10 +473,23 @@ components:
           type: array
           uniqueItems: true
       type: object
-    TopologyRequestResponse:
+    EndpointGroupUserApi:
       properties:
-        request:
-          $ref: '#/components/schemas/ReqIdAndReqSystem'
+        description:
+          type: string
+        memberEndpoints:
+          items:
+            $ref: '#/components/schemas/EndpointWithTagApi'
+          type: array
+        memberGroups:
+          example:
+          - memberGroup1
+          format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+          items:
+            example: '["memberGroup1"]'
+            format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+            type: string
+          type: array
       type: object
   securitySchemes:
     BearerJWT:

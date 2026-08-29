@@ -185,24 +185,6 @@ components:
           type: string
         value:
           type: string
-    model.Region:
-      type: object
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-    model.ProductInstance:
-      type: object
-      properties:
-        id:
-          type: string
-        external_tenant_id:
-          type: string
-        provisioning_status:
-          type: string
-        region:
-          $ref: '#/components/schemas/model.Region'
     model.ProductInstanceProvisionRequest:
       type: object
       properties:
@@ -216,6 +198,13 @@ components:
           type: string
         region:
           type: string
+    model.Region:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
     model.Error:
       type: object
       properties:
@@ -228,6 +217,17 @@ components:
       properties:
         sourceInstanceId:
           type: string
+    model.ProductInstance:
+      type: object
+      properties:
+        id:
+          type: string
+        external_tenant_id:
+          type: string
+        provisioning_status:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
   securitySchemes:
     EnterpriseAdminBearerAuth:
       type: oauth2

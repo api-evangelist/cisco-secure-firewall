@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Integration across 2 of this provider''s published API definitions: cdfmc-openapi.yaml,
-    cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Integration across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 29/29
   x-evidence:
@@ -47,6 +43,25 @@ tags:
 - name: Integration
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/aiops/configure:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       deprecated: false
       description: '****'
@@ -103,8 +118,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/integration/aiops/configure ( Configure Aiops Enable/Disable
-                on FMC and upload the Prometheus TSDB data to cloud )'
+              ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/integration/aiops/configure ( Configure Aiops Enable/Disable on FMC and upload the Prometheus TSDB data to cloud )'
               : value:
                   enabled: true
                   tenantUuid: tenantUuid
@@ -119,8 +133,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/integration/aiops/configure ( Configure Aiops Enable/Disable
-                  on FMC and upload the Prometheus TSDB data to cloud )'
+                ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/integration/aiops/configure ( Configure Aiops Enable/Disable on FMC and upload the Prometheus TSDB data to cloud )'
                 : value:
                     message: Enable remote-write and upload prometheus TSDB to S3 bucket task scheduled
                     status: IN_PROGRESS
@@ -137,6 +150,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/aiops/tsdbupload:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -156,7 +170,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/aiops/tsdbupload:
     post:
       deprecated: false
       description: '** _Check the response section for applicable examples (if any)._**'
@@ -168,8 +181,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/integration/aiops/uploadtsdb ( Upload the Prometheus TSDB
-                data to cloud )'
+              ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/integration/aiops/uploadtsdb ( Upload the Prometheus TSDB data to cloud )'
               : value:
                   uploadUrl: http://link-to-s3-bucket
             schema:
@@ -182,8 +194,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/integration/aiops/uploadtsdb ( Upload the Prometheus
-                  TSDB data to cloud )'
+                ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/integration/aiops/uploadtsdb ( Upload the Prometheus TSDB data to cloud )'
                 : value:
                     message: Upload task scheduled
                     status: IN_PROGRESS
@@ -200,6 +211,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/aiops/tsdbupload/status:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -219,7 +231,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/aiops/tsdbupload/status:
     get:
       deprecated: false
       description: '****'
@@ -238,8 +249,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/integration/aiops/uploadtsdb/status ( Get the status of
-                  the Prometheus TSDB upload )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/integration/aiops/uploadtsdb/status ( Get the status of the Prometheus TSDB upload )'
                 : value:
                     message: Upload task completed
                     status: COMPLETED
@@ -256,6 +266,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/cloudeventsconfigs:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -275,7 +286,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/cloudeventsconfigs:
     get:
       deprecated: false
       description: '**Get the list of the singleton cloud event configuration objects.**'
@@ -308,8 +318,7 @@ paths:
                       limit: 1
                       offset: 0
                       pages: 1
-                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/integration/cloudeventsconfigs?expanded=true ( GET ALL
-                  method for CloudEventsConfigs with expanded set to true )'
+                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/integration/cloudeventsconfigs?expanded=true ( GET ALL method for CloudEventsConfigs with expanded set to true )'
                 : value:
                     items:
                     - devicesExcludedFromSendingEvents: []
@@ -343,6 +352,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/cloudeventsconfigs/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -362,7 +372,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/cloudeventsconfigs/{objectId}:
     get:
       deprecated: false
       description: '**Get the the cloud event configuration associated with the specified ID.**'
@@ -381,8 +390,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/integration/cloudeventsconfigs/CloudEventsConfigsUUID
-                  ( GET Cloud Events for the given UUID )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/integration/cloudeventsconfigs/CloudEventsConfigsUUID ( GET Cloud Events for the given UUID )'
                 : value:
                     devicesExcludedFromSendingEvents: []
                     id: CloudEventsConfigsUUID
@@ -410,8 +418,7 @@ paths:
       - Integration
     put:
       deprecated: false
-      description: '**Modify the the cloud event configuration associated with the specified ID. _Check the response section
-        for applicable examples (if any)._**'
+      description: '**Modify the the cloud event configuration associated with the specified ID. _Check the response section for applicable examples (if any)._**'
       operationId: updateCloudEvents
       parameters:
       - description: Identifier for the cloud event configuration.
@@ -426,8 +433,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/cloudeventsconfigs/CloudEventsConfigsUUID (
-                PUT to update the Cloud Event Config )'
+              ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/cloudeventsconfigs/CloudEventsConfigsUUID ( PUT to update the Cloud Event Config )'
               : value:
                   devicesExcludedFromSendingEvents: []
                   id: CloudEventsConfigsUUID
@@ -448,8 +454,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/cloudeventsconfigs/CloudEventsConfigsUUID
-                  ( PUT to update the Cloud Event Config )'
+                ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/cloudeventsconfigs/CloudEventsConfigsUUID ( PUT to update the Cloud Event Config )'
                 : value:
                     devicesExcludedFromSendingEvents: []
                     id: CloudEventsConfigsUUID
@@ -475,6 +480,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/cloudintegrations/cloudintegrations:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -494,7 +500,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/cloudintegrations/cloudintegrations:
     get:
       deprecated: false
       description: '****'
@@ -525,6 +530,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/cloudregions:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -544,7 +550,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/cloudregions:
     get:
       deprecated: false
       description: '**Get the list of all cloud regions.**'
@@ -577,8 +582,7 @@ paths:
                       limit: 1
                       offset: 0
                       pages: 1
-                ? 'Example 2 : GET /fmc_config/v1/domain/domainUUID/integration/cloudregions?expanded=true ( GET ALL method
-                  for CloudRegion with expanded set to true )'
+                ? 'Example 2 : GET /fmc_config/v1/domain/domainUUID/integration/cloudregions?expanded=true ( GET ALL method for CloudRegion with expanded set to true )'
                 : value:
                     items:
                     - current: true
@@ -609,6 +613,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/cloudregions/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -628,7 +633,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/cloudregions/{objectId}:
     get:
       deprecated: false
       description: '**Get the the cloud region configuration associated with the specified ID.**'
@@ -647,8 +651,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/integration/cloudregions/cloudRegionUUID ( GET CloudRegion
-                  for the given UUID )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/integration/cloudregions/cloudRegionUUID ( GET CloudRegion for the given UUID )'
                 : value:
                     current: true
                     description: Example
@@ -673,8 +676,7 @@ paths:
       - Integration
     put:
       deprecated: false
-      description: '**Modify the the cloud region configuration associated with the specified ID. _Check the response section
-        for applicable examples (if any)._**'
+      description: '**Modify the the cloud region configuration associated with the specified ID. _Check the response section for applicable examples (if any)._**'
       operationId: updateCloudRegion
       parameters:
       - description: Identifier for the cloud region.
@@ -689,8 +691,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/cloudregions/cloudRegionUUID ( PUT to update
-                the CloudRegion )'
+              ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/cloudregions/cloudRegionUUID ( PUT to update the CloudRegion )'
               : value:
                   current: true
                   id: cloudRegionUUID
@@ -705,8 +706,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/cloudregions/cloudRegionUUID ( PUT to update
-                  the CloudRegion )'
+                ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/cloudregions/cloudRegionUUID ( PUT to update the CloudRegion )'
                 : value:
                     current: true
                     description: Example
@@ -729,6 +729,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/externallookups:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -748,7 +749,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/externallookups:
     get:
       deprecated: false
       description: '**Get the list of all external lookups.**'
@@ -782,8 +782,7 @@ paths:
                       limit: 25
                       offset: 0
                       pages: 1
-                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/integration/externallookups?expanded=true ( GET ALL method
-                  for ExternalLookup with expanded set to true )'
+                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/integration/externallookups?expanded=true ( GET ALL method for ExternalLookup with expanded set to true )'
                 : value:
                     items:
                     - enabled: true
@@ -862,6 +861,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/externallookups/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -881,11 +881,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/externallookups/{objectId}:
     delete:
       deprecated: false
-      description: '**Delete the external lookup associated with the specified ID. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Delete the external lookup associated with the specified ID. _Check the response section for applicable examples (if any)._**'
       operationId: deleteExternalLookup
       parameters:
       - description: Identifier for the external lookup.
@@ -901,8 +899,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : DELETE /fmc_config/v1/domain/domainUUID/integration/externallookups/ExternalLookupUUID ( DELETE
-                  an External Lookup for the given UUID )'
+                ? 'Example 1 : DELETE /fmc_config/v1/domain/domainUUID/integration/externallookups/ExternalLookupUUID ( DELETE an External Lookup for the given UUID )'
                 : value:
                     enabled: true
                     id: ExternalLookupUUID
@@ -942,8 +939,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/integration/externallookups/ExternalLookupUUID ( GET External
-                  Lookup for the given UUID )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/integration/externallookups/ExternalLookupUUID ( GET External Lookup for the given UUID )'
                 : value:
                     enabled: true
                     id: ExternalLookupUUID
@@ -967,8 +963,7 @@ paths:
       - Integration
     put:
       deprecated: false
-      description: '**Modify the external lookup associated with the specified ID. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Modify the external lookup associated with the specified ID. _Check the response section for applicable examples (if any)._**'
       operationId: updateExternalLookup
       parameters:
       - description: Identifier for the external lookup.
@@ -983,8 +978,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/externallookups/ExternalLookupUUID ( PUT to
-                update an ExternalLookup )'
+              ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/externallookups/ExternalLookupUUID ( PUT to update an ExternalLookup )'
               : value:
                   enabled: true
                   id: ExternalLookupUUID
@@ -1001,8 +995,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/externallookups/ExternalLookupUUID ( PUT to
-                  update an ExternalLookup )'
+                ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/externallookups/ExternalLookupUUID ( PUT to update an ExternalLookup )'
                 : value:
                     enabled: true
                     id: ExternalLookupUUID
@@ -1024,6 +1017,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/externalstorage:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1043,7 +1037,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/externalstorage:
     get:
       deprecated: false
       description: '**Get the list of external event storage configurations.**'
@@ -1076,8 +1069,7 @@ paths:
                       limit: 1
                       offset: 0
                       pages: 1
-                ? 'Example 2 : GET /fmc_config/v1/domain/domainUUID/integration/externalstorage?expanded=true ( GET ALL method
-                  for ExternalStorage with expanded set to true )'
+                ? 'Example 2 : GET /fmc_config/v1/domain/domainUUID/integration/externalstorage?expanded=true ( GET ALL method for ExternalStorage with expanded set to true )'
                 : value:
                     items:
                     - crossLaunchEnabled: true
@@ -1120,6 +1112,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/externalstorage/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1139,7 +1132,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/externalstorage/{objectId}:
     get:
       deprecated: false
       description: '**Get the external event storage configuration associated with the specified ID.**'
@@ -1158,8 +1150,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/integration/externalstorage/externalStorageUUID ( GET
-                  ExternalStorage for the given UUID )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/integration/externalstorage/externalStorageUUID ( GET ExternalStorage for the given UUID )'
                 : value:
                     crossLaunchEnabled: true
                     description: Example
@@ -1196,8 +1187,7 @@ paths:
       - Integration
     put:
       deprecated: false
-      description: '**Modify the external event storage configuration associated with the specified ID. _Check the response
-        section for applicable examples (if any)._**'
+      description: '**Modify the external event storage configuration associated with the specified ID. _Check the response section for applicable examples (if any)._**'
       operationId: updateExternalStorage
       parameters:
       - description: Identifier for the external event storage.
@@ -1212,8 +1202,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/externalstorage/externalStorageUUID ( PUT to
-                update the ExternalStorage )'
+              ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/externalstorage/externalStorageUUID ( PUT to update the ExternalStorage )'
               : value:
                   crossLaunchEnabled: true
                   deviceMap:
@@ -1231,8 +1220,7 @@ paths:
                   type: ExternalStorage
                   uiHost: example.com
                   uiPort: 443
-              ? 'Example 2 : PUT /fmc_config/v1/domain/domainUUID/integration/externalstorage/externalStorageUUID ( PUT with
-                credentials to update the ExternalStorage and create Remote Query API user )'
+              ? 'Example 2 : PUT /fmc_config/v1/domain/domainUUID/integration/externalstorage/externalStorageUUID ( PUT with credentials to update the ExternalStorage and create Remote Query API user )'
               : value:
                   crossLaunchEnabled: true
                   deviceMap:
@@ -1262,8 +1250,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/externalstorage/externalStorageUUID ( PUT
-                  to update the ExternalStorage )'
+                ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/integration/externalstorage/externalStorageUUID ( PUT to update the ExternalStorage )'
                 : value:
                     crossLaunchEnabled: true
                     description: Example
@@ -1285,8 +1272,7 @@ paths:
                     type: ExternalStorage
                     uiHost: example.com
                     uiPort: 443
-                ? 'Example 2 : PUT /fmc_config/v1/domain/domainUUID/integration/externalstorage/externalStorageUUID ( PUT
-                  with credentials to update the ExternalStorage and create Remote Query API user )'
+                ? 'Example 2 : PUT /fmc_config/v1/domain/domainUUID/integration/externalstorage/externalStorageUUID ( PUT with credentials to update the ExternalStorage and create Remote Query API user )'
                 : value:
                     crossLaunchEnabled: true
                     description: Example
@@ -1321,6 +1307,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/fmchastatuses:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1340,7 +1327,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/fmchastatuses:
     get:
       deprecated: false
       description: '**Get information about the High Availability status of the Secure Firewall Management Center.**'
@@ -1359,8 +1345,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/integration/fmchastatuses ( Success: Sample response of
-                  getfmchastatuses api )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/integration/fmchastatuses ( Success: Sample response of getfmchastatuses api )'
                 : value:
                     items:
                     - fmcPrimary:
@@ -1404,6 +1389,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/operational/refreshsecurexconfigs:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1423,7 +1409,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/operational/refreshsecurexconfigs:
     post:
       deprecated: false
       description: '**Refresh SecureX configurations. _Check the response section for applicable examples (if any)._**'
@@ -1456,6 +1441,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/operational/testumbrellaconnections:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1475,7 +1461,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/operational/testumbrellaconnections:
     post:
       deprecated: false
       description: '**Test connection to the Umbrella cloud _Check the response section for applicable examples (if any)._**'
@@ -1514,6 +1499,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/umbrella/datacenters:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1533,14 +1519,12 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/umbrella/datacenters:
     get:
       deprecated: false
       description: '**Get the list of all Umbrella data centers.**'
       operationId: getAllUmbrellaDataCenter
       parameters:
-      - description: Boolean value, if set to false, Data Center list will be fetched from the Umbrella site ignoring the
-          cached data.
+      - description: Boolean value, if set to false, Data Center list will be fetched from the Umbrella site ignoring the cached data.
         in: query
         name: useCache
         required: false
@@ -1577,6 +1561,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/umbrella/tunneldeployments:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1596,7 +1581,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/umbrella/tunneldeployments:
     post:
       deprecated: false
       description: '**Create a tunnel deployment. _Check the response section for applicable examples (if any)._**'
@@ -1635,7 +1619,8 @@ paths:
           description: Error
       tags:
       - Integration
-    servers:
+  ? /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/umbrella/tunneldeployments/{containerUUID}/transcripts/{objectId}
+  : servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
     - url: https://api.eu.security.cisco.com/firewall
@@ -1654,8 +1639,7 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  ? /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/umbrella/tunneldeployments/{containerUUID}/transcripts/{objectId}
-  : get:
+    get:
       deprecated: false
       description: '**Get transcript for Umbrella deployment from a given device and topology.**'
       operationId: getUmbrellaDeploymentTranscript
@@ -1697,6 +1681,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/umbrella/tunneldeployments/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1716,7 +1701,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/umbrella/tunneldeployments/{objectId}:
     get:
       deprecated: false
       description: '**Get tunnel deployment data on Umbrella.**'
@@ -1753,6 +1737,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/umbrellaconnections:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1772,7 +1757,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/umbrellaconnections:
     get:
       deprecated: false
       description: '**Get the list of Umbrella connection configurations.**'
@@ -1809,6 +1793,7 @@ paths:
           description: Error
       tags:
       - Integration
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/umbrellaconnections/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1828,7 +1813,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/integration/umbrellaconnections/{objectId}:
     get:
       deprecated: false
       description: '**Get the specified Umbrella connection configuration.**'
@@ -1853,8 +1837,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET ​/api​/fmc_config​/v1​/domain​/{domainUUID}​/integration​/umbrellaconnection ( Example
-                  payloads for GET listing on umbrella connection settings. )'
+                ? 'Example 1 : GET ​/api​/fmc_config​/v1​/domain​/{domainUUID}​/integration​/umbrellaconnection ( Example payloads for GET listing on umbrella connection settings. )'
                 : value:
                     items:
                     - dnsCryptPublicKey: ' B735:1140:206F:225D:3E2B:D822:D7FD:691E:A1C3:3CC8:D666:8D0C:BE04:BFAB:CA43:FB79'
@@ -1890,8 +1873,7 @@ paths:
       - Integration
     put:
       deprecated: false
-      description: '**Modify the specified Umbrella connection configuration. _Check the response section for applicable examples
-        (if any)._**'
+      description: '**Modify the specified Umbrella connection configuration. _Check the response section for applicable examples (if any)._**'
       operationId: updateUmbrellaConnection
       parameters:
       - description: Unique identifier of the Umbrella connection configuration.
@@ -1933,27 +1915,40 @@ paths:
           description: Error
       tags:
       - Integration
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   schemas:
+    ExternalLookup:
+      properties:
+        description:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        intValue:
+          format: int32
+          type: integer
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        longValue:
+          format: int32
+          type: integer
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        network:
+          $ref: '#/components/schemas/NetworkObject'
+          type: object
+        template:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
     CloudRegionListContainer:
       properties:
         items:
@@ -1966,10 +1961,10 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    ExternalLookupListContainer:
+    CloudEventsListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/ExternalLookup'
+          $ref: '#/components/schemas/CloudEvents'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -1977,6 +1972,68 @@ components:
         paging:
           $ref: '#/components/schemas/PagingContainer'
           type: object
+      type: object
+    IOverride:
+      description: Defines the override details for this object.
+      properties:
+        parent:
+          $ref: '#/components/schemas/IReference'
+          description: Link to the parent/global resource which is overriden.
+          type: object
+        target:
+          $ref: '#/components/schemas/IReference'
+          description: The device or the domain target on which this override is enabled.
+          type: object
+      type: object
+    IUmbrellaDeployEndpointsInfo:
+      properties:
+        device:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        message:
+          type: string
+        umbrellaDeploymentState:
+          enum:
+          - PENDING
+          - SUCCESS
+          - FAILURE
+          - PARTIAL
+          - IN_PROGRESS
+          type: string
+      type: object
+    IPendingDeviceRegInfo:
+      description: Represents the Pending Device Registration info.
+      properties:
+        deviceName:
+          description: String represents the name of the device.
+          type: string
+        deviceUuid:
+          description: String represents the UUID of the device.
+          type: string
+        ipAddress:
+          description: String represents the IP address of the device.
+          type: string
+        regStatus:
+          description: String represents the registration status of the device.
+          enum:
+          - PENDING
+          - FAILED
+          type: string
+      type: object
+    LLDeviceMap:
+      additionalProperties:
+        type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
       type: object
     AiOpsModel:
       properties:
@@ -2014,6 +2071,349 @@ components:
           type: string
         uploadUrl:
           type: string
+      type: object
+    FMCHAStatus:
+      description: Represents the Firepower Management Center High Availability Status Object.
+      properties:
+        fmcPrimary:
+          $ref: '#/components/schemas/IFMCServerInfo'
+          description: Object specifying the details of the Primary FMC.
+          type: object
+        fmcSecondary:
+          $ref: '#/components/schemas/IFMCServerInfo'
+          description: Object specifying the details of the Secondary FMC.
+          type: object
+        haOpInProgress:
+          description: Boolean which specifies FMC HA operation is in progress.
+          type: boolean
+        haStatusMessages:
+          description: Array of status messages of FMC HA.
+          items:
+            type: string
+          type: array
+        id:
+          description: UUID of Firepower Management Center.
+          type: string
+        overallStatus:
+          description: String specifies the overall status of FMC HA.
+          enum:
+          - GOOD
+          - DEGRADED
+          - SPLIT_BRAIN
+          type: string
+        pendingDeviceInfo:
+          description: Specifies the devices pending for registration.
+          items:
+            $ref: '#/components/schemas/IPendingDeviceRegInfo'
+            type: object
+          type: array
+        syncStatus:
+          description: String specifies the sync status of FMC HA.
+          enum:
+          - GOOD
+          - IN_PROGRESS
+          - PAUSED
+          - FAILED
+          type: string
+        type:
+          description: Type of the Response object. This value is always FMCHAStatus.
+          type: string
+      type: object
+    UmbrellaDataCenterListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/UmbrellaDataCenter'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    AiOpsModelListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/AiOpsModel'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    NetworkObject:
+      description: A model representing Network object definition.
+      properties:
+        description:
+          description: 'User provided resource description. '
+          type: string
+        id:
+          description: Unique identifier representing response object.
+          type: string
+        links:
+          $ref: '#/components/schemas/Links'
+          description: Object containing related links.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          description: Object representing metadata properties of NetworkObject.
+          type: object
+        name:
+          description: User assigned resource name.
+          type: string
+        overridable:
+          description: Boolean indicating whether object values can be overridden.
+          type: boolean
+        overrideTargetId:
+          description: Unique identifier of domain or device when override assigned to child domain. Used as path parameter to GET override details for a specific object on a specific target (device or domain).
+          type: string
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: An object override allows you to define an alternate value for an object on a device or domain.
+          type: object
+        type:
+          description: 'Type associated with resource: NetworkObject.'
+          type: string
+        value:
+          description: Actual value of the network.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IFMCServerInfo:
+      description: Represents the FMC Server Object.
+      properties:
+        hwRole:
+          description: String represents the hardware role of the FMC.
+          type: string
+        ipAddress:
+          description: String represents the IP address of the FMC.
+          type: string
+        modelId:
+          description: Integer represents the model of the FMC.
+          format: int32
+          type: integer
+        modelName:
+          description: String specifies the model of the FMC.
+          type: string
+        role:
+          description: String represents the role of the FMC.
+          type: string
+        swVersion:
+          description: String represents the software version of the FMC.
+          type: string
+        uuid:
+          description: String represents the UUID of the FMC.
+          type: string
+      type: object
+    PrometheusTSDBUpload:
+      properties:
+        blockDetails:
+          items:
+            $ref: '#/components/schemas/IBlockDetails'
+            type: object
+          type: array
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        status:
+          enum:
+          - STARTED
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          - ALREADY_INITIATED
+          - NOT_INITIATED
+          type: string
+        type:
+          type: string
+        uploadUrl:
+          type: string
+        version:
+          type: string
+      type: object
+    Links:
+      properties:
+        parent:
+          type: string
+        self:
+          type: string
+      type: object
+    IBlockDetails:
+      properties:
+        blockName:
+          type: string
+        checksum:
+          type: string
+      type: object
+    ExternalStorageListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ExternalStorage'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    UmbrellaConnection:
+      description: The details about the Umbrella Connection.
+      properties:
+        dnsCryptPublicKey:
+          description: Field for dns crypt public key of umbrella connection
+          type: string
+        id:
+          description: Unique Identifier, in `UUID` format, of the Umbrella connection object id
+          type: string
+        legacyNetworkDeviceToken:
+          description: Field for legacy network device token, used to deploy in FTD
+          type: string
+        links:
+          $ref: '#/components/schemas/Links'
+          type: object
+        managementKey:
+          description: Field for management key of umbrella connection for VPN config
+          type: string
+        managementSecret:
+          description: Field for management secret of umbrella connection for VPN config
+          type: string
+        networkDeviceKey:
+          description: Field for network device key of umbrella connection
+          type: string
+        networkDeviceSecret:
+          description: Field for network device secret of umbrella connection, Must not be empty for PUT.
+          type: string
+        organizationId:
+          description: Field for Organization id of umbrella connection
+          type: string
+        overridable:
+          type: boolean
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          type: object
+        type:
+          description: Value is 'UmbrellaConnection'. Read only fixed value.
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    CloudIntegrationStatusListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/CloudIntegrationStatus'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    Domain:
+      description: The details about the domain.
+      properties:
+        id:
+          description: Unique UUID of this domain
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
+          type: object
+        name:
+          description: Name of the domain.
+          type: string
+        type:
+          description: Domain type definition (fixed).
+          type: string
+        uuid:
+          type: string
+      type: object
+    UmbrellaConnectionListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/UmbrellaConnection'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
       type: object
     UmbrellaDeploymentData:
       properties:
@@ -2057,40 +2457,198 @@ components:
         version:
           type: string
       type: object
-    Domain:
-      description: The details about the domain.
+    PagingContainer:
       properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    ILogHost:
+      properties:
+        logHost:
+          type: string
+        logId:
+          type: string
+        logPort:
+          format: int32
+          type: integer
+      type: object
+    ExternalLookupListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ExternalLookup'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    CloudEvents:
+      description: details of the configuration object for sending events to cloud
+      properties:
+        description:
+          type: string
+        devicesExcludedFromSendingEvents:
+          description: 'List of devices excluded from sending events to cloud '
+          items:
+            type: string
+          type: array
         id:
-          description: Unique UUID of this domain
+          description: Unique UUID of the configuration object
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
+          description: Links to the configuration object
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
           type: object
         name:
-          description: Name of the domain.
           type: string
+        sendAllConnectionEvents:
+          description: Boolean indicating whether to send all connection events to cloud
+          type: boolean
+        sendConnectionEvents:
+          description: Boolean indicating whether to send connection events to cloud
+          type: boolean
+        sendFileEvents:
+          description: Boolean indicating whether to send file/malware events to cloud
+          type: boolean
+        sendIntrusionEvents:
+          description: Boolean indicating whether to send intrusion events to cloud
+          type: boolean
+        sendNetworkDiscoveryEvents:
+          description: Boolean indicating whether to send network discovery events to cloud
+          type: boolean
+        sendPackets:
+          description: Boolean indicating whether to send packets to cloud
+          type: boolean
         type:
-          description: Domain type definition (fixed).
+          description: 'Type of the configuration object: CloudEventsConfigs'
           type: string
-        uuid:
+        version:
           type: string
       type: object
-    IReference:
-      description: Contains reference information.
+    CloudIntegrationStatus:
+      properties:
+        enabled:
+          type: boolean
+        info:
+          $ref: '#/components/schemas/CloudIntegrationStatusInfo'
+          type: object
+      type: object
+    PrometheusTSDBUploadListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/PrometheusTSDBUpload'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
+      properties:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
+      type: object
+    TestUmbrellaConnection:
+      description: Represents the request object used to test the umbrella connection.
+      properties:
+        networkDeviceKey:
+          description: Represents the network device key in the umbrella cloud.
+          type: string
+        networkDeviceSecret:
+          description: Represents the network device secret in the umbrella cloud.
+          type: string
+        type:
+          description: Type of the request object. This value is always 'TestUmbrellaConnection'.
+          type: string
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    Metadata:
+      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          description: Defines the domains this instance belongs to (if applicable).
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          description: The last user who modified this instance.
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          description: Details regarding the read only status of this instance
+          type: object
+        timestamp:
+          description: The last updated timestamp.
+          format: int32
+          type: integer
+      type: object
+    MetadataUser:
+      description: This object defines details about the user.
       properties:
         id:
-          description: Unique identifier representing resource.
+          description: The unique UUID of the user
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
+          description: Contains the self referencing links to this resource
           type: object
         name:
-          description: User chosen resource name.
+          description: Name of the user.
           type: string
         type:
-          description: Response object associated with resource.
+          description: The user type (fixed).
           type: string
       type: object
     ExternalStorage:
@@ -2155,94 +2713,6 @@ components:
         version:
           type: string
       type: object
-    CloudRegion:
-      description: A model representing a cloud region
-      properties:
-        current:
-          description: Boolean indicating whether this is the region used by the system
-          type: boolean
-        description:
-          description: Region description
-          type: string
-        domain:
-          description: The domain used to connect to the region
-          type: string
-        id:
-          description: Unique identifier of the object
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Related links
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: Region name
-          type: string
-        type:
-          description: 'Type of the object: CloudRegion'
-          type: string
-        version:
-          type: string
-      type: object
-    Metadata:
-      description: Defines read only details about the object - whether it is system defined, last user who modified the object
-        etc.
-      properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          description: Defines the domains this instance belongs to (if applicable).
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          description: The last user who modified this instance.
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          description: Details regarding the read only status of this instance
-          type: object
-        timestamp:
-          description: The last updated timestamp.
-          format: int32
-          type: integer
-      type: object
-    CloudIntegrationStatusListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/CloudIntegrationStatus'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    Links:
-      properties:
-        parent:
-          type: string
-        self:
-          type: string
-      type: object
     CloudIntegrationStatusInfo:
       properties:
         cdoUrl:
@@ -2258,27 +2728,39 @@ components:
         tenantId:
           type: string
       type: object
-    MetadataUser:
-      description: This object defines details about the user.
+    UmbrellaDataCenter:
+      description: Description of Umbrella Data center
       properties:
+        city:
+          description: City in which Data center is located
+          type: string
+        continent:
+          description: Continent in which Data center is located
+          type: string
+        description:
+          type: string
         id:
-          description: The unique UUID of the user
+          type: string
+        ipAddress:
+          description: IP Adress of the Data center
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
-          description: Contains the self referencing links to this resource
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
           type: object
         name:
-          description: Name of the user.
           type: string
         type:
-          description: The user type (fixed).
+          type: string
+        version:
           type: string
       type: object
-    CloudEventsListContainer:
+    FMCHAStatusListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/CloudEvents'
+          $ref: '#/components/schemas/FMCHAStatus'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -2287,78 +2769,21 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    CloudIntegrationStatus:
-      properties:
-        enabled:
-          type: boolean
-        info:
-          $ref: '#/components/schemas/CloudIntegrationStatusInfo'
-          type: object
-      type: object
-    IBlockDetails:
-      properties:
-        blockName:
-          type: string
-        checksum:
-          type: string
-      type: object
-    FMCHAStatus:
-      description: Represents the Firepower Management Center High Availability Status Object.
-      properties:
-        fmcPrimary:
-          $ref: '#/components/schemas/IFMCServerInfo'
-          description: Object specifying the details of the Primary FMC.
-          type: object
-        fmcSecondary:
-          $ref: '#/components/schemas/IFMCServerInfo'
-          description: Object specifying the details of the Secondary FMC.
-          type: object
-        haOpInProgress:
-          description: Boolean which specifies FMC HA operation is in progress.
-          type: boolean
-        haStatusMessages:
-          description: Array of status messages of FMC HA.
-          items:
-            type: string
-          type: array
-        id:
-          description: UUID of Firepower Management Center.
-          type: string
-        overallStatus:
-          description: String specifies the overall status of FMC HA.
-          enum:
-          - GOOD
-          - DEGRADED
-          - SPLIT_BRAIN
-          type: string
-        pendingDeviceInfo:
-          description: Specifies the devices pending for registration.
-          items:
-            $ref: '#/components/schemas/IPendingDeviceRegInfo'
-            type: object
-          type: array
-        syncStatus:
-          description: String specifies the sync status of FMC HA.
-          enum:
-          - GOOD
-          - IN_PROGRESS
-          - PAUSED
-          - FAILED
-          type: string
-        type:
-          description: Type of the Response object. This value is always FMCHAStatus.
-          type: string
-      type: object
-    IMetadataUser:
+    IReference:
+      description: Contains reference information.
       properties:
         id:
+          description: Unique identifier representing resource.
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
           type: object
         name:
+          description: User chosen resource name.
           type: string
         type:
+          description: Response object associated with resource.
           type: string
       type: object
     ErrorResponse:
@@ -2410,313 +2835,36 @@ components:
         version:
           type: string
       type: object
-    CloudEvents:
-      description: details of the configuration object for sending events to cloud
+    CloudRegion:
+      description: A model representing a cloud region
       properties:
+        current:
+          description: Boolean indicating whether this is the region used by the system
+          type: boolean
         description:
+          description: Region description
           type: string
-        devicesExcludedFromSendingEvents:
-          description: 'List of devices excluded from sending events to cloud '
-          items:
-            type: string
-          type: array
-        id:
-          description: Unique UUID of the configuration object
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Links to the configuration object
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        sendAllConnectionEvents:
-          description: Boolean indicating whether to send all connection events to cloud
-          type: boolean
-        sendConnectionEvents:
-          description: Boolean indicating whether to send connection events to cloud
-          type: boolean
-        sendFileEvents:
-          description: Boolean indicating whether to send file/malware events to cloud
-          type: boolean
-        sendIntrusionEvents:
-          description: Boolean indicating whether to send intrusion events to cloud
-          type: boolean
-        sendNetworkDiscoveryEvents:
-          description: Boolean indicating whether to send network discovery events to cloud
-          type: boolean
-        sendPackets:
-          description: Boolean indicating whether to send packets to cloud
-          type: boolean
-        type:
-          description: 'Type of the configuration object: CloudEventsConfigs'
-          type: string
-        version:
-          type: string
-      type: object
-    AiOpsModelListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/AiOpsModel'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ExternalStorageListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/ExternalStorage'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    TestUmbrellaConnection:
-      description: Represents the request object used to test the umbrella connection.
-      properties:
-        networkDeviceKey:
-          description: Represents the network device key in the umbrella cloud.
-          type: string
-        networkDeviceSecret:
-          description: Represents the network device secret in the umbrella cloud.
-          type: string
-        type:
-          description: Type of the request object. This value is always 'TestUmbrellaConnection'.
-          type: string
-      type: object
-    IFMCServerInfo:
-      description: Represents the FMC Server Object.
-      properties:
-        hwRole:
-          description: String represents the hardware role of the FMC.
-          type: string
-        ipAddress:
-          description: String represents the IP address of the FMC.
-          type: string
-        modelId:
-          description: Integer represents the model of the FMC.
-          format: int32
-          type: integer
-        modelName:
-          description: String specifies the model of the FMC.
-          type: string
-        role:
-          description: String represents the role of the FMC.
-          type: string
-        swVersion:
-          description: String represents the software version of the FMC.
-          type: string
-        uuid:
-          description: String represents the UUID of the FMC.
-          type: string
-      type: object
-    UmbrellaDataCenterListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/UmbrellaDataCenter'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IPendingDeviceRegInfo:
-      description: Represents the Pending Device Registration info.
-      properties:
-        deviceName:
-          description: String represents the name of the device.
-          type: string
-        deviceUuid:
-          description: String represents the UUID of the device.
-          type: string
-        ipAddress:
-          description: String represents the IP address of the device.
-          type: string
-        regStatus:
-          description: String represents the registration status of the device.
-          enum:
-          - PENDING
-          - FAILED
-          type: string
-      type: object
-    LLDeviceMap:
-      additionalProperties:
-        type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    UmbrellaConnection:
-      description: The details about the Umbrella Connection.
-      properties:
-        dnsCryptPublicKey:
-          description: Field for dns crypt public key of umbrella connection
-          type: string
-        id:
-          description: Unique Identifier, in `UUID` format, of the Umbrella connection object id
-          type: string
-        legacyNetworkDeviceToken:
-          description: Field for legacy network device token, used to deploy in FTD
-          type: string
-        links:
-          $ref: '#/components/schemas/Links'
-          type: object
-        managementKey:
-          description: Field for management key of umbrella connection for VPN config
-          type: string
-        managementSecret:
-          description: Field for management secret of umbrella connection for VPN config
-          type: string
-        networkDeviceKey:
-          description: Field for network device key of umbrella connection
-          type: string
-        networkDeviceSecret:
-          description: Field for network device secret of umbrella connection, Must not be empty for PUT.
-          type: string
-        organizationId:
-          description: Field for Organization id of umbrella connection
-          type: string
-        overridable:
-          type: boolean
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          type: object
-        type:
-          description: Value is 'UmbrellaConnection'. Read only fixed value.
-          type: string
-      type: object
-    ExternalLookup:
-      properties:
-        description:
-          type: string
-        enabled:
-          type: boolean
-        id:
-          type: string
-        intValue:
-          format: int32
-          type: integer
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        longValue:
-          format: int32
-          type: integer
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        network:
-          $ref: '#/components/schemas/NetworkObject'
-          type: object
-        template:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    PrometheusTSDBUpload:
-      properties:
-        blockDetails:
-          items:
-            $ref: '#/components/schemas/IBlockDetails'
-            type: object
-          type: array
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        status:
-          enum:
-          - STARTED
-          - IN_PROGRESS
-          - COMPLETED
-          - FAILED
-          - ALREADY_INITIATED
-          - NOT_INITIATED
-          type: string
-        type:
-          type: string
-        uploadUrl:
-          type: string
-        version:
-          type: string
-      type: object
-    IMetadata:
-      properties:
         domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    ILogHost:
-      properties:
-        logHost:
+          description: The domain used to connect to the region
           type: string
-        logId:
+        id:
+          description: Unique identifier of the object
           type: string
-        logPort:
-          format: int32
-          type: integer
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Related links
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Region name
+          type: string
+        type:
+          description: 'Type of the object: CloudRegion'
+          type: string
+        version:
+          type: string
       type: object
     UmbrellaDeploymentTranscript:
       properties:
@@ -2739,210 +2887,7 @@ components:
         version:
           type: string
       type: object
-    UmbrellaDataCenter:
-      description: Description of Umbrella Data center
-      properties:
-        city:
-          description: City in which Data center is located
-          type: string
-        continent:
-          description: Continent in which Data center is located
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        ipAddress:
-          description: IP Adress of the Data center
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    FMCHAStatusListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/FMCHAStatus'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IOverride:
-      description: Defines the override details for this object.
-      properties:
-        parent:
-          $ref: '#/components/schemas/IReference'
-          description: Link to the parent/global resource which is overriden.
-          type: object
-        target:
-          $ref: '#/components/schemas/IReference'
-          description: The device or the domain target on which this override is enabled.
-          type: object
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    PrometheusTSDBUploadListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/PrometheusTSDBUpload'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    UmbrellaConnectionListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/UmbrellaConnection'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IUmbrellaDeployEndpointsInfo:
-      properties:
-        device:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        message:
-          type: string
-        umbrellaDeploymentState:
-          enum:
-          - PENDING
-          - SUCCESS
-          - FAILURE
-          - PARTIAL
-          - IN_PROGRESS
-          type: string
-      type: object
-    NetworkObject:
-      description: A model representing Network object definition.
-      properties:
-        description:
-          description: 'User provided resource description. '
-          type: string
-        id:
-          description: Unique identifier representing response object.
-          type: string
-        links:
-          $ref: '#/components/schemas/Links'
-          description: Object containing related links.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          description: Object representing metadata properties of NetworkObject.
-          type: object
-        name:
-          description: User assigned resource name.
-          type: string
-        overridable:
-          description: Boolean indicating whether object values can be overridden.
-          type: boolean
-        overrideTargetId:
-          description: Unique identifier of domain or device when override assigned to child domain. Used as path parameter
-            to GET override details for a specific object on a specific target (device or domain).
-          type: string
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: An object override allows you to define an alternate value for an object on a device or domain.
-          type: object
-        type:
-          description: 'Type associated with resource: NetworkObject.'
-          type: string
-        value:
-          description: Actual value of the network.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    ReadOnly:
-      description: Defines the read only conditions if the referenced resource is read only.
-      properties:
-        reason:
-          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions
-            make it read only) or DOMAIN (if resource is read only in current domain).
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          description: True if this resource us read only and false otherwise.
-          type: boolean
-      type: object
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
     limit:
       description: Number of items to return.
       in: query
@@ -2958,6 +2903,21 @@ components:
       required: true
       schema:
         type: string
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

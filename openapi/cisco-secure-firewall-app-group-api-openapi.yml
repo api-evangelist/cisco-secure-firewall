@@ -199,36 +199,6 @@ paths:
       - App Group
 components:
   schemas:
-    AppGroupApi:
-      properties:
-        description:
-          type: string
-        id:
-          example: id1
-          format: 'Id should match this regex: ^[A-Za-z-_0-9~.]+$'
-          type: string
-        memberApps:
-          example:
-          - 6_ignore_80_80_null
-          format: MemberApps should be a valid list of service strings
-          items:
-            example: '["6_ignore_80_80_null"]'
-            format: MemberApps should be a valid list of service strings
-            type: string
-          type: array
-        memberGroups:
-          example:
-          - memberGroup1
-          format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
-          items:
-            example: '["memberGroup1"]'
-            format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
-            type: string
-          type: array
-        revision:
-          format: int32
-          type: integer
-      type: object
     AppGroupUserApi:
       properties:
         description:
@@ -274,16 +244,6 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
-    PolicyReference:
-      properties:
-        id:
-          type: string
-        ruleIds:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
     GroupReferences:
       properties:
         groupIds:
@@ -300,6 +260,46 @@ components:
       properties:
         request:
           $ref: '#/components/schemas/ReqIdAndReqSystem'
+      type: object
+    AppGroupApi:
+      properties:
+        description:
+          type: string
+        id:
+          example: id1
+          format: 'Id should match this regex: ^[A-Za-z-_0-9~.]+$'
+          type: string
+        memberApps:
+          example:
+          - 6_ignore_80_80_null
+          format: MemberApps should be a valid list of service strings
+          items:
+            example: '["6_ignore_80_80_null"]'
+            format: MemberApps should be a valid list of service strings
+            type: string
+          type: array
+        memberGroups:
+          example:
+          - memberGroup1
+          format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+          items:
+            example: '["memberGroup1"]'
+            format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+            type: string
+          type: array
+        revision:
+          format: int32
+          type: integer
+      type: object
+    PolicyReference:
+      properties:
+        id:
+          type: string
+        ruleIds:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
       type: object
   securitySchemes:
     BearerJWT:

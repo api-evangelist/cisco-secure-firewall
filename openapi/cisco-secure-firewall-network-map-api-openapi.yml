@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Network Map across 2 of this provider''s published API definitions: cdfmc-openapi.yaml,
-    cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Network Map across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 10/10
   x-evidence:
@@ -47,13 +43,31 @@ tags:
 - name: Network Map
 paths:
   /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/hosts:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     delete:
       deprecated: false
       description: '**Delete the entire network map. _Check the response section for applicable examples (if any)._**'
       operationId: deleteMultipleNetmapHost
       parameters:
-      - description: Boolean value indicating whether this is performed as a bulk operation. <br>This field must be true in
-          order to delete with a filter rather than an identifier.
+      - description: Boolean value indicating whether this is performed as a bulk operation. <br>This field must be true in order to delete with a filter rather than an identifier.
         in: query
         name: bulk
         required: true
@@ -81,8 +95,7 @@ paths:
                       self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/hosts/HostUUID
                     macAddress: AA:BB:CC:DD:EE:FF
                     type: Host
-                ? 'Example 2 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/hosts?bulk=true&ipAddress=192.168.1.2 ( Example
-                  for a bulk DELETE of a Network Map host. )'
+                ? 'Example 2 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/hosts?bulk=true&ipAddress=192.168.1.2 ( Example for a bulk DELETE of a Network Map host. )'
                 : value:
                     items:
                     - id: HostUUID
@@ -129,8 +142,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /api/fmc_netmap/v1/domain/DomainUUID/hosts ( Example for GET ALL Network Map hosts. The
-                  response structure varies based on the ''expanded'' query parameter. )'
+                ? 'Example 1 : GET /api/fmc_netmap/v1/domain/DomainUUID/hosts ( Example for GET ALL Network Map hosts. The response structure varies based on the ''expanded'' query parameter. )'
                 : {}
               schema:
                 $ref: '#/components/schemas/NetmapHostListContainer'
@@ -200,6 +212,7 @@ paths:
           description: Error
       tags:
       - Network Map
+  /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/hosts/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -219,11 +232,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/hosts/{objectId}:
     delete:
       deprecated: false
-      description: '**Delete the host associated with the specified ID in the Network Map. _Check the response section for
-        applicable examples (if any)._**'
+      description: '**Delete the host associated with the specified ID in the Network Map. _Check the response section for applicable examples (if any)._**'
       operationId: deleteNetmapHost
       parameters:
       - description: UUID of the host.
@@ -248,8 +259,7 @@ paths:
                       self: https://FMC-IP/api/fmc_netmap/v1/domain/DomainUUID/hosts/HostUUID
                     macAddress: AA:BB:CC:DD:EE:FF
                     type: Host
-                ? 'Example 2 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/hosts?bulk=true&ipAddress=192.168.1.2 ( Example
-                  for a bulk DELETE of a Network Map host. )'
+                ? 'Example 2 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/hosts?bulk=true&ipAddress=192.168.1.2 ( Example for a bulk DELETE of a Network Map host. )'
                 : value:
                     items:
                     - id: HostUUID
@@ -344,6 +354,7 @@ paths:
           description: Error
       tags:
       - Network Map
+  /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/vulns:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -363,22 +374,18 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/vulns:
     delete:
       deprecated: false
-      description: '**Delete all the vulnerabilities in the network map. _Check the response section for applicable examples
-        (if any)._**'
+      description: '**Delete all the vulnerabilities in the network map. _Check the response section for applicable examples (if any)._**'
       operationId: deleteMultipleNetmapVuln
       parameters:
-      - description: Boolean value indicating whether this is performed as a bulk operation. This field must be true in order
-          to delete with a filter rather than an identifier.
+      - description: Boolean value indicating whether this is performed as a bulk operation. This field must be true in order to delete with a filter rather than an identifier.
         in: query
         name: bulk
         required: true
         schema:
           type: boolean
-      - description: 'Filters for retrieve and delete operations. The <code>source</code> filter must be included for delete.<br>Values
-          can be any of: <code>ipAddress:192.168.1.2;source:MySource;port:443;protocol:tcp;id:12345</code>.'
+      - description: 'Filters for retrieve and delete operations. The <code>source</code> filter must be included for delete.<br>Values can be any of: <code>ipAddress:192.168.1.2;source:MySource;port:443;protocol:tcp;id:12345</code>.'
         in: query
         name: filter
         required: true
@@ -403,8 +410,7 @@ paths:
                     protocol: tcp
                     source: My Vuln Source
                     type: Vuln
-                ? 'Example 2 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/vulns?bulk=true&filter=source:MyVulnSource ( Example
-                  of bulk delete of vulns with a filter from the Network Map )'
+                ? 'Example 2 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/vulns?bulk=true&filter=source:MyVulnSource ( Example of bulk delete of vulns with a filter from the Network Map )'
                 : value:
                     items:
                     - cve: 2021-12345
@@ -445,8 +451,7 @@ paths:
       description: '**Get the list of all vulnerabilities in the network map.**'
       operationId: getAllNetmapVuln
       parameters:
-      - description: 'Filters for retrieve and delete operations. The <code>source</code> filter must be included for delete.<br>Values
-          can be any of: <code>ipAddress:192.168.1.2;source:MySource;port:443;protocol:tcp;id:12345</code>.'
+      - description: 'Filters for retrieve and delete operations. The <code>source</code> filter must be included for delete.<br>Values can be any of: <code>ipAddress:192.168.1.2;source:MySource;port:443;protocol:tcp;id:12345</code>.'
         in: query
         name: filter
         required: false
@@ -491,8 +496,7 @@ paths:
                       limit: 25
                       offset: 0
                       pages: 1
-                ? 'Example 2 : GET /fmc_netmap/v1/domain/DomainUUID/vulns?expanded=true ( Example of a GET ALL with expanded
-                  vulns of the Network Map )'
+                ? 'Example 2 : GET /fmc_netmap/v1/domain/DomainUUID/vulns?expanded=true ( Example of a GET ALL with expanded vulns of the Network Map )'
                 : value:
                     items:
                     - cve: 2021-12345
@@ -595,6 +599,7 @@ paths:
           description: Error
       tags:
       - Network Map
+  /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/vulns/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -614,11 +619,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/vulns/{objectId}:
     delete:
       deprecated: false
-      description: '**Delete the vulnerability in the network map with the specified ID. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Delete the vulnerability in the network map with the specified ID. _Check the response section for applicable examples (if any)._**'
       operationId: deleteNetmapVuln
       parameters:
       - description: Unique identifier of the vulnerability.
@@ -646,8 +649,7 @@ paths:
                     protocol: tcp
                     source: My Vuln Source
                     type: Vuln
-                ? 'Example 2 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/vulns?bulk=true&filter=source:MyVulnSource ( Example
-                  of bulk delete of vulns with a filter from the Network Map )'
+                ? 'Example 2 : DELETE /api/fmc_netmap/v1/domain/DomainUUID/vulns?bulk=true&filter=source:MyVulnSource ( Example of bulk delete of vulns with a filter from the Network Map )'
                 : value:
                     items:
                     - cve: 2021-12345
@@ -726,262 +728,8 @@ paths:
           description: Error
       tags:
       - Network Map
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
-  parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
-    limit:
-      description: Number of items to return.
-      in: query
-      name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
-    domainUUID:
-      description: Domain UUID
-      in: path
-      name: domainUUID
-      required: true
-      schema:
-        type: string
   schemas:
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    NetmapVulnListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/NetmapVuln'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    NetmapVuln:
-      description: Represents the vulnerability object which is used to add a vuln to the Network Map
-      properties:
-        cve:
-          description: The CVE number of the vuln (eg. 2020-1234)
-          type: string
-        description:
-          description: The description of the vuln. If this value is empty, the description is automatically taken from the
-            title of the CVE
-          type: string
-        id:
-          description: ID of the vuln. When provided during creation, must be less than 2,000,000.<br>If not provided during
-            creation, will be auto-assigned to a value greater than or equal to 2,000,000
-          type: string
-        ipAddress:
-          description: IP address of the host that contains the vuln
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        port:
-          description: The port associated with the vuln. If provided, must also provide a protocol
-          format: int32
-          type: integer
-        protocol:
-          description: 'The protocol associated with the vuln. Can be: tcp or udp. If provided, must also provide a port'
-          type: string
-        source:
-          description: Name of the source of the vulnerability. This groups together vulns from a single source.<br>Vulns
-            discovered using passive detection (from a NGFW/NGIPS device) have the source as 'RNA'
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    NetmapOS:
-      properties:
-        osProduct:
-          type: string
-        osVendor:
-          type: string
-        osVersion:
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    NetmapHostListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/NetmapHost'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
     NetmapHost:
       description: Represents the host object in the Network Map
       properties:
@@ -1002,8 +750,7 @@ components:
           description: UUID of the host
           type: string
         ipAddress:
-          description: List of IPs of the host. At this point, when creating a host, only one IP is supported, but must still
-            be in an array
+          description: List of IPs of the host. At this point, when creating a host, only one IP is supported, but must still be in an array
           items:
             type: string
           type: array
@@ -1048,6 +795,18 @@ components:
         version:
           type: string
       type: object
+    NetmapVulnListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/NetmapVuln'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
     NetmapService:
       properties:
         confidence:
@@ -1056,6 +815,54 @@ components:
           format: int32
           type: integer
         protocol:
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
           type: string
       type: object
     NetmapApplication:
@@ -1068,6 +875,178 @@ components:
           format: int32
           type: integer
       type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    NetmapHostListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/NetmapHost'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    NetmapOS:
+      properties:
+        osProduct:
+          type: string
+        osVendor:
+          type: string
+        osVersion:
+          type: string
+      type: object
+    NetmapVuln:
+      description: Represents the vulnerability object which is used to add a vuln to the Network Map
+      properties:
+        cve:
+          description: The CVE number of the vuln (eg. 2020-1234)
+          type: string
+        description:
+          description: The description of the vuln. If this value is empty, the description is automatically taken from the title of the CVE
+          type: string
+        id:
+          description: ID of the vuln. When provided during creation, must be less than 2,000,000.<br>If not provided during creation, will be auto-assigned to a value greater than or equal to 2,000,000
+          type: string
+        ipAddress:
+          description: IP address of the host that contains the vuln
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        port:
+          description: The port associated with the vuln. If provided, must also provide a protocol
+          format: int32
+          type: integer
+        protocol:
+          description: 'The protocol associated with the vuln. Can be: tcp or udp. If provided, must also provide a port'
+          type: string
+        source:
+          description: Name of the source of the vulnerability. This groups together vulns from a single source.<br>Vulns discovered using passive detection (from a NGFW/NGIPS device) have the source as 'RNA'
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+  parameters:
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

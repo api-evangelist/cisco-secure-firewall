@@ -291,17 +291,9 @@ components:
         groupId:
           type: string
           format: uuid
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
+    GroupAssignmentIdInput:
+      type: string
+      format: uuid
     RBACGroupInputRequestBody:
       type: object
       description: Represent request body for RBAC user group
@@ -318,6 +310,17 @@ components:
           - Local
           - Federated
           description: Specifies whether the group is local or federated. Defaults to Local
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
     RBACGroup:
       type: object
       description: RBAC user group
@@ -343,21 +346,11 @@ components:
           - Local
           - Federated
           description: Specifies whether the group is local or federated
-    GroupAssignmentIdInput:
-      type: string
-      format: uuid
   responses:
+    NoContent:
+      description: No content
     NotFoundError:
       description: Not Found
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request was invalid
       headers:
         Date:
           $ref: '#/components/headers/Date'
@@ -374,8 +367,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NoContent:
-      description: No content
+    ValidationError:
+      description: The request was invalid
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   headers:
     Date:
       schema:

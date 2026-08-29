@@ -453,54 +453,26 @@ paths:
       - MPM Search
 components:
   schemas:
-    MpmEndpointObj:
+    MpmPolicyWithoutRulesObj:
       properties:
-        addressEnd:
-          format: int64
-          type: integer
-        addressStart:
-          format: int64
-          type: integer
         description:
           type: string
         id:
           format: uuid
           type: string
+        installTargets:
+          items:
+            type: string
+          type: array
         name:
           type: string
-        value:
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
           type: string
-      type: object
-    MpmEndpointGroupObj:
-      properties:
-        description:
-          type: string
-        epgs:
-          items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
-          type: array
-        eps:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
-        id:
-          format: uuid
-          type: string
-        name:
-          type: string
-      type: object
-    MpmEndpointsAndEndpointGroupsResult:
-      properties:
-        endpointGroups:
-          items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
-          type: array
-          uniqueItems: true
-        endpoints:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
-          uniqueItems: true
       type: object
     MpmAppObj:
       properties:
@@ -534,54 +506,6 @@ components:
           format: int32
           type: integer
         value:
-          type: string
-      type: object
-    MpmAppsAndAppGroupsResult:
-      properties:
-        appGroups:
-          items:
-            $ref: '#/components/schemas/MpmAppGroupObj'
-          type: array
-          uniqueItems: true
-        apps:
-          items:
-            $ref: '#/components/schemas/MpmAppObj'
-          type: array
-          uniqueItems: true
-      type: object
-    MpmPolicyWithoutRulesObj:
-      properties:
-        description:
-          type: string
-        id:
-          format: uuid
-          type: string
-        installTargets:
-          items:
-            type: string
-          type: array
-        name:
-          type: string
-        policyType:
-          enum:
-          - SECURITY
-          - GOVERNANCE_PREPEND
-          - GOVERNANCE_APPEND
-          - NAT
-          type: string
-      type: object
-    MpmAppGroupObj:
-      properties:
-        aps:
-          items:
-            $ref: '#/components/schemas/MpmAppObj'
-          type: array
-        description:
-          type: string
-        id:
-          format: uuid
-          type: string
-        name:
           type: string
       type: object
     MpmRuleSearchResults:
@@ -627,6 +551,82 @@ components:
             type: string
           type: array
           uniqueItems: true
+      type: object
+    MpmAppGroupObj:
+      properties:
+        aps:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+      type: object
+    MpmEndpointsAndEndpointGroupsResult:
+      properties:
+        endpointGroups:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+          uniqueItems: true
+        endpoints:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+          uniqueItems: true
+      type: object
+    MpmEndpointObj:
+      properties:
+        addressEnd:
+          format: int64
+          type: integer
+        addressStart:
+          format: int64
+          type: integer
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    MpmAppsAndAppGroupsResult:
+      properties:
+        appGroups:
+          items:
+            $ref: '#/components/schemas/MpmAppGroupObj'
+          type: array
+          uniqueItems: true
+        apps:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+          uniqueItems: true
+      type: object
+    MpmEndpointGroupObj:
+      properties:
+        description:
+          type: string
+        epgs:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        eps:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
       type: object
   securitySchemes:
     BearerJWT:

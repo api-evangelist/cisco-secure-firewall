@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Security Cloud Control TAC
     email: cdo.tac@cisco.com
-  description: 'Operations tagged Change Requests across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
-    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Change Requests across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml, scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
-      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
     operation_coverage: 4/4
   x-evidence:
@@ -47,6 +43,25 @@ tags:
 - name: Change Requests
 paths:
   /v1/changeRequests:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       description: Get a list of Change Requests.
       operationId: getChangeRequests
@@ -59,8 +74,7 @@ paths:
           maximum: 200
           minimum: 0
           type: string
-      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
         in: query
         name: offset
         required: false
@@ -135,6 +149,7 @@ paths:
       summary: Create Change Request
       tags:
       - Change Requests
+  /v1/changeRequests/{changeRequestUid}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -154,7 +169,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/changeRequests/{changeRequestUid}:
     delete:
       description: Delete a Change Request by UID in the Security Cloud Control tenant.
       operationId: deleteChangeRequest
@@ -227,33 +241,14 @@ paths:
       summary: Get Change Request
       tags:
       - Change Requests
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   responses:
-    http403Forbidden:
+    http405MethodNotAllowed:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
+      description: Method not allowed.
     http404NotFound:
       content:
         application/json:
@@ -266,43 +261,19 @@ components:
           schema:
             $ref: '#/components/schemas/CommonApiError'
       description: Invalid input provided. Check the response for details.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
     http401Unauthorised:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/AuthenticationError'
       description: Request not authorized.
-    http405MethodNotAllowed:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Method not allowed.
   schemas:
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
-    ChangeRequestCreateInput:
-      properties:
-        description:
-          description: The description of the change request in Security Cloud Control.
-          example: Changes related to securing the new branch.
-          type: string
-        name:
-          description: The name of the change request in Security Cloud Control.
-          example: SecureNewBranchChange
-          minLength: 1
-          type: string
-      required:
-      - name
-      type: object
     ChangeRequest:
       properties:
         description:
@@ -321,6 +292,29 @@ components:
       required:
       - name
       - uid
+      type: object
+    ChangeRequestPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/ChangeRequest'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
       type: object
     CommonApiError:
       properties:
@@ -352,30 +346,30 @@ components:
           description: A human-readable error description in English.
           example: sample error
           type: string
-    ChangeRequestPage:
+    ChangeRequestCreateInput:
       properties:
-        count:
-          description: The total number of results available.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/ChangeRequest'
-          type: array
-        limit:
-          description: The number of results retrieved.
-          example: 50
-          format: int32
-          type: integer
-        offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
-          format: int32
-          type: integer
+        description:
+          description: The description of the change request in Security Cloud Control.
+          example: Changes related to securing the new branch.
+          type: string
+        name:
+          description: The name of the change request in Security Cloud Control.
+          example: SecureNewBranchChange
+          minLength: 1
+          type: string
+      required:
+      - name
       type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Security Cloud Control TAC
     email: cdo.tac@cisco.com
-  description: 'Operations tagged Access Groups across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
-    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Access Groups across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml, scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
-      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
     operation_coverage: 5/5
   x-evidence:
@@ -47,6 +43,25 @@ tags:
 - name: Access Groups
 paths:
   /v1/policies/asa/accessgroups:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       description: Get a list of ASA Access Groups.
       operationId: listAccessGroups
@@ -59,8 +74,7 @@ paths:
           maximum: 200
           minimum: 0
           type: string
-      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
         in: query
         name: offset
         required: false
@@ -136,6 +150,7 @@ paths:
       summary: Create Access Group
       tags:
       - Access Groups
+  /v1/policies/asa/accessgroups/{accessGroupUid}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -155,7 +170,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/policies/asa/accessgroups/{accessGroupUid}:
     delete:
       description: Delete Access Group by UID in the Security Cloud Control tenant.
       operationId: deleteAccessGroup
@@ -261,90 +275,31 @@ paths:
       summary: Modify ASA Access Group
       tags:
       - Access Groups
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   responses:
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
     http400BadRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CommonApiError'
       description: Invalid input provided. Check the response for details.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
   schemas:
-    AccessGroupCreateInput:
-      properties:
-        appliedTo:
-          description: The set of device unique identifiers to which this Access Group was applied. Only valid for shared
-            access group.
-          example: '[deviceUid1, deviceUid2, ..., deviceUidN]'
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        entityUid:
-          description: 'The unique identifier, represented as a UUID, of the device/manager associated with the Access Group.
-            When creating shared Access Group, entityUid represents device that contains source Access Group '
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-        isShared:
-          description: The flag that identifies if access group is shared.  If set to true, appliedTo field should be provided
-            as well and entityUid should point to source device.
-          example: false
-          type: boolean
-        name:
-          description: A human-readable name for the Access Group.
-          example: Access-Group1
-          type: string
-        resources:
-          description: The set of of interface and direction pairs or global resource.  Resource is an attribute applicable
-            only to devices and will not be propagated to appliedTo devices if Access Group is shared.
-          example: 'Interface resource: [{"interfaceName": "outside","direction": "OUTBOUND"] or Global resource: [{"global":
-            true}]'
-          items:
-            additionalProperties: {}
-            type: object
-          type: array
-          uniqueItems: true
-      required:
-      - entityUid
-      type: object
     AccessGroup:
       properties:
         appliedTo:
-          description: The set of device unique identifiers to which this Access Group was applied. Only valid for shared
-            access group.
+          description: The set of device unique identifiers to which this Access Group was applied. Only valid for shared access group.
           example: '[deviceUid1, deviceUid2, ..., deviceUidN]'
           items:
             format: uuid
@@ -371,16 +326,14 @@ components:
           type: string
         resources:
           description: The set of of interface and direction pairs or global resource.
-          example: 'Interface resource: [{"interfaceName": "outside"},{"direction": "OUTBOUND"}] or Global resource: [{"global":
-            true}]'
+          example: 'Interface resource: [{"interfaceName": "outside"},{"direction": "OUTBOUND"}] or Global resource: [{"global": true}]'
           items:
             additionalProperties: {}
             type: object
           type: array
           uniqueItems: true
         sharedAccessGroupUid:
-          description: The unique identifier, represented as a UUID, of the shared access group manager associated with the
-            Access Group.
+          description: The unique identifier, represented as a UUID, of the shared access group manager associated with the Access Group.
           example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
           format: uuid
           type: string
@@ -399,37 +352,6 @@ components:
       - name
       - sharedAccessGroupUid
       - uid
-      type: object
-    AccessGroupUpdateInput:
-      properties:
-        appliedTo:
-          description: The set of device unique identifiers to which this Access Group was applied. Only valid for shared
-            access group.
-          example: '[deviceUid1, deviceUid2, ..., deviceUidN]'
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        isShared:
-          description: The flag that identifies if access group is shared.  If set to true, appliedTo field should be provided
-            as well and entityUid should point to source device.
-          example: false
-          type: boolean
-        name:
-          description: A human-readable name for the Access Group.
-          example: Access-Group1
-          type: string
-        resources:
-          description: The set of of interface and direction pairs or global resource.  Resource is an attribute applicable
-            only to devices and will not be propagated to appliedTo devices if Access Group is shared.
-          example: 'Interface resource: [{"interfaceName": "outside","direction": "OUTBOUND"] or Global resource: [{"global":
-            true}]'
-          items:
-            additionalProperties: {}
-            type: object
-          type: array
-          uniqueItems: true
       type: object
     CommonApiError:
       properties:
@@ -479,11 +401,71 @@ components:
           format: int32
           type: integer
         offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
           example: 0
           format: int32
           type: integer
+      type: object
+    AccessGroupUpdateInput:
+      properties:
+        appliedTo:
+          description: The set of device unique identifiers to which this Access Group was applied. Only valid for shared access group.
+          example: '[deviceUid1, deviceUid2, ..., deviceUidN]'
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        isShared:
+          description: The flag that identifies if access group is shared.  If set to true, appliedTo field should be provided as well and entityUid should point to source device.
+          example: false
+          type: boolean
+        name:
+          description: A human-readable name for the Access Group.
+          example: Access-Group1
+          type: string
+        resources:
+          description: The set of of interface and direction pairs or global resource.  Resource is an attribute applicable only to devices and will not be propagated to appliedTo devices if Access Group is shared.
+          example: 'Interface resource: [{"interfaceName": "outside","direction": "OUTBOUND"] or Global resource: [{"global": true}]'
+          items:
+            additionalProperties: {}
+            type: object
+          type: array
+          uniqueItems: true
+      type: object
+    AccessGroupCreateInput:
+      properties:
+        appliedTo:
+          description: The set of device unique identifiers to which this Access Group was applied. Only valid for shared access group.
+          example: '[deviceUid1, deviceUid2, ..., deviceUidN]'
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        entityUid:
+          description: 'The unique identifier, represented as a UUID, of the device/manager associated with the Access Group. When creating shared Access Group, entityUid represents device that contains source Access Group '
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        isShared:
+          description: The flag that identifies if access group is shared.  If set to true, appliedTo field should be provided as well and entityUid should point to source device.
+          example: false
+          type: boolean
+        name:
+          description: A human-readable name for the Access Group.
+          example: Access-Group1
+          type: string
+        resources:
+          description: The set of of interface and direction pairs or global resource.  Resource is an attribute applicable only to devices and will not be propagated to appliedTo devices if Access Group is shared.
+          example: 'Interface resource: [{"interfaceName": "outside","direction": "OUTBOUND"] or Global resource: [{"global": true}]'
+          items:
+            additionalProperties: {}
+            type: object
+          type: array
+          uniqueItems: true
+      required:
+      - entityUid
       type: object
   securitySchemes:
     bearerAuth:

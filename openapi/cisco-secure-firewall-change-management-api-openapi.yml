@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Change Management across 2 of this provider''s published API definitions: cdfmc-openapi.yaml,
-    cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Change Management across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 6/6
   x-evidence:
@@ -47,13 +43,31 @@ tags:
 - name: Change Management
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/changemanagement/tickets:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       deprecated: false
       description: '**Get all the tickets for the logged in user.**'
       operationId: getAllTicket
       parameters:
-      - description: 'To filter by state of ticket use : <code>State:NEW</code>. For multiple states <code>State:NEW,IN_PROGRESS</code>
-          and/or for free text search, use <code>fts:<search_string></code>'
+      - description: 'To filter by state of ticket use : <code>State:NEW</code>. For multiple states <code>State:NEW,IN_PROGRESS</code> and/or for free text search, use <code>fts:<search_string></code>'
         in: query
         name: filter
         required: false
@@ -78,8 +92,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET https://u32c01p10-vrouter.cisco.com:29059/api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets
-                  ( Success: Test GET ALL method from global domain for Tickets  )'
+                ? 'Example 1 : GET https://u32c01p10-vrouter.cisco.com:29059/api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets ( Success: Test GET ALL method from global domain for Tickets  )'
                 : value:
                     items:
                     - assignedTo: admin
@@ -134,8 +147,7 @@ paths:
                       limit: 25
                       offset: 0
                       pages: 1
-                ? 'Example 2 : GET https://u32c01p10-vrouter.cisco.com:29059/api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets
-                  ( Success: Test GET ALL method from global domain for Tickets  with expanded set to false )'
+                ? 'Example 2 : GET https://u32c01p10-vrouter.cisco.com:29059/api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets ( Success: Test GET ALL method from global domain for Tickets  with expanded set to false )'
                 : value:
                     items:
                     - id: 0050568A-1CA8-0ed3-0000-008589934650
@@ -184,8 +196,7 @@ paths:
                       limit: 25
                       offset: 0
                       pages: 1
-                ? 'Example 3 : GET https://u32c01p10-vrouter.cisco.com:29059/api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets
-                  ( Success: Test GET ALL method from global domain for Ticket with history set to true  )'
+                ? 'Example 3 : GET https://u32c01p10-vrouter.cisco.com:29059/api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets ( Success: Test GET ALL method from global domain for Ticket with history set to true  )'
                 : value:
                     assignedTo: admin
                     description: tic1
@@ -243,15 +254,13 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : POST  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets ( POST to create Ticket
-                with assign to different user )'
+              ? 'Example 1 : POST  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets ( POST to create Ticket with assign to different user )'
               : value:
                   assignedTo: user1
                   description: Ticket1
                   name: Ticket1
                   status: NEW
-              ? 'Example 2 : POST  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets ( POST to create Ticket
-                without assignedTo )'
+              ? 'Example 2 : POST  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets ( POST to create Ticket without assignedTo )'
               : value:
                   description: Ticket1
                   name: Ticket1
@@ -266,8 +275,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : POST  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets ( POST to create
-                  Ticket with assign to different user )'
+                ? 'Example 1 : POST  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets ( POST to create Ticket with assign to different user )'
                 : value:
                     assignedTo: user1
                     description: Ticket1
@@ -280,8 +288,7 @@ paths:
                     name: Ticket1
                     status: NEW
                     type: Ticket
-                ? 'Example 2 : POST  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets ( POST to create
-                  Ticket without assignedTo )'
+                ? 'Example 2 : POST  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets ( POST to create Ticket without assignedTo )'
                 : value:
                     assignedTo: admin
                     description: Ticket1
@@ -307,6 +314,7 @@ paths:
           description: Error
       tags:
       - Change Management
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/changemanagement/tickets/{containerUUID}/previewchanges:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -326,14 +334,12 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/changemanagement/tickets/{containerUUID}/previewchanges:
     get:
       deprecated: false
       description: '**Get ticket-based changes.**'
       operationId: getTicketPreviewChange
       parameters:
-      - description: 'The filter criteria for which the details have to be fetched - Only works when "expanded" is set to
-          "true". Examples: ParentEntityTypes:AccessPolicy, EntityUUID:0050568C-35A0-0ed3-0000-004294969351.'
+      - description: 'The filter criteria for which the details have to be fetched - Only works when "expanded" is set to "true". Examples: ParentEntityTypes:AccessPolicy, EntityUUID:0050568C-35A0-0ed3-0000-004294969351.'
         in: query
         name: filter
         required: false
@@ -358,8 +364,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/workflow/tickets/ContainerUUID/previewchanges?limit=1
-                  ( Get all paginated ticker preview change objects with limit=1 )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/workflow/tickets/ContainerUUID/previewchanges?limit=1 ( Get all paginated ticker preview change objects with limit=1 )'
                 : value:
                     items:
                     - action: string
@@ -400,6 +405,7 @@ paths:
           description: Error
       tags:
       - Change Management
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/changemanagement/tickets/{containerUUID}/validationresults:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -419,7 +425,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/changemanagement/tickets/{containerUUID}/validationresults:
     get:
       deprecated: false
       description: '**Get validation results for the specified ticket.**'
@@ -444,18 +449,15 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/workflow/tickets/TicketID/validation?offset=0&limit=25
-                  ( Get all paginated ticket validation objects )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/workflow/tickets/TicketID/validation?offset=0&limit=25 ( Get all paginated ticket validation objects )'
                 : value:
                     items:
                     - action: Please Configure a Valid Host as Gateway
                       affectedDeviceCount: 1
-                      cause: Gateway with network object [ admin-NW-1 ] defined in static route is not a valid host, Only
-                        a Valid Host can be configured as Gateway
+                      cause: Gateway with network object [ admin-NW-1 ] defined in static route is not a valid host, Only a Valid Host can be configured as Gateway
                     - action: Please Configure a Valid Host as Gateway
                       affectedDeviceCount: 1
-                      cause: Gateway with network object [ admin-NW-2 ] defined in static route is not a valid host, Only
-                        a Valid Host can be configured as Gateway
+                      cause: Gateway with network object [ admin-NW-2 ] defined in static route is not a valid host, Only a Valid Host can be configured as Gateway
                     links:
                       self: /fmc_config/v1/domain/DomainUUID/workflow/tickets/TicketID/validation?offset=0&limit=25
                     metadata:
@@ -479,6 +481,7 @@ paths:
           description: Error
       tags:
       - Change Management
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/changemanagement/tickets/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -498,7 +501,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/changemanagement/tickets/{objectId}:
     get:
       deprecated: false
       description: '**Get information for the specified ticket.**'
@@ -523,8 +525,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET https://u32c01p10-vrouter.cisco.com:29059/api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets/ticketuuid
-                  ( Success: Test GET by id method from global domain for Ticket with history set to false  )'
+                ? 'Example 1 : GET https://u32c01p10-vrouter.cisco.com:29059/api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets/ticketuuid ( Success: Test GET by id method from global domain for Ticket with history set to false  )'
                 : value:
                     assignedTo: admin
                     description: tic1
@@ -567,15 +568,13 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets/ticketuuid ( PUT to
-                open the ticket to work )'
+              ? 'Example 1 : PUT  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets/ticketuuid ( PUT to open the ticket to work )'
               : value:
                   id: 0050568A-1CA8-0ed3-0000-025769803883
                   name: Ticket1
                   status: IN_PROGRESS
                   type: Ticket
-              ? 'Example 2 : PUT  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets/ticketuuid ( PUT with
-                state change description )'
+              ? 'Example 2 : PUT  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets/ticketuuid ( PUT with state change description )'
               : value:
                   assignedTo: admin
                   description: Ticket1
@@ -594,8 +593,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : PUT  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets/ticketuuid ( PUT to
-                  open the ticket to work )'
+                ? 'Example 1 : PUT  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets/ticketuuid ( PUT to open the ticket to work )'
                 : value:
                     description: Ticket1
                     id: 0050568A-1CA8-0ed3-0000-025769803883
@@ -604,8 +602,7 @@ paths:
                     name: Ticket1
                     status: IN_PROGRESS
                     type: Ticket
-                ? 'Example 2 : PUT  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets/ticketuuid ( PUT with
-                  state change description )'
+                ? 'Example 2 : PUT  /api/fmc_config/v1/domain/GlobalDomainUUID/changemanagement/tickets/ticketuuid ( PUT with state change description )'
                 : value:
                     assignedTo: admin
                     description: Ticket1
@@ -631,62 +628,74 @@ paths:
           description: Error
       tags:
       - Change Management
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
-  parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
-    limit:
-      description: Number of items to return.
-      in: query
-      name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
-    domainUUID:
-      description: Domain UUID
-      in: path
-      name: domainUUID
-      required: true
-      schema:
-        type: string
   schemas:
-    TicketListContainer:
+    HealthAlertConfig:
+      properties:
+        enabled:
+          type: boolean
+        name:
+          type: string
+        thresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+      type: object
+    HealthSetting:
+      properties:
+        alertEvaluationInterval:
+          format: int32
+          type: integer
+        certFileContent:
+          type: string
+        certFileName:
+          type: string
+        certFileType:
+          type: string
+        certPassphrase:
+          type: string
+        configType:
+          type: string
+        dataCollectionInterval:
+          format: int32
+          type: integer
+        dialInHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        dialOutHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        enabledOpenConfig:
+          type: boolean
+        grpcPassword:
+          type: string
+        grpcUsername:
+          type: string
+        readOnly:
+          type: boolean
+      type: object
+    DialHost:
+      properties:
+        host:
+          type: string
+        port:
+          format: int32
+          type: integer
+      type: object
+    IAdvanced:
+      properties:
+        enableOGS:
+          type: boolean
+      type: object
+    TicketValidationResultListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/Ticket'
+          $ref: '#/components/schemas/TicketValidationResult'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -694,18 +703,6 @@ components:
         paging:
           $ref: '#/components/schemas/PagingContainer'
           type: object
-      type: object
-    IValueDelete:
-      properties:
-        fieldName:
-          type: string
-        oldValue:
-          type: string
-      type: object
-    IAdvanced:
-      properties:
-        enableOGS:
-          type: boolean
       type: object
     IReadonly:
       properties:
@@ -717,6 +714,52 @@ components:
           type: string
         state:
           type: boolean
+      type: object
+    IValueUpdate:
+      properties:
+        fieldName:
+          type: string
+        newValue:
+          type: string
+        oldValue:
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
       type: object
     IPolicyModel:
       properties:
@@ -737,6 +780,94 @@ components:
         version:
           type: string
       type: object
+    TicketValidationResult:
+      properties:
+        action:
+          type: string
+        affectedDeviceCount:
+          format: int32
+          type: integer
+        affectedDeviceList:
+          items:
+            $ref: '#/components/schemas/IBaseDevice'
+            type: object
+          type: array
+        cause:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        level:
+          enum:
+          - ERROR
+          - INFO
+          - WARN
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    HealthThreshold:
+      properties:
+        type:
+          type: string
+        value:
+          format: int32
+          type: integer
+      type: object
+    HealthModule:
+      properties:
+        alertConfig:
+          items:
+            $ref: '#/components/schemas/HealthAlertConfig'
+            type: object
+          type: array
+        alertEnabled:
+          type: boolean
+        criticalThreshold:
+          format: int32
+          type: integer
+        customThresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+        enabled:
+          type: boolean
+        moduleId:
+          type: string
+        severity:
+          type: string
+        type:
+          type: string
+        warningThreshold:
+          format: int32
+          type: integer
+      type: object
     IMetadataUser:
       properties:
         id:
@@ -749,53 +880,70 @@ components:
         type:
           type: string
       type: object
-    ErrorResponse:
+    IValueAdd:
       properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
+        fieldName:
           type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
+        newValue:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    TicketPreviewChangeListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/TicketPreviewChange'
           type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IValueDelete:
+      properties:
+        fieldName:
+          type: string
+        oldValue:
+          type: string
+      type: object
+    ITicketHistory:
+      description: Contains history of the change management ticket.
+      properties:
+        comment:
+          type: string
+        state:
+          description: State of Ticket.
           enum:
-          - ERROR
-          - WARN
+          - PENDING_APPROVAL
+          - NEW
+          - APPROVED
+          - DISCARD
+          - IN_PROGRESS
+          - TAKEOVER_TICKET
+          - ON_HOLD
+          - REJECTED
           type: string
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
+        time:
+          description: The date and time at which the state change occurred.
           type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
+        user:
+          description: User who initiated state change.
           type: string
-      type: object
-    DialHost:
-      properties:
-        host:
-          type: string
-        port:
-          format: int32
-          type: integer
-      type: object
-    HealthThreshold:
-      properties:
-        type:
-          type: string
-        value:
-          format: int32
-          type: integer
       type: object
     IImpactedDevice:
       properties:
@@ -823,119 +971,6 @@ components:
         entityType:
           type: string
         fieldName:
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    TicketPreviewChangeListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/TicketPreviewChange'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ITicketHistory:
-      description: Contains history of the change management ticket.
-      properties:
-        comment:
-          type: string
-        state:
-          description: State of Ticket.
-          enum:
-          - PENDING_APPROVAL
-          - NEW
-          - APPROVED
-          - DISCARD
-          - IN_PROGRESS
-          - TAKEOVER_TICKET
-          - ON_HOLD
-          - REJECTED
-          type: string
-        time:
-          description: The date and time at which the state change occurred.
-          type: string
-        user:
-          description: User who initiated state change.
-          type: string
-      type: object
-    IHealthPolicy:
-      description: Description of Health Policy.
-      properties:
-        basePolicyID:
-          type: string
-        defaultPolicy:
-          type: boolean
-        description:
-          description: Description of Health Policy.
-          type: string
-        healthModules:
-          items:
-            $ref: '#/components/schemas/HealthModule'
-            type: object
-          type: array
-        id:
-          description: Unique identifier (UUID) representing the Health policy.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the Health policy.
-          type: object
-        name:
-          description: User-specified name of the Health policy.
-          type: string
-        policyType:
-          type: string
-        setting:
-          $ref: '#/components/schemas/HealthSetting'
-          type: object
-        type:
-          description: Type of the Health policy; this value is always HealthPolicy.
-          type: string
-        version:
-          description: Version number of the response object.
           type: string
       type: object
     TicketPreviewChange:
@@ -999,43 +1034,38 @@ components:
         version:
           type: string
       type: object
-    HealthModule:
+    TicketListContainer:
       properties:
-        alertConfig:
-          items:
-            $ref: '#/components/schemas/HealthAlertConfig'
-            type: object
+        items:
+          $ref: '#/components/schemas/Ticket'
           type: array
-        alertEnabled:
-          type: boolean
-        criticalThreshold:
-          format: int32
-          type: integer
-        customThresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-        enabled:
-          type: boolean
-        moduleId:
-          type: string
-        severity:
-          type: string
-        type:
-          type: string
-        warningThreshold:
-          format: int32
-          type: integer
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
       type: object
-    IValueUpdate:
+    IMetadata:
       properties:
-        fieldName:
-          type: string
-        newValue:
-          type: string
-        oldValue:
-          type: string
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
       type: object
     Ticket:
       description: Contains the change management ticket data.
@@ -1086,16 +1116,67 @@ components:
         version:
           type: string
       type: object
-    IDomain:
+    IHealthPolicy:
+      description: Description of Health Policy.
       properties:
+        basePolicyID:
+          type: string
+        defaultPolicy:
+          type: boolean
+        description:
+          description: Description of Health Policy.
+          type: string
+        healthModules:
+          items:
+            $ref: '#/components/schemas/HealthModule'
+            type: object
+          type: array
         id:
+          description: Unique identifier (UUID) representing the Health policy.
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the Health policy.
           type: object
         name:
+          description: User-specified name of the Health policy.
           type: string
+        policyType:
+          type: string
+        setting:
+          $ref: '#/components/schemas/HealthSetting'
+          type: object
         type:
+          description: Type of the Health policy; this value is always HealthPolicy.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
           type: string
       type: object
     IBaseDevice:
@@ -1144,140 +1225,37 @@ components:
         version:
           type: string
       type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    TicketValidationResult:
-      properties:
-        action:
-          type: string
-        affectedDeviceCount:
-          format: int32
-          type: integer
-        affectedDeviceList:
-          items:
-            $ref: '#/components/schemas/IBaseDevice'
-            type: object
-          type: array
-        cause:
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        level:
-          enum:
-          - ERROR
-          - INFO
-          - WARN
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    TicketValidationResultListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/TicketValidationResult'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    HealthAlertConfig:
-      properties:
-        enabled:
-          type: boolean
-        name:
-          type: string
-        thresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-      type: object
-    IValueAdd:
-      properties:
-        fieldName:
-          type: string
-        newValue:
-          type: string
-      type: object
-    HealthSetting:
-      properties:
-        alertEvaluationInterval:
-          format: int32
-          type: integer
-        certFileContent:
-          type: string
-        certFileName:
-          type: string
-        certFileType:
-          type: string
-        certPassphrase:
-          type: string
-        configType:
-          type: string
-        dataCollectionInterval:
-          format: int32
-          type: integer
-        dialInHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        dialOutHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        enabledOpenConfig:
-          type: boolean
-        grpcPassword:
-          type: string
-        grpcUsername:
-          type: string
-        readOnly:
-          type: boolean
-      type: object
+  parameters:
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

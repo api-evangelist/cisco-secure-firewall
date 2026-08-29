@@ -102,23 +102,52 @@ paths:
       tags:
       - Integration Health
 components:
-  parameters:
-    ProductTenantId:
-      description: Tenant ID of the product
-      in: header
-      name: x-Product-Tenant-Id
-      required: true
-      schema:
-        type: string
-    ProductId:
-      description: Name of the product
-      example: Secure Access
-      in: header
-      name: x-Product-Id
-      required: true
-      schema:
-        type: string
   schemas:
+    '404':
+      description: Typical 404 response body for Context Service requests
+      properties:
+        code:
+          description: HTTP error code
+          example: 404
+          type: integer
+        message:
+          description: brief description of the error
+          example: Integration matching the id is not found
+          type: string
+      type: object
+    '400':
+      description: Typical 400 response body for Context Service requests
+      properties:
+        code:
+          description: HTTP error code
+          example: 400
+          type: integer
+        message:
+          description: brief description of the error
+          example: Integration Id is not a valid UUID
+          type: string
+      type: object
+    '401':
+      description: Typical 401 response body for Context Service requests
+      properties:
+        code:
+          description: HTTP error code
+          example: 401
+          type: integer
+        message:
+          description: brief description of the error
+          example: Authorization Header not found.
+          type: string
+        timestamp:
+          description: timestamp of the error event
+          example: '2024-01-22T03:12:46.090049959'
+          format: date-time
+          type: string
+        trackingId:
+          description: logs tracking ID
+          example: trackingId_placeholder
+          type: string
+      type: object
     IntegrationHealth:
       description: IntegrationHealth object
       properties:
@@ -157,51 +186,6 @@ components:
           example: trackingId_placeholder
           type: string
       type: object
-    '401':
-      description: Typical 401 response body for Context Service requests
-      properties:
-        code:
-          description: HTTP error code
-          example: 401
-          type: integer
-        message:
-          description: brief description of the error
-          example: Authorization Header not found.
-          type: string
-        timestamp:
-          description: timestamp of the error event
-          example: '2024-01-22T03:12:46.090049959'
-          format: date-time
-          type: string
-        trackingId:
-          description: logs tracking ID
-          example: trackingId_placeholder
-          type: string
-      type: object
-    '404':
-      description: Typical 404 response body for Context Service requests
-      properties:
-        code:
-          description: HTTP error code
-          example: 404
-          type: integer
-        message:
-          description: brief description of the error
-          example: Integration matching the id is not found
-          type: string
-      type: object
-    '400':
-      description: Typical 400 response body for Context Service requests
-      properties:
-        code:
-          description: HTTP error code
-          example: 400
-          type: integer
-        message:
-          description: brief description of the error
-          example: Integration Id is not a valid UUID
-          type: string
-      type: object
     '500':
       description: Typical 500 response body for Context Service requests
       properties:
@@ -214,6 +198,22 @@ components:
           example: Something went wrong
           type: string
       type: object
+  parameters:
+    ProductId:
+      description: Name of the product
+      example: Secure Access
+      in: header
+      name: x-Product-Id
+      required: true
+      schema:
+        type: string
+    ProductTenantId:
+      description: Tenant ID of the product
+      in: header
+      name: x-Product-Tenant-Id
+      required: true
+      schema:
+        type: string
   headers:
     Date:
       description: Response date and time

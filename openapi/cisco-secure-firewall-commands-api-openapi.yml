@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Security Cloud Control TAC
     email: cdo.tac@cisco.com
-  description: 'Operations tagged Commands across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
-    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Commands across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml, scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
-      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
     operation_coverage: 3/3
   x-evidence:
@@ -47,12 +43,30 @@ tags:
 - name: Commands
 paths:
   /v1/fmc/gateway/command:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     post:
       description: Send a direct command to the specified device.
       operationId: executeDeviceCommand
       parameters:
-      - description: By default, the API waits up to 70 seconds for a device response. Append the 'async' flag to return immediately
-          without waiting for the response.
+      - description: By default, the API waits up to 70 seconds for a device response. Append the 'async' flag to return immediately without waiting for the response.
         in: query
         name: async
         required: false
@@ -77,8 +91,7 @@ paths:
                         deviceType: fmc
                         deviceUid: fb8e46fc-30b0-437f-921d-606c53d4b94c
                         larUid: b5a71c7b-f309-4102-8fa2-9eec2260a1b7
-                      responseBody: '[{"id":"0050568A-5AB4-0ed3-0000-021474986635","name":"Marketing","agentId":"agent_007","topicName":"aws365","description":"IPs
-                        of marketing department","type":"DynamicObject","objectType":"IP","links":{"self":"https://fmc.acme.com/api/fmc_config/v1/domain/e276abe1-e0f2-11e3-8169-6d9ed49b625f/object/dynamicobjects/0050568C-5AB4-0ed3-0000-021474986635"},"metadata":{"domain":{"name":"Global","id":"e276abec-e0f2-11e3-8169-6d9ed49b625f","type":"Domain"}}}]'
+                      responseBody: '[{"id":"0050568A-5AB4-0ed3-0000-021474986635","name":"Marketing","agentId":"agent_007","topicName":"aws365","description":"IPs of marketing department","type":"DynamicObject","objectType":"IP","links":{"self":"https://fmc.acme.com/api/fmc_config/v1/domain/e276abe1-e0f2-11e3-8169-6d9ed49b625f/object/dynamicobjects/0050568C-5AB4-0ed3-0000-021474986635"},"metadata":{"domain":{"name":"Global","id":"e276abec-e0f2-11e3-8169-6d9ed49b625f","type":"Domain"}}}]'
                       responseStatus: SUCCESS
                       tenantUid: 936fca6c-000b-4375-b903-46e6a95c7153
                     requestId: 11111111-1111-1111-1111-111111111111
@@ -86,8 +99,7 @@ paths:
                     status: responded
                 timeout:
                   value:
-                    data: The request timed out due to a hard limit of 70 seconds. You may poll for a belated response using
-                      the url provided in the 'data' field
+                    data: The request timed out due to a hard limit of 70 seconds. You may poll for a belated response using the url provided in the 'data' field
                     requestId: 11111111-1111-1111-1111-111111111111
                     responseOrigin: device-gateway-api
                     status: timeout
@@ -101,6 +113,7 @@ paths:
       summary: Send a direct request to a registered device in Security Cloud Control
       tags:
       - Commands
+  /v1/fmc/gateway/command/{requestId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -120,13 +133,11 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/fmc/gateway/command/{requestId}:
     get:
       description: Get the response from a device for a command previously issued.
       operationId: getDeviceCommandResponse
       parameters:
-      - description: The unique identifier of the request, represented as a UUID, returned from a previous POST request to
-          the /command endpoint.
+      - description: The unique identifier of the request, represented as a UUID, returned from a previous POST request to the /command endpoint.
         in: path
         name: requestId
         required: true
@@ -145,8 +156,7 @@ paths:
                         deviceType: fmc
                         deviceUid: fb8e46fc-30b0-437f-921d-606c53d4b94c
                         larUid: b5a71c7b-f309-4102-8fa2-9eec2260a1b7
-                      responseBody: '[{"id":"0050568A-5AB4-0ed3-0000-021474986635","name":"Marketing","agentId":"agent_007","topicName":"aws365","description":"IPs
-                        of marketing department","type":"DynamicObject","objectType":"IP","links":{"self":"https://fmc.acme.com/api/fmc_config/v1/domain/e276abe1-e0f2-11e3-8169-6d9ed49b625f/object/dynamicobjects/0050568C-5AB4-0ed3-0000-021474986635"},"metadata":{"domain":{"name":"Global","id":"e276abec-e0f2-11e3-8169-6d9ed49b625f","type":"Domain"}}}]'
+                      responseBody: '[{"id":"0050568A-5AB4-0ed3-0000-021474986635","name":"Marketing","agentId":"agent_007","topicName":"aws365","description":"IPs of marketing department","type":"DynamicObject","objectType":"IP","links":{"self":"https://fmc.acme.com/api/fmc_config/v1/domain/e276abe1-e0f2-11e3-8169-6d9ed49b625f/object/dynamicobjects/0050568C-5AB4-0ed3-0000-021474986635"},"metadata":{"domain":{"name":"Global","id":"e276abec-e0f2-11e3-8169-6d9ed49b625f","type":"Domain"}}}]'
                       responseStatus: SUCCESS
                       tenantUid: 936fca6c-000b-4375-b903-46e6a95c7153
                     requestId: 11111111-1111-1111-1111-111111111111
@@ -162,6 +172,7 @@ paths:
       summary: Retrieve the response for a previously sent command
       tags:
       - Commands
+  /v1/fmc/gateway/listcommands:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -181,7 +192,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/fmc/gateway/listcommands:
     get:
       description: Retrieve a list of supported device command endpoint patterns.
       operationId: getDeviceCommands
@@ -201,25 +211,6 @@ paths:
       summary: Get supported endpoint patterns
       tags:
       - Commands
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   schemas:
     Command:
@@ -241,73 +232,6 @@ components:
       required:
       - link
       - method
-      type: object
-    DeviceGatewayApiRequest:
-      properties:
-        deviceUid:
-          description: The unique identifier, represented as a UUID, of the target device for the command. Currently, only
-            FMC devices are supported.
-          example: 6e3492c6-083a-4ead-9da9-cd2db32a965d
-          minLength: 1
-          type: string
-        request:
-          $ref: '#/components/schemas/FmcRequest'
-          description: The request that the user wants to execute on the device.
-      required:
-      - deviceUid
-      - request
-      type: object
-    CommandResponse:
-      properties:
-        data:
-          description: The data associated with the command response.
-          example:
-            inResponseTo:
-              command: executeFmcRequests
-              deviceType: fmc
-              deviceUid: fb8e46fc-30b0-437f-921d-606c53d4b94c
-              larUid: b5a71c7b-f309-4102-8fa2-9eec2260a1b7
-            responseBody: '[{"id":"0050568A-5AB4-0ed3-0000-021474986635","name":"Marketing","agentId":"agent_007","topicName":"aws365","description":"IPs
-              of marketing department","type":"DynamicObject","objectType":"IP"}]'
-            responseStatus: SUCCESS
-            tenantUid: 936fca6c-000b-4375-b903-46e6a95c7153
-        message:
-          description: The response message, if applicable.
-          example: The request timed out due to a hard limit of 70 seconds. You may poll for a belated response using the
-            url provided in the 'data' field
-          type: string
-        requestId:
-          description: The unique identifier of the request, represented as a UUID.
-          example: 6e3492c6-083a-4ead-9da9-cd2db32a965d
-          type: string
-        responseOrigin:
-          description: The origin system of the response.
-          enum:
-          - device-gateway-api
-          - secure-connector
-          - secure-connector-sse
-          example: secure-connector
-          type: string
-        status:
-          description: The status of the command.
-          enum:
-          - failed
-          - pending
-          - responded
-          - timeout
-          example: responded
-          type: string
-      type: object
-    FmcRequest:
-      properties:
-        commands:
-          description: A list of commands to be executed on the device.
-          items:
-            $ref: '#/components/schemas/Command'
-          minItems: 1
-          type: array
-      required:
-      - commands
       type: object
     CommonApiError:
       properties:
@@ -339,6 +263,70 @@ components:
           description: A human-readable error description in English.
           example: sample error
           type: string
+    FmcRequest:
+      properties:
+        commands:
+          description: A list of commands to be executed on the device.
+          items:
+            $ref: '#/components/schemas/Command'
+          minItems: 1
+          type: array
+      required:
+      - commands
+      type: object
+    CommandResponse:
+      properties:
+        data:
+          description: The data associated with the command response.
+          example:
+            inResponseTo:
+              command: executeFmcRequests
+              deviceType: fmc
+              deviceUid: fb8e46fc-30b0-437f-921d-606c53d4b94c
+              larUid: b5a71c7b-f309-4102-8fa2-9eec2260a1b7
+            responseBody: '[{"id":"0050568A-5AB4-0ed3-0000-021474986635","name":"Marketing","agentId":"agent_007","topicName":"aws365","description":"IPs of marketing department","type":"DynamicObject","objectType":"IP"}]'
+            responseStatus: SUCCESS
+            tenantUid: 936fca6c-000b-4375-b903-46e6a95c7153
+        message:
+          description: The response message, if applicable.
+          example: The request timed out due to a hard limit of 70 seconds. You may poll for a belated response using the url provided in the 'data' field
+          type: string
+        requestId:
+          description: The unique identifier of the request, represented as a UUID.
+          example: 6e3492c6-083a-4ead-9da9-cd2db32a965d
+          type: string
+        responseOrigin:
+          description: The origin system of the response.
+          enum:
+          - device-gateway-api
+          - secure-connector
+          - secure-connector-sse
+          example: secure-connector
+          type: string
+        status:
+          description: The status of the command.
+          enum:
+          - failed
+          - pending
+          - responded
+          - timeout
+          example: responded
+          type: string
+      type: object
+    DeviceGatewayApiRequest:
+      properties:
+        deviceUid:
+          description: The unique identifier, represented as a UUID, of the target device for the command. Currently, only FMC devices are supported.
+          example: 6e3492c6-083a-4ead-9da9-cd2db32a965d
+          minLength: 1
+          type: string
+        request:
+          $ref: '#/components/schemas/FmcRequest'
+          description: The request that the user wants to execute on the device.
+      required:
+      - deviceUid
+      - request
+      type: object
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

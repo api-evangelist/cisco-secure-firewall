@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Templates across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml.
-    Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Templates across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 29/29
   x-evidence:
@@ -47,20 +43,37 @@ tags:
 - name: Templates
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       deprecated: false
       description: '**Get all device templates**'
       operationId: getAllDeviceTemplates
       parameters:
-      - description: 'Filter by <code>includeOtherAssociatedPolicies </code> -- Allowed values are <code>{true|false}</code>.
-          When set to <code>true</code>, will give following policies if assigned to device: [<code>HealthPolicy</code>,<code>RAVpn</code>,<code>FTDS2SVpn</code>,<code>PlatformSettingsPolicy</code>,<code>QosPolicy</code>,<code>NatPolicy</code>,<code>FlexConfigPolicy</code>]'
+      - description: 'Filter by <code>includeOtherAssociatedPolicies </code> -- Allowed values are <code>{true|false}</code>. When set to <code>true</code>, will give following policies if assigned to device: [<code>HealthPolicy</code>,<code>RAVpn</code>,<code>FTDS2SVpn</code>,<code>PlatformSettingsPolicy</code>,<code>QosPolicy</code>,<code>NatPolicy</code>,<code>FlexConfigPolicy</code>]'
         in: query
         name: filter
         required: false
         schema:
           type: string
-      - description: Boolean indicating whether to include metadata in the response. Metadata includes associated variables,
-          model mappins, and number of devices associated with the template.
+      - description: Boolean indicating whether to include metadata in the response. Metadata includes associated variables, model mappins, and number of devices associated with the template.
         in: query
         name: addOnMetadata
         required: false
@@ -117,8 +130,7 @@ paths:
       - Templates
     post:
       deprecated: false
-      description: '**Add device template with the given payload. _Check the response section for applicable examples (if
-        any)._**'
+      description: '**Add device template with the given payload. _Check the response section for applicable examples (if any)._**'
       operationId: createDeviceTemplates
       parameters:
       - $ref: '#/components/parameters/domainUUID'
@@ -169,6 +181,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -188,11 +201,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}:
     delete:
       deprecated: false
-      description: '**Delete the device template with the specified ID. _Check the response section for applicable examples
-        (if any)._**'
+      description: '**Delete the device template with the specified ID. _Check the response section for applicable examples (if any)._**'
       operationId: deleteDeviceTemplates
       parameters:
       - description: The container id under which this specific resource is contained.
@@ -237,8 +248,7 @@ paths:
       description: '**Get the device template with the specified ID.**'
       operationId: getDeviceTemplates
       parameters:
-      - description: Boolean indicating whether to include metadata in the response. Metadata includes associated variables,
-          model mappins, and number of devices associated with the template.
+      - description: Boolean indicating whether to include metadata in the response. Metadata includes associated variables, model mappins, and number of devices associated with the template.
         in: query
         name: addOnMetadata
         required: false
@@ -291,8 +301,7 @@ paths:
       - Templates
     put:
       deprecated: false
-      description: '**Modify the device template with the specified ID. _Check the response section for applicable examples
-        (if any)._**'
+      description: '**Modify the device template with the specified ID. _Check the response section for applicable examples (if any)._**'
       operationId: updateDeviceTemplates
       parameters:
       - description: The container id under which this specific resource is contained.
@@ -307,8 +316,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/template/devicetemplates/objectId ( Test PUT of device template
-                to update a template )'
+              ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/template/devicetemplates/objectId ( Test PUT of device template to update a template )'
               : value:
                   description: Template description
                   id: 92424f38-ad34-11ed-a5e6-3b430e11c570
@@ -324,8 +332,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/template/devicetemplates/objectId ( Test PUT of device
-                  template to update a template )'
+                ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/template/devicetemplates/objectId ( Test PUT of device template to update a template )'
                 : value:
                     accessPolicy:
                       id: 0050568A-02BD-0ed3-0000-008589934661
@@ -349,6 +356,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/associations:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -368,7 +376,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/associations:
     get:
       deprecated: false
       description: '**Get the list of devices associated with device templates.**'
@@ -399,8 +406,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/associations
-                  ( GET all devices associated with Device Template )'
+                ? 'Example 1 : GET /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/associations ( GET all devices associated with Device Template )'
                 : value:
                     items:
                     - device:
@@ -428,6 +434,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/associations/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -447,11 +454,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/associations/{objectId}:
     delete:
       deprecated: false
-      description: '**Removes the template association with the specified device. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Removes the template association with the specified device. _Check the response section for applicable examples (if any)._**'
       operationId: deleteDeviceTemplateAssociation
       parameters:
       - description: UUID of the device associated with the template.
@@ -473,8 +478,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : DELETE /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/associations/{objectId}
-                  ( DELETE method for deleting association of a device with the specifed device template )'
+                ? 'Example 1 : DELETE /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/associations/{objectId} ( DELETE method for deleting association of a device with the specifed device template )'
                 : value:
                     device:
                       id: cf7fa0b2-bf30-11ee-be1a-ab9df8d04efd
@@ -500,6 +504,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/defaultmodelmappings/{modelName}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -519,7 +524,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/defaultmodelmappings/{modelName}:
     get:
       deprecated: false
       description: '**Get the default model mapping for the specified device model name.**'
@@ -556,6 +560,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/modelmappings:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -575,7 +580,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/modelmappings:
     get:
       deprecated: false
       description: '**Get all model mappings associated with the specified device template.**'
@@ -612,8 +616,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings
-                  ( Get all model mappings associated with Device Template )'
+                ? 'Example 1 : GET /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings ( Get all model mappings associated with Device Template )'
                 : value:
                     items:
                     - id: 00000000-0000-0ed3-0000-004294967965
@@ -660,8 +663,7 @@ paths:
       - Templates
     post:
       deprecated: false
-      description: '**Create a new model mapping for the specified device template. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Create a new model mapping for the specified device template. _Check the response section for applicable examples (if any)._**'
       operationId: createDeviceTemplateModelMapping
       parameters:
       - description: 'UUID of the ticket for tracking the configuration changes. '
@@ -682,8 +684,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : POST /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings
-                ( Creates model mapping associated with Device Template )'
+              ? 'Example 1 : POST /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings ( Creates model mapping associated with Device Template )'
               : value:
                   interfaceMappings:
                   - modelInterface: GigabitEthernet0/0
@@ -704,8 +705,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : POST /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings
-                  ( Creates model mapping associated with Device Template )'
+                ? 'Example 1 : POST /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings ( Creates model mapping associated with Device Template )'
                 : value:
                     id: 00000000-0000-0ed3-0000-004294967965
                     interfaceMappings:
@@ -742,6 +742,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/modelmappings/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -761,11 +762,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/modelmappings/{objectId}:
     delete:
       deprecated: false
-      description: '**Remove the model mapping for the specified model mapping identifier. _Check the response section for
-        applicable examples (if any)._**'
+      description: '**Remove the model mapping for the specified model mapping identifier. _Check the response section for applicable examples (if any)._**'
       operationId: deleteDeviceTemplateModelMapping
       parameters:
       - description: Identifier of a model mapping resource.
@@ -793,8 +792,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : DELETE /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings/{objectId}
-                  ( Deletes the specified model mapping associated with Device Template )'
+                ? 'Example 1 : DELETE /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings/{objectId} ( Deletes the specified model mapping associated with Device Template )'
                 : value:
                     id: 00000000-0000-0ed3-0000-004294967965
                     interfaceMappings:
@@ -867,8 +865,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings/{objectId}
-                  ( Gets the specified model mapping associated with Device Template )'
+                ? 'Example 1 : GET /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings/{objectId} ( Gets the specified model mapping associated with Device Template )'
                 : value:
                     id: 00000000-0000-0ed3-0000-004294967965
                     interfaceMappings:
@@ -907,8 +904,7 @@ paths:
       - Templates
     put:
       deprecated: false
-      description: '**Modify the model mapping for the specified model mapping identifier. _Check the response section for
-        applicable examples (if any)._**'
+      description: '**Modify the model mapping for the specified model mapping identifier. _Check the response section for applicable examples (if any)._**'
       operationId: updateDeviceTemplateModelMapping
       parameters:
       - description: Identifier of a model mapping resource.
@@ -935,8 +931,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings/{objectId}
-                ( Updates the specified model mapping associated with Device Template )'
+              ? 'Example 1 : PUT /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings/{objectId} ( Updates the specified model mapping associated with Device Template )'
               : value:
                   id: 00000000-0000-0ed3-0000-004294967965
                   interfaceMappings:
@@ -958,8 +953,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : PUT /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings/{objectId}
-                  ( Updates the specified model mapping associated with Device Template )'
+                ? 'Example 1 : PUT /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/{containerUUID}/modelmappings/{objectId} ( Updates the specified model mapping associated with Device Template )'
                 : value:
                     id: 00000000-0000-0ed3-0000-004294967965
                     interfaceMappings:
@@ -996,6 +990,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/objectoverrides/{containerUUID}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1015,7 +1010,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/objectoverrides/{containerUUID}:
     get:
       deprecated: false
       description: '**Get the object overrides list associated with the specified device template.**'
@@ -1046,8 +1040,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/objectoverrides/{objectId}
-                  ( Get declared object overrides that are assigned to the device template )'
+                ? 'Example 1 : GET /api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/objectoverrides/{objectId} ( Get declared object overrides that are assigned to the device template )'
                 : value:
                     declaredObjectOverrides:
                     - description: Host object description
@@ -1077,8 +1070,7 @@ paths:
       - Templates
     put:
       deprecated: false
-      description: '**Modify the object overrides list associated with the specified device template. _Check the response
-        section for applicable examples (if any)._**'
+      description: '**Modify the object overrides list associated with the specified device template. _Check the response section for applicable examples (if any)._**'
       operationId: updateDeviceTemplateObjectOverrides
       parameters:
       - description: UUID of the device template.
@@ -1105,8 +1097,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/objectoverrides/{containerUUID}
-                ( updates the declared object overrides list that is assigned to the device template )'
+              ? 'Example 1 : PUT /api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/objectoverrides/{containerUUID} ( updates the declared object overrides list that is assigned to the device template )'
               : value:
                   declaredObjectOverrides:
                   - id: 0050568A-5389-0ed3-0000-025769803828
@@ -1126,8 +1117,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : PUT /api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/objectoverrides/{containerUUID}
-                  ( updates the declared object overrides list that is assigned to the device template )'
+                ? 'Example 1 : PUT /api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/objectoverrides/{containerUUID} ( updates the declared object overrides list that is assigned to the device template )'
                 : value:
                     declaredObjectOverrides:
                     - description: Host object description
@@ -1165,6 +1155,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/operational/apply:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1184,11 +1175,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/operational/apply:
     post:
       deprecated: false
-      description: '**Apply the given template resource on a list of devices. _Check the response section for applicable examples
-        (if any)._**'
+      description: '**Apply the given template resource on a list of devices. _Check the response section for applicable examples (if any)._**'
       operationId: createDeviceTemplateApply
       parameters:
       - description: The container id under which this specific resource is contained.
@@ -1203,8 +1192,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/{containerUUID}/operational/apply
-                ( POST method for Device Template Apply on a list of devices )'
+              ? 'Example 1 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/{containerUUID}/operational/apply ( POST method for Device Template Apply on a list of devices )'
               : value:
                   applyToDevices:
                   - device:
@@ -1247,8 +1235,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/{containerUUID}/operational/apply
-                  ( POST method for Device Template Apply on a list of devices )'
+                ? 'Example 1 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/{containerUUID}/operational/apply ( POST method for Device Template Apply on a list of devices )'
                 : value:
                     applyToDevices:
                     - device:
@@ -1303,6 +1290,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/templateinterfaces:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1322,7 +1310,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/templateinterfaces:
     get:
       deprecated: false
       description: '**Get all physical interfaces associated with the specified device template.**'
@@ -1353,8 +1340,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/templates/devicetemplates/{containerUUID}/templateinterfaces
-                  ( Get all method for retrieving all Template physical interfaces for a given container UUID )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/templates/devicetemplates/{containerUUID}/templateinterfaces ( Get all method for retrieving all Template physical interfaces for a given container UUID )'
                 : value:
                     items:
                     - id: 00000000-0000-0ed3-0000-004294967561
@@ -1432,8 +1418,7 @@ paths:
       - Templates
     post:
       deprecated: false
-      description: '**Add physical interfaces to the device template. _Check the response section for applicable examples
-        (if any)._**'
+      description: '**Add physical interfaces to the device template. _Check the response section for applicable examples (if any)._**'
       operationId: createFTDTemplatePhysicalInterface
       parameters:
       - description: UUID of the ticket for tracking the configuration changes.
@@ -1454,21 +1439,17 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces
-                ( POST method for Template physical interface for a given container UUID )'
+              ? 'Example 1 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces ( POST method for Template physical interface for a given container UUID )'
               : value:
                   port: 4
                   slot: 1
-              ? 'Example 6 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces
-                ( FAILURE: Port is not provided in the payload )'
+              ? 'Example 6 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces ( FAILURE: Port is not provided in the payload )'
               : value:
                   slot: 1
-              ? 'Example 7 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces
-                ( FAILURE: Slot is not provided in the payload )'
+              ? 'Example 7 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces ( FAILURE: Slot is not provided in the payload )'
               : value:
                   port: 4
-              ? 'Example 8 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces
-                ( FAILURE: An empty payload is provided )'
+              ? 'Example 8 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces ( FAILURE: An empty payload is provided )'
               : value: {}
             schema:
               $ref: '#/components/schemas/FTDTemplatePhysicalInterface'
@@ -1480,8 +1461,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces
-                  ( POST method for Template physical interface for a given container UUID )'
+                ? 'Example 1 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces ( POST method for Template physical interface for a given container UUID )'
                 : value:
                     id: 0050568A-3B37-0ed3-0000-103079215165
                     links:
@@ -1506,24 +1486,21 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 6 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces
-                  ( FAILURE: Port is not provided in the payload )'
+                ? 'Example 6 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces ( FAILURE: Port is not provided in the payload )'
                 : value:
                     error:
                       category: FRAMEWORK
                       messages:
                       - description: Port cannot be empty. Port should be in the range of 1 to 16.
                       severity: ERROR
-                ? 'Example 7 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces
-                  ( FAILURE: Slot is not provided in the payload )'
+                ? 'Example 7 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces ( FAILURE: Slot is not provided in the payload )'
                 : value:
                     error:
                       category: FRAMEWORK
                       messages:
                       - description: Slot cannot be empty. Slot should be either 1 or 2.
                       severity: ERROR
-                ? 'Example 8 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces
-                  ( FAILURE: An empty payload is provided )'
+                ? 'Example 8 : POST /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces ( FAILURE: An empty payload is provided )'
                 : value:
                     error:
                       category: FRAMEWORK
@@ -1543,6 +1520,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/templateinterfaces/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1562,11 +1540,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/templateinterfaces/{objectId}:
     delete:
       deprecated: false
-      description: '**Remove the specified physical interface from the device template. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Remove the specified physical interface from the device template. _Check the response section for applicable examples (if any)._**'
       operationId: deleteFTDTemplatePhysicalInterface
       parameters:
       - description: UUID of the physical interface.
@@ -1594,8 +1570,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : DELETE /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces/objectId
-                  ( DELETE method for Template physical interface for a given container UUID and objectId )'
+                ? 'Example 1 : DELETE /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/templateinterfaces/objectId ( DELETE method for Template physical interface for a given container UUID and objectId )'
                 : value:
                     id: 0050568A-3B37-0ed3-0000-103079215165
                     links:
@@ -1655,8 +1630,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/templates/devicetemplates/{containerUUID}/templateinterfaces/{objectId}
-                  ( GET method for retrieving the specified Template physical interface for a given container UUID )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/templates/devicetemplates/{containerUUID}/templateinterfaces/{objectId} ( GET method for retrieving the specified Template physical interface for a given container UUID )'
                 : value:
                     id: 00000000-0000-0ed3-0000-004294967935
                     links:
@@ -1686,6 +1660,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/variables:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1705,7 +1680,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/variables:
     get:
       deprecated: false
       description: '**Get the variables associated with a given device template.**'
@@ -1736,8 +1710,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/TemplateUUID/variables?offset=0&limit=25&expanded=true
-                  ( Get all variables that are assigned to the device template )'
+                ? 'Example 1 : GET /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/TemplateUUID/variables?offset=0&limit=25&expanded=true ( Get all variables that are assigned to the device template )'
                 : value:
                     items:
                     - description: test desc
@@ -1778,6 +1751,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/vpnsettings:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1797,7 +1771,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/vpnsettings:
     get:
       deprecated: false
       description: '**Get the list of all VPN settings associated with a device template.**'
@@ -1842,8 +1815,7 @@ paths:
       - Templates
     post:
       deprecated: false
-      description: '**Create a new VPN setting for a device template. _Check the response section for applicable examples
-        (if any)._**'
+      description: '**Create a new VPN setting for a device template. _Check the response section for applicable examples (if any)._**'
       operationId: createVpnSettingModel
       parameters:
       - description: UUID of the ticket for tracking the configuration changes.
@@ -1864,8 +1836,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : POST /fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/vpnsettings
-                ( Add a vpntemplatesetting )'
+              ? 'Example 1 : POST /fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/vpnsettings ( Add a vpntemplatesetting )'
               : value:
                   protectedNetworks:
                   - id: f0ce41ae-6ee9-4e00-8762-da9370c4fee5
@@ -1920,6 +1891,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/vpnsettings/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1939,11 +1911,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/vpnsettings/{objectId}:
     delete:
       deprecated: false
-      description: '**Delete the VPN setting associated with the specified ID. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Delete the VPN setting associated with the specified ID. _Check the response section for applicable examples (if any)._**'
       operationId: deleteVpnSettingModel
       parameters:
       - description: UUID of the VPN setting.
@@ -2027,8 +1997,7 @@ paths:
       - Templates
     put:
       deprecated: false
-      description: '**Update the VPN setting associated with the specified ID. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Update the VPN setting associated with the specified ID. _Check the response section for applicable examples (if any)._**'
       operationId: updateVpnSettingModel
       parameters:
       - description: UUID of the VPN setting.
@@ -2055,8 +2024,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/vpnsettings/{objectId}
-                ( Update a vpntemplatesetting )'
+              ? 'Example 1 : PUT /fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/{containerUUID}/vpnsettings/{objectId} ( Update a vpntemplatesetting )'
               : value:
                   protectedNetworks:
                   - id: f0ce41ae-6ee9-4e00-8762-da9370c4fee5
@@ -2111,6 +2079,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/operational/generatetemplate:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -2130,11 +2099,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/devicetemplates/operational/generatetemplate:
     post:
       deprecated: false
-      description: '**Generate a template based on a given device. _Check the response section for applicable examples (if
-        any)._**'
+      description: '**Generate a template based on a given device. _Check the response section for applicable examples (if any)._**'
       operationId: createDeviceTemplateConversionRequestModel
       parameters:
       - $ref: '#/components/parameters/domainUUID'
@@ -2143,16 +2110,14 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : POST /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/operational/generatetemplate
-                ( Post a device template generation request with proper payload )'
+              ? 'Example 1 : POST /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/operational/generatetemplate ( Post a device template generation request with proper payload )'
               : value:
                   description: Template generated from device
                   name: Generated template
                   source:
                     id: 9c5214e0-9e2e-11ee-8dba-9d2a196573a0
                     type: Device
-              ? 'Example 2 : POST /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/operational/generatetemplate
-                ( Post a device template generation request with non source device Access Policy with proper payload )'
+              ? 'Example 2 : POST /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/operational/generatetemplate ( Post a device template generation request with non source device Access Policy with proper payload )'
               : value:
                   accessPolicy:
                     id: 00505686-726B-0ed3-0000-008589935794
@@ -2172,8 +2137,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : POST /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/operational/generatetemplate
-                  ( Post a device template generation request with proper payload )'
+                ? 'Example 1 : POST /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/operational/generatetemplate ( Post a device template generation request with proper payload )'
                 : value:
                     description: template
                     metadata:
@@ -2188,8 +2152,7 @@ paths:
                     source:
                       id: a39251d2-2c9d-11ee-ac14-940709f5d2e6
                       type: DEVICE
-                ? 'Example 2 : POST /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/operational/generatetemplate
-                  ( Post a device template generation request with non source device Access Policy with proper payload )'
+                ? 'Example 2 : POST /api/fmc_config/v1/domain/DomainUUID/templates/devicetemplates/operational/generatetemplate ( Post a device template generation request with non source device Access Policy with proper payload )'
                 : value:
                     description: template
                     metadata:
@@ -2217,6 +2180,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/supporteddevicemodels:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -2236,7 +2200,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/supporteddevicemodels:
     get:
       deprecated: false
       description: '**Get the list of supported device models.**'
@@ -2255,8 +2218,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/templates/supporteddevicemodels ( Get all supported models
-                  for device templates )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/templates/supporteddevicemodels ( Get all supported models for device templates )'
                 : value:
                     items:
                     - id: FTD_3105
@@ -3601,6 +3563,7 @@ paths:
           description: Error
       tags:
       - Templates
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/supporteddevicemodels/{modelId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -3620,7 +3583,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/templates/supporteddevicemodels/{modelId}:
     get:
       deprecated: false
       description: '**Get device template model details for the the model with the associated ID.**'
@@ -3639,8 +3601,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/supporteddevicemodels/{objectId}
-                  ( GET method for retrieving the specified model details for device templates )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/templates/devicetemplates/containerUUID/supporteddevicemodels/{objectId} ( GET method for retrieving the specified model details for device templates )'
                 : value:
                     id: FTD_3110
                     interfaces:
@@ -3758,37 +3719,718 @@ paths:
           description: Error
       tags:
       - Templates
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   schemas:
-    NamedEntry:
+    ILocalTunnelIdentity:
       properties:
-        literal:
+        isLocalTunnelIdEnabled:
           type: boolean
+        localIdentityString:
+          type: string
+        localIdentityType:
+          enum:
+          - ADDRESS
+          - AUTO
+          - EMAILID
+          - HOSTNAME
+          - KEYID
+          type: string
+        localIdentityVariable:
+          $ref: '#/components/schemas/ReferenceObject'
+          type: object
+      type: object
+    KeyValuePairModel:
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      type: object
+    SupportedDeviceInterfaceModel:
+      properties:
+        ftwSupported:
+          type: boolean
+        mediaType:
+          type: string
+        name:
+          type: string
+        poeSupported:
+          type: boolean
+        supportedSpeeds:
+          type: string
+        switchPortSupported:
+          type: boolean
+      type: object
+    ITemplateValidationMessages:
+      properties:
+        message:
+          type: string
+        messageLevel:
+          enum:
+          - ERROR
+          - WARNING
+          - INFORMATION
+          type: string
+      required:
+      - messageLevel
+      type: object
+    DeviceTemplatesListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/DeviceTemplates'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    RangeObject:
+      description: A model representing Range Network object definition.
+      properties:
+        description:
+          description: User provided description.
+          type: string
+        id:
+          description: Unique identifier representing resource.
+          type: string
+        links:
+          $ref: '#/components/schemas/Links'
+          description: Contains the full URL to the current object and its parent (if any)
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          description: Object representing metadata properties of response object.
+          type: object
+        name:
+          description: User chosen resource name.
+          type: string
+        overridable:
+          description: Boolean indicating whether object values can be overridden.
+          type: boolean
+        overrideTargetId:
+          description: Unique identifier of domain or device when override assigned to child domain. Used as path query parameter to GET override details for a specific object on a specific target (device or domain).
+          type: string
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: This is populated only if this object is an override and contains the parent (global) object id and whether this is an override on device or domain.
+          type: object
+        type:
+          description: The unique type of this object.
+          type: string
+        value:
+          description: Actual value of range.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    IOverride:
+      description: Defines the override details for this object.
+      properties:
+        parent:
+          $ref: '#/components/schemas/IReference'
+          description: Link to the parent/global resource which is overriden.
+          type: object
+        target:
+          $ref: '#/components/schemas/IReference'
+          description: The device or the domain target on which this override is enabled.
+          type: object
+      type: object
+    DeviceTemplateAssociationListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/DeviceTemplateAssociation'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    DeviceTemplates:
+      properties:
+        accessPolicy:
+          $ref: '#/components/schemas/IPolicyModel'
+          type: object
+        description:
+          type: string
+        firewallMode:
+          enum:
+          - ROUTED
+          - TRANSPARENT
+          type: string
+        id:
+          type: string
+        initialConfig:
+          $ref: '#/components/schemas/DeviceTemplateInitialConfig'
+          type: object
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/DeviceTemplatesMetadata'
+          type: object
         name:
           type: string
         type:
           type: string
+        validateTemplate:
+          type: string
+        version:
+          type: string
+      type: object
+    HostObject:
+      description: An object defining a Host Network object definition.
+      properties:
+        description:
+          description: A description about the object.
+          type: string
+        id:
+          description: The unique UUID of this object.
+          type: string
+        links:
+          $ref: '#/components/schemas/Links'
+          description: Contains the full URL to the current object and its parent (if any)
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
+          type: object
+        name:
+          description: ' The unique name for the object.'
+          type: string
+        overridable:
+          description: Set to 'true' if the object can be overridden, 'false' otherwise.
+          type: boolean
+        overrideTargetId:
+          description: The override target id either the device (UUID) or the domain (UUID) on which this override is created. Applicable only for overriden objects.
+          type: string
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: This is populated only if this object is an override and contains the parent (global) object id and whether this is an override on device or domain.
+          type: object
+        type:
+          description: The unique type of this object (fixed).
+          type: string
+        value:
+          description: The Host IP address value for this object.
+          type: string
+        version:
+          description: The unique object version (if any).
+          type: string
+      type: object
+    FTDTemplatePhysicalInterface:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/FTDTemplateInterfaceMetadata'
+          type: object
+        name:
+          type: string
+        port:
+          format: int32
+          type: integer
+        slot:
+          format: int32
+          type: integer
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    SupportedDeviceModelListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/SupportedDeviceModel'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ModelInterfaceMappingsValidity:
+      properties:
+        isValid:
+          type: boolean
+        modelName:
+          type: string
+        valid:
+          type: boolean
+      type: object
+    DeviceTemplateObjectOverrides:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        objectOverridesList:
+          items:
+            $ref: '#/components/schemas/DeviceTemplateDeclaredObjectOverride'
+            type: object
+          type: array
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    DeviceTemplateVariablesListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/DeviceTemplateVariables'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    AuditLogInfo:
+      properties:
+        sourceIp:
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    NetworkObject:
+      description: A model representing Network object definition.
+      properties:
+        description:
+          description: 'User provided resource description. '
+          type: string
+        id:
+          description: Unique identifier representing response object.
+          type: string
+        links:
+          $ref: '#/components/schemas/Links'
+          description: Object containing related links.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          description: Object representing metadata properties of NetworkObject.
+          type: object
+        name:
+          description: User assigned resource name.
+          type: string
+        overridable:
+          description: Boolean indicating whether object values can be overridden.
+          type: boolean
+        overrideTargetId:
+          description: Unique identifier of domain or device when override assigned to child domain. Used as path parameter to GET override details for a specific object on a specific target (device or domain).
+          type: string
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: An object override allows you to define an alternate value for an object on a device or domain.
+          type: object
+        type:
+          description: 'Type associated with resource: NetworkObject.'
+          type: string
+        value:
+          description: Actual value of the network.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    DeviceTemplateDefaultModelMapping:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        interfaceMappings:
+          items:
+            $ref: '#/components/schemas/IDeviceTemplateInterfaceMapping'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    TemplateApplyDeclaredOverrides:
+      properties:
+        fqdns:
+          items:
+            $ref: '#/components/schemas/FQDNObject'
+            type: object
+          type: array
+        hosts:
+          items:
+            $ref: '#/components/schemas/HostObject'
+            type: object
+          type: array
+        networks:
+          items:
+            $ref: '#/components/schemas/NetworkObject'
+            type: object
+          type: array
+        ranges:
+          items:
+            $ref: '#/components/schemas/RangeObject'
+            type: object
+          type: array
+      type: object
+    FTDTemplateInterfaceMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        physicalInterface:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          type: object
+        state:
+          type: string
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    Links:
+      properties:
+        parent:
+          type: string
+        self:
+          type: string
+      type: object
+    DeviceTemplateInitialConfig:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        isRemoteBranch:
+          type: boolean
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IS2SVpnSetting:
+      properties:
+        peerRole:
+          enum:
+          - PEER
+          - HUB
+          - SPOKE
+          type: string
+        s2sVpn:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        subType:
+          enum:
+          - ROUTE_BASED
+          - POLICY_BASED
+          type: string
+        topologyType:
+          enum:
+          - HUB_AND_SPOKE
+          - POINT_TO_POINT
+          - FULL_MESH
+          - SASE_TUNNEL
+          - AUTO_VPN
+          - SSE_TUNNEL
+          type: string
+      type: object
+    ReferenceObject:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    FQDNObject:
+      properties:
+        description:
+          type: string
+        dnsResolution:
+          enum:
+          - IPV4_ONLY
+          - IPV6_ONLY
+          - IPV4_AND_IPV6
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/Links'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        overridable:
+          type: boolean
+        overrideTargetId:
+          type: string
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          type: object
+        type:
+          type: string
         value:
           type: string
+        version:
+          type: string
+      required:
+      - dnsResolution
+      type: object
+    IPolicyModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    TemplateAssociationInfo:
+      properties:
+        associatedDevices:
+          format: int32
+          type: integer
+        associatedModelInterfaceMappings:
+          items:
+            $ref: '#/components/schemas/ModelInterfaceMappingsValidity'
+            type: object
+          type: array
+        variableOverridesAssociatedWithTemplate:
+          format: int32
+          type: integer
+        variablesAssociatedWithTemplate:
+          format: int32
+          type: integer
+      type: object
+    TemplateApplyRequestData:
+      properties:
+        assignSharedPolicies:
+          type: boolean
+        auditLogInfo:
+          $ref: '#/components/schemas/AuditLogInfo'
+          type: object
+        parentTaskId:
+          format: int32
+          type: integer
+        payloadLocation:
+          type: string
+        postTemplateAction:
+          enum:
+          - NOACTION
+          - DEPLOY
+          type: string
+        targetDevice:
+          $ref: '#/components/schemas/ObjectEntry'
+          type: object
+        taskId:
+          format: int32
+          type: integer
+        template:
+          $ref: '#/components/schemas/ObjectEntry'
+          type: object
+        templateOverrideList:
+          items:
+            $ref: '#/components/schemas/PolicyObjectEntry'
+            type: object
+          type: array
+        templateVariableList:
+          items:
+            $ref: '#/components/schemas/KeyValuePair'
+            type: object
+          type: array
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    FTDTemplatePhysicalInterfaceListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/FTDTemplatePhysicalInterface'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    Domain:
+      description: The details about the domain.
+      properties:
+        id:
+          description: Unique UUID of this domain
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
+          type: object
+        name:
+          description: Name of the domain.
+          type: string
+        type:
+          description: Domain type definition (fixed).
+          type: string
+        uuid:
+          type: string
+      type: object
+    ISubTask:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        status:
+          type: string
+        target:
+          $ref: '#/components/schemas/ITarget'
+          type: object
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
       type: object
     DeviceTemplatesMetadata:
       properties:
@@ -3830,386 +4472,6 @@ components:
       - otherAssociatedPolicies
       - templateValidationMessages
       type: object
-    ITemplateValidationMessages:
-      properties:
-        message:
-          type: string
-        messageLevel:
-          enum:
-          - ERROR
-          - WARNING
-          - INFORMATION
-          type: string
-      required:
-      - messageLevel
-      type: object
-    FTDTemplatePhysicalInterfaceListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/FTDTemplatePhysicalInterface'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    DeviceTemplateModelMappingListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/DeviceTemplateModelMapping'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IS2SVpnSetting:
-      properties:
-        peerRole:
-          enum:
-          - PEER
-          - HUB
-          - SPOKE
-          type: string
-        s2sVpn:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        subType:
-          enum:
-          - ROUTE_BASED
-          - POLICY_BASED
-          type: string
-        topologyType:
-          enum:
-          - HUB_AND_SPOKE
-          - POINT_TO_POINT
-          - FULL_MESH
-          - SASE_TUNNEL
-          - AUTO_VPN
-          - SSE_TUNNEL
-          type: string
-      type: object
-    NetworkObject:
-      description: A model representing Network object definition.
-      properties:
-        description:
-          description: 'User provided resource description. '
-          type: string
-        id:
-          description: Unique identifier representing response object.
-          type: string
-        links:
-          $ref: '#/components/schemas/Links'
-          description: Object containing related links.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          description: Object representing metadata properties of NetworkObject.
-          type: object
-        name:
-          description: User assigned resource name.
-          type: string
-        overridable:
-          description: Boolean indicating whether object values can be overridden.
-          type: boolean
-        overrideTargetId:
-          description: Unique identifier of domain or device when override assigned to child domain. Used as path parameter
-            to GET override details for a specific object on a specific target (device or domain).
-          type: string
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: An object override allows you to define an alternate value for an object on a device or domain.
-          type: object
-        type:
-          description: 'Type associated with resource: NetworkObject.'
-          type: string
-        value:
-          description: Actual value of the network.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    Domain:
-      description: The details about the domain.
-      properties:
-        id:
-          description: Unique UUID of this domain
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
-          type: object
-        name:
-          description: Name of the domain.
-          type: string
-        type:
-          description: Domain type definition (fixed).
-          type: string
-        uuid:
-          type: string
-      type: object
-    IReference:
-      description: Contains reference information.
-      properties:
-        id:
-          description: Unique identifier representing resource.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        name:
-          description: User chosen resource name.
-          type: string
-        type:
-          description: Response object associated with resource.
-          type: string
-      type: object
-    IVpnConnection:
-      properties:
-        ipAddrSelectionType:
-          enum:
-          - INHERIT_IP_FROM_INTERFACE
-          - CONFIGURE_INLINE_PUBLIC_IP
-          type: string
-        ipv4Address:
-          $ref: '#/components/schemas/IVpnIntfAddress'
-          type: object
-        ipv6Address:
-          $ref: '#/components/schemas/IVpnIntfAddress'
-          type: object
-        localTunnelIdentity:
-          $ref: '#/components/schemas/ILocalTunnelIdentity'
-          type: object
-        vpnInterface:
-          $ref: '#/components/schemas/IReference'
-          type: object
-      type: object
-    DeviceTemplateApply:
-      properties:
-        applyToDevices:
-          items:
-            $ref: '#/components/schemas/DeviceTemplateApplyRequest'
-            type: object
-          type: array
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        reapplyFilter:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    Metadata:
-      description: Defines read only details about the object - whether it is system defined, last user who modified the object
-        etc.
-      properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          description: Defines the domains this instance belongs to (if applicable).
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          description: The last user who modified this instance.
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          description: Details regarding the read only status of this instance
-          type: object
-        timestamp:
-          description: The last updated timestamp.
-          format: int32
-          type: integer
-      type: object
-    DeviceTemplateModelMapping:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        interfaceMappings:
-          items:
-            $ref: '#/components/schemas/IDeviceTemplateInterfaceMapping'
-            type: object
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    FTDTemplatePhysicalInterface:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/FTDTemplateInterfaceMetadata'
-          type: object
-        name:
-          type: string
-        port:
-          format: int32
-          type: integer
-        slot:
-          format: int32
-          type: integer
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    FTDTemplateInterfaceMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        physicalInterface:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          type: object
-        state:
-          type: string
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    Links:
-      properties:
-        parent:
-          type: string
-        self:
-          type: string
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    IDeviceTemplateInterfaceMapping:
-      properties:
-        modelInterface:
-          type: string
-        templateInterface:
-          type: string
-      type: object
-    DeviceTemplateAssociationListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/DeviceTemplateAssociation'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    MetadataUser:
-      description: This object defines details about the user.
-      properties:
-        id:
-          description: The unique UUID of the user
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Contains the self referencing links to this resource
-          type: object
-        name:
-          description: Name of the user.
-          type: string
-        type:
-          description: The user type (fixed).
-          type: string
-      type: object
-    ITarget:
-      description: This is the target device.
-      properties:
-        description:
-          type: string
-        id:
-          description: Unique ID of the device.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: Name of the device.
-          type: string
-        type:
-          description: Device
-          type: string
-        version:
-          type: string
-      type: object
-    SupportedDeviceInterfaceModel:
-      properties:
-        ftwSupported:
-          type: boolean
-        mediaType:
-          type: string
-        name:
-          type: string
-        poeSupported:
-          type: boolean
-        supportedSpeeds:
-          type: string
-        switchPortSupported:
-          type: boolean
-      type: object
     DeviceTemplateApplyRequest:
       properties:
         device:
@@ -4231,6 +4493,17 @@ components:
             $ref: '#/components/schemas/KeyValuePairModel'
             type: object
           type: array
+      type: object
+    NamedEntry:
+      properties:
+        literal:
+          type: boolean
+        name:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
       type: object
     DeviceTemplateVariables:
       properties:
@@ -4266,594 +4539,16 @@ components:
         version:
           type: string
       type: object
-    AuditLogInfo:
-      properties:
-        sourceIp:
-          type: string
+    Attributes:
       type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    ReferenceObject:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    RangeObject:
-      description: A model representing Range Network object definition.
-      properties:
-        description:
-          description: User provided description.
-          type: string
-        id:
-          description: Unique identifier representing resource.
-          type: string
-        links:
-          $ref: '#/components/schemas/Links'
-          description: Contains the full URL to the current object and its parent (if any)
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          description: Object representing metadata properties of response object.
-          type: object
-        name:
-          description: User chosen resource name.
-          type: string
-        overridable:
-          description: Boolean indicating whether object values can be overridden.
-          type: boolean
-        overrideTargetId:
-          description: Unique identifier of domain or device when override assigned to child domain. Used as path query parameter
-            to GET override details for a specific object on a specific target (device or domain).
-          type: string
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: This is populated only if this object is an override and contains the parent (global) object id and
-            whether this is an override on device or domain.
-          type: object
-        type:
-          description: The unique type of this object.
-          type: string
-        value:
-          description: Actual value of range.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    ILocalTunnelIdentity:
-      properties:
-        isLocalTunnelIdEnabled:
-          type: boolean
-        localIdentityString:
-          type: string
-        localIdentityType:
-          enum:
-          - ADDRESS
-          - AUTO
-          - EMAILID
-          - HOSTNAME
-          - KEYID
-          type: string
-        localIdentityVariable:
-          $ref: '#/components/schemas/ReferenceObject'
-          type: object
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    FQDNObject:
-      properties:
-        description:
-          type: string
-        dnsResolution:
-          enum:
-          - IPV4_ONLY
-          - IPV6_ONLY
-          - IPV4_AND_IPV6
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/Links'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        overridable:
-          type: boolean
-        overrideTargetId:
-          type: string
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          type: object
-        type:
-          type: string
-        value:
-          type: string
-        version:
-          type: string
-      required:
-      - dnsResolution
-      type: object
-    KeyValuePair:
-      properties:
-        key:
-          type: string
-        value:
-          type: string
-      type: object
-    DeviceTemplateConversionRequestModel:
-      properties:
-        accessPolicy:
-          $ref: '#/components/schemas/ReferenceObject'
-          type: object
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        source:
-          $ref: '#/components/schemas/ReferenceObject'
-          type: object
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    ObjectRefs:
-      properties:
-        type:
-          type: string
-        valueList:
-          items:
-            $ref: '#/components/schemas/NamedEntry'
-            type: object
-          type: array
-      type: object
-    TemplateApplyRequestData:
-      properties:
-        assignSharedPolicies:
-          type: boolean
-        auditLogInfo:
-          $ref: '#/components/schemas/AuditLogInfo'
-          type: object
-        parentTaskId:
-          format: int32
-          type: integer
-        payloadLocation:
-          type: string
-        postTemplateAction:
-          enum:
-          - NOACTION
-          - DEPLOY
-          type: string
-        targetDevice:
-          $ref: '#/components/schemas/ObjectEntry'
-          type: object
-        taskId:
-          format: int32
-          type: integer
-        template:
-          $ref: '#/components/schemas/ObjectEntry'
-          type: object
-        templateOverrideList:
-          items:
-            $ref: '#/components/schemas/PolicyObjectEntry'
-            type: object
-          type: array
-        templateVariableList:
-          items:
-            $ref: '#/components/schemas/KeyValuePair'
-            type: object
-          type: array
-      type: object
-    TemplateAssociationInfo:
-      properties:
-        associatedDevices:
-          format: int32
-          type: integer
-        associatedModelInterfaceMappings:
-          items:
-            $ref: '#/components/schemas/ModelInterfaceMappingsValidity'
-            type: object
-          type: array
-        variableOverridesAssociatedWithTemplate:
-          format: int32
-          type: integer
-        variablesAssociatedWithTemplate:
-          format: int32
-          type: integer
-      type: object
-    ISubTask:
+    ITarget:
+      description: This is the target device.
       properties:
         description:
           type: string
         id:
+          description: Unique ID of the device.
           type: string
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        status:
-          type: string
-        target:
-          $ref: '#/components/schemas/ITarget'
-          type: object
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    HostObject:
-      description: An object defining a Host Network object definition.
-      properties:
-        description:
-          description: A description about the object.
-          type: string
-        id:
-          description: The unique UUID of this object.
-          type: string
-        links:
-          $ref: '#/components/schemas/Links'
-          description: Contains the full URL to the current object and its parent (if any)
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          description: Defines read only details about the object - whether it is system defined, last user who modified the
-            object etc.
-          type: object
-        name:
-          description: ' The unique name for the object.'
-          type: string
-        overridable:
-          description: Set to 'true' if the object can be overridden, 'false' otherwise.
-          type: boolean
-        overrideTargetId:
-          description: The override target id either the device (UUID) or the domain (UUID) on which this override is created.
-            Applicable only for overriden objects.
-          type: string
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: This is populated only if this object is an override and contains the parent (global) object id and
-            whether this is an override on device or domain.
-          type: object
-        type:
-          description: The unique type of this object (fixed).
-          type: string
-        value:
-          description: The Host IP address value for this object.
-          type: string
-        version:
-          description: The unique object version (if any).
-          type: string
-      type: object
-    SupportedDeviceModelListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/SupportedDeviceModel'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    SupportedDeviceModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        interfaces:
-          items:
-            $ref: '#/components/schemas/SupportedDeviceInterfaceModel'
-            type: object
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        modelName:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    VpnSettingModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        protectedNetworks:
-          items:
-            $ref: '#/components/schemas/IReference'
-            type: object
-          type: array
-        s2sVpnSettings:
-          $ref: '#/components/schemas/IS2SVpnSetting'
-          type: object
-        type:
-          type: string
-        version:
-          type: string
-        vpnConnections:
-          items:
-            $ref: '#/components/schemas/IVpnConnection'
-            type: object
-          type: array
-      type: object
-    PolicyObjectEntry:
-      properties:
-        attributes:
-          $ref: '#/components/schemas/Attributes'
-          type: object
-        description:
-          type: string
-        domainReadOnly:
-          type: boolean
-        group:
-          type: boolean
-        id:
-          format: int32
-          type: integer
-        literal:
-          type: boolean
-        name:
-          type: string
-        readOnly:
-          type: boolean
-        references:
-          $ref: '#/components/schemas/ObjectRefs'
-          type: object
-        subType:
-          type: string
-        systemObject:
-          type: boolean
-        toolTip:
-          type: string
-        type:
-          type: string
-        uuid:
-          type: string
-        value:
-          type: string
-        valueList:
-          items:
-            $ref: '#/components/schemas/NamedEntry'
-            type: object
-          type: array
-      type: object
-    DeviceTemplateInitialConfig:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        isRemoteBranch:
-          type: boolean
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    VpnSettingModelListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/VpnSettingModel'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    DeviceTemplateDeclaredObjectOverride:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    DeviceTemplates:
-      properties:
-        accessPolicy:
-          $ref: '#/components/schemas/IPolicyModel'
-          type: object
-        description:
-          type: string
-        firewallMode:
-          enum:
-          - ROUTED
-          - TRANSPARENT
-          type: string
-        id:
-          type: string
-        initialConfig:
-          $ref: '#/components/schemas/DeviceTemplateInitialConfig'
-          type: object
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/DeviceTemplatesMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        validateTemplate:
-          type: string
-        version:
-          type: string
-      type: object
-    ObjectEntry:
-      properties:
-        id:
-          format: int32
-          type: integer
-        literal:
-          type: boolean
-        name:
-          type: string
-        type:
-          type: string
-        uuid:
-          type: string
-        value:
-          type: string
-      type: object
-    KeyValuePairModel:
-      properties:
-        key:
-          type: string
-        value:
-          type: string
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    DeviceTemplateAssociation:
-      properties:
-        description:
-          type: string
-        device:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        id:
-          type: string
-        lastAppliedStatus:
-          type: string
-        lastAppliedTimestamp:
-          format: int32
-          type: integer
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
@@ -4861,24 +4556,27 @@ components:
           $ref: '#/components/schemas/IMetadata'
           type: object
         name:
+          description: Name of the device.
           type: string
-        overriddenValues:
-          $ref: '#/components/schemas/TemplateApplyDeclaredOverrides'
-          type: object
-        syncStatus:
-          type: string
-        template:
-          $ref: '#/components/schemas/IReference'
-          type: object
         type:
+          description: Device
           type: string
-        variableValues:
-          items:
-            $ref: '#/components/schemas/KeyValuePairModel'
-            type: object
-          type: array
         version:
           type: string
+      type: object
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
+      properties:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
       type: object
     TaskStatus:
       properties:
@@ -4959,54 +4657,83 @@ components:
         type:
           type: string
       type: object
-    IOverride:
-      description: Defines the override details for this object.
+    IMetadata:
       properties:
-        parent:
-          $ref: '#/components/schemas/IReference'
-          description: Link to the parent/global resource which is overriden.
+        domain:
+          $ref: '#/components/schemas/IDomain'
           type: object
-        target:
-          $ref: '#/components/schemas/IReference'
-          description: The device or the domain target on which this override is enabled.
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    Metadata:
+      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          description: Defines the domains this instance belongs to (if applicable).
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          description: The last user who modified this instance.
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          description: Details regarding the read only status of this instance
+          type: object
+        timestamp:
+          description: The last updated timestamp.
+          format: int32
+          type: integer
+      type: object
+    MetadataUser:
+      description: This object defines details about the user.
+      properties:
+        id:
+          description: The unique UUID of the user
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Contains the self referencing links to this resource
+          type: object
+        name:
+          description: Name of the user.
+          type: string
+        type:
+          description: The user type (fixed).
+          type: string
+      type: object
+    VpnSettingModelListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/VpnSettingModel'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    IVpnIntfAddress:
-      properties:
-        literal:
-          type: string
-        variable:
-          $ref: '#/components/schemas/ReferenceObject'
-          type: object
-      type: object
-    DeviceTemplateObjectOverrides:
+    VpnSettingModel:
       properties:
         description:
           type: string
@@ -5020,19 +4747,173 @@ components:
           type: object
         name:
           type: string
-        objectOverridesList:
+        protectedNetworks:
           items:
-            $ref: '#/components/schemas/DeviceTemplateDeclaredObjectOverride'
+            $ref: '#/components/schemas/IReference'
             type: object
           type: array
+        s2sVpnSettings:
+          $ref: '#/components/schemas/IS2SVpnSetting'
+          type: object
+        type:
+          type: string
+        version:
+          type: string
+        vpnConnections:
+          items:
+            $ref: '#/components/schemas/IVpnConnection'
+            type: object
+          type: array
+      type: object
+    KeyValuePair:
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      type: object
+    ObjectRefs:
+      properties:
+        type:
+          type: string
+        valueList:
+          items:
+            $ref: '#/components/schemas/NamedEntry'
+            type: object
+          type: array
+      type: object
+    SupportedDeviceModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        interfaces:
+          items:
+            $ref: '#/components/schemas/SupportedDeviceInterfaceModel'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        modelName:
+          type: string
+        name:
+          type: string
         type:
           type: string
         version:
           type: string
       type: object
-    Attributes:
+    DeviceTemplateAssociation:
+      properties:
+        description:
+          type: string
+        device:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        id:
+          type: string
+        lastAppliedStatus:
+          type: string
+        lastAppliedTimestamp:
+          format: int32
+          type: integer
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        overriddenValues:
+          $ref: '#/components/schemas/TemplateApplyDeclaredOverrides'
+          type: object
+        syncStatus:
+          type: string
+        template:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        type:
+          type: string
+        variableValues:
+          items:
+            $ref: '#/components/schemas/KeyValuePairModel'
+            type: object
+          type: array
+        version:
+          type: string
       type: object
-    DeviceTemplateDefaultModelMapping:
+    PolicyObjectEntry:
+      properties:
+        attributes:
+          $ref: '#/components/schemas/Attributes'
+          type: object
+        description:
+          type: string
+        domainReadOnly:
+          type: boolean
+        group:
+          type: boolean
+        id:
+          format: int32
+          type: integer
+        literal:
+          type: boolean
+        name:
+          type: string
+        readOnly:
+          type: boolean
+        references:
+          $ref: '#/components/schemas/ObjectRefs'
+          type: object
+        subType:
+          type: string
+        systemObject:
+          type: boolean
+        toolTip:
+          type: string
+        type:
+          type: string
+        uuid:
+          type: string
+        value:
+          type: string
+        valueList:
+          items:
+            $ref: '#/components/schemas/NamedEntry'
+            type: object
+          type: array
+      type: object
+    ObjectEntry:
+      properties:
+        id:
+          format: int32
+          type: integer
+        literal:
+          type: boolean
+        name:
+          type: string
+        type:
+          type: string
+        uuid:
+          type: string
+        value:
+          type: string
+      type: object
+    IVpnIntfAddress:
+      properties:
+        literal:
+          type: string
+        variable:
+          $ref: '#/components/schemas/ReferenceObject'
+          type: object
+      type: object
+    DeviceTemplateModelMapping:
       properties:
         description:
           type: string
@@ -5056,52 +4937,104 @@ components:
         version:
           type: string
       type: object
-    DeviceTemplatesListContainer:
+    IReference:
+      description: Contains reference information.
       properties:
-        items:
-          $ref: '#/components/schemas/DeviceTemplates'
+        id:
+          description: Unique identifier representing resource.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        name:
+          description: User chosen resource name.
+          type: string
+        type:
+          description: Response object associated with resource.
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
           type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IVpnConnection:
+      properties:
+        ipAddrSelectionType:
+          enum:
+          - INHERIT_IP_FROM_INTERFACE
+          - CONFIGURE_INLINE_PUBLIC_IP
+          type: string
+        ipv4Address:
+          $ref: '#/components/schemas/IVpnIntfAddress'
+          type: object
+        ipv6Address:
+          $ref: '#/components/schemas/IVpnIntfAddress'
+          type: object
+        localTunnelIdentity:
+          $ref: '#/components/schemas/ILocalTunnelIdentity'
+          type: object
+        vpnInterface:
+          $ref: '#/components/schemas/IReference'
+          type: object
+      type: object
+    DeviceTemplateConversionRequestModel:
+      properties:
+        accessPolicy:
+          $ref: '#/components/schemas/ReferenceObject'
+          type: object
+        description:
+          type: string
+        id:
+          type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
+        metadata:
+          $ref: '#/components/schemas/Metadata'
           type: object
-      type: object
-    ModelInterfaceMappingsValidity:
-      properties:
-        isValid:
-          type: boolean
-        modelName:
+        name:
           type: string
-        valid:
-          type: boolean
+        source:
+          $ref: '#/components/schemas/ReferenceObject'
+          type: object
+        type:
+          type: string
+        version:
+          type: string
       type: object
-    TemplateApplyDeclaredOverrides:
+    IDeviceTemplateInterfaceMapping:
       properties:
-        fqdns:
-          items:
-            $ref: '#/components/schemas/FQDNObject'
-            type: object
-          type: array
-        hosts:
-          items:
-            $ref: '#/components/schemas/HostObject'
-            type: object
-          type: array
-        networks:
-          items:
-            $ref: '#/components/schemas/NetworkObject'
-            type: object
-          type: array
-        ranges:
-          items:
-            $ref: '#/components/schemas/RangeObject'
-            type: object
-          type: array
+        modelInterface:
+          type: string
+        templateInterface:
+          type: string
       type: object
-    IPolicyModel:
+    DeviceTemplateApply:
       properties:
+        applyToDevices:
+          items:
+            $ref: '#/components/schemas/DeviceTemplateApplyRequest'
+            type: object
+          type: array
         description:
           type: string
         id:
@@ -5114,30 +5047,17 @@ components:
           type: object
         name:
           type: string
+        reapplyFilter:
+          type: string
         type:
           type: string
         version:
           type: string
       type: object
-    ReadOnly:
-      description: Defines the read only conditions if the referenced resource is read only.
-      properties:
-        reason:
-          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions
-            make it read only) or DOMAIN (if resource is read only in current domain).
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          description: True if this resource us read only and false otherwise.
-          type: boolean
-      type: object
-    DeviceTemplateVariablesListContainer:
+    DeviceTemplateModelMappingListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/DeviceTemplateVariables'
+          $ref: '#/components/schemas/DeviceTemplateModelMapping'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -5146,22 +5066,21 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
+    DeviceTemplateDeclaredObjectOverride:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
     limit:
       description: Number of items to return.
       in: query
@@ -5170,6 +5089,13 @@ components:
       schema:
         format: int32
         type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
     domainUUID:
       description: Domain UUID
       in: path
@@ -5177,6 +5103,14 @@ components:
       required: true
       schema:
         type: string
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

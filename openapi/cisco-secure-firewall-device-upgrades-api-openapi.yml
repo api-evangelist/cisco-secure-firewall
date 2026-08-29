@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Security Cloud Control TAC
     email: cdo.tac@cisco.com
-  description: 'Operations tagged Device Upgrades across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
-    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Device Upgrades across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml, scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
-      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
     operation_coverage: 7/7
   x-evidence:
@@ -47,9 +43,27 @@ tags:
 - name: Device Upgrades
 paths:
   /v1/inventory/devices/asas/{deviceUid}/upgrades/trigger:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     post:
-      description: 'This asynchronous operation upgrades the ASA firmware and ASDM software versions on the device. Note:
-        Newly detected or modified certificates will be automatically approved.'
+      description: 'This asynchronous operation upgrades the ASA firmware and ASDM software versions on the device. Note: Newly detected or modified certificates will be automatically approved.'
       operationId: upgradeAsaDevice
       parameters:
       - description: The unique identifier, represented as a UUID, of the device in Security Cloud Control.
@@ -83,6 +97,7 @@ paths:
       summary: Upgrade ASA device
       tags:
       - Device Upgrades
+  /v1/inventory/devices/asas/{deviceUid}/upgrades/versions:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -102,7 +117,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/inventory/devices/asas/{deviceUid}/upgrades/versions:
     get:
       description: Get a list of compatible upgrade versions for a given ASA device.
       operationId: getAsaUpgradeVersions
@@ -132,6 +146,7 @@ paths:
       summary: Get compatible upgrade versions for an ASA
       tags:
       - Device Upgrades
+  /v1/inventory/devices/ftds/{deviceUid}/upgrades/trigger:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -151,7 +166,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/inventory/devices/ftds/{deviceUid}/upgrades/trigger:
     post:
       description: Upgrade FTD device using a specified upgrade package.
       operationId: upgradeFtdDevice
@@ -197,6 +211,7 @@ paths:
       summary: Upgrade FTD device
       tags:
       - Device Upgrades
+  /v1/inventory/devices/ftds/{deviceUid}/upgrades/versions:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -216,10 +231,8 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/inventory/devices/ftds/{deviceUid}/upgrades/versions:
     get:
-      description: 'Get a list of compatible upgrade versions for a given FTD device. Note: this endpoint will only return
-        versions that are directly downloadable to the FTD from the Cisco support site.'
+      description: 'Get a list of compatible upgrade versions for a given FTD device. Note: this endpoint will only return versions that are directly downloadable to the FTD from the Cisco support site.'
       operationId: getCompatibleFtdVersions
       parameters:
       - description: The unique identifier, represented as a UUID, of the device in Security Cloud Control.
@@ -257,6 +270,7 @@ paths:
       summary: Get compatible upgrade versions for an FTD
       tags:
       - Device Upgrades
+  /v1/inventory/devices/ftds/upgrades/packages/build-cache:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -276,7 +290,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/inventory/devices/ftds/upgrades/packages/build-cache:
     put:
       description: Update cache of compatible upgrade packages for a all FTD devices.
       operationId: updateFtdUpgradePackagesCache
@@ -298,8 +311,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CdoTransaction'
-          description: Security Cloud Control Transaction object that can be used to track the progress of the cache building
-            operation.
+          description: Security Cloud Control Transaction object that can be used to track the progress of the cache building operation.
         '400':
           $ref: '#/components/responses/http400BadRequest'
         '401':
@@ -317,6 +329,7 @@ paths:
       summary: Update cache of compatible upgrade packages for all FTDs
       tags:
       - Device Upgrades
+  /v1/inventory/devices/ftds/upgrades/trigger:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -336,10 +349,8 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/inventory/devices/ftds/upgrades/trigger:
     post:
-      description: Upgrade up to 50 FTD devices using a specified upgrade package. All of the FTDs in the list have to be
-        compatible with the upgrade package.
+      description: Upgrade up to 50 FTD devices using a specified upgrade package. All of the FTDs in the list have to be compatible with the upgrade package.
       operationId: upgradeFtdDevices
       parameters:
       - in: header
@@ -385,6 +396,7 @@ paths:
       summary: Upgrade multiple FTD devices
       tags:
       - Device Upgrades
+  /v1/inventory/devices/ftds/upgrades/versions:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -404,12 +416,8 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/inventory/devices/ftds/upgrades/versions:
     get:
-      description: 'Get a list of compatible upgrade versions for the specified FTD devices. Note 1: this endpoint will only
-        return versions that are directly downloadable to the FTD from the Cisco support site. Note 2: If compatible versions
-        need computation, returns 202 with a transaction containing the entityUrl for tracking progress. Otherwise, returns
-        200 with the complete result.'
+      description: 'Get a list of compatible upgrade versions for the specified FTD devices. Note 1: this endpoint will only return versions that are directly downloadable to the FTD from the Cisco support site. Note 2: If compatible versions need computation, returns 202 with a transaction containing the entityUrl for tracking progress. Otherwise, returns 200 with the complete result.'
       operationId: getCompatibleFtdVersionsForMultipleFtds
       parameters:
       - description: A list of unique identifiers, represented as UUIDs, of the devices in Security Cloud Control.
@@ -447,8 +455,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CdoTransaction'
-          description: Returns a Security Cloud Control returns a Transaction object that can be used to track the progress
-            of the operation to get the set of compatibility versions.
+          description: Returns a Security Cloud Control returns a Transaction object that can be used to track the progress of the operation to get the set of compatibility versions.
         '400':
           $ref: '#/components/responses/http400BadRequest'
         '401':
@@ -470,51 +477,32 @@ paths:
       summary: Get upgrade versions compatible with multiple FTDs
       tags:
       - Device Upgrades
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   responses:
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
-    http401Unauthorised:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
     http400BadRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CommonApiError'
       description: Invalid input provided. Check the response for details.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
     http422UnprocessableEntity:
       content:
         application/json:
@@ -522,46 +510,10 @@ components:
             $ref: '#/components/schemas/CommonApiError'
       description: Unprocessable entity.
   schemas:
-    UpgradeAsaDeviceInput:
-      properties:
-        asdmVersion:
-          description: The target ASDM software version to upgrade the device to.
-          example: '''7.6(2)'' or ''7.6(2).openjre'''
-          type: string
-        softwareVersion:
-          description: The target ASA firmware version to upgrade the device to.
-          example: 9.4(1)
-          type: string
-      type: object
-    FtdCompatibilityVersion:
-      properties:
-        compatibleFtdVersions:
-          items:
-            $ref: '#/components/schemas/FtdVersion'
-          type: array
-        deviceUids:
-          items:
-            format: uuid
-            type: string
-          type: array
-        hardwareModel:
-          type: string
-      type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
     UpgradeFtdDevicesInput:
       properties:
         deviceUids:
-          description: The set of unique identifiers, represented as UUIDs, of the devices to upgrade in Security Cloud Control.
-            All of the devices in the list have to be compatible with the upgrade package.
+          description: The set of unique identifiers, represented as UUIDs, of the devices to upgrade in Security Cloud Control. All of the devices in the list have to be compatible with the upgrade package.
           example:
           - 256461f6-bd60-11ef-8beb-6cf1610cf55d
           items:
@@ -580,6 +532,33 @@ components:
       - deviceUids
       - upgradePackageUid
       type: object
+    FtdVersion:
+      properties:
+        filename:
+          description: The name of the file
+          example: Cisco_FTD_SSP_FP2K_Upgrade-7.4.2-172.sh.REL.tar
+          type: string
+        isSuggestedVersion:
+          description: A boolean value, indicating whether this version is a suggested version to upgrade to.
+          type: boolean
+        softwareVersion:
+          description: The version to which this package will upgrade the FTD.
+          example: 7.4.2-172 IMS 172
+          type: string
+        upgradePackageUid:
+          description: The unique identifier, represented as a UUID, of the version in Security Cloud Control
+          example: 25608540-bd60-11ef-8beb-6cf1610cf55d
+          format: uuid
+          type: string
+        upgradeType:
+          description: The type of the upgrade
+          enum:
+          - UPGRADE
+          - PATCH
+          - HOTFIX
+          example: UPGRADE
+          type: string
+      type: object
     UpgradeFtdDeviceInput:
       properties:
         upgradePackageUid:
@@ -589,6 +568,20 @@ components:
           type: string
       required:
       - upgradePackageUid
+      type: object
+    FtdCompatibilityVersion:
+      properties:
+        compatibleFtdVersions:
+          items:
+            $ref: '#/components/schemas/FtdVersion'
+          type: array
+        deviceUids:
+          items:
+            format: uuid
+            type: string
+          type: array
+        hardwareModel:
+          type: string
       type: object
     AsaCompatibleVersion:
       properties:
@@ -600,6 +593,49 @@ components:
           type: string
         softwareVersion:
           type: string
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
+    FtdVersionsResponse:
+      properties:
+        count:
+          description: The item count.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/FtdVersion'
+          type: array
       type: object
     CdoTransaction:
       properties:
@@ -613,8 +649,7 @@ components:
           example: IN_PROGRESS
           type: string
         entityUid:
-          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a
-            transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
+          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
           example: f5f660d4-4b81-4374-877d-fbc4bee894e2
           format: uuid
           type: string
@@ -713,76 +748,6 @@ components:
           format: uuid
           type: string
       type: object
-    FtdVersion:
-      properties:
-        filename:
-          description: The name of the file
-          example: Cisco_FTD_SSP_FP2K_Upgrade-7.4.2-172.sh.REL.tar
-          type: string
-        isSuggestedVersion:
-          description: A boolean value, indicating whether this version is a suggested version to upgrade to.
-          type: boolean
-        softwareVersion:
-          description: The version to which this package will upgrade the FTD.
-          example: 7.4.2-172 IMS 172
-          type: string
-        upgradePackageUid:
-          description: The unique identifier, represented as a UUID, of the version in Security Cloud Control
-          example: 25608540-bd60-11ef-8beb-6cf1610cf55d
-          format: uuid
-          type: string
-        upgradeType:
-          description: The type of the upgrade
-          enum:
-          - UPGRADE
-          - PATCH
-          - HOTFIX
-          example: UPGRADE
-          type: string
-      type: object
-    CommonApiError:
-      properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
-          description: A human-readable error description in English.
-          example: sample error
-          type: string
-    FtdVersionsResponse:
-      properties:
-        count:
-          description: The item count.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/FtdVersion'
-          type: array
-      type: object
     AsaCompatibleVersionsResponse:
       properties:
         count:
@@ -796,6 +761,27 @@ components:
             $ref: '#/components/schemas/AsaCompatibleVersion'
           type: array
       type: object
+    UpgradeAsaDeviceInput:
+      properties:
+        asdmVersion:
+          description: The target ASDM software version to upgrade the device to.
+          example: '''7.6(2)'' or ''7.6(2).openjre'''
+          type: string
+        softwareVersion:
+          description: The target ASA firmware version to upgrade the device to.
+          example: 9.4(1)
+          type: string
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Security Cloud Control TAC
     email: cdo.tac@cisco.com
-  description: 'Operations tagged Device Health across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
-    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Device Health across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml, scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
-      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
     operation_coverage: 4/4
   x-evidence:
@@ -47,10 +43,27 @@ tags:
 - name: Device Health
 paths:
   /v1/inventory/devices/asas/health/{deviceUid}/interfaces:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
-      description: Returns time-series interface metrics - including link status, overruns, and other key performance indicators
-        - over a specified time range. Supports filtering by interface and metric. Pagination applies only when interface
-        UIDs are not specified.
+      description: Returns time-series interface metrics - including link status, overruns, and other key performance indicators - over a specified time range. Supports filtering by interface and metric. Pagination applies only when interface UIDs are not specified.
       operationId: getAsaInterfaceHealthMetrics
       parameters:
       - description: The unique identifier, represented as a UUID, of the ASA device in Security Cloud Control.
@@ -74,8 +87,7 @@ paths:
         required: false
         schema:
           type: string
-      - description: Relative time range (mutually exclusive with start/end). Data is collected every 10 minutes, so shorter
-          time ranges may return fewer data points.
+      - description: Relative time range (mutually exclusive with start/end). Data is collected every 10 minutes, so shorter time ranges may return fewer data points.
         example: 10m
         in: query
         name: timeRange
@@ -128,8 +140,7 @@ paths:
           - outputPacketSize
           - linkStatus
           type: string
-      - description: Lucene-style query filter. Supports logical operators AND, OR, and NOT.Applicable only to the fields
-          name and linkStatus.
+      - description: Lucene-style query filter. Supports logical operators AND, OR, and NOT.Applicable only to the fields name and linkStatus.
         example: name:GigabitEthernet* OR linkStatus:1
         in: query
         name: q
@@ -162,6 +173,7 @@ paths:
       summary: Get time-series interface metrics for an ASA device
       tags:
       - Device Health
+  /v1/inventory/devices/asas/health/metrics:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -181,7 +193,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/inventory/devices/asas/health/metrics:
     delete:
       description: Allows a tenant to opt out of receiving health metrics for their ASAs.
       operationId: optOutOfAsaHealthMetrics
@@ -214,8 +225,7 @@ paths:
       tags:
       - Device Health
     get:
-      description: Returns time-series metrics such as CPU, memory, disk, connections, and environment data over a specified
-        time range. Supports filtering by device and metric. Pagination applies only when device UIDs are not specified.
+      description: Returns time-series metrics such as CPU, memory, disk, connections, and environment data over a specified time range. Supports filtering by device and metric. Pagination applies only when device UIDs are not specified.
       operationId: getAsaHealthMetrics
       parameters:
       - description: Start of the time range (ISO 8601 format).
@@ -232,8 +242,7 @@ paths:
         required: false
         schema:
           type: string
-      - description: Relative time range (mutually exclusive with start/end). Data is collected every 10 minutes, so shorter
-          time ranges may return fewer data points.
+      - description: Relative time range (mutually exclusive with start/end). Data is collected every 10 minutes, so shorter time ranges may return fewer data points.
         example: 10m
         in: query
         name: timeRange
@@ -340,45 +349,26 @@ paths:
       summary: Opt in to ASA Health Metrics
       tags:
       - Device Health
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   responses:
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
     http400BadRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CommonApiError'
       description: Invalid input provided. Check the response for details.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
     http401Unauthorised:
       content:
         application/json:
@@ -386,6 +376,31 @@ components:
             $ref: '#/components/schemas/AuthenticationError'
       description: Request not authorized.
   schemas:
+    Metric:
+      properties:
+        series:
+          items:
+            $ref: '#/components/schemas/Series'
+          type: array
+        summary:
+          $ref: '#/components/schemas/Summary'
+      type: object
+    MetricsResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/MetricsItem'
+          type: array
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        total:
+          format: int32
+          type: integer
+      type: object
     MetricsItem:
       properties:
         description:
@@ -400,34 +415,6 @@ components:
           format: uuid
           type: string
       type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
-    Metric:
-      properties:
-        series:
-          items:
-            $ref: '#/components/schemas/Series'
-          type: array
-        summary:
-          $ref: '#/components/schemas/Summary'
-      type: object
-    Series:
-      properties:
-        timestamp:
-          format: date-time
-          type: string
-        value:
-          format: double
-          type: number
-      type: object
     Summary:
       properties:
         average:
@@ -440,6 +427,36 @@ components:
           format: double
           type: number
       type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
     CdoTransaction:
       properties:
         cdoTransactionStatus:
@@ -452,8 +469,7 @@ components:
           example: IN_PROGRESS
           type: string
         entityUid:
-          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a
-            transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
+          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
           example: f5f660d4-4b81-4374-877d-fbc4bee894e2
           format: uuid
           type: string
@@ -552,51 +568,24 @@ components:
           format: uuid
           type: string
       type: object
-    MetricsResponse:
+    Series:
       properties:
-        items:
-          items:
-            $ref: '#/components/schemas/MetricsItem'
-          type: array
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        total:
-          format: int32
-          type: integer
-      type: object
-    CommonApiError:
-      properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
+        timestamp:
+          format: date-time
           type: string
-        errorMsg:
+        value:
+          format: double
+          type: number
+      type: object
+    AuthenticationError:
+      properties:
+        error:
           description: A human-readable error description in English.
-          example: sample error
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
           type: string
   securitySchemes:
     bearerAuth:

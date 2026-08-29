@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Status across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml.
-    Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Status across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 3/3
   x-evidence:
@@ -47,20 +43,31 @@ tags:
 - name: Status
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/job/taskstatuses:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       deprecated: false
       description: '**Get information about pending jobs or tasks.**'
       operationId: getAllTaskStatus
       parameters:
-      - description: Filter criteria can be specified using the format <code>type:{type};status:{status};</code>. <br/><br/><code>type</code>
-          -- Type of task to be returned. It is mandatory field. Allowed values are <code>"{Deployment | Registration | Unregistration
-          | PendingChangesRequest | DEVICE_BACKUP}"</code>. <br/><br/><code>status</code> -- Filter based on the status of
-          the task. It is mandatory field.<br/><br/>&emsp;Allowed values for <code>Deployment</code> task are <code>"{Deploying
-          | Cancelled | Failed | Succeeded}"</code>.<br/><br/>&emsp;Allowed values for <code>Registration</code> task are
-          <code>"{Pending | Running | Success | Failed}"</code>.<br/><br/>&emsp;Allowed values for <code>Unregistration</code>
-          task are <code>"{Running | Success | Failed}"</code>.<br/>&emsp;Allowed values for <code>PendingChangesRequest</code>
-          task are <code>"{Running | Success | Failed}"</code>.<br/>&emsp;Allowed values for <code>DEVICE_BACKUP</code> task
-          are <code>"{Running | Success | Failed | Cancelled}"</code>.
+      - description: Filter criteria can be specified using the format <code>type:{type};status:{status};</code>. <br/><br/><code>type</code> -- Type of task to be returned. It is mandatory field. Allowed values are <code>"{Deployment | Registration | Unregistration | PendingChangesRequest | DEVICE_BACKUP}"</code>. <br/><br/><code>status</code> -- Filter based on the status of the task. It is mandatory field.<br/><br/>&emsp;Allowed values for <code>Deployment</code> task are <code>"{Deploying | Cancelled | Failed | Succeeded}"</code>.<br/><br/>&emsp;Allowed values for <code>Registration</code> task are <code>"{Pending | Running | Success | Failed}"</code>.<br/><br/>&emsp;Allowed values for <code>Unregistration</code> task are <code>"{Running | Success | Failed}"</code>.<br/>&emsp;Allowed values for <code>PendingChangesRequest</code> task are <code>"{Running | Success | Failed}"</code>.<br/>&emsp;Allowed values for <code>DEVICE_BACKUP</code> task are <code>"{Running | Success | Failed | Cancelled}"</code>.
         in: query
         name: filter
         required: true
@@ -91,6 +98,7 @@ paths:
           description: Error
       tags:
       - Status
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/job/taskstatuses/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -110,7 +118,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/job/taskstatuses/{objectId}:
     get:
       deprecated: false
       description: '**Get information about a previously submitted pending job or task with the specified ID.**'
@@ -122,8 +129,7 @@ paths:
         required: true
         schema:
           type: string
-      - description: 'Boolean indicating whether to show the detailed status for the device for type : DEVICE_DEPLOYMENT and
-          DEVICE_ROLLBACK'
+      - description: 'Boolean indicating whether to show the detailed status for the device for type : DEVICE_DEPLOYMENT and DEVICE_ROLLBACK'
         in: query
         name: showDetailedDeviceStatus
         required: false
@@ -146,8 +152,7 @@ paths:
                     status: status_of_queried_task
                     taskType: valid_enum
                     type: TaskStatus
-                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/job/taskstatuses/taskID ( GET the Device Export-Import
-                  Task Status based on ID. )'
+                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/job/taskstatuses/taskID ( GET the Device Export-Import Task Status based on ID. )'
                 : value:
                     description: description_about_task
                     id: taskID
@@ -179,6 +184,7 @@ paths:
           description: Error
       tags:
       - Status
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/job/taskstatuses/{objectId}/operational/downloadreports:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -198,7 +204,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/job/taskstatuses/{objectId}/operational/downloadreports:
     get:
       deprecated: false
       description: '**Create a request to download the reports generated as a part of the task.**'
@@ -235,27 +240,110 @@ paths:
           description: Error
       tags:
       - Status
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   schemas:
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    TaskDownloadReport:
+      properties: {}
+      type: object
+    TaskStatusListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/TaskStatus'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    TaskDownloadReportListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/TaskDownloadReport'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
     ITarget:
       description: This is the target device.
       properties:
@@ -279,29 +367,27 @@ components:
         version:
           type: string
       type: object
-    IDomain:
+    ErrorResponse:
       properties:
-        id:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
           type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    TaskDownloadReportListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/TaskDownloadReport'
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
           type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
       type: object
     TaskStatus:
       properties:
@@ -382,38 +468,6 @@ components:
         type:
           type: string
       type: object
-    ISubTask:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        status:
-          type: string
-        target:
-          $ref: '#/components/schemas/ITarget'
-          type: object
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
     IMetadataUser:
       properties:
         id:
@@ -424,55 +478,6 @@ components:
         name:
           type: string
         type:
-          type: string
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
           type: string
       type: object
     IMetadata:
@@ -496,58 +501,24 @@ components:
           format: int32
           type: integer
       type: object
-    TaskDownloadReport:
-      properties: {}
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
+    ISubTask:
       properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
+        description:
           type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
+        id:
           type: string
-      type: object
-    TaskStatusListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/TaskStatus'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
           type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
+        status:
           type: string
-        state:
-          type: boolean
+        target:
+          $ref: '#/components/schemas/ITarget'
+          type: object
       type: object
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
-    limit:
-      description: Number of items to return.
-      in: query
-      name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
     offset:
       description: Index of first item to return.
       in: query
@@ -563,6 +534,21 @@ components:
       required: true
       schema:
         type: string
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

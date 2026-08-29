@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged System Information across 2 of this provider''s published API definitions: cdfmc-openapi.yaml,
-    cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged System Information across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 4/4
   x-evidence:
@@ -47,6 +43,25 @@ tags:
 - name: System Information
 paths:
   /v1/cdfmc/api/fmc_platform/v1/info/domain:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       deprecated: false
       description: '**Get a list of all domains.**'
@@ -75,6 +90,7 @@ paths:
           description: Error
       tags:
       - System Information
+  /v1/cdfmc/api/fmc_platform/v1/info/domain/{domainUUID}/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -94,7 +110,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_platform/v1/info/domain/{domainUUID}/{objectId}:
     get:
       deprecated: false
       description: '**Get version information for the specified domain.**'
@@ -134,6 +149,7 @@ paths:
           description: Error
       tags:
       - System Information
+  /v1/cdfmc/api/fmc_platform/v1/info/serverversion:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -153,7 +169,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_platform/v1/info/serverversion:
     get:
       deprecated: false
       description: '**Get a list of all servers.**'
@@ -182,6 +197,7 @@ paths:
           description: Error
       tags:
       - System Information
+  /v1/cdfmc/api/fmc_platform/v1/info/serverversion/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -201,7 +217,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_platform/v1/info/serverversion/{objectId}:
     get:
       deprecated: false
       description: '**Get version information for the specified server.**'
@@ -238,25 +253,6 @@ paths:
           description: Error
       tags:
       - System Information
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   schemas:
     IDomain:
@@ -286,38 +282,37 @@ components:
           format: int32
           type: integer
       type: object
-    IMetadataUser:
+    IReadonly:
       properties:
-        id:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
           type: string
+        state:
+          type: boolean
+      type: object
+    ServerVersionListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ServerVersion'
+          type: array
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        name:
-          type: string
-        type:
-          type: string
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
       type: object
-    ErrorResponse:
+    ILinks:
+      description: This defines the self referencing links for the given resource.
       properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
           type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
+        self:
+          description: Full resource URL path to reference this particular resource.
           type: string
       type: object
     ErrorMessagesContainer:
@@ -347,23 +342,16 @@ components:
           - WARN
           type: string
       type: object
-    Domain:
-      description: The details about the domain.
+    IMetadataUser:
       properties:
         id:
-          description: Unique UUID of this domain
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
           type: object
         name:
-          description: Name of the domain.
           type: string
         type:
-          description: Domain type definition (fixed).
-          type: string
-        uuid:
           type: string
       type: object
     ServerVersion:
@@ -407,6 +395,40 @@ components:
         vdbVersion:
           type: string
       type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    DomainListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/Domain'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
     IMetadata:
       properties:
         domain:
@@ -428,59 +450,26 @@ components:
           format: int32
           type: integer
       type: object
-    ServerVersionListContainer:
+    Domain:
+      description: The details about the domain.
       properties:
-        items:
-          $ref: '#/components/schemas/ServerVersion'
-          type: array
+        id:
+          description: Unique UUID of this domain
+          type: string
         links:
           $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
           type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
+        name:
+          description: Name of the domain.
           type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
+        type:
+          description: Domain type definition (fixed).
           type: string
-      type: object
-    DomainListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/Domain'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
+        uuid:
           type: string
-        state:
-          type: boolean
       type: object
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
     offset:
       description: Index of first item to return.
       in: query
@@ -496,6 +485,13 @@ components:
       required: true
       schema:
         type: string
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
     limit:
       description: Number of items to return.
       in: query

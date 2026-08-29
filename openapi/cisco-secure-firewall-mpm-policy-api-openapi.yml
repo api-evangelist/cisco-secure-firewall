@@ -221,40 +221,25 @@ paths:
       - MPM Policy
 components:
   schemas:
-    MpmEndpointObj:
+    MpmPolicyWithoutRulesObj:
       properties:
-        addressEnd:
-          format: int64
-          type: integer
-        addressStart:
-          format: int64
-          type: integer
         description:
           type: string
         id:
           format: uuid
           type: string
+        installTargets:
+          items:
+            type: string
+          type: array
         name:
           type: string
-        value:
-          type: string
-      type: object
-    MpmEndpointGroupObj:
-      properties:
-        description:
-          type: string
-        epgs:
-          items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
-          type: array
-        eps:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
-        id:
-          format: uuid
-          type: string
-        name:
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
           type: string
       type: object
     MpmAppObj:
@@ -291,25 +276,60 @@ components:
         value:
           type: string
       type: object
-    MpmPolicyWithoutRulesObj:
+    MpmNatRuleObj:
       properties:
+        apTranslated:
+          $ref: '#/components/schemas/MpmAppObj'
+        apgsMatch:
+          items:
+            $ref: '#/components/schemas/MpmAppGroupObj'
+          type: array
+        appNatType:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+        apsMatch:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
         description:
           type: string
+        dstEpTranslated:
+          $ref: '#/components/schemas/MpmEndpointObj'
+        dstEpgsMatch:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        dstEpsMatch:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+        dstNatType:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+        enabled:
+          type: boolean
         id:
           format: uuid
           type: string
-        installTargets:
+        srcEpTranslated:
+          $ref: '#/components/schemas/MpmEndpointObj'
+        srcEpgsMatch:
           items:
-            type: string
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
           type: array
-        name:
-          type: string
-        policyType:
+        srcEpsMatch:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+        srcNatType:
           enum:
-          - SECURITY
-          - GOVERNANCE_PREPEND
-          - GOVERNANCE_APPEND
-          - NAT
+          - MATCH
+          - STATIC
+          - HIDE
           type: string
       type: object
     MpmAppGroupObj:
@@ -334,11 +354,6 @@ components:
           items:
             $ref: '#/components/schemas/MpmPolicyWithoutRulesObj'
           type: array
-      type: object
-    IdValue:
-      properties:
-        id:
-          type: string
       type: object
     MpmPolicyObj:
       properties:
@@ -368,6 +383,24 @@ components:
           items:
             $ref: '#/components/schemas/MpmRuleObj'
           type: array
+      type: object
+    MpmEndpointObj:
+      properties:
+        addressEnd:
+          format: int64
+          type: integer
+        addressStart:
+          format: int64
+          type: integer
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        value:
+          type: string
       type: object
     MpmRuleObj:
       properties:
@@ -424,60 +457,27 @@ components:
             $ref: '#/components/schemas/MpmEndpointObj'
           type: array
       type: object
-    MpmNatRuleObj:
+    MpmEndpointGroupObj:
       properties:
-        apTranslated:
-          $ref: '#/components/schemas/MpmAppObj'
-        apgsMatch:
-          items:
-            $ref: '#/components/schemas/MpmAppGroupObj'
-          type: array
-        appNatType:
-          enum:
-          - MATCH
-          - STATIC
-          type: string
-        apsMatch:
-          items:
-            $ref: '#/components/schemas/MpmAppObj'
-          type: array
         description:
           type: string
-        dstEpTranslated:
-          $ref: '#/components/schemas/MpmEndpointObj'
-        dstEpgsMatch:
+        epgs:
           items:
             $ref: '#/components/schemas/MpmEndpointGroupObj'
           type: array
-        dstEpsMatch:
+        eps:
           items:
             $ref: '#/components/schemas/MpmEndpointObj'
           type: array
-        dstNatType:
-          enum:
-          - MATCH
-          - STATIC
-          type: string
-        enabled:
-          type: boolean
         id:
           format: uuid
           type: string
-        srcEpTranslated:
-          $ref: '#/components/schemas/MpmEndpointObj'
-        srcEpgsMatch:
-          items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
-          type: array
-        srcEpsMatch:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
-        srcNatType:
-          enum:
-          - MATCH
-          - STATIC
-          - HIDE
+        name:
+          type: string
+      type: object
+    IdValue:
+      properties:
+        id:
           type: string
       type: object
   securitySchemes:

@@ -80,6 +80,16 @@ paths:
       - Terminal Zone
 components:
   schemas:
+    FromToZone:
+      properties:
+        fromZoneId:
+          type: string
+        toZoneId:
+          type: string
+      required:
+      - fromZoneId
+      - toZoneId
+      type: object
     ZonePair:
       properties:
         zoneOneId:
@@ -89,11 +99,6 @@ components:
       required:
       - zoneOneId
       - zoneTwoId
-      type: object
-    IdValue:
-      properties:
-        id:
-          type: string
       type: object
     AdjacentZones:
       properties:
@@ -109,22 +114,17 @@ components:
             $ref: '#/components/schemas/IdValue'
           type: array
       type: object
-    FromToZone:
-      properties:
-        fromZoneId:
-          type: string
-        toZoneId:
-          type: string
-      required:
-      - fromZoneId
-      - toZoneId
-      type: object
     TerminalZonePairs:
       properties:
         terminalZonePairs:
           items:
             $ref: '#/components/schemas/FromToZone'
           type: array
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
       type: object
   securitySchemes:
     BearerJWT:

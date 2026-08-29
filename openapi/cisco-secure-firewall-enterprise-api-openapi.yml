@@ -211,13 +211,28 @@ paths:
                 $ref: '#/components/schemas/model.Error'
 components:
   schemas:
-    model.Region:
+    model.ProductInstanceWithMetadata:
       type: object
       properties:
-        description:
+        id:
           type: string
-        name:
+        external_tenant_id:
           type: string
+        provisioning_status:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
+    model.EnterpriseProductInstances:
+      type: object
+      properties:
+        enterpriseName:
+          type: string
+        isLicensed:
+          type: boolean
+        productInstancesInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.MergedProductInstancesInfo'
     model.MergedProductInstancesInfo:
       type: object
       properties:
@@ -235,17 +250,13 @@ components:
           type: string
         isPlatformProduct:
           type: boolean
-    model.EnterpriseProductInstances:
+    model.Region:
       type: object
       properties:
-        enterpriseName:
+        description:
           type: string
-        isLicensed:
-          type: boolean
-        productInstancesInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.MergedProductInstancesInfo'
+        name:
+          type: string
     routes.PlatformBootstrapRequest:
       type: object
       required:
@@ -262,17 +273,6 @@ components:
           type: string
         message:
           type: string
-    model.ProductInstanceWithMetadata:
-      type: object
-      properties:
-        id:
-          type: string
-        external_tenant_id:
-          type: string
-        provisioning_status:
-          type: string
-        region:
-          $ref: '#/components/schemas/model.Region'
     model.RegionalHierarchy:
       type: object
       properties:

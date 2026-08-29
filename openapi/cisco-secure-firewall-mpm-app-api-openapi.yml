@@ -316,31 +316,6 @@ paths:
       - MPM App
 components:
   schemas:
-    ApplicationProtocolEnumObj:
-      properties:
-        applicationProtocolName:
-          type: string
-        validProtocols:
-          items:
-            $ref: '#/components/schemas/ProtocolEnumObj'
-          type: array
-      type: object
-    MpmPolicyMetadataToRules:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        policyId:
-          format: uuid
-          type: string
-        ruleIds:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
     SearchCriteriaValue:
       properties:
         searchCriteria:
@@ -380,6 +355,30 @@ components:
         value:
           type: string
       type: object
+    MpmPolicyMetadataToRules:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        ruleIds:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    ProtocolEnumObj:
+      properties:
+        name:
+          type: string
+        number:
+          format: int32
+          type: integer
+      type: object
     MpmAppsPage:
       properties:
         apps:
@@ -388,6 +387,13 @@ components:
           type: array
         cursor:
           type: string
+      type: object
+    MpmSearchCriteriaResp:
+      properties:
+        searchCriteriaResp:
+          items:
+            $ref: '#/components/schemas/SearchCriteriaValue'
+          type: array
       type: object
     MpmEntityRelations:
       properties:
@@ -408,20 +414,14 @@ components:
             $ref: '#/components/schemas/MpmPolicyMetadataToRules'
           type: array
       type: object
-    MpmSearchCriteriaResp:
+    ApplicationProtocolEnumObj:
       properties:
-        searchCriteriaResp:
-          items:
-            $ref: '#/components/schemas/SearchCriteriaValue'
-          type: array
-      type: object
-    ProtocolEnumObj:
-      properties:
-        name:
+        applicationProtocolName:
           type: string
-        number:
-          format: int32
-          type: integer
+        validProtocols:
+          items:
+            $ref: '#/components/schemas/ProtocolEnumObj'
+          type: array
       type: object
   securitySchemes:
     BearerJWT:

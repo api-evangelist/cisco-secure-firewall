@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Device Groups across 2 of this provider''s published API definitions: cdfmc-openapi.yaml,
-    cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Device Groups across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 5/5
   x-evidence:
@@ -47,6 +43,25 @@ tags:
 - name: Device Groups
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicegroups/devicegrouprecords:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       deprecated: false
       description: '**Get a list of all device groups.**'
@@ -65,8 +80,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/object/devicegroups/devicegrouprecords ( Get all paginated
-                  network objects without offset and limit )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/object/devicegroups/devicegrouprecords ( Get all paginated network objects without offset and limit )'
                 : value:
                     items:
                     - id: devicegroupUUID
@@ -115,8 +129,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : POST /fmc_config/v1/domain/domainUUID/devicegroups/devicegrouprecords ( Test adding of device
-                group to create a new record )'
+              ? 'Example 1 : POST /fmc_config/v1/domain/domainUUID/devicegroups/devicegrouprecords ( Test adding of device group to create a new record )'
               : value:
                   members:
                   - id: deviceUUID
@@ -146,6 +159,7 @@ paths:
           description: Error
       tags:
       - Device Groups
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicegroups/devicegrouprecords/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -165,7 +179,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicegroups/devicegrouprecords/{objectId}:
     delete:
       deprecated: false
       description: '**Delete the specified device group. _Check the response section for applicable examples (if any)._**'
@@ -184,8 +197,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : DELETE /fmc_config/v1/domain/domainUUID/devicegroups/devicegrouprecords/devicegroupUUID ( Test
-                  DELETE of Device Group )'
+                ? 'Example 1 : DELETE /fmc_config/v1/domain/domainUUID/devicegroups/devicegrouprecords/devicegroupUUID ( Test DELETE of Device Group )'
                 : value:
                     id: devicegroupUUID
                     links:
@@ -229,8 +241,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/devicegroups/devicegrouprecords/deviceGroupUUID ( Test
-                  GET of device group )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/domainUUID/devicegroups/devicegrouprecords/deviceGroupUUID ( Test GET of device group )'
                 : value:
                     id: deviceGroupUUID
                     links:
@@ -284,8 +295,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/devicegroups/devicegrouprecords/deviceGroupUUID ( Test PUT
-                of network object to update record )'
+              ? 'Example 1 : PUT /fmc_config/v1/domain/domainUUID/devicegroups/devicegrouprecords/deviceGroupUUID ( Test PUT of network object to update record )'
               : value:
                   id: deviceGroupUUID
                   members:
@@ -316,152 +326,56 @@ paths:
           description: Error
       tags:
       - Device Groups
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
-  parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
-    limit:
-      description: Number of items to return.
-      in: query
-      name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
-    domainUUID:
-      description: Domain UUID
-      in: path
-      name: domainUUID
-      required: true
-      schema:
-        type: string
   schemas:
-    IAdvanced:
+    HealthAlertConfig:
       properties:
-        enableOGS:
+        enabled:
           type: boolean
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    IPolicyModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
         name:
           type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
+        thresholds:
           items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
+            $ref: '#/components/schemas/HealthThreshold'
             type: object
           type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
       type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
+    HealthSetting:
       properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    DialHost:
-      properties:
-        host:
-          type: string
-        port:
+        alertEvaluationInterval:
           format: int32
           type: integer
-      type: object
-    HealthThreshold:
-      properties:
-        type:
+        certFileContent:
           type: string
-        value:
+        certFileName:
+          type: string
+        certFileType:
+          type: string
+        certPassphrase:
+          type: string
+        configType:
+          type: string
+        dataCollectionInterval:
           format: int32
           type: integer
+        dialInHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        dialOutHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        enabledOpenConfig:
+          type: boolean
+        grpcPassword:
+          type: string
+        grpcUsername:
+          type: string
+        readOnly:
+          type: boolean
       type: object
     DeviceGroup:
       description: A model representing a DeviceGroup.
@@ -496,6 +410,147 @@ components:
           description: Version number of the response object.
           type: string
       type: object
+    DialHost:
+      properties:
+        host:
+          type: string
+        port:
+          format: int32
+          type: integer
+      type: object
+    IAdvanced:
+      properties:
+        enableOGS:
+          type: boolean
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IPolicyModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    HealthThreshold:
+      properties:
+        type:
+          type: string
+        value:
+          format: int32
+          type: integer
+      type: object
+    HealthModule:
+      properties:
+        alertConfig:
+          items:
+            $ref: '#/components/schemas/HealthAlertConfig'
+            type: object
+          type: array
+        alertEnabled:
+          type: boolean
+        criticalThreshold:
+          format: int32
+          type: integer
+        customThresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+        enabled:
+          type: boolean
+        moduleId:
+          type: string
+        severity:
+          type: string
+        type:
+          type: string
+        warningThreshold:
+          format: int32
+          type: integer
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
     PagingContainer:
       properties:
         count:
@@ -510,6 +565,18 @@ components:
         pages:
           format: int32
           type: integer
+      type: object
+    DeviceGroupListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/DeviceGroup'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
       type: object
     IMetadata:
       properties:
@@ -573,45 +640,26 @@ components:
           description: Version number of the response object.
           type: string
       type: object
-    HealthModule:
+    ErrorResponse:
       properties:
-        alertConfig:
-          items:
-            $ref: '#/components/schemas/HealthAlertConfig'
-            type: object
-          type: array
-        alertEnabled:
-          type: boolean
-        criticalThreshold:
-          format: int32
-          type: integer
-        customThresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-        enabled:
-          type: boolean
-        moduleId:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
           type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
         severity:
-          type: string
-        type:
-          type: string
-        warningThreshold:
-          format: int32
-          type: integer
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
           type: string
       type: object
     IBaseDevice:
@@ -660,94 +708,37 @@ components:
         version:
           type: string
       type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    HealthAlertConfig:
-      properties:
-        enabled:
-          type: boolean
-        name:
-          type: string
-        thresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-      type: object
-    DeviceGroupListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/DeviceGroup'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    HealthSetting:
-      properties:
-        alertEvaluationInterval:
-          format: int32
-          type: integer
-        certFileContent:
-          type: string
-        certFileName:
-          type: string
-        certFileType:
-          type: string
-        certPassphrase:
-          type: string
-        configType:
-          type: string
-        dataCollectionInterval:
-          format: int32
-          type: integer
-        dialInHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        dialOutHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        enabledOpenConfig:
-          type: boolean
-        grpcPassword:
-          type: string
-        grpcUsername:
-          type: string
-        readOnly:
-          type: boolean
-      type: object
+  parameters:
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

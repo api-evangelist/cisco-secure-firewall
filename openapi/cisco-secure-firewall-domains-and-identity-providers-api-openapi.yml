@@ -237,74 +237,6 @@ paths:
           $ref: '#/components/responses/GeneralError'
 components:
   schemas:
-    ExternalIdpGroupMappingListResponse:
-      type: object
-      properties:
-        idpName:
-          type: string
-        idpId:
-          type: string
-          format: uuid
-        enterpriseId:
-          type: string
-          format: uuid
-        groupMappings:
-          type: array
-          items:
-            type: object
-            required:
-            - idpGroupName
-            - rbacGroupId
-            properties:
-              idpGroupName:
-                type: string
-              rbacGroupId:
-                type: string
-                format: uuid
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-    ExternalIdpGroupMappingInput:
-      type: object
-      description: Request body for authorizedExternalIdps endpoint
-      properties:
-        idpId:
-          type: string
-          format: uuid
-    Domain:
-      type: object
-      required:
-      - domain
-      - status
-      properties:
-        domain:
-          $ref: '#/components/schemas/DomainName'
-        status:
-          $ref: '#/components/schemas/DomainStatus'
-    DomainStatus:
-      type: string
-      enum:
-      - pending
-      - verified
-    ExternalIdpGroupMappingCreateResponse:
-      type: object
-      properties:
-        idpId:
-          type: string
-          format: uuid
-        enterpriseId:
-          type: string
-          format: uuid
-        samlIdpIssuer:
-          type: string
     IDPGroupMappingInput:
       type: object
       description: Represent request body for idp group operation
@@ -330,6 +262,30 @@ components:
               rbacGroupId:
                 type: string
                 format: uuid
+    ExternalIdpGroupMappingListResponse:
+      type: object
+      properties:
+        idpName:
+          type: string
+        idpId:
+          type: string
+          format: uuid
+        enterpriseId:
+          type: string
+          format: uuid
+        groupMappings:
+          type: array
+          items:
+            type: object
+            required:
+            - idpGroupName
+            - rbacGroupId
+            properties:
+              idpGroupName:
+                type: string
+              rbacGroupId:
+                type: string
+                format: uuid
     UpdatedIDPGroupMapping:
       type: object
       properties:
@@ -352,6 +308,17 @@ components:
               rbacGroupId:
                 type: string
                 format: uuid
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
     PendingDomain:
       properties:
         createdAt:
@@ -376,13 +343,46 @@ components:
       - entityID
       - domain
       type: object
+    ExternalIdpGroupMappingCreateResponse:
+      type: object
+      properties:
+        idpId:
+          type: string
+          format: uuid
+        enterpriseId:
+          type: string
+          format: uuid
+        samlIdpIssuer:
+          type: string
+    DomainStatus:
+      type: string
+      enum:
+      - pending
+      - verified
     DomainName:
       type: string
       pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
       example: cisco.com
+    ExternalIdpGroupMappingInput:
+      type: object
+      description: Request body for authorizedExternalIdps endpoint
+      properties:
+        idpId:
+          type: string
+          format: uuid
+    Domain:
+      type: object
+      required:
+      - domain
+      - status
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainName'
+        status:
+          $ref: '#/components/schemas/DomainStatus'
   responses:
-    ValidationError:
-      description: The request was invalid
+    NotFoundError:
+      description: Not Found
       headers:
         Date:
           $ref: '#/components/headers/Date'
@@ -390,8 +390,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFoundError:
-      description: Not Found
+    ValidationError:
+      description: The request was invalid
       headers:
         Date:
           $ref: '#/components/headers/Date'
@@ -409,14 +409,14 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   headers:
-    Location:
-      schema:
-        type: string
-        format: uri
     Date:
       schema:
         type: string
         pattern: ^.*$
+    Location:
+      schema:
+        type: string
+        format: uri
   securitySchemes:
     OpenID:
       type: openIdConnect

@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Security Cloud Control TAC
     email: cdo.tac@cisco.com
-  description: 'Operations tagged Audit Logs across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
-    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Audit Logs across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml, scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
-      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
     operation_coverage: 1/1
   x-evidence:
@@ -47,6 +43,25 @@ tags:
 - name: Audit Logs
 paths:
   /v1/auditlogs:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       description: Get a list of Audit Logs.
       operationId: getAuditLogs
@@ -59,26 +74,20 @@ paths:
           maximum: 200
           minimum: 0
           type: string
-      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
         in: query
         name: offset
         required: false
         schema:
           minimum: 0
           type: string
-      - description: The searchText parameter serves as a flexible search option that allows for text-based filtering across
-          the username fields of the Audit Log object. This parameter can be used independently to search for entries containing
-          the specified text, or in combination with the q query parameter for more targeted results. When used with q, the
-          search conditions of searchText are logically ANDed with the q parameter's criteria, ensuring that the returned
-          entries satisfy both sets of conditions.
+      - description: The searchText parameter serves as a flexible search option that allows for text-based filtering across the username fields of the Audit Log object. This parameter can be used independently to search for entries containing the specified text, or in combination with the q query parameter for more targeted results. When used with q, the search conditions of searchText are logically ANDed with the q parameter's criteria, ensuring that the returned entries satisfy both sets of conditions.
         in: query
         name: searchText
         required: false
         schema:
           type: string
-      - description: The time range for which to retrieve Audit Logs. This parameter cannot be used in conjunction with a
-          query on the eventTime field.
+      - description: The time range for which to retrieve Audit Logs. This parameter cannot be used in conjunction with a query on the eventTime field.
         in: query
         name: timeRange
         required: false
@@ -131,61 +140,62 @@ paths:
       summary: Get Audit Logs
       tags:
       - Audit Logs
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   responses:
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
     http400BadRequest:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CommonApiError'
       description: Invalid input provided. Check the response for details.
-    http401Unauthorised:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
     http405MethodNotAllowed:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CommonApiError'
       description: Method not allowed.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
   schemas:
-    AuthenticationError:
+    CommonApiError:
       properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
           type: string
-        errorDescription:
+        errorMsg:
           description: A human-readable error description in English.
-          example: Your token is invalid
+          example: sample error
           type: string
     AuditLog:
       properties:
@@ -230,35 +240,15 @@ components:
       required:
       - uid
       type: object
-    CommonApiError:
+    AuthenticationError:
       properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
+        error:
           description: A human-readable error description in English.
-          example: sample error
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
           type: string
     AuditLogPage:
       properties:
@@ -278,8 +268,7 @@ components:
           format: int32
           type: integer
         offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
           example: 0
           format: int32
           type: integer

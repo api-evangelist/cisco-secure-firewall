@@ -148,18 +148,6 @@ paths:
       - Zone Tag
 components:
   schemas:
-    TopologyTagsApi:
-      properties:
-        tags:
-          items:
-            $ref: '#/components/schemas/TopologyTag'
-          type: array
-      type: object
-    RequestResponse:
-      properties:
-        request:
-          $ref: '#/components/schemas/ApiRequest'
-      type: object
     TopologyTagsRequest:
       properties:
         tags:
@@ -169,6 +157,11 @@ components:
           items:
             $ref: '#/components/schemas/StringValue'
           type: array
+      type: object
+    StringValue:
+      properties:
+        value:
+          type: string
       type: object
     TopologyTag:
       properties:
@@ -183,16 +176,23 @@ components:
       - tagKey
       - tagValue
       type: object
+    TopologyTagsApi:
+      properties:
+        tags:
+          items:
+            $ref: '#/components/schemas/TopologyTag'
+          type: array
+      type: object
     ApiRequest:
       properties:
         id:
           example: 03502bc3-c140-4951-b467-bd17312a9b0b
           type: string
       type: object
-    StringValue:
+    RequestResponse:
       properties:
-        value:
-          type: string
+        request:
+          $ref: '#/components/schemas/ApiRequest'
       type: object
   securitySchemes:
     BearerJWT:

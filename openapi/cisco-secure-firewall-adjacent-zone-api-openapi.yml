@@ -176,43 +176,6 @@ paths:
       - Adjacent Zone
 components:
   schemas:
-    ZonePair:
-      properties:
-        zoneOneId:
-          type: string
-        zoneTwoId:
-          type: string
-      required:
-      - zoneOneId
-      - zoneTwoId
-      type: object
-    AdjacentZones:
-      properties:
-        adjacentZones:
-          items:
-            $ref: '#/components/schemas/ZonePair'
-          type: array
-      type: object
-    AdjacentZoneToGatewaySet:
-      properties:
-        gatewaySetId:
-          type: string
-        zoneOneId:
-          type: string
-        zoneTwoId:
-          type: string
-      required:
-      - gatewaySetId
-      - zoneOneId
-      - zoneTwoId
-      type: object
-    AdjacentZonesToGatewaySets:
-      properties:
-        adjacentZonesToGatewaySets:
-          items:
-            $ref: '#/components/schemas/AdjacentZoneToGatewaySet'
-          type: array
-      type: object
     ReqIdAndReqSystem:
       properties:
         id:
@@ -235,17 +198,54 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
+    AdjacentZoneToGatewaySet:
+      properties:
+        gatewaySetId:
+          type: string
+        zoneOneId:
+          type: string
+        zoneTwoId:
+          type: string
+      required:
+      - gatewaySetId
+      - zoneOneId
+      - zoneTwoId
+      type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
+      type: object
+    ZonePair:
+      properties:
+        zoneOneId:
+          type: string
+        zoneTwoId:
+          type: string
+      required:
+      - zoneOneId
+      - zoneTwoId
+      type: object
+    AdjacentZones:
+      properties:
+        adjacentZones:
+          items:
+            $ref: '#/components/schemas/ZonePair'
+          type: array
+      type: object
+    AdjacentZonesToGatewaySets:
+      properties:
+        adjacentZonesToGatewaySets:
+          items:
+            $ref: '#/components/schemas/AdjacentZoneToGatewaySet'
+          type: array
+      type: object
     TopologyRequestsResponse:
       properties:
         requests:
           items:
             $ref: '#/components/schemas/ReqIdAndReqSystem'
           type: array
-      type: object
-    TopologyRequestResponse:
-      properties:
-        request:
-          $ref: '#/components/schemas/ReqIdAndReqSystem'
       type: object
   securitySchemes:
     BearerJWT:

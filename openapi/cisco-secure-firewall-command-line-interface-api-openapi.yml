@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Security Cloud Control TAC
     email: cdo.tac@cisco.com
-  description: 'Operations tagged Command Line Interface across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
-    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Command Line Interface across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml, scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
-      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
     operation_coverage: 9/9
   x-evidence:
@@ -47,9 +43,27 @@ tags:
 - name: Command Line Interface
 paths:
   /v1/cli/macros:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
-      description: Get a list of CLI macros. A CLI macro is a fully-formed CLI command ready to use, or a template of a CLI
-        command you can modify before you run it.
+      description: Get a list of CLI macros. A CLI macro is a fully-formed CLI command ready to use, or a template of a CLI command you can modify before you run it.
       operationId: getCliMacros
       parameters:
       - description: The number of results to retrieve.
@@ -60,8 +74,7 @@ paths:
           maximum: 200
           minimum: 0
           type: string
-      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
         in: query
         name: offset
         required: false
@@ -111,8 +124,7 @@ paths:
       tags:
       - Command Line Interface
     post:
-      description: Create a CLI macro, which is a fully-formed CLI command ready to use or a template of a CLI command you
-        can modify before you run it.
+      description: Create a CLI macro, which is a fully-formed CLI command ready to use or a template of a CLI command you can modify before you run it.
       operationId: createCliMacro
       requestBody:
         content:
@@ -146,6 +158,7 @@ paths:
       summary: Create CLI Macro
       tags:
       - Command Line Interface
+  /v1/cli/macros/{macroUid}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -165,7 +178,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cli/macros/{macroUid}:
     delete:
       description: Delete a Security Cloud Control CLI Macro by UID.
       operationId: deleteCliMacro
@@ -200,9 +212,7 @@ paths:
       tags:
       - Command Line Interface
     get:
-      description: 'Get a Security Cloud Control CLI Macro by UID. Note: This operation only returns the SCC CLI Macro. For
-        executing the SCC CLI Macro, refer to the [Execute CLI Macro](https://developer.cisco.com/docs/cisco-security-cloud-control/execute-cli-macro-command/)
-        command.'
+      description: 'Get a Security Cloud Control CLI Macro by UID. Note: This operation only returns the SCC CLI Macro. For executing the SCC CLI Macro, refer to the [Execute CLI Macro](https://developer.cisco.com/docs/cisco-security-cloud-control/execute-cli-macro-command/) command.'
       operationId: getCliMacro
       parameters:
       - description: The unique identifier, represented as a UUID, of the CDO CLI macro in Security Cloud Control.
@@ -285,6 +295,7 @@ paths:
       summary: Modify CLI Macro
       tags:
       - Command Line Interface
+  /v1/cli/results:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -304,10 +315,8 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cli/results:
     get:
-      description: Get a list of results from command lines executed using the [CDO Command Line Interface (CLI)](https://docs.defenseorchestrator.com/c-using-the-cdo-command-line-interface.html).
-        These commands can be executed using either the Security Cloud Control UI or the API.
+      description: Get a list of results from command lines executed using the [CDO Command Line Interface (CLI)](https://docs.defenseorchestrator.com/c-using-the-cdo-command-line-interface.html). These commands can be executed using either the Security Cloud Control UI or the API.
       operationId: getCliResults
       parameters:
       - description: The number of results to retrieve.
@@ -318,8 +327,7 @@ paths:
           maximum: 200
           minimum: 0
           type: string
-      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
         in: query
         name: offset
         required: false
@@ -368,6 +376,7 @@ paths:
       summary: Get CLI Results
       tags:
       - Command Line Interface
+  /v1/cli/results/{cliResultUid}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -387,7 +396,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cli/results/{cliResultUid}:
     get:
       description: Get the result of a command executed using the Security Cloud Control Command Line Interface (CLI) by UID.
       operationId: getCliResult
@@ -427,6 +435,7 @@ paths:
       summary: Get CLI Result
       tags:
       - Command Line Interface
+  /v1/inventory/devices/asas/cli/execute:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -446,10 +455,8 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/inventory/devices/asas/cli/execute:
     post:
-      description: This is an asynchronous operation to execute CLI commands on an ASA device in the Security Cloud Control
-        tenant.
+      description: This is an asynchronous operation to execute CLI commands on an ASA device in the Security Cloud Control tenant.
       operationId: executeCliCommand
       requestBody:
         content:
@@ -462,8 +469,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CdoTransaction'
-          description: Security Cloud Control Transaction object that can be used to track the progress of the execute CLI
-            operation
+          description: Security Cloud Control Transaction object that can be used to track the progress of the execute CLI operation
         '400':
           $ref: '#/components/responses/http400BadRequest'
         '401':
@@ -481,6 +487,7 @@ paths:
       summary: Execute CLI Command
       tags:
       - Command Line Interface
+  /v1/inventory/devices/asas/cli/executeMacro:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -500,10 +507,8 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/inventory/devices/asas/cli/executeMacro:
     post:
-      description: This is an asynchronous operation to execute an CLI macro on an ASA device in the Security Cloud Control
-        tenant.
+      description: This is an asynchronous operation to execute an CLI macro on an ASA device in the Security Cloud Control tenant.
       operationId: executeCliMacro
       requestBody:
         content:
@@ -516,8 +521,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CdoTransaction'
-          description: Security Cloud Control Transaction object that can be used to track the progress of the execute CLI
-            operation
+          description: Security Cloud Control Transaction object that can be used to track the progress of the execute CLI operation
         '400':
           $ref: '#/components/responses/http400BadRequest'
         '401':
@@ -535,86 +539,80 @@ paths:
       summary: Execute CLI Macro Command
       tags:
       - Command Line Interface
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
-  responses:
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
-    http400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
-    http405MethodNotAllowed:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Method not allowed.
-    http401Unauthorised:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
   schemas:
-    AuthenticationError:
+    CliMacroPatchInput:
       properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
+        description:
+          description: A detailed description of what the CLI Macro does.
+          example: This macro defines a network object in a firewall configuration.
           type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
+        name:
+          description: A human-readable name for the CLI Macro.
+          example: My Network Object
           type: string
-    CliCommandInput:
+        script:
+          description: The script content of the CLI Macro that will be executed on the device.
+          example: object network obj-192.168.1.0
+          type: string
+      type: object
+    CliMacroExecuteInput:
       properties:
         deviceUids:
-          description: List of UIDs of the devices to execute the CLI script for.
+          description: List of UIDs of the devices to execute the CLI macro for.
           example:
           - 7131daad-e813-4b8f-8f42-be1e241e8cdb
           items:
             type: string
           minItems: 1
           type: array
+        macroUid:
+          description: The unique identifier, represented as a UUID, of the CLI macro.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        parameters:
+          additionalProperties:
+            type: string
+          description: Parameters provided for the CLI macro execution as key-value pairs.
+          example:
+            USER: admin
+          type: object
+      required:
+      - deviceUids
+      type: object
+    CdoCliResult:
+      properties:
+        deviceUid:
+          description: The unique identifier, represented as a UUID, of the device.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        errorMsg:
+          description: The error message, if any.
+          example: 'Error: Connection timed out'
+          type: string
+        result:
+          description: The result of the CLI execution.
+          example: 5
+          type: string
         script:
           description: The script executed to generate the CLI result.
           example: show xlate detail
-          minLength: 1
+          type: string
+        startTime:
+          description: The time (in UTC) at which the user run the CLI execution, represented using the RFC-3339 standard.
+          example: 2023-12-13 05:15:44+00:00
+          format: date-time
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the CLI execution result.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
           type: string
       required:
-      - deviceUids
-      - script
+      - deviceUid
+      - uid
       type: object
     CdoCliResultPage:
       properties:
@@ -634,12 +632,88 @@ components:
           format: int32
           type: integer
         offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
           example: 0
           format: int32
           type: integer
       type: object
+    CdoCliMacroPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/CdoCliMacro'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
+    EntityType:
+      enum:
+      - ASA
+      - CDFMC_MANAGED_FTD
+      - ONPREM_FMC_MANAGED_FTD
+      - ONPREM_FMC_MANAGED_FIREPOWER
+      - ONPREM_FMC_NGIPS
+      - FDM_MANAGED_FTD
+      - IOS
+      - ISR
+      - SSH_DEVICE
+      - GENERIC_DEVICE
+      - MERAKI_MX
+      - CLOUD_DNG
+      - SFCN
+      - SFCN_DNG
+      - SFCN_STS
+      - ONPREM_FMC
+      - CDFMC
+      - AWS_VPC
+      - AZURE_VNET
+      - DUO_ADMIN_PANEL
+      - UMBRELLA_ORGANIZATION
+      type: string
     CdoTransaction:
       properties:
         cdoTransactionStatus:
@@ -652,8 +726,7 @@ components:
           example: IN_PROGRESS
           type: string
         entityUid:
-          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a
-            transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
+          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
           example: f5f660d4-4b81-4374-877d-fbc4bee894e2
           format: uuid
           type: string
@@ -752,31 +825,57 @@ components:
           format: uuid
           type: string
       type: object
-    CliMacroExecuteInput:
+    CliCommandInput:
       properties:
         deviceUids:
-          description: List of UIDs of the devices to execute the CLI macro for.
+          description: List of UIDs of the devices to execute the CLI script for.
           example:
           - 7131daad-e813-4b8f-8f42-be1e241e8cdb
           items:
             type: string
           minItems: 1
           type: array
-        macroUid:
-          description: The unique identifier, represented as a UUID, of the CLI macro.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
+        script:
+          description: The script executed to generate the CLI result.
+          example: show xlate detail
+          minLength: 1
           type: string
-        parameters:
-          additionalProperties:
-            type: string
-          description: Parameters provided for the CLI macro execution as key-value pairs.
-          example:
-            USER: admin
-          type: object
       required:
       - deviceUids
+      - script
       type: object
+    CliMacroCreateInput:
+      properties:
+        description:
+          description: A detailed description of what the CLI Macro does.
+          example: This macro defines a network object in a firewall configuration.
+          type: string
+        deviceType:
+          description: The type of device the CLI Macro is intended for.
+          enum:
+          - ASA
+          - IOS
+          example: IOS
+          type: string
+        name:
+          description: A human-readable name for the CLI Macro.
+          example: My Network Object
+          type: string
+        script:
+          description: The script content of the CLI Macro that will be executed on the device.
+          example: object network obj-192.168.1.0
+          type: string
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
     CdoCliMacro:
       properties:
         deviceType:
@@ -812,154 +911,37 @@ components:
       - deviceType
       - uid
       type: object
-    CommonApiError:
-      properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
-          description: A human-readable error description in English.
-          example: sample error
-          type: string
-    EntityType:
-      enum:
-      - ASA
-      - CDFMC_MANAGED_FTD
-      - ONPREM_FMC_MANAGED_FTD
-      - ONPREM_FMC_MANAGED_FIREPOWER
-      - ONPREM_FMC_NGIPS
-      - FDM_MANAGED_FTD
-      - IOS
-      - ISR
-      - SSH_DEVICE
-      - GENERIC_DEVICE
-      - MERAKI_MX
-      - CLOUD_DNG
-      - SFCN
-      - SFCN_DNG
-      - SFCN_STS
-      - ONPREM_FMC
-      - CDFMC
-      - AWS_VPC
-      - AZURE_VNET
-      - DUO_ADMIN_PANEL
-      - UMBRELLA_ORGANIZATION
-      type: string
-    CliMacroCreateInput:
-      properties:
-        description:
-          description: A detailed description of what the CLI Macro does.
-          example: This macro defines a network object in a firewall configuration.
-          type: string
-        deviceType:
-          description: The type of device the CLI Macro is intended for.
-          enum:
-          - ASA
-          - IOS
-          example: IOS
-          type: string
-        name:
-          description: A human-readable name for the CLI Macro.
-          example: My Network Object
-          type: string
-        script:
-          description: The script content of the CLI Macro that will be executed on the device.
-          example: object network obj-192.168.1.0
-          type: string
-      type: object
-    CdoCliResult:
-      properties:
-        deviceUid:
-          description: The unique identifier, represented as a UUID, of the device.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-        errorMsg:
-          description: The error message, if any.
-          example: 'Error: Connection timed out'
-          type: string
-        result:
-          description: The result of the CLI execution.
-          example: 5
-          type: string
-        script:
-          description: The script executed to generate the CLI result.
-          example: show xlate detail
-          type: string
-        startTime:
-          description: The time (in UTC) at which the user run the CLI execution, represented using the RFC-3339 standard.
-          example: 2023-12-13 05:15:44+00:00
-          format: date-time
-          type: string
-        uid:
-          description: The unique identifier, represented as a UUID, of the CLI execution result.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - deviceUid
-      - uid
-      type: object
-    CliMacroPatchInput:
-      properties:
-        description:
-          description: A detailed description of what the CLI Macro does.
-          example: This macro defines a network object in a firewall configuration.
-          type: string
-        name:
-          description: A human-readable name for the CLI Macro.
-          example: My Network Object
-          type: string
-        script:
-          description: The script content of the CLI Macro that will be executed on the device.
-          example: object network obj-192.168.1.0
-          type: string
-      type: object
-    CdoCliMacroPage:
-      properties:
-        count:
-          description: The total number of results available.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/CdoCliMacro'
-          type: array
-        limit:
-          description: The number of results retrieved.
-          example: 50
-          format: int32
-          type: integer
-        offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
-          format: int32
-          type: integer
-      type: object
+  responses:
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
+    http405MethodNotAllowed:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Method not allowed.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

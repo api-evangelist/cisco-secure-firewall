@@ -217,6 +217,13 @@ paths:
       - Zone
 components:
   schemas:
+    Zones:
+      properties:
+        zones:
+          items:
+            $ref: '#/components/schemas/Zone'
+          type: array
+      type: object
     ZoneIds:
       properties:
         zones:
@@ -248,18 +255,6 @@ components:
       required:
       - id
       type: object
-    IdValue:
-      properties:
-        id:
-          type: string
-      type: object
-    Zones:
-      properties:
-        zones:
-          items:
-            $ref: '#/components/schemas/Zone'
-          type: array
-      type: object
     ZoneIdPage:
       properties:
         cursor:
@@ -275,6 +270,11 @@ components:
           type: string
       required:
       - id
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
       type: object
   securitySchemes:
     BearerJWT:

@@ -351,6 +351,35 @@ paths:
           $ref: '#/components/responses/NotFoundError'
 components:
   schemas:
+    EnterpriseSupportAccessStatusResponse:
+      type: object
+      properties:
+        supportAccessAllowed:
+          type: boolean
+          default: false
+        supportAccessUntil:
+          type: string
+          format: date-time
+          default: '2024-07-10T16:04:03Z'
+    IdpOutputs:
+      type: object
+      required:
+      - acsUrl
+      - audienceUrl
+      - cert
+      - metadataUrl
+      - isEnabled
+      properties:
+        acsUrl:
+          type: string
+        audienceUrl:
+          type: string
+        cert:
+          type: string
+        metadataUrl:
+          type: string
+        isEnabled:
+          type: boolean
     EnterpriseSupportAccessStatusRequest:
       type: object
       properties:
@@ -358,6 +387,78 @@ components:
           type: string
           format: date-time
           default: '2024-07-10T16:04:03Z'
+    Domain:
+      type: object
+      required:
+      - domain
+      - status
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainName'
+        status:
+          $ref: '#/components/schemas/DomainStatus'
+    UpdateEnterpriseRequestBody:
+      type: object
+      description: Represent request body for updating enterprise name, displayName and region, required to have at least one param
+      properties:
+        name:
+          type: string
+        displayName:
+          type: string
+        region:
+          type: object
+          properties:
+            label:
+              type: string
+            value:
+              type: string
+        country:
+          type: object
+          properties:
+            label:
+              type: string
+            value:
+              type: string
+    DetailedEnterprise:
+      type: object
+      description: An extension of enterprise that contains more sensitive metadata that only an admin would be permitted to see.
+      allOf:
+      - $ref: '#/components/schemas/Enterprise'
+      - type: object
+        required:
+        - id
+        - name
+        properties:
+          id:
+            type: string
+            format: uuid
+          name:
+            type: string
+          domains:
+            type: array
+            items:
+              $ref: '#/components/schemas/Domain'
+          idps:
+            type: array
+            items:
+              $ref: '#/components/schemas/Idp'
+          region:
+            type: object
+            properties:
+              label:
+                type: string
+              value:
+                type: string
+          country:
+            type: object
+            properties:
+              label:
+                type: string
+              value:
+                type: string
+          createdAt:
+            format: date-time
+            type: string
     Error:
       type: object
       required:
@@ -412,75 +513,39 @@ components:
           items:
             type: string
             format: uuid
-    DetailedEnterprise:
-      type: object
-      description: An extension of enterprise that contains more sensitive metadata that only an admin would be permitted to see.
-      allOf:
-      - $ref: '#/components/schemas/Enterprise'
-      - type: object
-        required:
-        - id
-        - name
-        properties:
-          id:
-            type: string
-            format: uuid
-          name:
-            type: string
-          domains:
-            type: array
-            items:
-              $ref: '#/components/schemas/Domain'
-          idps:
-            type: array
-            items:
-              $ref: '#/components/schemas/Idp'
-          region:
-            type: object
-            properties:
-              label:
-                type: string
-              value:
-                type: string
-          country:
-            type: object
-            properties:
-              label:
-                type: string
-              value:
-                type: string
-          createdAt:
-            format: date-time
-            type: string
-    IdpOutputs:
+    IdpInputs:
       type: object
       required:
-      - acsUrl
-      - audienceUrl
-      - cert
-      - metadataUrl
-      - isEnabled
+      - idpName
+      - idpType
+      - requireMfa
+      - domain
       properties:
+        idpName:
+          type: string
+        idpType:
+          type: string
+        requireMfa:
+          type: boolean
+        domain:
+          $ref: '#/components/schemas/DomainName'
+        metadataFile:
+          type: string
         acsUrl:
           type: string
         audienceUrl:
           type: string
         cert:
           type: string
-        metadataUrl:
-          type: string
-        isEnabled:
-          type: boolean
-    EnterpriseSupportAccessStatusResponse:
-      type: object
-      properties:
-        supportAccessAllowed:
-          type: boolean
-          default: false
-        supportAccessUntil:
-          type: string
-          format: date-time
-          default: '2024-07-10T16:04:03Z'
+    DomainStatus:
+      type: string
+      enum:
+      - pending
+      - verified
+    DomainName:
+      type: string
+      pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
+      example: cisco.com
     UserEnterprise:
       type: object
       description: Represents an enterprise and the requesting users role in it
@@ -527,71 +592,6 @@ components:
             format: uuid
         isManager:
           type: boolean
-    UpdateEnterpriseRequestBody:
-      type: object
-      description: Represent request body for updating enterprise name, displayName and region, required to have at least one param
-      properties:
-        name:
-          type: string
-        displayName:
-          type: string
-        region:
-          type: object
-          properties:
-            label:
-              type: string
-            value:
-              type: string
-        country:
-          type: object
-          properties:
-            label:
-              type: string
-            value:
-              type: string
-    Domain:
-      type: object
-      required:
-      - domain
-      - status
-      properties:
-        domain:
-          $ref: '#/components/schemas/DomainName'
-        status:
-          $ref: '#/components/schemas/DomainStatus'
-    DomainStatus:
-      type: string
-      enum:
-      - pending
-      - verified
-    IdpInputs:
-      type: object
-      required:
-      - idpName
-      - idpType
-      - requireMfa
-      - domain
-      properties:
-        idpName:
-          type: string
-        idpType:
-          type: string
-        requireMfa:
-          type: boolean
-        domain:
-          $ref: '#/components/schemas/DomainName'
-        metadataFile:
-          type: string
-        acsUrl:
-          type: string
-        audienceUrl:
-          type: string
-        cert:
-          type: string
-    DomainName:
-      type: string
-      pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
-      example: cisco.com
     Idp:
       type: object
       required:
@@ -635,14 +635,14 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   headers:
-    Location:
-      schema:
-        type: string
-        format: uri
     Date:
       schema:
         type: string
         pattern: ^.*$
+    Location:
+      schema:
+        type: string
+        format: uri
   securitySchemes:
     OpenID:
       type: openIdConnect

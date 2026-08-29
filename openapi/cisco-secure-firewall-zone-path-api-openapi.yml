@@ -229,6 +229,19 @@ paths:
       - Zone Path
 components:
   schemas:
+    ZonePath:
+      properties:
+        nodes:
+          items:
+            $ref: '#/components/schemas/ZonePathNode'
+          type: array
+      type: object
+    ZonePathId:
+      properties:
+        id:
+          format: uuid
+          type: string
+      type: object
     CreateZonePathApiResponse:
       properties:
         gatewaySetPushRequests:
@@ -236,40 +249,6 @@ components:
             $ref: '#/components/schemas/ReqIdAndReqSystem'
           type: array
         zonePathId:
-          format: uuid
-          type: string
-      type: object
-    ZonePathRequest:
-      properties:
-        zonePath:
-          items:
-            $ref: '#/components/schemas/ZoneId'
-          type: array
-      type: object
-    ZonePathsApiResponse:
-      properties:
-        zonePaths:
-          items:
-            $ref: '#/components/schemas/ZonePathId'
-          type: array
-      type: object
-    DeleteZonePathApiResponse:
-      properties:
-        gatewaySetPushRequests:
-          items:
-            $ref: '#/components/schemas/ReqIdAndReqSystem'
-          type: array
-      type: object
-    ZonePaths:
-      properties:
-        zonePaths:
-          items:
-            $ref: '#/components/schemas/ZonePath'
-          type: array
-      type: object
-    ZonePathId:
-      properties:
-        id:
           format: uuid
           type: string
       type: object
@@ -295,11 +274,6 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
-    ZoneId:
-      properties:
-        zone:
-          type: string
-      type: object
     ZonePathNode:
       properties:
         ids:
@@ -313,11 +287,37 @@ components:
           - DEVICE
           type: string
       type: object
-    ZonePath:
+    ZonePathRequest:
       properties:
-        nodes:
+        zonePath:
           items:
-            $ref: '#/components/schemas/ZonePathNode'
+            $ref: '#/components/schemas/ZoneId'
+          type: array
+      type: object
+    ZonePathsApiResponse:
+      properties:
+        zonePaths:
+          items:
+            $ref: '#/components/schemas/ZonePathId'
+          type: array
+      type: object
+    ZoneId:
+      properties:
+        zone:
+          type: string
+      type: object
+    DeleteZonePathApiResponse:
+      properties:
+        gatewaySetPushRequests:
+          items:
+            $ref: '#/components/schemas/ReqIdAndReqSystem'
+          type: array
+      type: object
+    ZonePaths:
+      properties:
+        zonePaths:
+          items:
+            $ref: '#/components/schemas/ZonePath'
           type: array
       type: object
   securitySchemes:

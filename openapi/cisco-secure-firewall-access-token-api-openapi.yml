@@ -55,14 +55,23 @@ paths:
       - Access Token
 components:
   schemas:
-    RefreshTokenResponse:
+    RefreshTokenFormRequest:
       properties:
-        accessToken:
-          description: The newly generated access token.
+        apiKeyId:
+          description: The ID of the API key associated with the refresh token.
+          type: string
+        grantType:
+          description: The type of grant, which must be 'refresh_token'.
+          enum:
+          - refresh_token
           type: string
         refreshToken:
-          description: The newly generated refresh token.
+          description: The refresh token to be used for generating a new access token.
           type: string
+      required:
+      - grantType
+      - refreshToken
+      - apiKeyId
       type: object
     ErrorResponse:
       properties:
@@ -82,23 +91,14 @@ components:
       - message
       - timestamp
       type: object
-    RefreshTokenFormRequest:
+    RefreshTokenResponse:
       properties:
-        apiKeyId:
-          description: The ID of the API key associated with the refresh token.
-          type: string
-        grantType:
-          description: The type of grant, which must be 'refresh_token'.
-          enum:
-          - refresh_token
+        accessToken:
+          description: The newly generated access token.
           type: string
         refreshToken:
-          description: The refresh token to be used for generating a new access token.
+          description: The newly generated refresh token.
           type: string
-      required:
-      - grantType
-      - refreshToken
-      - apiKeyId
       type: object
   securitySchemes:
     bearerAuth:

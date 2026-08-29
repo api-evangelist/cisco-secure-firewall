@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Security Cloud Control TAC
     email: cdo.tac@cisco.com
-  description: 'Operations tagged Remote Access Monitoring across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
-    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Remote Access Monitoring across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml, scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
-      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
     operation_coverage: 7/7
   x-evidence:
@@ -47,6 +43,25 @@ tags:
 - name: Remote Access Monitoring
 paths:
   /v1/mfaevents:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       description: Get a list of MFA events.
       operationId: getMfaEvents
@@ -59,8 +74,7 @@ paths:
           maximum: 200
           minimum: 0
           type: string
-      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
         in: query
         name: offset
         required: false
@@ -109,6 +123,7 @@ paths:
       summary: Get MFA Events
       tags:
       - Remote Access Monitoring
+  /v1/mfaevents/{mfaEventUid}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -128,7 +143,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/mfaevents/{mfaEventUid}:
     get:
       description: Get a MFA event by UID in the Security Cloud Control tenant.
       operationId: getMfaEvent
@@ -168,6 +182,7 @@ paths:
       summary: Get MFA Event
       tags:
       - Remote Access Monitoring
+  /v1/vpnsessions:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -187,7 +202,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/vpnsessions:
     get:
       description: Get a list of RA VPN sessions.
       operationId: getRaVpnSessions
@@ -200,8 +214,7 @@ paths:
           maximum: 200
           minimum: 0
           type: string
-      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
         in: query
         name: offset
         required: false
@@ -250,6 +263,7 @@ paths:
       summary: Get RA VPN Sessions
       tags:
       - Remote Access Monitoring
+  /v1/vpnsessions/{deviceUid}/terminate:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -269,10 +283,8 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/vpnsessions/{deviceUid}/terminate:
     post:
-      description: This is an asynchronous operation to terminate all RA VPN sessions on a device in the Security Cloud Control
-        tenant. This operation returns a link to a transaction object that can be used to monitor the progress of the operation.
+      description: This is an asynchronous operation to terminate all RA VPN sessions on a device in the Security Cloud Control tenant. This operation returns a link to a transaction object that can be used to monitor the progress of the operation.
       operationId: terminateRaVpnSessionsByDevice
       parameters:
       - in: path
@@ -287,8 +299,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CdoTransaction'
-          description: Security Cloud Control Transaction object that can be used to track the progress of the termination
-            operation
+          description: Security Cloud Control Transaction object that can be used to track the progress of the termination operation
         '400':
           $ref: '#/components/responses/http400BadRequest'
         '401':
@@ -308,6 +319,7 @@ paths:
       summary: Terminate RA VPN Sessions
       tags:
       - Remote Access Monitoring
+  /v1/vpnsessions/{deviceUid}/terminate/{userName}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -327,11 +339,8 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/vpnsessions/{deviceUid}/terminate/{userName}:
     post:
-      description: This is an asynchronous operation to terminate all of a user's RA VPN sessions on a device in the Security
-        Cloud Control tenant. This operation returns a link to a transaction object that can be used to monitor the progress
-        of the operation.
+      description: This is an asynchronous operation to terminate all of a user's RA VPN sessions on a device in the Security Cloud Control tenant. This operation returns a link to a transaction object that can be used to monitor the progress of the operation.
       operationId: terminateRaVpnSessionsByDeviceAndUserName
       parameters:
       - in: path
@@ -351,8 +360,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CdoTransaction'
-          description: Security Cloud Control Transaction object that can be used to track the progress of the termination
-            operation
+          description: Security Cloud Control Transaction object that can be used to track the progress of the termination operation
         '400':
           $ref: '#/components/responses/http400BadRequest'
         '401':
@@ -372,6 +380,7 @@ paths:
       summary: Terminate User's RA VPN Sessions
       tags:
       - Remote Access Monitoring
+  /v1/vpnsessions/{raVpnSessionUid}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -391,7 +400,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/vpnsessions/{raVpnSessionUid}:
     get:
       description: Get a RA VPN session by UID in the Security Cloud Control tenant.
       operationId: getRaVpnSession
@@ -431,6 +439,7 @@ paths:
       summary: Get RA VPN Session
       tags:
       - Remote Access Monitoring
+  /v1/vpnsessions/refresh:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -450,10 +459,8 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/vpnsessions/refresh:
     post:
-      description: This is an asynchronous operation to refresh RA VPN sessions for all devices in the Security Cloud Control
-        tenant.
+      description: This is an asynchronous operation to refresh RA VPN sessions for all devices in the Security Cloud Control tenant.
       operationId: refreshRaVpnSessionsByDevice
       requestBody:
         content:
@@ -486,27 +493,62 @@ paths:
       summary: Refresh RA VPN Sessions
       tags:
       - Remote Access Monitoring
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
+  responses:
+    http405MethodNotAllowed:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Method not allowed.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
   schemas:
+    RaVpnSessionPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/RaVpnSession'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
     MfaEvent:
       properties:
         application:
@@ -517,8 +559,7 @@ components:
           $ref: '#/components/schemas/ClientDevice'
           description: The client device that triggered this MFA event.
         reason:
-          description: The reason for the result of the MFA event. When the `result` is `DENIED`, this field contains information
-            on why the MFA event failed.
+          description: The reason for the result of the MFA event. When the `result` is `DENIED`, this field contains information on why the MFA event failed.
           example: valid_passcode
           type: string
         result:
@@ -553,8 +594,7 @@ components:
     RaVpnDeviceInput:
       properties:
         deviceUids:
-          description: List of UIDs of the devices to refresh RA VPN sessions for. Each of these devices has to be an RA VPN
-            headend (this is indicated by the `deviceRole` field in the device object being set to `RA_VPN_HEADEND`).
+          description: List of UIDs of the devices to refresh RA VPN sessions for. Each of these devices has to be an RA VPN headend (this is indicated by the `deviceRole` field in the device object being set to `RA_VPN_HEADEND`).
           items:
             type: string
           minItems: 1
@@ -562,31 +602,6 @@ components:
       required:
       - deviceUids
       type: object
-    Location:
-      properties:
-        city:
-          description: The city where the client device is located.
-          example: San Jose
-          type: string
-        country:
-          description: The country where the client device is located.
-          example: United States
-          type: string
-        subdivision:
-          description: The subdivision (e.g., state or province) where the client device is located.
-          example: California
-          type: string
-      type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
     MfaEventPage:
       properties:
         count:
@@ -605,8 +620,7 @@ components:
           format: int32
           type: integer
         offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
           example: 0
           format: int32
           type: integer
@@ -646,6 +660,73 @@ components:
       required:
       - uid
       type: object
+    Location:
+      properties:
+        city:
+          description: The city where the client device is located.
+          example: San Jose
+          type: string
+        country:
+          description: The country where the client device is located.
+          example: United States
+          type: string
+        subdivision:
+          description: The subdivision (e.g., state or province) where the client device is located.
+          example: California
+          type: string
+      type: object
+    OS:
+      properties:
+        type:
+          description: The type of operating system running on the client device.
+          example: mac-intel
+          type: string
+        version:
+          description: The version of the operating system running on the client device.
+          example: 14.2.1
+          type: string
+      type: object
+    Browser:
+      properties:
+        name:
+          description: The name of the web browser running on the client device.
+          example: Chrome
+          type: string
+        version:
+          description: The version of the web browser running on the client device.
+          example: 121.0.6167.160
+          type: string
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
     CdoTransaction:
       properties:
         cdoTransactionStatus:
@@ -658,8 +739,7 @@ components:
           example: IN_PROGRESS
           type: string
         entityUid:
-          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a
-            transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
+          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
           example: f5f660d4-4b81-4374-877d-fbc4bee894e2
           format: uuid
           type: string
@@ -758,41 +838,6 @@ components:
           format: uuid
           type: string
       type: object
-    RaVpnSessionPage:
-      properties:
-        count:
-          description: The total number of results available.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/RaVpnSession'
-          type: array
-        limit:
-          description: The number of results retrieved.
-          example: 50
-          format: int32
-          type: integer
-        offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
-          format: int32
-          type: integer
-      type: object
-    OS:
-      properties:
-        type:
-          description: The type of operating system running on the client device.
-          example: mac-intel
-          type: string
-        version:
-          description: The version of the operating system running on the client device.
-          example: 14.2.1
-          type: string
-      type: object
     RaVpnSession:
       properties:
         assignedIpV4:
@@ -823,8 +868,7 @@ components:
           format: uuid
           type: string
         lastActiveTime:
-          description: The time (in UTC) at which the user was last active in the RA VPN session, represented using the RFC-3339
-            standard.
+          description: The time (in UTC) at which the user was last active in the RA VPN session, represented using the RFC-3339 standard.
           example: 2023-12-13 05:15:44+00:00
           format: date-time
           type: string
@@ -832,8 +876,7 @@ components:
           $ref: '#/components/schemas/Location'
           description: The location of the client device.
         loginTime:
-          description: The time (in UTC) at which the user logged in to the RA VPN session, represented using the RFC-3339
-            standard.
+          description: The time (in UTC) at which the user logged in to the RA VPN session, represented using the RFC-3339 standard.
           example: 2023-12-13 05:15:44+00:00
           format: date-time
           type: string
@@ -865,78 +908,16 @@ components:
       - uid
       - username
       type: object
-    CommonApiError:
+    AuthenticationError:
       properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
+        error:
           description: A human-readable error description in English.
-          example: sample error
+          example: invalid_token
           type: string
-    Browser:
-      properties:
-        name:
-          description: The name of the web browser running on the client device.
-          example: Chrome
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
           type: string
-        version:
-          description: The version of the web browser running on the client device.
-          example: 121.0.6167.160
-          type: string
-      type: object
-  responses:
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
-    http401Unauthorised:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
-    http405MethodNotAllowed:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Method not allowed.
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Backup across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml.
-    Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Backup across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 4/4
   x-evidence:
@@ -47,13 +43,31 @@ tags:
 - name: Backup
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/backup/backuprecords:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       deprecated: false
       description: '**Get all backup lists from the database.**'
       operationId: getAllBackupRecord
       parameters:
-      - description: Optional parameter to identify the backup type "Manager", "Device", and "All". Default will be "all"
-          type.
+      - description: Optional parameter to identify the backup type "Manager", "Device", and "All". Default will be "all" type.
         in: query
         name: systemType
         required: false
@@ -84,8 +98,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GETALL /fmc_config/v1/domain/DomainUUID/backup/backuprecords ( GET all method for obtaining
-                  all the backup files details. )'
+                ? 'Example 1 : GETALL /fmc_config/v1/domain/DomainUUID/backup/backuprecords ( GET all method for obtaining all the backup files details. )'
                 : value:
                     items:
                     - backupOptions:
@@ -128,8 +141,7 @@ paths:
                       limit: number
                       offset: number
                       pages: number
-                ? 'Example 2 : GETALL /fmc_config/v1/domain/DomainUUID/backup/backuprecords ( GET all method for obtaining
-                  all the backup files details. )'
+                ? 'Example 2 : GETALL /fmc_config/v1/domain/DomainUUID/backup/backuprecords ( GET all method for obtaining all the backup files details. )'
                 : value:
                     items:
                     - backupOptions:
@@ -185,6 +197,7 @@ paths:
           description: Error
       tags:
       - Backup
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/backup/backuprecords/{backupUUID}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -204,7 +217,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/backup/backuprecords/{backupUUID}:
     get:
       deprecated: false
       description: '**Get the specified backup details from the backup database.**'
@@ -223,8 +235,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/backup/backuprecords/{id} ( GET of backup files to fetch
-                  details for particular backup )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/backup/backuprecords/{id} ( GET of backup files to fetch details for particular backup )'
                 : value:
                     backupOptions:
                     - CONFIG
@@ -257,6 +268,7 @@ paths:
           description: Error
       tags:
       - Backup
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/backup/operational/devicebackup:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -276,7 +288,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/backup/operational/devicebackup:
     post:
       deprecated: false
       description: '**Create a backup. _Check the response section for applicable examples (if any)._**'
@@ -309,6 +320,7 @@ paths:
           description: Error
       tags:
       - Backup
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/backup/operational/fetchbackupurl:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -328,7 +340,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/backup/operational/fetchbackupurl:
     get:
       deprecated: false
       description: '**Get the presigned URL of the download backup from the cloud.**'
@@ -353,8 +364,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/backup/operational/fetchbackupurl ( GET of backup file
-                  download url link for the provided backup_uuid )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/backup/operational/fetchbackupurl ( GET of backup file download url link for the provided backup_uuid )'
                 : value:
                     items:
                     - deviceName: FTD1
@@ -382,181 +392,19 @@ paths:
           description: Error
       tags:
       - Backup
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
-  parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
-    limit:
-      description: Number of items to return.
-      in: query
-      name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
-    domainUUID:
-      description: Domain UUID
-      in: path
-      name: domainUUID
-      required: true
-      schema:
-        type: string
   schemas:
-    BackupRecord:
-      description: Get details of the backup when backupUUID is provided or get list of all backup.
+    BackupRecordListContainer:
       properties:
-        backupOptions:
-          description: Type of the backup. Possible values are CONFIG, EVENTS, TID, or a combination of these.
-          items:
-            enum:
-            - CONFIG
-            - TID
-            - EVENTS
-            type: string
+        items:
+          $ref: '#/components/schemas/BackupRecord'
           type: array
-        backupUUID:
-          type: string
-        creationDate:
-          description: Date and time when the backup was created.
-          type: string
-        description:
-          type: string
-        fileName:
-          description: Name of the backup file.
-          type: string
-        id:
-          description: UUID of the individual backup.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Link to the backup file.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: Name of the FMC, FTD or container.
-          type: string
-        sizeInMB:
-          description: Size of the backup in megabytes.
-          format: int32
-          type: integer
-        storageLocation:
-          description: Location where the backup is stored. Possible values are LOCAL and REMOTE.
-          enum:
-          - LOCAL
-          - REMOTE
-          type: string
-        systemInformation:
-          description: System details for the backup.
-          type: string
-        target:
-          $ref: '#/components/schemas/IReference'
-          description: Information about the backup target.
-          type: object
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    Domain:
-      description: The details about the domain.
-      properties:
-        id:
-          description: Unique UUID of this domain
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
-          type: object
-        name:
-          description: Name of the domain.
-          type: string
-        type:
-          description: Domain type definition (fixed).
-          type: string
-        uuid:
-          type: string
-      type: object
-    IReference:
-      description: Contains reference information.
-      properties:
-        id:
-          description: Unique identifier representing resource.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        name:
-          description: User chosen resource name.
-          type: string
-        type:
-          description: Response object associated with resource.
-          type: string
-      type: object
-    DeviceBackup:
-      description: Generates the backup for provided device uuid.
-      properties:
-        description:
-          type: string
-        devices:
-          items:
-            $ref: '#/components/schemas/IReference'
-            type: object
-          type: array
-        id:
-          type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        metadata:
-          $ref: '#/components/schemas/BackupMetadata'
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
           type: object
-        name:
-          type: string
-        parentId:
-          type: string
-        retrieveToManagementCenter:
-          description: Boolean representing of a flag for transferring backup to manager.
-          type: boolean
-        type:
-          description: Define the type of backup.
-          type: string
-        version:
-          type: string
       type: object
     IReadonly:
       properties:
@@ -569,74 +417,53 @@ components:
         state:
           type: boolean
       type: object
-    ITarget:
-      description: This is the target device.
+    ILinks:
+      description: This defines the self referencing links for the given resource.
       properties:
-        description:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
           type: string
-        id:
-          description: Unique ID of the device.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: Name of the device.
-          type: string
-        type:
-          description: Device
-          type: string
-        version:
+        self:
+          description: Full resource URL path to reference this particular resource.
           type: string
       type: object
-    MetadataUser:
-      description: This object defines details about the user.
+    ErrorMessagesContainer:
       properties:
-        id:
-          description: The unique UUID of the user
+        bulkPayloadIndex:
+          description: More details about the error.
           type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Contains the self referencing links to this resource
-          type: object
-        name:
-          description: Name of the user.
+        code:
+          description: More details about the error.
           type: string
-        type:
-          description: The user type (fixed).
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
           type: string
       type: object
-    FetchBackupURL:
-      description: Get the download links for provided backup uuids
+    IDomain:
       properties:
-        description:
-          type: string
-        fileName:
-          description: Name of the backup file.
-          type: string
         id:
-          description: UUID of the individual backup.
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
         name:
           type: string
-        presignedUrl:
-          description: Provides the download link for the backup file as a presigned URL
-          type: string
-        target:
-          $ref: '#/components/schemas/IReference'
-          type: object
         type:
-          type: string
-        version:
           type: string
       type: object
     BackupMetadata:
@@ -675,36 +502,23 @@ components:
         type:
           type: string
       type: object
-    ErrorResponse:
+    Domain:
+      description: The details about the domain.
       properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
+        id:
+          description: Unique UUID of this domain
           type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
+          type: object
+        name:
+          description: Name of the domain.
           type: string
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
+        type:
+          description: Domain type definition (fixed).
           type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
+        uuid:
           type: string
       type: object
     ISubTask:
@@ -739,27 +553,6 @@ components:
           format: int32
           type: integer
       type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
     FetchBackupURLListContainer:
       properties:
         items:
@@ -772,17 +565,72 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    IDomain:
+    FetchBackupURL:
+      description: Get the download links for provided backup uuids
       properties:
+        description:
+          type: string
+        fileName:
+          description: Name of the backup file.
+          type: string
         id:
+          description: UUID of the individual backup.
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
         name:
           type: string
+        presignedUrl:
+          description: Provides the download link for the backup file as a presigned URL
+          type: string
+        target:
+          $ref: '#/components/schemas/IReference'
+          type: object
         type:
           type: string
+        version:
+          type: string
+      type: object
+    ITarget:
+      description: This is the target device.
+      properties:
+        description:
+          type: string
+        id:
+          description: Unique ID of the device.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the device.
+          type: string
+        type:
+          description: Device
+          type: string
+        version:
+          type: string
+      type: object
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
+      properties:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
       type: object
     TaskStatus:
       properties:
@@ -863,38 +711,133 @@ components:
         type:
           type: string
       type: object
-    BackupRecordListContainer:
+    IMetadata:
       properties:
-        items:
-          $ref: '#/components/schemas/BackupRecord'
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
           type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
           type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
+        timestamp:
+          format: int32
+          type: integer
       type: object
-    ErrorMessagesContainer:
+    BackupRecord:
+      description: Get details of the backup when backupUUID is provided or get list of all backup.
       properties:
-        bulkPayloadIndex:
-          description: More details about the error.
+        backupOptions:
+          description: Type of the backup. Possible values are CONFIG, EVENTS, TID, or a combination of these.
+          items:
+            enum:
+            - CONFIG
+            - TID
+            - EVENTS
+            type: string
+          type: array
+        backupUUID:
           type: string
-        code:
-          description: More details about the error.
+        creationDate:
+          description: Date and time when the backup was created.
           type: string
         description:
-          description: More details about the error.
           type: string
-        details:
-          description: More details about the error.
+        fileName:
+          description: Name of the backup file.
           type: string
-        errorCode:
-          description: More details about the error.
+        id:
+          description: UUID of the individual backup.
           type: string
-        location:
-          description: More details about the error.
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Link to the backup file.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the FMC, FTD or container.
           type: string
+        sizeInMB:
+          description: Size of the backup in megabytes.
+          format: int32
+          type: integer
+        storageLocation:
+          description: Location where the backup is stored. Possible values are LOCAL and REMOTE.
+          enum:
+          - LOCAL
+          - REMOTE
+          type: string
+        systemInformation:
+          description: System details for the backup.
+          type: string
+        target:
+          $ref: '#/components/schemas/IReference'
+          description: Information about the backup target.
+          type: object
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    MetadataUser:
+      description: This object defines details about the user.
+      properties:
+        id:
+          description: The unique UUID of the user
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Contains the self referencing links to this resource
+          type: object
+        name:
+          description: Name of the user.
+          type: string
+        type:
+          description: The user type (fixed).
+          type: string
+      type: object
+    IReference:
+      description: Contains reference information.
+      properties:
+        id:
+          description: Unique identifier representing resource.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        name:
+          description: User chosen resource name.
+          type: string
+        type:
+          description: Response object associated with resource.
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
         severity:
           description: Specifies the Highest level severity among all the error messages.
           enum:
@@ -902,21 +845,68 @@ components:
           - WARN
           type: string
       type: object
-    ReadOnly:
-      description: Defines the read only conditions if the referenced resource is read only.
+    DeviceBackup:
+      description: Generates the backup for provided device uuid.
       properties:
-        reason:
-          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions
-            make it read only) or DOMAIN (if resource is read only in current domain).
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
+        description:
           type: string
-        state:
-          description: True if this resource us read only and false otherwise.
+        devices:
+          items:
+            $ref: '#/components/schemas/IReference'
+            type: object
+          type: array
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/BackupMetadata'
+          type: object
+        name:
+          type: string
+        parentId:
+          type: string
+        retrieveToManagementCenter:
+          description: Boolean representing of a flag for transferring backup to manager.
           type: boolean
+        type:
+          description: Define the type of backup.
+          type: string
+        version:
+          type: string
       type: object
+  parameters:
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

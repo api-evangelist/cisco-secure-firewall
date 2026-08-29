@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Security Cloud Control TAC
     email: cdo.tac@cisco.com
-  description: 'Operations tagged AI Assistant across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml,
-    scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged AI Assistant across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml, scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document.
-      Operations and schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
     operation_coverage: 5/5
   x-evidence:
@@ -47,9 +43,27 @@ tags:
 - name: AI Assistant
 paths:
   /v1/ai-assistant/conversations:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
-      description: 'Get a list of AI Assistant Conversations. Note: the total number of conversations is set to -1 as this
-        information is currently unavailable.'
+      description: 'Get a list of AI Assistant Conversations. Note: the total number of conversations is set to -1 as this information is currently unavailable.'
       operationId: getConversations
       parameters:
       - description: The number of results to retrieve.
@@ -60,8 +74,7 @@ paths:
           maximum: 200
           minimum: 0
           type: string
-      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-          the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+      - description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
         in: query
         name: offset
         required: false
@@ -134,6 +147,7 @@ paths:
       summary: Ask AI Assistant (New Conversation)
       tags:
       - AI Assistant
+  /v1/ai-assistant/conversations/{conversationUid}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -153,7 +167,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/ai-assistant/conversations/{conversationUid}:
     get:
       description: Get an AI Assistant conversation by UID in the Security Cloud Control tenant.
       operationId: getConversation
@@ -231,6 +244,7 @@ paths:
       summary: Ask AI Assistant (Existing Conversation)
       tags:
       - AI Assistant
+  /v1/ai-assistant/conversations/{conversationUid}/messages:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -250,10 +264,8 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/ai-assistant/conversations/{conversationUid}/messages:
     get:
-      description: 'Get a list of messages in a single AI Assistant conversation. Note: this endpoint is not paginated, and
-        returns the full list of messages.'
+      description: 'Get a list of messages in a single AI Assistant conversation. Note: this endpoint is not paginated, and returns the full list of messages.'
       operationId: getAiAssistantConversationMessages
       parameters:
       - description: The unique identifier, represented as a UUID, of the conversation in Security Cloud Control.
@@ -289,61 +301,97 @@ paths:
       summary: Get Messages
       tags:
       - AI Assistant
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
-  responses:
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
-    http400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
-    http401Unauthorised:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
   schemas:
-    AuthenticationError:
+    AiConversation:
       properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
+        createdDate:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the conversation was created.
+          example: 2023-12-13 08:15:44+00:00
+          format: date-time
           type: string
-        errorDescription:
+        lastAnswerDate:
+          description: The time (UTC; represented using the RFC-3339 standard) at which an answer was received.
+          example: 2023-12-13 08:15:44+00:00
+          format: date-time
+          type: string
+        lastInteractionDate:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the user interacted with this conversation.
+          example: 2023-12-13 08:15:44+00:00
+          format: date-time
+          type: string
+        title:
+          description: The title of the conversation. This is set to the first question asked as part of the conversation.
+          example: Is example.com blocked on my FTD?
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the conversation.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - uid
+      type: object
+    AiMessage:
+      properties:
+        content:
+          description: The content of the message.
+          example: What's the difference between an Admin and a Super Admin?
+          type: string
+        createdDate:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the message was sent.
+          example: 2023-12-13 08:15:44+00:00
+          format: date-time
+          type: string
+        inReplyTo:
+          description: The unique identifier, represented as a UUID, of the message to which this message is replying. This field is populated only for messages of type RESPONSE.
+          example: f127a6f6-ec56-400f-a23b-832b0100540b
+          format: uuid
+          type: string
+        type:
+          description: The type of the message, indicating whether it is a request or a response.
+          enum:
+          - REQUEST
+          - RESPONSE
+          example: REQUEST
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the Message.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - uid
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
           description: A human-readable error description in English.
-          example: Your token is invalid
+          example: sample error
           type: string
     AiAssistantConversationPage:
       properties:
@@ -363,44 +411,28 @@ components:
           format: int32
           type: integer
         offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine
-            the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
           example: 0
           format: int32
           type: integer
       type: object
-    AiMessage:
+    AiQuestion:
       properties:
         content:
           description: The content of the message.
           example: What's the difference between an Admin and a Super Admin?
           type: string
-        createdDate:
-          description: The time (UTC; represented using the RFC-3339 standard) at which the message was sent.
-          example: 2023-12-13 08:15:44+00:00
-          format: date-time
-          type: string
-        inReplyTo:
-          description: The unique identifier, represented as a UUID, of the message to which this message is replying. This
-            field is populated only for messages of type RESPONSE.
-          example: f127a6f6-ec56-400f-a23b-832b0100540b
-          format: uuid
-          type: string
-        type:
-          description: The type of the message, indicating whether it is a request or a response.
-          enum:
-          - REQUEST
-          - RESPONSE
-          example: REQUEST
-          type: string
-        uid:
-          description: The unique identifier, represented as a UUID, of the Message.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - uid
       type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
     CdoTransaction:
       properties:
         cdoTransactionStatus:
@@ -413,8 +445,7 @@ components:
           example: IN_PROGRESS
           type: string
         entityUid:
-          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a
-            transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
+          description: The unique identifier of the entity that the transaction is triggered on. This can be empty, for a transaction that is not tied to an entity, such as transactions which refresh RA VPN sessions.
           example: f5f660d4-4b81-4374-877d-fbc4bee894e2
           format: uuid
           type: string
@@ -513,72 +544,31 @@ components:
           format: uuid
           type: string
       type: object
-    CommonApiError:
-      properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
-          description: A human-readable error description in English.
-          example: sample error
-          type: string
-    AiConversation:
-      properties:
-        createdDate:
-          description: The time (UTC; represented using the RFC-3339 standard) at which the conversation was created.
-          example: 2023-12-13 08:15:44+00:00
-          format: date-time
-          type: string
-        lastAnswerDate:
-          description: The time (UTC; represented using the RFC-3339 standard) at which an answer was received.
-          example: 2023-12-13 08:15:44+00:00
-          format: date-time
-          type: string
-        lastInteractionDate:
-          description: The time (UTC; represented using the RFC-3339 standard) at which the user interacted with this conversation.
-          example: 2023-12-13 08:15:44+00:00
-          format: date-time
-          type: string
-        title:
-          description: The title of the conversation. This is set to the first question asked as part of the conversation.
-          example: Is example.com blocked on my FTD?
-          type: string
-        uid:
-          description: The unique identifier, represented as a UUID, of the conversation.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - uid
-      type: object
-    AiQuestion:
-      properties:
-        content:
-          description: The content of the message.
-          example: What's the difference between an Admin and a Super Admin?
-          type: string
-      type: object
+  responses:
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

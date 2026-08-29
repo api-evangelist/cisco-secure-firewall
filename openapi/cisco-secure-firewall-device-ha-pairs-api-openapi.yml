@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Device HA Pairs across 2 of this provider''s published API definitions: cdfmc-openapi.yaml,
-    cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Device HA Pairs across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 13/13
   x-evidence:
@@ -47,6 +43,25 @@ tags:
 - name: Device HA Pairs
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicehapairs/ftddevicehapairs:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       deprecated: false
       description: '**Get a list of all Firewall Threat Defense High Availability pairs.**'
@@ -71,8 +86,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs ( Get all paginated HA
-                  container objects without offset and limit )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs ( Get all paginated HA container objects without offset and limit )'
                 : value:
                     items:
                     - id: <container_uuid>
@@ -109,8 +123,7 @@ paths:
       - Device HA Pairs
     post:
       deprecated: false
-      description: '**Create a Firewall Threat Defense High Availability pair. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Create a Firewall Threat Defense High Availability pair. _Check the response section for applicable examples (if any)._**'
       operationId: createFTDHADeviceContainer
       parameters:
       - $ref: '#/components/parameters/domainUUID'
@@ -204,7 +217,8 @@ paths:
           description: Error
       tags:
       - Device HA Pairs
-    servers:
+  ? /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicehapairs/ftddevicehapairs/{containerUUID}/failoverinterfacemacaddressconfigs
+  : servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
     - url: https://api.eu.security.cisco.com/firewall
@@ -223,11 +237,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  ? /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicehapairs/ftddevicehapairs/{containerUUID}/failoverinterfacemacaddressconfigs
-  : get:
+    get:
       deprecated: false
-      description: '**Get the a list of all Firewall Threat Defense High Availability failover policy interface MAC addresses
-        records.**'
+      description: '**Get the a list of all Firewall Threat Defense High Availability failover policy interface MAC addresses records.**'
       operationId: getAllFTDHAInterfaceMACAddresses
       parameters:
       - description: The container id under which this specific resource is contained.
@@ -263,8 +275,7 @@ paths:
       - Device HA Pairs
     post:
       deprecated: false
-      description: '**Create a Firewall Threat Defense High Availability failover policy interface MAC addresses record. _Check
-        the response section for applicable examples (if any)._**'
+      description: '**Create a Firewall Threat Defense High Availability failover policy interface MAC addresses record. _Check the response section for applicable examples (if any)._**'
       operationId: createFTDHAInterfaceMACAddresses
       parameters:
       - description: UUID of the ticket for tracking the configuration changes.
@@ -306,7 +317,8 @@ paths:
           description: Error
       tags:
       - Device HA Pairs
-    servers:
+  ? /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicehapairs/ftddevicehapairs/{containerUUID}/failoverinterfacemacaddressconfigs/{objectId}
+  : servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
     - url: https://api.eu.security.cisco.com/firewall
@@ -325,12 +337,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  ? /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicehapairs/ftddevicehapairs/{containerUUID}/failoverinterfacemacaddressconfigs/{objectId}
-  : delete:
+    delete:
       deprecated: false
-      description: '**Delete the Firewall Threat Defense High Availability failover policy interface MAC addresses record
-        associated with the specified Firewall Threat Defense High Availability pair. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Delete the Firewall Threat Defense High Availability failover policy interface MAC addresses record associated with the specified Firewall Threat Defense High Availability pair. _Check the response section for applicable examples (if any)._**'
       operationId: deleteFTDHAInterfaceMACAddresses
       parameters:
       - description: UUID of the Firewall Threat Defense High Availability failover policy interface MAC addresses record.
@@ -358,8 +367,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : DELETE /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/failoverinterfacemacaddressconfigs/<failover-interface-mac-address-uuid>
-                  ( Deletes the FTD HA device container failover interface MAC addresses object. )'
+                ? 'Example 1 : DELETE /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/failoverinterfacemacaddressconfigs/<failover-interface-mac-address-uuid> ( Deletes the FTD HA device container failover interface MAC addresses object. )'
                 : value:
                     failoverActiveMac: 0050.56a9.603c
                     failoverStandbyMac: 0050.56a9.603d
@@ -387,8 +395,7 @@ paths:
       - Device HA Pairs
     get:
       deprecated: false
-      description: '**Get the Firewall Threat Defense High Availability failover policy interface MAC addresses record associated
-        with the specified Firewall Threat Defense High Availability pair.**'
+      description: '**Get the Firewall Threat Defense High Availability failover policy interface MAC addresses record associated with the specified Firewall Threat Defense High Availability pair.**'
       operationId: getFTDHAInterfaceMACAddresses
       parameters:
       - description: UUID of the Firewall Threat Defense High Availability failover policy interface MAC addresses record.
@@ -416,9 +423,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/failoverinterfacemacaddressconfigs/<failover-interface-mac-address-uuid>
-                  ( Get of a specific failover interface MAC addresses object for FTD HA device container. Failover interface
-                  MAC addresses object UUID should be passed as Object id. )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/failoverinterfacemacaddressconfigs/<failover-interface-mac-address-uuid> ( Get of a specific failover interface MAC addresses object for FTD HA device container. Failover interface MAC addresses object UUID should be passed as Object id. )'
                 : value:
                     failoverActiveMac: 0050.56a9.603c
                     failoverStandbyMac: 0050.56a9.603d
@@ -431,8 +436,7 @@ paths:
                       name: GigabitEthernet0/0
                       type: PhysicalInterface
                     type: FailoverInterfaceMACAddressConfig
-                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/failoverinterfacemacaddressconfigs
-                  ( GetAll of FTD HA device container failover interface MAC addresses object. )'
+                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/failoverinterfacemacaddressconfigs ( GetAll of FTD HA device container failover interface MAC addresses object. )'
                 : value:
                     items:
                     - id: <failover_interface_mac-address_uuid>
@@ -469,9 +473,7 @@ paths:
       - Device HA Pairs
     put:
       deprecated: false
-      description: '**Modify the Firewall Threat Defense High Availability failover policy interface MAC addresses record
-        associated with the specified Firewall Threat Defense HA pair. _Check the response section for applicable examples
-        (if any)._**'
+      description: '**Modify the Firewall Threat Defense High Availability failover policy interface MAC addresses record associated with the specified Firewall Threat Defense HA pair. _Check the response section for applicable examples (if any)._**'
       operationId: updateFTDHAInterfaceMACAddresses
       parameters:
       - description: UUID of the Firewall Threat Defense High Availability failover policy interface MAC addresses record.
@@ -498,9 +500,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/failoverinterfacemacaddressconfigs/<failover-interface-mac-address-uuid>
-                ( Update of  failover interface MAC addresses object for a FTD HA device container. Failover interface MAC
-                addresses object UUID should be passed as Object id. )'
+              ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/failoverinterfacemacaddressconfigs/<failover-interface-mac-address-uuid> ( Update of  failover interface MAC addresses object for a FTD HA device container. Failover interface MAC addresses object UUID should be passed as Object id. )'
               : value:
                   failoverActiveMac: 0050.56a9.603c
                   failoverStandbyMac: 0050.56a9.603d
@@ -516,9 +516,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/failoverinterfacemacaddressconfigs/<failover-interface-mac-address-uuid>
-                  ( Update of  failover interface MAC addresses object for a FTD HA device container. Failover interface MAC
-                  addresses object UUID should be passed as Object id. )'
+                ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/failoverinterfacemacaddressconfigs/<failover-interface-mac-address-uuid> ( Update of  failover interface MAC addresses object for a FTD HA device container. Failover interface MAC addresses object UUID should be passed as Object id. )'
                 : value:
                     failoverActiveMac: 0050.56a9.603c
                     failoverStandbyMac: 0050.56a9.603d
@@ -544,6 +542,7 @@ paths:
           description: Error
       tags:
       - Device HA Pairs
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicehapairs/ftddevicehapairs/{containerUUID}/monitoredinterfaces:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -563,7 +562,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicehapairs/ftddevicehapairs/{containerUUID}/monitoredinterfaces:
     get:
       deprecated: false
       description: '**Get a list of all Firewall Threat Defense HA monitored interface policy records.**'
@@ -600,7 +598,8 @@ paths:
           description: Error
       tags:
       - Device HA Pairs
-    servers:
+  ? /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicehapairs/ftddevicehapairs/{containerUUID}/monitoredinterfaces/{objectId}
+  : servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
     - url: https://api.eu.security.cisco.com/firewall
@@ -619,11 +618,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  ? /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicehapairs/ftddevicehapairs/{containerUUID}/monitoredinterfaces/{objectId}
-  : get:
+    get:
       deprecated: false
-      description: '**Get the Firewall Threat Defense High Availabiliy Monitored interface policy record associated with the
-        specified Firewall Threat Defense High Availability pair.**'
+      description: '**Get the Firewall Threat Defense High Availabiliy Monitored interface policy record associated with the specified Firewall Threat Defense High Availability pair.**'
       operationId: getFTDHAMonitoredInterfaces
       parameters:
       - description: UUID of the Firewall Threat Defense High Availabiliy Monitored interface policy record.
@@ -651,9 +648,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/monitoredinterfaces/<monitored_interface_policy_uuid>
-                  ( Get of HA device container monitored interfaces object. Monitored interface policy UUID should be passed
-                  as Object id. )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/monitoredinterfaces/<monitored_interface_policy_uuid> ( Get of HA device container monitored interfaces object. Monitored interface policy UUID should be passed as Object id. )'
                 : value:
                     id: <monitored_interface_policy_uuid>
                     interfaceLogicalName: <interface-nameif>
@@ -670,8 +665,7 @@ paths:
                         standbyIPv6: 2005::/31
                       standbyIPv6LinkLocalAddress: FE80::C800:EFF:FE74:9
                     monitorForFailures: 'true'
-                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/monitoredinterfaces
-                  ( GetAll of HA device container monitored interfaces object. )'
+                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/monitoredinterfaces ( GetAll of HA device container monitored interfaces object. )'
                 : value:
                     items:
                     - id: <monitored_interface_policy_uuid>
@@ -711,9 +705,7 @@ paths:
       - Device HA Pairs
     put:
       deprecated: false
-      description: '**Modify the Firewall Threat Defense High Availability Monitored interface policy record associated with
-        the specified Firewall Threat Defense High Availability pair. _Check the response section for applicable examples
-        (if any)._**'
+      description: '**Modify the Firewall Threat Defense High Availability Monitored interface policy record associated with the specified Firewall Threat Defense High Availability pair. _Check the response section for applicable examples (if any)._**'
       operationId: updateFTDHAMonitoredInterfaces
       parameters:
       - description: UUID of the Firewall Threat Defense High Availabiliy Monitored interface policy record.
@@ -740,9 +732,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/monitoredinterfaces/<monitored_interface_policy_uuid>
-                ( Modify monitored interfaces object for HA device container. Monitored interface policy UUID should be passed
-                as Object id. )'
+              ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/monitoredinterfaces/<monitored_interface_policy_uuid> ( Modify monitored interfaces object for HA device container. Monitored interface policy UUID should be passed as Object id. )'
               : value:
                   id: <monitored_interface_policy_uuid>
                   ipv4Configuration:
@@ -766,9 +756,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/monitoredinterfaces/<monitored_interface_policy_uuid>
-                  ( Modify monitored interfaces object for HA device container. Monitored interface policy UUID should be
-                  passed as Object id. )'
+                ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid/monitoredinterfaces/<monitored_interface_policy_uuid> ( Modify monitored interfaces object for HA device container. Monitored interface policy UUID should be passed as Object id. )'
                 : value:
                     id: <monitored_interface_policy_uuid>
                     ipv4Configuration:
@@ -798,6 +786,7 @@ paths:
           description: Error
       tags:
       - Device HA Pairs
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicehapairs/ftddevicehapairs/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -817,11 +806,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/devicehapairs/ftddevicehapairs/{objectId}:
     delete:
       deprecated: false
-      description: '**Delete the Firewall Threat Defense High Availability record associated with the specified ID _Check
-        the response section for applicable examples (if any)._**'
+      description: '**Delete the Firewall Threat Defense High Availability record associated with the specified ID _Check the response section for applicable examples (if any)._**'
       operationId: deleteFTDHADeviceContainer
       parameters:
       - description: UUID of the Firewall Threat Defense High Availability record.
@@ -837,8 +824,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : DELETE /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid (
-                  Delete the HA Container by the container id. This operation will remove the devices as well. )'
+                ? 'Example 1 : DELETE /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Delete the HA Container by the container id. This operation will remove the devices as well. )'
                 : value:
                     ftdHABootstrap:
                       isEncryptionEnabled: false
@@ -893,8 +879,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( GET
-                  of HA container details for a ha_container_uuid )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( GET of HA container details for a ha_container_uuid )'
                 : value:
                     ftdHABootstrap:
                       encKeyGenerationScheme: CUSTOM
@@ -970,8 +955,7 @@ paths:
       - Device HA Pairs
     put:
       deprecated: false
-      description: '**Modify the Firewall Threat Defense High Availability record associated with the specified ID _Check
-        the response section for applicable examples (if any)._**'
+      description: '**Modify the Firewall Threat Defense High Availability record associated with the specified ID _Check the response section for applicable examples (if any)._**'
       operationId: updateFTDHADeviceContainer
       parameters:
       - description: UUID of the Firewall Threat Defense High Availability record.
@@ -980,8 +964,7 @@ paths:
         required: true
         schema:
           type: string
-      - description: UUID of the ticket for tracking the configuration changes.<br/>Applicable only for <code>Failover Trigger
-          Criteria</code><br/>
+      - description: UUID of the ticket for tracking the configuration changes.<br/>Applicable only for <code>Failover Trigger Criteria</code><br/>
         in: header
         name: ticket-id
         required: false
@@ -993,29 +976,20 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Name
-                change of HA device container object. HA container UUID should be passed as Object id. The name field should
-                contain the new HA name )'
+              ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Name change of HA device container object. HA container UUID should be passed as Object id. The name field should contain the new HA name )'
               : value:
                   id: ha_container_uuid
                   name: new_ha_name
-              ? 'Example 2 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Switch
-                operation for HA device container object. HA container UUID should be passed as Object id. The action must
-                be SWITCH )'
+              ? 'Example 2 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Switch operation for HA device container object. HA container UUID should be passed as Object id. The action must be SWITCH )'
               : value:
                   action: SWITCH
                   id: ha_container_uuid
-              ? 'Example 3 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Break
-                operation for HA device container object. HA container UUID should be passed as Object id. The action must
-                be HABREAK )'
+              ? 'Example 3 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Break operation for HA device container object. HA container UUID should be passed as Object id. The action must be HABREAK )'
               : value:
                   action: HABREAK
                   forceBreak: 'true'
                   id: ha_container_uuid
-              ? 'Example 4 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Set the
-                Fail over Trigger Criteria of HA device container object. HA container UUID should be passed as Object id.
-                All the attributes are mandatory. Either of noOfFailedInterfaceLimit or percentFailedInterfaceExceed is optional
-                )'
+              ? 'Example 4 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Set the Fail over Trigger Criteria of HA device container object. HA container UUID should be passed as Object id. All the attributes are mandatory. Either of noOfFailedInterfaceLimit or percentFailedInterfaceExceed is optional )'
               : value:
                   ftdHAFailoverTriggerCriteria:
                     interfaceHoldTime: 65
@@ -1038,9 +1012,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Name
-                  change of HA device container object. HA container UUID should be passed as Object id. The name field should
-                  contain the new HA name )'
+                ? 'Example 1 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Name change of HA device container object. HA container UUID should be passed as Object id. The name field should contain the new HA name )'
                 : value:
                     ftdHABootstrap:
                       isEncryptionEnabled: false
@@ -1050,9 +1022,7 @@ paths:
                       self: <fmc_url>/api/fmc_config/v1/domain/<domainUuid>/devicehapairs/ftddevicehapairs/<container_uuid>
                     name: new_ha_name
                     type: DeviceHAPair
-                ? 'Example 2 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Switch
-                  operation for HA device container object. HA container UUID should be passed as Object id. The action must
-                  be SWITCH )'
+                ? 'Example 2 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Switch operation for HA device container object. HA container UUID should be passed as Object id. The action must be SWITCH )'
                 : value:
                     action: SWITCH
                     ftdHABootstrap:
@@ -1066,9 +1036,7 @@ paths:
                         id: <Task Id>
                         name: FTD HA Active Switch
                         type: Task
-                ? 'Example 3 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Break
-                  operation for HA device container object. HA container UUID should be passed as Object id. The action must
-                  be HABREAK )'
+                ? 'Example 3 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Break operation for HA device container object. HA container UUID should be passed as Object id. The action must be HABREAK )'
                 : value:
                     action: HABREAK
                     ftdHABootstrap:
@@ -1082,10 +1050,7 @@ paths:
                         id: <Task Id>
                         name: FTD HA Active Switch
                         type: Task
-                ? 'Example 4 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Set
-                  the Fail over Trigger Criteria of HA device container object. HA container UUID should be passed as Object
-                  id. All the attributes are mandatory. Either of noOfFailedInterfaceLimit or percentFailedInterfaceExceed
-                  is optional )'
+                ? 'Example 4 : PUT /fmc_config/v1/domain/DomainUUID/devicehapairs/ftddevicehapairs/ha_container_uuid ( Set the Fail over Trigger Criteria of HA device container object. HA container UUID should be passed as Object id. All the attributes are mandatory. Either of noOfFailedInterfaceLimit or percentFailedInterfaceExceed is optional )'
                 : value:
                     ftdHAFailoverTriggerCriteria:
                       interfaceHoldTime: 65
@@ -1113,172 +1078,23 @@ paths:
           description: Error
       tags:
       - Device HA Pairs
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   schemas:
-    IFTDBaseInterface:
+    IARPConfigContainer:
       properties:
-        MTU:
-          format: int32
-          type: integer
-        activeMACAddress:
-          type: string
-        applicationMonitoring:
-          $ref: '#/components/schemas/IApplicationMonitoring'
-          type: object
-        arpConfig:
-          items:
-            $ref: '#/components/schemas/IARPConfigContainer'
-            type: object
-          type: array
-        description:
-          type: string
-        enableAntiSpoofing:
+        enableAlias:
           type: boolean
-        enableDNSLookup:
-          type: boolean
-        enableSGTPropagate:
-          type: boolean
-        enabled:
-          type: boolean
-        fmcAccessConfig:
-          $ref: '#/components/schemas/IFMCAccessConfig'
-          type: object
-        fragmentReassembly:
-          type: boolean
-        id:
+        ipAddress:
           type: string
-        ifname:
-          type: string
-        ipv4:
-          $ref: '#/components/schemas/IIPv4Container'
-          type: object
-        ipv6:
-          $ref: '#/components/schemas/IIPv6Container'
-          type: object
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        macAddressPool:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        macLearn:
-          type: boolean
-        macTable:
-          items:
-            type: string
-          type: array
-        managementOnly:
-          type: boolean
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        mode:
-          enum:
-          - INLINE
-          - PASSIVE
-          - TAP
-          - ERSPAN
-          - NONE
-          - SWITCHPORT
-          type: string
-        name:
-          type: string
-        overrideDefaultFragmentSetting:
-          $ref: '#/components/schemas/IOverrideDefaultFragmentSetting'
-          type: object
-        pathMonitoring:
-          $ref: '#/components/schemas/IPathMonitoring'
-          type: object
-        priority:
-          format: int32
-          type: integer
-        securityZone:
-          $ref: '#/components/schemas/ISecurityZoneObjectModel'
-          type: object
-        standbyMACAddress:
-          type: string
-        type:
-          type: string
-        version:
+        macAddress:
           type: string
       type: object
-    ExpirationLifeTime:
-      properties:
-        preferDateTime:
-          type: string
-        validDateTime:
-          type: string
-      type: object
-    IReference:
-      description: Contains reference information.
-      properties:
-        id:
-          description: Unique identifier representing resource.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        name:
-          description: User chosen resource name.
-          type: string
-        type:
-          description: Response object associated with resource.
-          type: string
-      type: object
-    IAdvertisement:
-      properties:
-        autoConfig:
-          type: boolean
-        offlink:
-          type: boolean
-        preferLifeTime:
-          $ref: '#/components/schemas/PreferLifeTime'
-          type: object
-      type: object
-    ISecurityZoneObjectModel:
+    INetworkAddress:
       properties:
         description:
           type: string
-        devices:
-          items:
-            $ref: '#/components/schemas/IInterfaceDeviceModel'
-            type: object
-          type: array
         id:
           type: string
-        interfaceMode:
-          enum:
-          - PASSIVE
-          - INLINE
-          - SWITCHED
-          - ROUTED
-          - ASA
-          type: string
-        interfaces:
-          items:
-            $ref: '#/components/schemas/IFTDInterface'
-            type: object
-          type: array
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
@@ -1292,44 +1108,256 @@ components:
         overrides:
           $ref: '#/components/schemas/IOverride'
           type: object
-        subType:
-          type: string
         type:
           type: string
         version:
           type: string
       type: object
-    FTDHAInterfaceMACAddressesListContainer:
+    FTDHADeviceContainer:
+      description: Input representation of FTD HA pair.
       properties:
-        items:
-          $ref: '#/components/schemas/FTDHAInterfaceMACAddresses'
+        accessPolicy:
+          $ref: '#/components/schemas/IPolicyModel'
+          description: Object representing the access control policy associated with device
+          type: object
+        action:
+          description: FTD HA PUT operation action. Specifically used for breaking FTD HA or manual switch.
+          enum:
+          - SWITCH
+          - HABREAK
+          type: string
+        advanced:
+          $ref: '#/components/schemas/IAdvanced'
+          description: Object representing Device Advanced Configuration.
+          type: object
+        description:
+          description: Retrieves or modifies the FTD HA record associated with the specified ID. Creates or breaks or deletes a FTD HA pair. If no ID is specified for a GET, retrieves list of all FTD HA pairs.
+          type: string
+        forceBreak:
+          description: FTD HA Force Break option.
+          type: boolean
+        ftdHABootstrap:
+          $ref: '#/components/schemas/IFTDDeviceHABootStrap'
+          description: FTD HA Bootstrap object used during POST operation.
+          type: object
+        ftdHAFailoverTriggerCriteria:
+          $ref: '#/components/schemas/IFTDHAFailoverInterfacePolicyTrigger'
+          description: Conditions on which HA failover would be triggered.
+          type: object
+        healthMessage:
+          type: string
+        healthPolicy:
+          $ref: '#/components/schemas/IHealthPolicy'
+          description: Health Policy of the FTD Devices used in FTD HA pair.
+          type: object
+        healthStatus:
+          description: Health status of the FTD Devices used in FTD HA pair.
+          type: string
+        id:
+          description: FTD HA container UUID.
+          type: string
+        isAWSDevice:
+          type: boolean
+        isAzureDevice:
+          type: boolean
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing related links.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata properties
+          type: object
+        model:
+          description: FTDHADeviceContainer
+          type: string
+        modelId:
+          description: Model ID of the FTD Devices used in FTD HA pair.
+          type: string
+        modelNumber:
+          description: Model Number of the FTD Devices used in FTD HA pair.
+          type: string
+        modelType:
+          description: Model type of the FTD Devices used in FTD HA pair.
+          type: string
+        name:
+          description: User-chosen name.
+          type: string
+        primary:
+          $ref: '#/components/schemas/IBaseDevice'
+          description: Primary Device object for FTD HA.
+          type: object
+        role:
+          type: string
+        secondary:
+          $ref: '#/components/schemas/IBaseDevice'
+          description: Represents the secondary device.
+          type: object
+        status:
+          type: string
+        sw_version:
+          description: FTD HA device version.
+          type: string
+        type:
+          description: DeviceHAPair.
+          type: string
+        version:
+          description: FTD HA model version.
+          type: string
+      required:
+      - ftdHABootstrap
+      - primary
+      - secondary
+      type: object
+    ExpirationLifeTime:
+      properties:
+        preferDateTime:
+          type: string
+        validDateTime:
+          type: string
+      type: object
+    HealthAlertConfig:
+      properties:
+        enabled:
+          type: boolean
+        name:
+          type: string
+        thresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
           type: array
+      type: object
+    HealthSetting:
+      properties:
+        alertEvaluationInterval:
+          format: int32
+          type: integer
+        certFileContent:
+          type: string
+        certFileName:
+          type: string
+        certFileType:
+          type: string
+        certPassphrase:
+          type: string
+        configType:
+          type: string
+        dataCollectionInterval:
+          format: int32
+          type: integer
+        dialInHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        dialOutHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        enabledOpenConfig:
+          type: boolean
+        grpcPassword:
+          type: string
+        grpcUsername:
+          type: string
+        readOnly:
+          type: boolean
+      type: object
+    FTDHAIPv6Configuration:
+      properties:
+        activeIPv6LinkLocalAddress:
+          type: string
+        ipv6ActiveStandbyPair:
+          items:
+            $ref: '#/components/schemas/IFTDHAIPv6ActiveStandbyPair'
+            type: object
+          type: array
+        standbyIPv6LinkLocalAddress:
+          type: string
+      type: object
+    IOverride:
+      description: Defines the override details for this object.
+      properties:
+        parent:
+          $ref: '#/components/schemas/IReference'
+          description: Link to the parent/global resource which is overriden.
+          type: object
+        target:
+          $ref: '#/components/schemas/IReference'
+          description: The device or the domain target on which this override is enabled.
+          type: object
+      type: object
+    IOverrideDefaultFragmentSetting:
+      properties:
+        chain:
+          format: int32
+          type: integer
+        size:
+          format: int32
+          type: integer
+        timeout:
+          format: int32
+          type: integer
+      type: object
+    IDHCPIPv6Pool:
+      properties:
+        description:
+          type: string
+        dnsServer:
+          $ref: '#/components/schemas/IDHCPIPv6DNSServer'
+          type: object
+        domainName:
+          $ref: '#/components/schemas/IDHCPIPv6DomainName'
+          type: object
+        id:
+          type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
           type: object
-      type: object
-    IFMCAccessConfig:
-      properties:
-        allowedNetworks:
+        name:
+          type: string
+        otherServerOptions:
           items:
-            $ref: '#/components/schemas/INetworkAddress'
+            $ref: '#/components/schemas/IDHCPIPv6OtherServerOptions'
             type: object
           type: array
-        enableAccess:
-          type: boolean
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
+        type:
           type: string
-        state:
+        version:
+          type: string
+      type: object
+    IDHCPIPv6OtherServerOptions:
+      properties:
+        address:
+          $ref: '#/components/schemas/IDHCPIPv6DNSServer'
+          type: object
+        domainName:
+          $ref: '#/components/schemas/IDHCPIPv6DomainName'
+          type: object
+        option:
+          enum:
+          - NIS
+          - NISP
+          - SIP
+          - SNTP
+          type: string
+      type: object
+    DialHost:
+      properties:
+        host:
+          type: string
+        port:
+          format: int32
+          type: integer
+      type: object
+    IAdvanced:
+      properties:
+        enableOGS:
           type: boolean
       type: object
     IFTDDeviceHABootStrap:
@@ -1355,101 +1383,6 @@ components:
       - lanFailover
       - statefulFailover
       - useSameLinkForFailovers
-      type: object
-    IAdvanced:
-      properties:
-        enableOGS:
-          type: boolean
-      type: object
-    IDHCPIPv6DomainName:
-      properties:
-        importFromInternalServer:
-          type: boolean
-        names:
-          items:
-            type: string
-          type: array
-      type: object
-    IPrefixContainer:
-      properties:
-        address:
-          type: string
-        addressVariable:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        advertisement:
-          $ref: '#/components/schemas/IAdvertisement'
-          type: object
-        default:
-          type: boolean
-      type: object
-    IApplicationType:
-      description: Represents an ApplicationType.
-      properties:
-        description:
-          description: Application type resource description.
-          type: string
-        id:
-          description: Unique identifier for the application type.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the application type.
-          type: object
-        name:
-          description: Name of the application type.
-          type: string
-        overridable:
-          description: Boolean indicating whether object values can be overridden.
-          type: boolean
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: An object override allows you to define an alternate value for an object on a device or domain.
-          type: object
-        type:
-          description: Type of the response object. This value is always ApplicationType.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
       type: object
     IApplicationCategory:
       description: Represents an ApplicationCategory.
@@ -1485,6 +1418,216 @@ components:
           description: Version number of the response object.
           type: string
       type: object
+    IInterfaceDeviceModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        interfaces:
+          items:
+            $ref: '#/components/schemas/IFTDInterface'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    Duration:
+      properties:
+        preferLifeTime:
+          format: int32
+          type: integer
+        validLifeTime:
+          format: int32
+          type: integer
+      type: object
+    IDHCPIPv6DNSServer:
+      properties:
+        importFromInternalServer:
+          type: boolean
+        ipAddresses:
+          items:
+            type: string
+          type: array
+      type: object
+    IIPv6Container:
+      properties:
+        DHCP:
+          $ref: '#/components/schemas/IIPv6DHCPContainer'
+          type: object
+        addresses:
+          items:
+            $ref: '#/components/schemas/IAddressContainer'
+            type: object
+          type: array
+        dadAttempts:
+          format: int32
+          type: integer
+        enableAutoConfig:
+          type: boolean
+        enableDADLoopback:
+          type: boolean
+        enableDHCPAddrConfig:
+          type: boolean
+        enableDHCPNonAddrConfig:
+          type: boolean
+        enableIPV6:
+          type: boolean
+        enableRA:
+          type: boolean
+        enforceEUI64:
+          type: boolean
+        linkLocalAddress:
+          type: string
+        nsInterval:
+          format: int32
+          type: integer
+        pool:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        prefixes:
+          items:
+            $ref: '#/components/schemas/IPrefixContainer'
+            type: object
+          type: array
+        raInterval:
+          format: int32
+          type: integer
+        raLifeTime:
+          format: int32
+          type: integer
+        reachableTime:
+          format: int32
+          type: integer
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    PreferLifeTime:
+      properties:
+        duration:
+          $ref: '#/components/schemas/Duration'
+          type: object
+        expirationLifeTime:
+          $ref: '#/components/schemas/ExpirationLifeTime'
+          type: object
+      type: object
+    IDHCPContainer:
+      properties:
+        dhcpRouteMetric:
+          format: int32
+          type: integer
+        enableDefaultRouteDHCP:
+          type: boolean
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    FTDHAInterfaceMACAddressesListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/FTDHAInterfaceMACAddresses'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IAddressContainer:
+      properties:
+        address:
+          type: string
+        addressVariable:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        enforceEUI64:
+          type: boolean
+        prefix:
+          type: string
+      type: object
+    IApplicationMonitoring:
+      properties:
+        enable:
+          type: boolean
+        monitoredApplications:
+          items:
+            $ref: '#/components/schemas/IApplicationModel'
+            type: object
+          type: array
+      type: object
+    IPolicyModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
     IPPPoEContianer:
       properties:
         enableRouteSettings:
@@ -1508,254 +1651,6 @@ components:
           type: boolean
         vpdnGroupName:
           type: string
-      type: object
-    IARPConfigContainer:
-      properties:
-        enableAlias:
-          type: boolean
-        ipAddress:
-          type: string
-        macAddress:
-          type: string
-      type: object
-    IOverrideDefaultFragmentSetting:
-      properties:
-        chain:
-          format: int32
-          type: integer
-        size:
-          format: int32
-          type: integer
-        timeout:
-          format: int32
-          type: integer
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    IFTDInterface:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        ifname:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    FTDHAMonitoredInterfacesListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/FTDHAMonitoredInterfaces'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IDHCPIPv6DNSServer:
-      properties:
-        importFromInternalServer:
-          type: boolean
-        ipAddresses:
-          items:
-            type: string
-          type: array
-      type: object
-    IFTDHAIPv6ActiveStandbyPair:
-      properties:
-        activeIPv6:
-          type: string
-        standbyIPv6:
-          type: string
-      type: object
-    IIPv6DHCPContainer:
-      properties:
-        clientPd:
-          $ref: '#/components/schemas/IIPv6ClientPdContainer'
-          type: object
-        enableDHCPClient:
-          type: boolean
-        ipv6DHCPPool:
-          $ref: '#/components/schemas/IDHCPIPv6Pool'
-          type: object
-        ipv6Prefixes:
-          items:
-            $ref: '#/components/schemas/IIPv6PrefixContainer'
-            type: object
-          type: array
-        obtainIPV6DefaultRouteDHCP:
-          type: boolean
-      type: object
-    DialHost:
-      properties:
-        host:
-          type: string
-        port:
-          format: int32
-          type: integer
-      type: object
-    HealthThreshold:
-      properties:
-        type:
-          type: string
-        value:
-          format: int32
-          type: integer
-      type: object
-    IApplicationModel:
-      description: Represents an ApplicationModel containing Application Types, Tags, Productivity, Risk, and Categories.
-      properties:
-        appId:
-          description: Application Identifier stored in internal database (VDB).
-          format: int32
-          type: integer
-        applicationTypes:
-          description: List of objects representing application types.
-          items:
-            $ref: '#/components/schemas/IApplicationType'
-            type: object
-          type: array
-        categories:
-          description: List of objects representing application categories.
-          items:
-            $ref: '#/components/schemas/IApplicationCategory'
-            type: object
-          type: array
-        deprecated:
-          description: Boolean representing if the application has been deprecated.
-          type: boolean
-        description:
-          description: Application resource description.
-          type: string
-        id:
-          description: Unique identifier (UUID) for the application.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the application model.
-          type: object
-        name:
-          description: Name of the application.
-          type: string
-        overridable:
-          description: Boolean indicating whether object values can be overridden.
-          type: boolean
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: An object override allows you to define an alternate value for an object on a device or domain.
-          type: object
-        productivity:
-          $ref: '#/components/schemas/IApplicationProductivity'
-          description: The application productivity associated with this application.
-          type: object
-        risk:
-          $ref: '#/components/schemas/IApplicationRisk'
-          description: The application risk associated with this application.
-          type: object
-        tags:
-          description: List of objects representing application tags.
-          items:
-            $ref: '#/components/schemas/IApplicationTag'
-            type: object
-          type: array
-        type:
-          description: Type of the response object. This value is always Application.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    IDHCPContainer:
-      properties:
-        dhcpRouteMetric:
-          format: int32
-          type: integer
-        enableDefaultRouteDHCP:
-          type: boolean
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    IFTDDeviceHAFailoverLink:
-      properties:
-        activeIP:
-          type: string
-        interfaceObject:
-          $ref: '#/components/schemas/IFTDBaseInterface'
-          type: object
-        logicalName:
-          type: string
-        standbyIP:
-          type: string
-        subnetMask:
-          type: string
-        useIPv6Address:
-          type: boolean
-      required:
-      - activeIP
-      - interfaceObject
-      - logicalName
-      - standbyIP
-      type: object
-    IStaticIPContainer:
-      properties:
-        address:
-          type: string
-        addressVariable:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        netmask:
-          type: string
-        pool:
-          $ref: '#/components/schemas/IReference'
-          type: object
-      type: object
-    IApplicationMonitoring:
-      properties:
-        enable:
-          type: boolean
-        monitoredApplications:
-          items:
-            $ref: '#/components/schemas/IApplicationModel'
-            type: object
-          type: array
       type: object
     FTDBaseInterface:
       properties:
@@ -1844,60 +1739,197 @@ components:
         version:
           type: string
       type: object
-    IMetadata:
+    IFMCAccessConfig:
       properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
+        allowedNetworks:
           items:
-            type: string
+            $ref: '#/components/schemas/INetworkAddress'
+            type: object
           type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
+        enableAccess:
+          type: boolean
       type: object
-    IApplicationProductivity:
-      description: Represents an ApplicationProductivity.
+    IIPv6DHCPContainer:
       properties:
-        description:
-          description: Application productivity resource description.
-          type: string
+        clientPd:
+          $ref: '#/components/schemas/IIPv6ClientPdContainer'
+          type: object
+        enableDHCPClient:
+          type: boolean
+        ipv6DHCPPool:
+          $ref: '#/components/schemas/IDHCPIPv6Pool'
+          type: object
+        ipv6Prefixes:
+          items:
+            $ref: '#/components/schemas/IIPv6PrefixContainer'
+            type: object
+          type: array
+        obtainIPV6DefaultRouteDHCP:
+          type: boolean
+      type: object
+    IDomain:
+      properties:
         id:
-          description: Unique identifier for the application productivity.
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    HealthModule:
+      properties:
+        alertConfig:
+          items:
+            $ref: '#/components/schemas/HealthAlertConfig'
+            type: object
+          type: array
+        alertEnabled:
+          type: boolean
+        criticalThreshold:
+          format: int32
+          type: integer
+        customThresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+        enabled:
+          type: boolean
+        moduleId:
+          type: string
+        severity:
+          type: string
+        type:
+          type: string
+        warningThreshold:
+          format: int32
+          type: integer
+      type: object
+    HealthThreshold:
+      properties:
+        type:
+          type: string
+        value:
+          format: int32
+          type: integer
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    IIPv6PrefixContainer:
+      properties:
+        length:
+          type: string
+        name:
+          type: string
+      type: object
+    FTDHAInterfaceMACAddresses:
+      description: Input Representation of Firepower Threat Defense high availability failover interface MAC addresses record associated with the specified FTD HA pair
+      properties:
+        description:
+          description: User provided resource description
+          type: string
+        failoverActiveMac:
+          description: Interface MAC address in H.H.H format, where H is a 16-bit hexadecimal digit. For example, the MAC address 00-0C-F1-42-4C-DE would be entered as 000C.F142.4CDE
+          type: string
+        failoverStandbyMac:
+          description: Standby MAC Address
+          type: string
+        id:
+          description: Identifier of a Firepower Threat Defense high availability failover interface MAC address
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing related links
           type: object
         metadata:
           $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the application productivity.
+          description: Object representing metadata properties
           type: object
         name:
-          description: Name of the application productivity.
+          description: System chosen name
           type: string
-        overridable:
-          description: Boolean indicating whether object values can be overridden.
-          type: boolean
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: An object override allows you to define an alternate value for an object on a device or domain.
+        physicalInterface:
+          $ref: '#/components/schemas/FTDBaseInterface'
+          description: User chosen physical interface
           type: object
         type:
-          description: Type of the response object. This value is always ApplicationProductivity.
+          description: Type of the Firepower Threat Defense high availability failover interface MAC address
           type: string
         version:
-          description: Version number of the response object.
+          description: version
           type: string
+      required:
+      - failoverActiveMac
+      - failoverStandbyMac
+      - physicalInterface
+      type: object
+    FTDHAMonitoredInterfaces:
+      description: Input representation of Firepower Threat Defense high availability monitored interface
+      properties:
+        description:
+          description: Description of the Firepower Threat Defense high availability monitored interface
+          type: string
+        id:
+          description: Unique identifier (UUID) for the Firepower Threat Defense high availability monitored interface
+          type: string
+        ipv4Configuration:
+          $ref: '#/components/schemas/FTDHAIPv4Configuration'
+          description: Global
+          type: object
+        ipv6Configuration:
+          $ref: '#/components/schemas/FTDHAIPv6Configuration'
+          description: IPv6 Configuration
+          type: object
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: URL of the Firepower Threat Defense high availability monitored interface
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata properties
+          type: object
+        monitorForFailures:
+          description: Flag indicating failure for monitored interfaces
+          type: boolean
+        name:
+          description: Name of the Firepower Threat Defense high availability monitored interface
+          type: string
+        type:
+          description: Type of the Firepower Threat Defense high availability monitored interface
+          type: string
+        version:
+          description: Firepower Threat Defense high availability monitored interface model version
+          type: string
+      required:
+      - monitorForFailures
       type: object
     IApplicationRisk:
       description: Represents an ApplicationRisk.
@@ -1932,6 +1964,224 @@ components:
         version:
           description: Version number of the response object.
           type: string
+      type: object
+    IApplicationModel:
+      description: Represents an ApplicationModel containing Application Types, Tags, Productivity, Risk, and Categories.
+      properties:
+        appId:
+          description: Application Identifier stored in internal database (VDB).
+          format: int32
+          type: integer
+        applicationTypes:
+          description: List of objects representing application types.
+          items:
+            $ref: '#/components/schemas/IApplicationType'
+            type: object
+          type: array
+        categories:
+          description: List of objects representing application categories.
+          items:
+            $ref: '#/components/schemas/IApplicationCategory'
+            type: object
+          type: array
+        deprecated:
+          description: Boolean representing if the application has been deprecated.
+          type: boolean
+        description:
+          description: Application resource description.
+          type: string
+        id:
+          description: Unique identifier (UUID) for the application.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the application model.
+          type: object
+        name:
+          description: Name of the application.
+          type: string
+        overridable:
+          description: Boolean indicating whether object values can be overridden.
+          type: boolean
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: An object override allows you to define an alternate value for an object on a device or domain.
+          type: object
+        productivity:
+          $ref: '#/components/schemas/IApplicationProductivity'
+          description: The application productivity associated with this application.
+          type: object
+        risk:
+          $ref: '#/components/schemas/IApplicationRisk'
+          description: The application risk associated with this application.
+          type: object
+        tags:
+          description: List of objects representing application tags.
+          items:
+            $ref: '#/components/schemas/IApplicationTag'
+            type: object
+          type: array
+        type:
+          description: Type of the response object. This value is always Application.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    IDHCPIPv6DomainName:
+      properties:
+        importFromInternalServer:
+          type: boolean
+        names:
+          items:
+            type: string
+          type: array
+      type: object
+    IHealthPolicy:
+      description: Description of Health Policy.
+      properties:
+        basePolicyID:
+          type: string
+        defaultPolicy:
+          type: boolean
+        description:
+          description: Description of Health Policy.
+          type: string
+        healthModules:
+          items:
+            $ref: '#/components/schemas/HealthModule'
+            type: object
+          type: array
+        id:
+          description: Unique identifier (UUID) representing the Health policy.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the Health policy.
+          type: object
+        name:
+          description: User-specified name of the Health policy.
+          type: string
+        policyType:
+          type: string
+        setting:
+          $ref: '#/components/schemas/HealthSetting'
+          type: object
+        type:
+          description: Type of the Health policy; this value is always HealthPolicy.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    IStaticIPContainer:
+      properties:
+        address:
+          type: string
+        addressVariable:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        netmask:
+          type: string
+        pool:
+          $ref: '#/components/schemas/IReference'
+          type: object
+      type: object
+    IAdvertisement:
+      properties:
+        autoConfig:
+          type: boolean
+        offlink:
+          type: boolean
+        preferLifeTime:
+          $ref: '#/components/schemas/PreferLifeTime'
+          type: object
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    FTDHAIPv4Configuration:
+      properties:
+        activeIPv4Address:
+          type: string
+        activeIPv4Mask:
+          type: string
+        standbyIPv4Address:
+          type: string
+      type: object
+    IIPv4Container:
+      properties:
+        dhcp:
+          $ref: '#/components/schemas/IDHCPContainer'
+          type: object
+        pppoe:
+          $ref: '#/components/schemas/IPPPoEContianer'
+          type: object
+        static:
+          $ref: '#/components/schemas/IStaticIPContainer'
+          type: object
+      type: object
+    IPathMonitoring:
+      properties:
+        enable:
+          type: boolean
+        monitoredIp:
+          type: string
+        type:
+          enum:
+          - AUTO
+          - PEER_IPV4
+          - PEER_IPV6
+          - AUTO4
+          - AUTO6
+          type: string
+      type: object
+    IFTDDeviceHAFailoverLink:
+      properties:
+        activeIP:
+          type: string
+        interfaceObject:
+          $ref: '#/components/schemas/IFTDBaseInterface'
+          type: object
+        logicalName:
+          type: string
+        standbyIP:
+          type: string
+        subnetMask:
+          type: string
+        useIPv6Address:
+          type: boolean
+      required:
+      - activeIP
+      - interfaceObject
+      - logicalName
+      - standbyIP
       type: object
     IFTDHAFailoverInterfacePolicyTrigger:
       properties:
@@ -1993,354 +2243,113 @@ components:
       - peerPollTime
       - peerPollTimeUnit
       type: object
-    IHealthPolicy:
-      description: Description of Health Policy.
+    IFTDBaseInterface:
       properties:
-        basePolicyID:
-          type: string
-        defaultPolicy:
-          type: boolean
-        description:
-          description: Description of Health Policy.
-          type: string
-        healthModules:
-          items:
-            $ref: '#/components/schemas/HealthModule'
-            type: object
-          type: array
-        id:
-          description: Unique identifier (UUID) representing the Health policy.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the Health policy.
-          type: object
-        name:
-          description: User-specified name of the Health policy.
-          type: string
-        policyType:
-          type: string
-        setting:
-          $ref: '#/components/schemas/HealthSetting'
-          type: object
-        type:
-          description: Type of the Health policy; this value is always HealthPolicy.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    PreferLifeTime:
-      properties:
-        duration:
-          $ref: '#/components/schemas/Duration'
-          type: object
-        expirationLifeTime:
-          $ref: '#/components/schemas/ExpirationLifeTime'
-          type: object
-      type: object
-    FTDHAInterfaceMACAddresses:
-      description: Input Representation of Firepower Threat Defense high availability failover interface MAC addresses record
-        associated with the specified FTD HA pair
-      properties:
-        description:
-          description: User provided resource description
-          type: string
-        failoverActiveMac:
-          description: Interface MAC address in H.H.H format, where H is a 16-bit hexadecimal digit. For example, the MAC
-            address 00-0C-F1-42-4C-DE would be entered as 000C.F142.4CDE
-          type: string
-        failoverStandbyMac:
-          description: Standby MAC Address
-          type: string
-        id:
-          description: Identifier of a Firepower Threat Defense high availability failover interface MAC address
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing related links
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata properties
-          type: object
-        name:
-          description: System chosen name
-          type: string
-        physicalInterface:
-          $ref: '#/components/schemas/FTDBaseInterface'
-          description: User chosen physical interface
-          type: object
-        type:
-          description: Type of the Firepower Threat Defense high availability failover interface MAC address
-          type: string
-        version:
-          description: version
-          type: string
-      required:
-      - failoverActiveMac
-      - failoverStandbyMac
-      - physicalInterface
-      type: object
-    IIPv4Container:
-      properties:
-        dhcp:
-          $ref: '#/components/schemas/IDHCPContainer'
-          type: object
-        pppoe:
-          $ref: '#/components/schemas/IPPPoEContianer'
-          type: object
-        static:
-          $ref: '#/components/schemas/IStaticIPContainer'
-          type: object
-      type: object
-    HealthModule:
-      properties:
-        alertConfig:
-          items:
-            $ref: '#/components/schemas/HealthAlertConfig'
-            type: object
-          type: array
-        alertEnabled:
-          type: boolean
-        criticalThreshold:
+        MTU:
           format: int32
           type: integer
-        customThresholds:
+        activeMACAddress:
+          type: string
+        applicationMonitoring:
+          $ref: '#/components/schemas/IApplicationMonitoring'
+          type: object
+        arpConfig:
           items:
-            $ref: '#/components/schemas/HealthThreshold'
+            $ref: '#/components/schemas/IARPConfigContainer'
             type: object
           type: array
+        description:
+          type: string
+        enableAntiSpoofing:
+          type: boolean
+        enableDNSLookup:
+          type: boolean
+        enableSGTPropagate:
+          type: boolean
         enabled:
           type: boolean
-        moduleId:
-          type: string
-        severity:
-          type: string
-        type:
-          type: string
-        warningThreshold:
-          format: int32
-          type: integer
-      type: object
-    HealthSetting:
-      properties:
-        alertEvaluationInterval:
-          format: int32
-          type: integer
-        certFileContent:
-          type: string
-        certFileName:
-          type: string
-        certFileType:
-          type: string
-        certPassphrase:
-          type: string
-        configType:
-          type: string
-        dataCollectionInterval:
-          format: int32
-          type: integer
-        dialInHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        dialOutHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        enabledOpenConfig:
+        fmcAccessConfig:
+          $ref: '#/components/schemas/IFMCAccessConfig'
+          type: object
+        fragmentReassembly:
           type: boolean
-        grpcPassword:
+        id:
           type: string
-        grpcUsername:
+        ifname:
           type: string
-        readOnly:
-          type: boolean
-      type: object
-    IPathMonitoring:
-      properties:
-        enable:
-          type: boolean
-        monitoredIp:
-          type: string
-        type:
-          enum:
-          - AUTO
-          - PEER_IPV4
-          - PEER_IPV6
-          - AUTO4
-          - AUTO6
-          type: string
-      type: object
-    IAddressContainer:
-      properties:
-        address:
-          type: string
-        addressVariable:
+        ipv4:
+          $ref: '#/components/schemas/IIPv4Container'
+          type: object
+        ipv6:
+          $ref: '#/components/schemas/IIPv6Container'
+          type: object
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        macAddressPool:
           $ref: '#/components/schemas/IReference'
           type: object
-        enforceEUI64:
+        macLearn:
           type: boolean
-        prefix:
+        macTable:
+          items:
+            type: string
+          type: array
+        managementOnly:
+          type: boolean
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        mode:
+          enum:
+          - INLINE
+          - PASSIVE
+          - TAP
+          - ERSPAN
+          - NONE
+          - SWITCHPORT
+          type: string
+        name:
+          type: string
+        overrideDefaultFragmentSetting:
+          $ref: '#/components/schemas/IOverrideDefaultFragmentSetting'
+          type: object
+        pathMonitoring:
+          $ref: '#/components/schemas/IPathMonitoring'
+          type: object
+        priority:
+          format: int32
+          type: integer
+        securityZone:
+          $ref: '#/components/schemas/ISecurityZoneObjectModel'
+          type: object
+        standbyMACAddress:
+          type: string
+        type:
+          type: string
+        version:
           type: string
       type: object
-    IInterfaceDeviceModel:
+    FTDHADeviceContainerListContainer:
       properties:
-        description:
-          type: string
-        id:
-          type: string
-        interfaces:
-          items:
-            $ref: '#/components/schemas/IFTDInterface'
-            type: object
+        items:
+          $ref: '#/components/schemas/FTDHADeviceContainer'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
           type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
       type: object
-    FTDHAIPv4Configuration:
-      properties:
-        activeIPv4Address:
-          type: string
-        activeIPv4Mask:
-          type: string
-        standbyIPv4Address:
-          type: string
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    FTDHADeviceContainer:
-      description: Input representation of FTD HA pair.
-      properties:
-        accessPolicy:
-          $ref: '#/components/schemas/IPolicyModel'
-          description: Object representing the access control policy associated with device
-          type: object
-        action:
-          description: FTD HA PUT operation action. Specifically used for breaking FTD HA or manual switch.
-          enum:
-          - SWITCH
-          - HABREAK
-          type: string
-        advanced:
-          $ref: '#/components/schemas/IAdvanced'
-          description: Object representing Device Advanced Configuration.
-          type: object
-        description:
-          description: Retrieves or modifies the FTD HA record associated with the specified ID. Creates or breaks or deletes
-            a FTD HA pair. If no ID is specified for a GET, retrieves list of all FTD HA pairs.
-          type: string
-        forceBreak:
-          description: FTD HA Force Break option.
-          type: boolean
-        ftdHABootstrap:
-          $ref: '#/components/schemas/IFTDDeviceHABootStrap'
-          description: FTD HA Bootstrap object used during POST operation.
-          type: object
-        ftdHAFailoverTriggerCriteria:
-          $ref: '#/components/schemas/IFTDHAFailoverInterfacePolicyTrigger'
-          description: Conditions on which HA failover would be triggered.
-          type: object
-        healthMessage:
-          type: string
-        healthPolicy:
-          $ref: '#/components/schemas/IHealthPolicy'
-          description: Health Policy of the FTD Devices used in FTD HA pair.
-          type: object
-        healthStatus:
-          description: Health status of the FTD Devices used in FTD HA pair.
-          type: string
-        id:
-          description: FTD HA container UUID.
-          type: string
-        isAWSDevice:
-          type: boolean
-        isAzureDevice:
-          type: boolean
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing related links.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata properties
-          type: object
-        model:
-          description: FTDHADeviceContainer
-          type: string
-        modelId:
-          description: Model ID of the FTD Devices used in FTD HA pair.
-          type: string
-        modelNumber:
-          description: Model Number of the FTD Devices used in FTD HA pair.
-          type: string
-        modelType:
-          description: Model type of the FTD Devices used in FTD HA pair.
-          type: string
-        name:
-          description: User-chosen name.
-          type: string
-        primary:
-          $ref: '#/components/schemas/IBaseDevice'
-          description: Primary Device object for FTD HA.
-          type: object
-        role:
-          type: string
-        secondary:
-          $ref: '#/components/schemas/IBaseDevice'
-          description: Represents the secondary device.
-          type: object
-        status:
-          type: string
-        sw_version:
-          description: FTD HA device version.
-          type: string
-        type:
-          description: DeviceHAPair.
-          type: string
-        version:
-          description: FTD HA model version.
-          type: string
-      required:
-      - ftdHABootstrap
-      - primary
-      - secondary
-      type: object
-    IApplicationTag:
-      description: Represents an ApplicationTag.
+    IApplicationType:
+      description: Represents an ApplicationType.
       properties:
         description:
-          description: Application tag resource description.
+          description: Application type resource description.
           type: string
         id:
-          description: Unique identifier for the application tag.
+          description: Unique identifier for the application type.
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
@@ -2348,10 +2357,10 @@ components:
           type: object
         metadata:
           $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the application tag.
+          description: Object representing metadata attributes for the application type.
           type: object
         name:
-          description: Name of the application tag.
+          description: Name of the application type.
           type: string
         overridable:
           description: Boolean indicating whether object values can be overridden.
@@ -2361,63 +2370,33 @@ components:
           description: An object override allows you to define an alternate value for an object on a device or domain.
           type: object
         type:
-          description: Type of the response object. This value is always ApplicationTag.
+          description: Type of the response object. This value is always ApplicationType.
           type: string
         version:
           description: Version number of the response object.
           type: string
       type: object
-    FTDHAMonitoredInterfaces:
-      description: Input representation of Firepower Threat Defense high availability monitored interface
+    IPrefixContainer:
       properties:
-        description:
-          description: Description of the Firepower Threat Defense high availability monitored interface
+        address:
           type: string
-        id:
-          description: Unique identifier (UUID) for the Firepower Threat Defense high availability monitored interface
-          type: string
-        ipv4Configuration:
-          $ref: '#/components/schemas/FTDHAIPv4Configuration'
-          description: Global
+        addressVariable:
+          $ref: '#/components/schemas/IReference'
           type: object
-        ipv6Configuration:
-          $ref: '#/components/schemas/FTDHAIPv6Configuration'
-          description: IPv6 Configuration
+        advertisement:
+          $ref: '#/components/schemas/IAdvertisement'
           type: object
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: URL of the Firepower Threat Defense high availability monitored interface
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata properties
-          type: object
-        monitorForFailures:
-          description: Flag indicating failure for monitored interfaces
+        default:
           type: boolean
-        name:
-          description: Name of the Firepower Threat Defense high availability monitored interface
-          type: string
-        type:
-          description: Type of the Firepower Threat Defense high availability monitored interface
-          type: string
-        version:
-          description: Firepower Threat Defense high availability monitored interface model version
-          type: string
-      required:
-      - monitorForFailures
       type: object
-    IOverride:
-      description: Defines the override details for this object.
+    IIPv6ClientPdContainer:
       properties:
-        parent:
-          $ref: '#/components/schemas/IReference'
-          description: Link to the parent/global resource which is overriden.
-          type: object
-        target:
-          $ref: '#/components/schemas/IReference'
-          description: The device or the domain target on which this override is enabled.
-          type: object
+        hintPrefixes:
+          items:
+            type: string
+          type: array
+        prefixName:
+          type: string
       type: object
     IBaseDevice:
       properties:
@@ -2465,12 +2444,165 @@ components:
         version:
           type: string
       type: object
-    INetworkAddress:
+    IReference:
+      description: Contains reference information.
+      properties:
+        id:
+          description: Unique identifier representing resource.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        name:
+          description: User chosen resource name.
+          type: string
+        type:
+          description: Response object associated with resource.
+          type: string
+      type: object
+    IApplicationTag:
+      description: Represents an ApplicationTag.
+      properties:
+        description:
+          description: Application tag resource description.
+          type: string
+        id:
+          description: Unique identifier for the application tag.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the application tag.
+          type: object
+        name:
+          description: Name of the application tag.
+          type: string
+        overridable:
+          description: Boolean indicating whether object values can be overridden.
+          type: boolean
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: An object override allows you to define an alternate value for an object on a device or domain.
+          type: object
+        type:
+          description: Type of the response object. This value is always ApplicationTag.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IFTDHAIPv6ActiveStandbyPair:
+      properties:
+        activeIPv6:
+          type: string
+        standbyIPv6:
+          type: string
+      type: object
+    IFTDInterface:
       properties:
         description:
           type: string
         id:
           type: string
+        ifname:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IApplicationProductivity:
+      description: Represents an ApplicationProductivity.
+      properties:
+        description:
+          description: Application productivity resource description.
+          type: string
+        id:
+          description: Unique identifier for the application productivity.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the application productivity.
+          type: object
+        name:
+          description: Name of the application productivity.
+          type: string
+        overridable:
+          description: Boolean indicating whether object values can be overridden.
+          type: boolean
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: An object override allows you to define an alternate value for an object on a device or domain.
+          type: object
+        type:
+          description: Type of the response object. This value is always ApplicationProductivity.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    ISecurityZoneObjectModel:
+      properties:
+        description:
+          type: string
+        devices:
+          items:
+            $ref: '#/components/schemas/IInterfaceDeviceModel'
+            type: object
+          type: array
+        id:
+          type: string
+        interfaceMode:
+          enum:
+          - PASSIVE
+          - INLINE
+          - SWITCHED
+          - ROUTED
+          - ASA
+          type: string
+        interfaces:
+          items:
+            $ref: '#/components/schemas/IFTDInterface'
+            type: object
+          type: array
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
@@ -2484,15 +2616,17 @@ components:
         overrides:
           $ref: '#/components/schemas/IOverride'
           type: object
+        subType:
+          type: string
         type:
           type: string
         version:
           type: string
       type: object
-    FTDHADeviceContainerListContainer:
+    FTDHAMonitoredInterfacesListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/FTDHADeviceContainer'
+          $ref: '#/components/schemas/FTDHAMonitoredInterfaces'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -2501,217 +2635,11 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    IDHCPIPv6OtherServerOptions:
-      properties:
-        address:
-          $ref: '#/components/schemas/IDHCPIPv6DNSServer'
-          type: object
-        domainName:
-          $ref: '#/components/schemas/IDHCPIPv6DomainName'
-          type: object
-        option:
-          enum:
-          - NIS
-          - NISP
-          - SIP
-          - SNTP
-          type: string
-      type: object
-    IIPv6Container:
-      properties:
-        DHCP:
-          $ref: '#/components/schemas/IIPv6DHCPContainer'
-          type: object
-        addresses:
-          items:
-            $ref: '#/components/schemas/IAddressContainer'
-            type: object
-          type: array
-        dadAttempts:
-          format: int32
-          type: integer
-        enableAutoConfig:
-          type: boolean
-        enableDADLoopback:
-          type: boolean
-        enableDHCPAddrConfig:
-          type: boolean
-        enableDHCPNonAddrConfig:
-          type: boolean
-        enableIPV6:
-          type: boolean
-        enableRA:
-          type: boolean
-        enforceEUI64:
-          type: boolean
-        linkLocalAddress:
-          type: string
-        nsInterval:
-          format: int32
-          type: integer
-        pool:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        prefixes:
-          items:
-            $ref: '#/components/schemas/IPrefixContainer'
-            type: object
-          type: array
-        raInterval:
-          format: int32
-          type: integer
-        raLifeTime:
-          format: int32
-          type: integer
-        reachableTime:
-          format: int32
-          type: integer
-      type: object
-    IDHCPIPv6Pool:
-      properties:
-        description:
-          type: string
-        dnsServer:
-          $ref: '#/components/schemas/IDHCPIPv6DNSServer'
-          type: object
-        domainName:
-          $ref: '#/components/schemas/IDHCPIPv6DomainName'
-          type: object
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        otherServerOptions:
-          items:
-            $ref: '#/components/schemas/IDHCPIPv6OtherServerOptions'
-            type: object
-          type: array
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    Duration:
-      properties:
-        preferLifeTime:
-          format: int32
-          type: integer
-        validLifeTime:
-          format: int32
-          type: integer
-      type: object
-    HealthAlertConfig:
-      properties:
-        enabled:
-          type: boolean
-        name:
-          type: string
-        thresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-      type: object
-    IIPv6ClientPdContainer:
-      properties:
-        hintPrefixes:
-          items:
-            type: string
-          type: array
-        prefixName:
-          type: string
-      type: object
-    FTDHAIPv6Configuration:
-      properties:
-        activeIPv6LinkLocalAddress:
-          type: string
-        ipv6ActiveStandbyPair:
-          items:
-            $ref: '#/components/schemas/IFTDHAIPv6ActiveStandbyPair'
-            type: object
-          type: array
-        standbyIPv6LinkLocalAddress:
-          type: string
-      type: object
-    IIPv6PrefixContainer:
-      properties:
-        length:
-          type: string
-        name:
-          type: string
-      type: object
-    IPolicyModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
     limit:
       description: Number of items to return.
       in: query
       name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
       required: false
       schema:
         format: int32
@@ -2723,6 +2651,21 @@ components:
       required: true
       schema:
         type: string
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

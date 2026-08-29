@@ -310,16 +310,10 @@ paths:
           $ref: '#/components/responses/GeneralError'
 components:
   schemas:
-    RBACCustomRole:
+    RBACCustomRoleInput:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-        enterpriseId:
-          type: string
-          format: uuid
-        productId:
+        product:
           type: integer
         roleDisplayName:
           type: string
@@ -329,17 +323,15 @@ components:
           type: array
           items:
             type: string
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
+        applicationScopeIdToScope:
+          type: object
+          properties:
+            applicationScope:
+              type: string
+            scopes:
+              type: array
+              items:
+                type: string
     RBACUserAssignmentRole:
       type: object
       description: Represent entity of RBAC user role assignment
@@ -364,10 +356,16 @@ components:
         roleId:
           type: string
           format: uuid
-    RBACCustomRoleInput:
+    RBACCustomRole:
       type: object
       properties:
-        product:
+        id:
+          type: string
+          format: uuid
+        enterpriseId:
+          type: string
+          format: uuid
+        productId:
           type: integer
         roleDisplayName:
           type: string
@@ -377,15 +375,6 @@ components:
           type: array
           items:
             type: string
-        applicationScopeIdToScope:
-          type: object
-          properties:
-            applicationScope:
-              type: string
-            scopes:
-              type: array
-              items:
-                type: string
     RoleAssignmentIdInput:
       type: object
       description: role and its tenant id input
@@ -399,6 +388,17 @@ components:
         tenantId:
           type: string
           format: uuid
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
     RBACGroupAssignmentRole:
       type: object
       description: Represent entity of RBAC group role assignment
@@ -421,28 +421,28 @@ components:
           type: string
           format: uuid
   responses:
-    Unauthorized:
-      description: The request is not able to be authorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     PredefinedFailed:
       description: Predefined Failed - if group role exit for user. it will be returned
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NoContent:
-      description: No content
+    Unauthorized:
+      description: The request is not able to be authorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     Forbidden:
       description: Insufficient permissions to complete the request
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request was invalid
+    NoContent:
+      description: No content
+    NotFoundError:
+      description: Not Found
       headers:
         Date:
           $ref: '#/components/headers/Date'
@@ -450,11 +450,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFoundError:
-      description: Not Found
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
+    InternalServerError:
+      description: Internal Server Error - The server encountered an unexpected condition which prevented it from fulfilling the request.
       content:
         application/json:
           schema:
@@ -468,8 +465,11 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: Internal Server Error - The server encountered an unexpected condition which prevented it from fulfilling the request.
+    ValidationError:
+      description: The request was invalid
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
       content:
         application/json:
           schema:

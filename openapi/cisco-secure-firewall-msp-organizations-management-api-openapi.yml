@@ -66,6 +66,20 @@ paths:
                 $ref: '#/components/schemas/model.Error'
 components:
   schemas:
+    model.ManagedOrgProductsList:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: integer
+    model.Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
     model.ManagedOrg:
       type: object
       properties:
@@ -77,13 +91,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/model.ManagedOrgProductsList'
-    model.Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     model.MspRevokedManagedOrgsInfo:
       type: object
       properties:
@@ -91,13 +98,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/model.ManagedOrg'
-    model.ManagedOrgProductsList:
-      type: object
-      properties:
-        name:
-          type: string
-        quantity:
-          type: integer
   securitySchemes:
     EnterpriseAdminBearerAuth:
       type: oauth2

@@ -264,6 +264,31 @@ paths:
       - MPM Endpoint Group
 components:
   schemas:
+    MpmPolicyMetadataToRules:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        ruleIds:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    MpmEndpointGroupsPage:
+      properties:
+        cursor:
+          type: string
+        endpointGroups:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+      type: object
     MpmEndpointObj:
       properties:
         addressEnd:
@@ -281,49 +306,6 @@ components:
           type: string
         value:
           type: string
-      type: object
-    MpmPolicyMetadataToRules:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        policyId:
-          format: uuid
-          type: string
-        ruleIds:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
-    MpmEndpointGroupObj:
-      properties:
-        description:
-          type: string
-        epgs:
-          items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
-          type: array
-        eps:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
-        id:
-          format: uuid
-          type: string
-        name:
-          type: string
-      type: object
-    MpmEndpointGroupsPage:
-      properties:
-        cursor:
-          type: string
-        endpointGroups:
-          items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
-          type: array
       type: object
     MpmEntityRelations:
       properties:
@@ -343,6 +325,24 @@ components:
           items:
             $ref: '#/components/schemas/MpmPolicyMetadataToRules'
           type: array
+      type: object
+    MpmEndpointGroupObj:
+      properties:
+        description:
+          type: string
+        epgs:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        eps:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
       type: object
   securitySchemes:
     BearerJWT:

@@ -5,19 +5,15 @@ info:
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Deployment across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml.
-    Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Deployment across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 11/11
   x-evidence:
@@ -47,14 +43,31 @@ tags:
 - name: Deployment
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/deployabledevices:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       deprecated: false
       description: '**Get a list of all devices with configuration changes which are ready to be deployed.**'
       operationId: getDeployableDevice
       parameters:
-      - description: Boolean indicating whether the policies ready to deploy have group dependencies. Group dependency value
-          helps to add dependent policies in Selective Policy Deployment. Results will be shown only when expanded is set
-          to <code>true</code>. It may affect the performance of the API.
+      - description: Boolean indicating whether the policies ready to deploy have group dependencies. Group dependency value helps to add dependent policies in Selective Policy Deployment. Results will be shown only when expanded is set to <code>true</code>. It may affect the performance of the API.
         in: query
         name: groupDependency
         required: false
@@ -66,8 +79,7 @@ paths:
         required: false
         schema:
           type: boolean
-      - description: Boolean value indicating whether to return a list of devices with universal zero trust settings which
-          are out of date.
+      - description: Boolean value indicating whether to return a list of devices with universal zero trust settings which are out of date.
         in: query
         name: uZTNAConfigOnly
         required: false
@@ -86,8 +98,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/deployment/deployabledevices ( Get all paginated DeployableDevice
-                  instances with group dependency is false. )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/deployment/deployabledevices ( Get all paginated DeployableDevice instances with group dependency is false. )'
                 : value:
                     items:
                     - canBeDeployed: true
@@ -254,8 +265,7 @@ paths:
                       limit: 1
                       offset: 0
                       pages: 1
-                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/deployment/deployabledevices ( Get all paginated DeployableDevice
-                  instances with group dependency is true. )'
+                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/deployment/deployabledevices ( Get all paginated DeployableDevice instances with group dependency is true. )'
                 : value:
                     items:
                     - canBeDeployed: true
@@ -486,6 +496,7 @@ paths:
           description: Error
       tags:
       - Deployment
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/deployabledevices/{containerUUID}/deployments:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -505,16 +516,12 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/deployabledevices/{containerUUID}/deployments:
     get:
       deprecated: false
       description: '**Get deployment details for a device.**'
       operationId: getDeploymentDetail
       parameters:
-      - description: Selects time range for the deployment.<br/>Value is of format <code>startTime:start_time_in_secs;endTime:end_time_in_secs;</code>.
-          <br/><br/><code>startTime</code> -- start time in unix format (in seconds). startTime and endTime should be specified
-          together.<br/><code>endTime</code> -- end time in unix format (in seconds). startTime and endTime should be specified
-          together.<br/>
+      - description: Selects time range for the deployment.<br/>Value is of format <code>startTime:start_time_in_secs;endTime:end_time_in_secs;</code>. <br/><br/><code>startTime</code> -- start time in unix format (in seconds). startTime and endTime should be specified together.<br/><code>endTime</code> -- end time in unix format (in seconds). startTime and endTime should be specified together.<br/>
         in: query
         name: filter
         required: false
@@ -539,8 +546,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/deployment/{containerUUID}/deploymentdetails ( Get all
-                  paginated Deployment Detail instances. )'
+                ? 'Example 1 : GET /fmc_config/v1/domain/DomainUUID/deployment/{containerUUID}/deploymentdetails ( Get all paginated Deployment Detail instances. )'
                 : value:
                     items:
                     - endTime: 1592899423.0
@@ -572,6 +578,7 @@ paths:
           description: Error
       tags:
       - Deployment
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/deployabledevices/{containerUUID}/pendingchanges:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -591,16 +598,12 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/deployabledevices/{containerUUID}/pendingchanges:
     get:
       deprecated: false
       description: '**Get all policy and object changes.**'
       operationId: getPendingChanges
       parameters:
-      - description: 'The filter criteria for which the details have to be fetched - Only works when "expanded" is set to
-          "true". Examples: ParentEntityTypes:AccessPolicy, EntityUUID:0050568C-35A0-0ed3-0000-004294969351.To fetch the historical
-          data pass the left and right job UUID. Example LeftJobUUID:4b9fe31c-34cc-11ea-8b36-8eb5492fc3a5;RightJobUUID:4b9fe31c-34cc-11ea-8b36-8eb5492fc3a3.For
-          filter based on User add a filter using key word UserList.Example: UserList : user1,user2.'
+      - description: 'The filter criteria for which the details have to be fetched - Only works when "expanded" is set to "true". Examples: ParentEntityTypes:AccessPolicy, EntityUUID:0050568C-35A0-0ed3-0000-004294969351.To fetch the historical data pass the left and right job UUID. Example LeftJobUUID:4b9fe31c-34cc-11ea-8b36-8eb5492fc3a5;RightJobUUID:4b9fe31c-34cc-11ea-8b36-8eb5492fc3a3.For filter based on User add a filter using key word UserList.Example: UserList : user1,user2.'
         in: query
         name: filter
         required: false
@@ -637,6 +640,7 @@ paths:
           description: Error
       tags:
       - Deployment
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/deploymentrequests:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -656,11 +660,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/deploymentrequests:
     post:
       deprecated: false
-      description: '**Create a request for deploying configuration changes to devices. _Check the response section for applicable
-        examples (if any)._**'
+      description: '**Create a request for deploying configuration changes to devices. _Check the response section for applicable examples (if any)._**'
       operationId: createDeploymentRequest
       parameters:
       - $ref: '#/components/parameters/domainUUID'
@@ -678,8 +680,7 @@ paths:
                   ignoreWarning: true
                   type: DeploymentRequest
                   version: '1457566762351'
-              ? 'Example 2 : POST /fmc_config/v1/domain/DomainUUID/deployment/deploymentrequests ( POST a deployment request
-                for Selective Policy Deployment )'
+              ? 'Example 2 : POST /fmc_config/v1/domain/DomainUUID/deployment/deploymentrequests ( POST a deployment request for Selective Policy Deployment )'
               : value:
                   deploymentNote: yournotescomehere
                   deviceList:
@@ -694,8 +695,7 @@ paths:
                     - SSLPolicy
                   type: DeploymentRequest
                   version: '1457566762351'
-              ? 'Example 3 : POST /fmc_config/v1/domain/DomainUUID/deployment/deploymentrequests ( POST a deployment request
-                for Full Deployment and Selective Policy Deployment  )'
+              ? 'Example 3 : POST /fmc_config/v1/domain/DomainUUID/deployment/deploymentrequests ( POST a deployment request for Full Deployment and Selective Policy Deployment  )'
               : value:
                   deploymentNote: yournotescomehere
                   deviceList:
@@ -735,8 +735,7 @@ paths:
                           self: <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/job/taskstatuses/133143986189
                     type: DeploymentRequest
                     version: '1457566762351'
-                ? 'Example 2 : POST /fmc_config/v1/domain/DomainUUID/deployment/deploymentrequests ( POST a deployment request
-                  for Selective Policy Deployment )'
+                ? 'Example 2 : POST /fmc_config/v1/domain/DomainUUID/deployment/deploymentrequests ( POST a deployment request for Selective Policy Deployment )'
                 : value:
                     deploymentNote: yournotescomehere
                     deviceList:
@@ -756,8 +755,7 @@ paths:
                       - SSLPolicy
                     type: DeploymentRequest
                     version: '1457566762351'
-                ? 'Example 3 : POST /fmc_config/v1/domain/DomainUUID/deployment/deploymentrequests ( POST a deployment request
-                  for Full Deployment and Selective Policy Deployment  )'
+                ? 'Example 3 : POST /fmc_config/v1/domain/DomainUUID/deployment/deploymentrequests ( POST a deployment request for Full Deployment and Selective Policy Deployment  )'
                 : value:
                     deploymentNote: yournotescomehere
                     deviceList:
@@ -791,6 +789,7 @@ paths:
           description: Error
       tags:
       - Deployment
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/jobhistories:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -810,18 +809,12 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/jobhistories:
     get:
       deprecated: false
       description: '**Gets all deployment jobs.**'
       operationId: getAllJobHistory
       parameters:
-      - description: Various filter criteria can be specified using the format <code>deviceUUID:{uuid};startTime:start_time_in_secs;endTime:end_time_in_secs;rollbackApplicable:true_or_false;status:job_status;jobType:job_type</code>.
-          <br/><br/><code>startTime</code> -- start time in unix format (in seconds). startTime and endTime should be specified
-          together.<br/><br/><code>endTime</code> -- end time in unix format (in seconds). startTime and endTime should be
-          specified together.<br/><br/><code>rollbackApplicable</code> -- true/false. Not a mandatory field.<br/><br/><code>status</code>
-          -- {DEPLOYING, DEPLOYED, FAILED, ABORTED, EDIT_INUSE}. Not a mandatory field.<br/><br/><code>jobType</code> -- {DEPLOYMENT,
-          ROLLBACK, CERTIFICATE}. Not a mandatory field.
+      - description: Various filter criteria can be specified using the format <code>deviceUUID:{uuid};startTime:start_time_in_secs;endTime:end_time_in_secs;rollbackApplicable:true_or_false;status:job_status;jobType:job_type</code>. <br/><br/><code>startTime</code> -- start time in unix format (in seconds). startTime and endTime should be specified together.<br/><br/><code>endTime</code> -- end time in unix format (in seconds). startTime and endTime should be specified together.<br/><br/><code>rollbackApplicable</code> -- true/false. Not a mandatory field.<br/><br/><code>status</code> -- {DEPLOYING, DEPLOYED, FAILED, ABORTED, EDIT_INUSE}. Not a mandatory field.<br/><br/><code>jobType</code> -- {DEPLOYMENT, ROLLBACK, CERTIFICATE}. Not a mandatory field.
         in: query
         name: filter
         required: false
@@ -911,8 +904,7 @@ paths:
                       limit: 3
                       offset: 0
                       pages: 1
-                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/deployment/jobhistories ( GET ALL paginated Job Histories
-                  instances with canRollback response where filter param rollbackApplicable is set as true. )'
+                ? 'Example 2 : GET /fmc_config/v1/domain/DomainUUID/deployment/jobhistories ( GET ALL paginated Job Histories instances with canRollback response where filter param rollbackApplicable is set as true. )'
                 : value:
                     items:
                     - deviceList:
@@ -973,6 +965,7 @@ paths:
           description: Error
       tags:
       - Deployment
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/jobhistories/{containerUUID}/operational/downloadreports:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -992,7 +985,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/jobhistories/{containerUUID}/operational/downloadreports:
     get:
       deprecated: false
       description: '**Get the deployment job report for download.**'
@@ -1029,6 +1021,7 @@ paths:
           description: Error
       tags:
       - Deployment
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/jobhistories/{containerUUID}/operational/emailreports:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1048,7 +1041,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/jobhistories/{containerUUID}/operational/emailreports:
     post:
       deprecated: false
       description: '**Email the deployment job report. _Check the response section for applicable examples (if any)._**'
@@ -1066,8 +1058,7 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/deployment/jobhistories/{containerUUID}/operational/emailreports
-                ( POST download report request. )'
+              ? 'Example 1 : POST /fmc_config/v1/domain/DomainUUID/deployment/jobhistories/{containerUUID}/operational/emailreports ( POST download report request. )'
               : value:
                   recipientList:
                   - mail1@cisco.com
@@ -1094,6 +1085,7 @@ paths:
           description: Error
       tags:
       - Deployment
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/jobhistories/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1113,7 +1105,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/jobhistories/{objectId}:
     get:
       deprecated: false
       description: '**Get the specified deployment job.**'
@@ -1246,6 +1237,7 @@ paths:
           description: Error
       tags:
       - Deployment
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/pendingchangesrequests:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1265,11 +1257,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/pendingchangesrequests:
     post:
       deprecated: false
-      description: '**Create a request for generating pending policy changes or pending CLI changes or both on devices. _Check
-        the response section for applicable examples (if any)._**'
+      description: '**Create a request for generating pending policy changes or pending CLI changes or both on devices. _Check the response section for applicable examples (if any)._**'
       operationId: createPendingChangesRequest
       parameters:
       - $ref: '#/components/parameters/domainUUID'
@@ -1278,22 +1268,19 @@ paths:
         content:
           application/json:
             examples:
-              ? 'Example 1 : POST <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/deployment/pendingchangesrequests ( POST a
-                pending changes request with request type as CLI_AND_POLICY_DIFF. )'
+              ? 'Example 1 : POST <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/deployment/pendingchangesrequests ( POST a pending changes request with request type as CLI_AND_POLICY_DIFF. )'
               : value:
                   deviceList:
                   - d94f7ada-d141-11e5-acf3-c41f7e67fb1b
                   - 77bb6cd0-f613-11ed-b040-ec1fd6f081d6
                   requestType: CLI_AND_POLICY_DIFF
-              ? 'Example 2 : POST <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/deployment/pendingchangesrequests ( POST a
-                pending changes request with request type as CLI_DIFF. )'
+              ? 'Example 2 : POST <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/deployment/pendingchangesrequests ( POST a pending changes request with request type as CLI_DIFF. )'
               : value:
                   deviceList:
                   - d94f7ada-d141-11e5-acf3-c41f7e67fb1b
                   - 77bb6cd0-f613-11ed-b040-ec1fd6f081d6
                   requestType: CLI_DIFF
-              ? 'Example 3 : POST <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/deployment/pendingchangesrequests ( POST a
-                pending changes request with request type as POLICY_DIFF. )'
+              ? 'Example 3 : POST <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/deployment/pendingchangesrequests ( POST a pending changes request with request type as POLICY_DIFF. )'
               : value:
                   deviceList:
                   - d94f7ada-d141-11e5-acf3-c41f7e67fb1b
@@ -1309,8 +1296,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : POST <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/deployment/pendingchangesrequests ( POST
-                  a pending changes request with request type as CLI_AND_POLICY_DIFF. )'
+                ? 'Example 1 : POST <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/deployment/pendingchangesrequests ( POST a pending changes request with request type as CLI_AND_POLICY_DIFF. )'
                 : value:
                     deviceList:
                     - d94f7ada-d141-11e5-acf3-c41f7e67fb1b
@@ -1323,8 +1309,7 @@ paths:
                         status: '200'
                         taskType: PENDING_CHANGES_REQUEST
                     requestType: CLI_AND_POLICY_DIFF
-                ? 'Example 2 : POST <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/deployment/pendingchangesrequests ( POST
-                  a pending changes request with request type as CLI_DIFF. )'
+                ? 'Example 2 : POST <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/deployment/pendingchangesrequests ( POST a pending changes request with request type as CLI_DIFF. )'
                 : value:
                     deviceList:
                     - d94f7ada-d141-11e5-acf3-c41f7e67fb1b
@@ -1337,8 +1322,7 @@ paths:
                         status: '200'
                         taskType: PENDING_CHANGES_REQUEST
                     requestType: CLI_DIFF
-                ? 'Example 3 : POST <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/deployment/pendingchangesrequests ( POST
-                  a pending changes request with request type as POLICY_DIFF. )'
+                ? 'Example 3 : POST <fmc_ip>/api/fmc_config/v1/domain/DomainUUID/deployment/pendingchangesrequests ( POST a pending changes request with request type as POLICY_DIFF. )'
                 : value:
                     deviceList:
                     - d94f7ada-d141-11e5-acf3-c41f7e67fb1b
@@ -1364,6 +1348,7 @@ paths:
           description: Error
       tags:
       - Deployment
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/rollbackrequests:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -1383,11 +1368,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deployment/rollbackrequests:
     post:
       deprecated: false
-      description: '**Create a request for rollback configuration to devices. _Check the response section for applicable examples
-        (if any)._**'
+      description: '**Create a request for rollback configuration to devices. _Check the response section for applicable examples (if any)._**'
       operationId: createRollbackRequest
       parameters:
       - $ref: '#/components/parameters/domainUUID'
@@ -1429,307 +1412,12 @@ paths:
           description: Error
       tags:
       - Deployment
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
 components:
   schemas:
-    IGroupDependencyDetailEntry:
-      description: Represents the dependency information between out-of-date policies
-      properties:
-        dependentPolicyList:
-          description: Describes the dependency between the out-of-date policies with the reason
-          items:
-            $ref: '#/components/schemas/IDependentPolicy'
-            type: object
-          type: array
-        mandatoryDeployablePolicies:
-          description: List of out-of-date policies which must get deployed always in the upcoming deployment. These policies
-            will get added into the deployment by default.
-          items:
-            type: string
-          type: array
-        selectivelyDeployablePolicies:
-          description: List of out-of-date policies which can be selectively deployed.
-          items:
-            type: string
-          type: array
-      type: object
-    IDeviceGroup:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        members:
-          items:
-            $ref: '#/components/schemas/IBaseDevice'
-            type: object
-          type: array
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IValueDelete:
-      properties:
-        fieldName:
-          type: string
-        oldValue:
-          type: string
-      type: object
-    Domain:
-      description: The details about the domain.
-      properties:
-        id:
-          description: Unique UUID of this domain
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
-          type: object
-        name:
-          description: Name of the domain.
-          type: string
-        type:
-          description: Domain type definition (fixed).
-          type: string
-        uuid:
-          type: string
-      type: object
-    PendingChangesRequestMetadata:
-      properties:
-        deployInProgressSkippedDeviceList:
-          items:
-            type: string
-          type: array
-        domain:
-          $ref: '#/components/schemas/Domain'
-          type: object
-        downloadUrl:
-          type: string
-        failedDeviceList:
-          items:
-            type: string
-          type: array
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          type: object
-        task:
-          $ref: '#/components/schemas/ITaskStatus'
-          type: object
-        taskInProgressSkippedDeviceList:
-          items:
-            type: string
-          type: array
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    IReference:
-      description: Contains reference information.
-      properties:
-        id:
-          description: Unique identifier representing resource.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        name:
-          description: User chosen resource name.
-          type: string
-        type:
-          description: Response object associated with resource.
-          type: string
-      type: object
-    IAdvanced:
-      properties:
-        enableOGS:
-          type: boolean
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    ITaskStatus:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        status:
-          type: string
-        subTasks:
-          items:
-            $ref: '#/components/schemas/ISubTask'
-            type: object
-          type: array
-        taskType:
-          enum:
-          - DEVICE_REGISTRATION
-          - SMART_LICENSE
-          - DEVICE_DEPLOYMENT
-          - DEVICE_ROLLBACK
-          - NGFWHA_OPERATIONS
-          - COPY_CONFIG_REQUEST
-          - HIT_COUNT_REFRESH
-          - FTD_CLUSTER_BOOTSTRAP
-          - FTD_CLUSTER_CREATE
-          - FTD_CLUSTER_BREAK
-          - FTD_CLUSTER_ADD_NODES
-          - FTD_CLUSTER_REMOVE_NODES
-          - DEVICE_BACKUP
-          - FTD_CLUSTER_UPDATE_BOOTSTRAP
-          - FTD_CLUSTER_COMMAND
-          - SSP_EPM_OIR
-          - SSP_EPM_BREAKOUT_DEPLOY
-          - DEVICE_EXPORT
-          - DEVICE_IMPORT
-          - POLICY_EXPORT
-          - CHASSIS_REGISTRATION
-          - CHANGE_MANAGER
-          - CONFIGURE_DEVICE_VALIDATE
-          - CONFIGURE_DEVICE
-          - CONFIGURE_MANAGER
-          - CONFIGURE_MANAGER_ADD
-          - CONFIGURE_MANAGER_DELETE
-          - INITIATE_MIGRATION
-          - DISCARD_MIGRATION
-          - SWITCH_TO_ANALYTICS
-          - DELETE_DEVICE
-          - GENERATE_REPORTS
-          - FLEXCONFIG_MIGRATION
-          - DEVICE_UNREGISTRATION
-          - PENDING_CHANGES_REQUEST
-          - DEVICE_TROUBLESHOOT
-          - DEVICE_MODEL_MIGRATION
-          - DEVICE_TEMPLATE_CREATION
-          - CHASSIS_CONVERSION_REQUEST
-          - SNORT_PROFILER
-          - CPU_PROFILER
-          - POLICY_REPORT_GENERATION
-          - DEVICE_TEMPLATE_APPLY
-          - LTP_ONBOARDING
-          - POLICY_CLONE_OPERATION
-          - DEVICE_CERTIFICATE_MANAGEMENT
-          - OOB_CHANGES_REQUEST
-          - UPLOAD_TROUBLESHOOT
-          type: string
-        type:
-          type: string
-      type: object
-    RollbackRequest:
-      description: Represents the rollback request object which will be used for config rollback of a device.
-      properties:
-        metadata:
-          $ref: '#/components/schemas/RollbackRequestMetadata'
-          description: Object representing metadata attributes for the rollback request entry.
-          type: object
-        rollbackDeviceList:
-          description: A list containing job UUID and device UUIDs combination for the rollback.
-          items:
-            $ref: '#/components/schemas/IRollbackDeviceListEntry'
-            type: object
-          type: array
-        type:
-          description: Type must be RollbackRequest.
-          type: string
-      type: object
-    ITarget:
-      description: This is the target device.
-      properties:
-        description:
-          type: string
-        id:
-          description: Unique ID of the device.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: Name of the device.
-          type: string
-        type:
-          description: Device
-          type: string
-        version:
-          type: string
-      type: object
-    MetadataUser:
-      description: This object defines details about the user.
-      properties:
-        id:
-          description: The unique UUID of the user
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Contains the self referencing links to this resource
-          type: object
-        name:
-          description: Name of the user.
-          type: string
-        type:
-          description: The user type (fixed).
-          type: string
-      type: object
-    JobHistoryListContainer:
+    DeployableDeviceListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/JobHistory'
+          $ref: '#/components/schemas/DeployableDevice'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -1737,6 +1425,17 @@ components:
         paging:
           $ref: '#/components/schemas/PagingContainer'
           type: object
+      type: object
+    DeviceInventoryData:
+      properties:
+        cpuCores:
+          type: string
+        cpuType:
+          type: string
+        memoryInMB:
+          type: string
+        storageInGB:
+          type: string
       type: object
     DeploymentRequest:
       description: Represents the deployment request object which will be used for policy deployment of a device.
@@ -1758,15 +1457,13 @@ components:
             type: object
           type: array
         forceDeploy:
-          description: Boolean indicating the deployment is force deploy or not. Value set to `true` only if device is not
-            out-of-date and user wants to force a deployment. This should not be used unless needed. Default is `false`.
+          description: Boolean indicating the deployment is force deploy or not. Value set to `true` only if device is not out-of-date and user wants to force a deployment. This should not be used unless needed. Default is `false`.
           type: boolean
         id:
           description: Id created as part of the deployment.
           type: string
         ignoreWarning:
-          description: Boolean indicating whether the warnings needs to be ignored during the prevalidation of deployment
-            job. Default is `false`.
+          description: Boolean indicating whether the warnings needs to be ignored during the prevalidation of deployment job. Default is `false`.
           type: boolean
         links:
           $ref: '#/components/schemas/ILinks'
@@ -1781,8 +1478,7 @@ components:
         recipients:
           type: string
         selectedPoliciesforDevices:
-          description: List of devices for Selective Policy Deployment. </br> The devices mentioned here should be part of
-            the 'devicelist' attribute.
+          description: List of devices for Selective Policy Deployment. </br> The devices mentioned here should be part of the 'devicelist' attribute.
           items:
             $ref: '#/components/schemas/ISelectedPoliciesforDevices'
             type: object
@@ -1794,109 +1490,59 @@ components:
           description: Integer indicating the version to which the deployment should be done.
           type: string
       type: object
-    IHybridZeroTrustDeviceSetting:
+    HealthAlertConfig:
       properties:
-        autoDeployEnabled:
+        enabled:
           type: boolean
-        domainSettings:
-          items:
-            $ref: '#/components/schemas/IHybridZeroTrustFQDNConfig'
-            type: object
-          type: array
-        universalZeroTrustEnabled:
-          type: boolean
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
         name:
           type: string
-        type:
-          type: string
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
+        thresholds:
           items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
+            $ref: '#/components/schemas/HealthThreshold'
             type: object
           type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
+      type: object
+    HealthSetting:
+      properties:
+        alertEvaluationInterval:
+          format: int32
+          type: integer
+        certFileContent:
           type: string
+        certFileName:
+          type: string
+        certFileType:
+          type: string
+        certPassphrase:
+          type: string
+        configType:
+          type: string
+        dataCollectionInterval:
+          format: int32
+          type: integer
+        dialInHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        dialOutHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        enabledOpenConfig:
+          type: boolean
+        grpcPassword:
+          type: string
+        grpcUsername:
+          type: string
+        readOnly:
+          type: boolean
       type: object
     LLUniversalZeroTrustSetting:
       additionalProperties:
         $ref: '#/components/schemas/IHybridZeroTrustDeviceSetting'
         type: object
-      type: object
-    IPolicyStatus:
-      properties:
-        modifiedUserInfoList:
-          description: List of ModifiedUserInfo objects containing LastModifiedTime and UserName.
-          items:
-            $ref: '#/components/schemas/IModifiedUserInfo'
-            type: object
-          type: array
-        policy:
-          $ref: '#/components/schemas/IPolicyModel'
-          description: Object which contains Policy Information such as id, name and policy type.
-          type: object
-        referredPolicyList:
-          description: List of PolicyStatus objects which are referred by the policy.
-          items:
-            $ref: '#/components/schemas/IPolicyStatus'
-            type: object
-          type: array
-        trafficInterrupting:
-          description: Boolean indicating a deployment can cause traffic interruption.
-          type: boolean
-        upToDate:
-          description: Boolean indicating whether the policy is out-of-date.
-          type: boolean
-        versionTimeStamp:
-          description: Epoch time, indicating last modified time of the policy.
-          format: int32
-          type: integer
-      type: object
-    IDependentPolicy:
-      description: Represents the inter-dependent out-of-date policies with the reason.
-      properties:
-        dependencyReason:
-          description: Describes the reason for the inter-dependency between the out-of-date policies.
-          type: string
-        dependentTypeList:
-          description: List of out-of-date policies which are inter-dependent.
-          items:
-            type: string
-          type: array
-      type: object
-    DeploymentDetailListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/DeploymentDetail'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
       type: object
     IModifiedUserInfo:
       description: Modified User Information
@@ -1908,220 +1554,6 @@ components:
         userName:
           description: Name of the user.
           type: string
-      type: object
-    IActionInfo:
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    IDevice_2:
-      properties:
-        accessPolicy:
-          $ref: '#/components/schemas/IPolicyModel'
-          type: object
-        actions:
-          items:
-            $ref: '#/components/schemas/IPreDeployAction'
-            type: object
-          type: array
-        advanced:
-          $ref: '#/components/schemas/IAdvanced'
-          type: object
-        analyticsOnly:
-          type: boolean
-        changeManager:
-          type: boolean
-        cloudDeviceId:
-          type: string
-        deploymentStatus:
-          type: string
-        description:
-          type: string
-        deviceGroup:
-          $ref: '#/components/schemas/IDeviceGroup'
-          type: object
-        ftdMode:
-          enum:
-          - ROUTED
-          - TRANSPARENT
-          type: string
-        healthMessage:
-          type: string
-        healthPolicy:
-          $ref: '#/components/schemas/IHealthPolicy'
-          type: object
-        healthStatus:
-          type: string
-        hostName:
-          type: string
-        id:
-          type: string
-        isConnected:
-          type: boolean
-        isMCDManaged:
-          type: boolean
-        keepLocalEvents:
-          type: boolean
-        license_caps:
-          items:
-            type: string
-          type: array
-        licenseType:
-          enum:
-          - BYOL
-          - SAAS
-          - PAYG
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        managementState:
-          enum:
-          - MANAGED
-          - UNMANAGED
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        model:
-          type: string
-        modelId:
-          type: string
-        modelNumber:
-          type: string
-        modelType:
-          type: string
-        name:
-          type: string
-        natID:
-          type: string
-        performanceTier:
-          type: string
-        prohibitPacketTransfer:
-          type: boolean
-        regKey:
-          type: string
-        role:
-          type: string
-        secondaryHostname:
-          type: string
-        serialNumber:
-          type: string
-        skipDeployment:
-          type: boolean
-        snortEngine:
-          enum:
-          - SNORT2
-          - SNORT3
-          type: string
-        status:
-          type: string
-        sw_version:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      required:
-      - hostName
-      - license_caps
-      - regKey
-      type: object
-    ISelectedPoliciesforDevices:
-      description: Represents the object which is responsible for enabling the Selective Policy Deployment
-      properties:
-        deviceUUID:
-          description: Corresponding device UUID for which the selection is mentioned.
-          type: string
-        selectedPolicies:
-          description: 'List of Policy Types which have to be selectively deployed. Note: mandatoryDeployablePolicies should
-            not be included in this list.'
-          items:
-            type: string
-          type: array
-      type: object
-    DialHost:
-      properties:
-        host:
-          type: string
-        port:
-          format: int32
-          type: integer
-      type: object
-    HealthThreshold:
-      properties:
-        type:
-          type: string
-        value:
-          format: int32
-          type: integer
-      type: object
-    IHybridZeroTrustFQDNConfig:
-      properties:
-        FQDN:
-          type: string
-        certificate:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        interfaces:
-          items:
-            $ref: '#/components/schemas/IReference'
-            type: object
-          type: array
-      type: object
-    IReferenceUpdate:
-      properties:
-        entityName:
-          type: string
-        entityType:
-          type: string
-        fieldName:
-          type: string
-      type: object
-    EmailReport:
-      description: Email Job Report. Configure and test System->Configuration->Email Notification prior using this request
-      properties:
-        recipientList:
-          description: string array of recipient mailers
-          items:
-            type: string
-          type: array
-      type: object
-    PendingChangesListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/PendingChanges'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ISubTask:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        status:
-          type: string
-        target:
-          $ref: '#/components/schemas/ITarget'
-          type: object
       type: object
     PendingChanges:
       description: Retrieves list changes between the last successful deployment and current saved configuration for the device,.
@@ -2152,12 +1584,10 @@ components:
           $ref: '#/components/schemas/ILinks'
           type: object
         message:
-          description: In case for an entity there is no diff, due to no modification or some error during generation proper
-            message will be given for that entity.
+          description: In case for an entity there is no diff, due to no modification or some error during generation proper message will be given for that entity.
           type: string
         parentUUID:
-          description: UUID of the entity to which this entity is grouped to. If it's empty, it means the entity is the parent
-            entity.
+          description: UUID of the entity to which this entity is grouped to. If it's empty, it means the entity is the parent entity.
           type: string
         referencesAdded:
           description: References that were added compared to its other state.
@@ -2192,18 +1622,11 @@ components:
         version:
           type: string
       type: object
-    PagingContainer:
+    DialHost:
       properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
+        host:
+          type: string
+        port:
           format: int32
           type: integer
       type: object
@@ -2253,153 +1676,50 @@ components:
           description: Creator of the deployment task.
           type: string
       type: object
-    FailedDevices:
-      description: Represents the devices which got failed during the deployment of a devices.
+    IAdvanced:
       properties:
-        deviceUUID:
-          description: UUID of device.
-          type: string
-        failureReason:
-          description: The reason for which device got failed.
-          type: string
-      type: object
-    IDeviceListEntry:
-      properties:
-        canRollback:
-          description: Indicates whether the deployed version to device in the deployment job is rollback capable. This field
-            is available only if context filter parameter has value as RollbackApplicable.
+        enableOGS:
           type: boolean
-        containerName:
-          description: Name of the container. This will still be displayed after deletion.
-          type: string
-        containerUUID:
-          description: UUID of the container
-          type: string
-        deployedVersion:
-          description: Config version of the device in the deployment job
-          format: int32
-          type: integer
-        deploymentStatus:
-          description: Deployment status of the device in the deployment job
-          enum:
-          - DEPLOYING
-          - SUCCEEDED
-          - PARTIALLY_SUCCEEDED
-          - FAILED
-          - SSP_SUCCEEDED
-          - SSP_FAILED
-          - SSP_PRIMARY_BOOTSTRAP_SUCCEEDED
-          - SSP_PRIMARY_BOOTSTRAP_FAILED
-          - SSP_SECONDARY_BOOTSTRAP_SUCCEEDED
-          - SSP_SECONDARY_BOOTSTRAP_FAILED
-          - PRIMARY_BOOTSTRAP_SUCCEEDED
-          - PRIMARY_BOOTSTRAP_FAILED
-          - SECONDARY_BOOTSTRAP_SUCCEEDED
-          - SECONDARY_BOOTSTRAP_FAILED
-          - BREAK_SUCCEEDED
-          - BREAK_FAILED
-          - PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - SSP_PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - SSP_SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - BREAK_PARTIALLY_SUCCEEDED
-          - CANCELLED
-          - NONE
-          type: string
-        deviceName:
-          description: Name of the device
-          type: string
-        deviceUUID:
-          description: UUID of the device
-          type: string
       type: object
-    IMetadata:
+    IActionInfo:
+      type: object
+    PendingChangesRequestMetadata:
       properties:
+        deployInProgressSkippedDeviceList:
+          items:
+            type: string
+          type: array
         domain:
-          $ref: '#/components/schemas/IDomain'
+          $ref: '#/components/schemas/Domain'
           type: object
+        downloadUrl:
+          type: string
+        failedDeviceList:
+          items:
+            type: string
+          type: array
         isLocked:
           type: boolean
         lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
+          $ref: '#/components/schemas/MetadataUser'
           type: object
         matches:
           items:
             type: string
           type: array
         readOnly:
-          $ref: '#/components/schemas/IReadonly'
+          $ref: '#/components/schemas/ReadOnly'
           type: object
+        task:
+          $ref: '#/components/schemas/ITaskStatus'
+          type: object
+        taskInProgressSkippedDeviceList:
+          items:
+            type: string
+          type: array
         timestamp:
           format: int32
           type: integer
-      type: object
-    DeploymentDetail:
-      description: An object representing the deployment details on a device
-      properties:
-        description:
-          type: string
-        endTime:
-          description: Time in seconds at which the deployment ended, timestamp is in unix format
-          format: int32
-          type: integer
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: 'Name of the deployment job '
-          type: string
-        policyList:
-          description: Details of policies which were deployed to the device.
-          items:
-            $ref: '#/components/schemas/IPolicyModel'
-            type: object
-          type: array
-        startTime:
-          description: Time in seconds at which the deployment was started, timestamp is in unix format
-          format: int32
-          type: integer
-        status:
-          description: 'Status of the deployment, can be one of DEPLOYING, SUCCEEDED, PARTIALLY_SUCCEEDED, FAILED, SSP_SUCCEEDED,
-            SSP_FAILED, SSP_PRIMARY_BOOTSTRAP_SUCCEEDED, SSP_PRIMARY_BOOTSTRAP_FAILED, SSP_SECONDARY_BOOTSTRAP_SUCCEEDED,
-            SSP_SECONDARY_BOOTSTRAP_FAILED, PRIMARY_BOOTSTRAP_SUCCEEDED, PRIMARY_BOOTSTRAP_FAILED, SECONDARY_BOOTSTRAP_SUCCEEDED,
-            SECONDARY_BOOTSTRAP_FAILED, BREAK_SUCCEEDED, BREAK_FAILED, PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED,
-            SSP_PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, SSP_SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, BREAK_PARTIALLY_SUCCEEDED,
-            CANCELLED and NONE '
-          enum:
-          - DEPLOYING
-          - SUCCEEDED
-          - PARTIALLY_SUCCEEDED
-          - FAILED
-          - SSP_SUCCEEDED
-          - SSP_FAILED
-          - SSP_PRIMARY_BOOTSTRAP_SUCCEEDED
-          - SSP_PRIMARY_BOOTSTRAP_FAILED
-          - SSP_SECONDARY_BOOTSTRAP_SUCCEEDED
-          - SSP_SECONDARY_BOOTSTRAP_FAILED
-          - PRIMARY_BOOTSTRAP_SUCCEEDED
-          - PRIMARY_BOOTSTRAP_FAILED
-          - SECONDARY_BOOTSTRAP_SUCCEEDED
-          - SECONDARY_BOOTSTRAP_FAILED
-          - BREAK_SUCCEEDED
-          - BREAK_FAILED
-          - PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - SSP_PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - SSP_SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - BREAK_PARTIALLY_SUCCEEDED
-          - CANCELLED
-          - NONE
-          type: string
-        type:
-          type: string
-        version:
-          type: string
       type: object
     DeployableDevice:
       description: Represents the Deployable Device Object.
@@ -2464,70 +1784,26 @@ components:
           description: Integer, indicating the latest deployed version of the device.
           type: string
       type: object
-    IHealthPolicy:
-      description: Description of Health Policy.
+    FailedDevices:
+      description: Represents the devices which got failed during the deployment of a devices.
       properties:
-        basePolicyID:
+        deviceUUID:
+          description: UUID of device.
           type: string
-        defaultPolicy:
+        failureReason:
+          description: The reason for which device got failed.
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
           type: boolean
-        description:
-          description: Description of Health Policy.
-          type: string
-        healthModules:
-          items:
-            $ref: '#/components/schemas/HealthModule'
-            type: object
-          type: array
-        id:
-          description: Unique identifier (UUID) representing the Health policy.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the Health policy.
-          type: object
-        name:
-          description: User-specified name of the Health policy.
-          type: string
-        policyType:
-          type: string
-        setting:
-          $ref: '#/components/schemas/HealthSetting'
-          type: object
-        type:
-          description: Type of the Health policy; this value is always HealthPolicy.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    IDeviceInventoryData:
-      properties:
-        cpuCores:
-          type: string
-        cpuType:
-          type: string
-        memoryInMB:
-          type: string
-        storageInGB:
-          type: string
-      type: object
-    DownloadReport:
-      description: Download Job report
-      properties: {}
-      type: object
-    IValueUpdate:
-      properties:
-        fieldName:
-          type: string
-        newValue:
-          type: string
-        oldValue:
-          type: string
       type: object
     DeviceMetadata:
       properties:
@@ -2567,8 +1843,7 @@ components:
           description: Indicated if the device is in multiinstance or native mode.
           type: boolean
         isPartOfContainer:
-          description: This field indicates whether it is part of any cluster. This will be true for a device which is part
-            of NGFWHA, NGFW cluster and firepower devices which is part of Stack.
+          description: This field indicates whether it is part of any cluster. This will be true for a device which is part of NGFWHA, NGFW cluster and firepower devices which is part of Stack.
           type: boolean
         isSnort3:
           type: boolean
@@ -2616,71 +1891,129 @@ components:
       required:
       - otherAssociatedPolicies
       type: object
-    HealthModule:
+    RollbackRequest:
+      description: Represents the rollback request object which will be used for config rollback of a device.
       properties:
-        alertConfig:
+        metadata:
+          $ref: '#/components/schemas/RollbackRequestMetadata'
+          description: Object representing metadata attributes for the rollback request entry.
+          type: object
+        rollbackDeviceList:
+          description: A list containing job UUID and device UUIDs combination for the rollback.
           items:
-            $ref: '#/components/schemas/HealthAlertConfig'
+            $ref: '#/components/schemas/IRollbackDeviceListEntry'
             type: object
           type: array
-        alertEnabled:
-          type: boolean
-        criticalThreshold:
+        type:
+          description: Type must be RollbackRequest.
+          type: string
+      type: object
+    IDeviceChassisData:
+      properties:
+        chassisSerialNo:
+          type: string
+        chassisUrl:
+          type: string
+        securityModuleNo:
           format: int32
           type: integer
-        customThresholds:
+        securityModuleSN:
+          type: string
+      type: object
+    DeploymentDetail:
+      description: An object representing the deployment details on a device
+      properties:
+        description:
+          type: string
+        endTime:
+          description: Time in seconds at which the deployment ended, timestamp is in unix format
+          format: int32
+          type: integer
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: 'Name of the deployment job '
+          type: string
+        policyList:
+          description: Details of policies which were deployed to the device.
           items:
-            $ref: '#/components/schemas/HealthThreshold'
+            $ref: '#/components/schemas/IPolicyModel'
             type: object
           type: array
-        enabled:
-          type: boolean
-        moduleId:
-          type: string
-        severity:
+        startTime:
+          description: Time in seconds at which the deployment was started, timestamp is in unix format
+          format: int32
+          type: integer
+        status:
+          description: 'Status of the deployment, can be one of DEPLOYING, SUCCEEDED, PARTIALLY_SUCCEEDED, FAILED, SSP_SUCCEEDED, SSP_FAILED, SSP_PRIMARY_BOOTSTRAP_SUCCEEDED, SSP_PRIMARY_BOOTSTRAP_FAILED, SSP_SECONDARY_BOOTSTRAP_SUCCEEDED, SSP_SECONDARY_BOOTSTRAP_FAILED, PRIMARY_BOOTSTRAP_SUCCEEDED, PRIMARY_BOOTSTRAP_FAILED, SECONDARY_BOOTSTRAP_SUCCEEDED, SECONDARY_BOOTSTRAP_FAILED, BREAK_SUCCEEDED, BREAK_FAILED, PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, SSP_PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, SSP_SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, BREAK_PARTIALLY_SUCCEEDED, CANCELLED and NONE '
+          enum:
+          - DEPLOYING
+          - SUCCEEDED
+          - PARTIALLY_SUCCEEDED
+          - FAILED
+          - SSP_SUCCEEDED
+          - SSP_FAILED
+          - SSP_PRIMARY_BOOTSTRAP_SUCCEEDED
+          - SSP_PRIMARY_BOOTSTRAP_FAILED
+          - SSP_SECONDARY_BOOTSTRAP_SUCCEEDED
+          - SSP_SECONDARY_BOOTSTRAP_FAILED
+          - PRIMARY_BOOTSTRAP_SUCCEEDED
+          - PRIMARY_BOOTSTRAP_FAILED
+          - SECONDARY_BOOTSTRAP_SUCCEEDED
+          - SECONDARY_BOOTSTRAP_FAILED
+          - BREAK_SUCCEEDED
+          - BREAK_FAILED
+          - PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - SSP_PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - SSP_SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - BREAK_PARTIALLY_SUCCEEDED
+          - CANCELLED
+          - NONE
           type: string
         type:
           type: string
-        warningThreshold:
-          format: int32
-          type: integer
+        version:
+          type: string
       type: object
-    HealthSetting:
+    IValueUpdate:
       properties:
-        alertEvaluationInterval:
-          format: int32
-          type: integer
-        certFileContent:
+        fieldName:
           type: string
-        certFileName:
+        newValue:
           type: string
-        certFileType:
+        oldValue:
           type: string
-        certPassphrase:
-          type: string
-        configType:
-          type: string
-        dataCollectionInterval:
-          format: int32
-          type: integer
-        dialInHosts:
+      type: object
+    IHybridZeroTrustDeviceSetting:
+      properties:
+        autoDeployEnabled:
+          type: boolean
+        domainSettings:
           items:
-            $ref: '#/components/schemas/DialHost'
+            $ref: '#/components/schemas/IHybridZeroTrustFQDNConfig'
             type: object
           type: array
-        dialOutHosts:
+        universalZeroTrustEnabled:
+          type: boolean
+      type: object
+    ISelectedPoliciesforDevices:
+      description: Represents the object which is responsible for enabling the Selective Policy Deployment
+      properties:
+        deviceUUID:
+          description: Corresponding device UUID for which the selection is mentioned.
+          type: string
+        selectedPolicies:
+          description: 'List of Policy Types which have to be selectively deployed. Note: mandatoryDeployablePolicies should not be included in this list.'
           items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
+            type: string
           type: array
-        enabledOpenConfig:
-          type: boolean
-        grpcPassword:
-          type: string
-        grpcUsername:
-          type: string
-        readOnly:
-          type: boolean
       type: object
     IDevice:
       properties:
@@ -2799,34 +2132,408 @@ components:
       - license_caps
       - regKey
       type: object
-    RollbackRequestMetadata:
+    ILinks:
+      description: This defines the self referencing links for the given resource.
       properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IDevice_2:
+      properties:
+        accessPolicy:
+          $ref: '#/components/schemas/IPolicyModel'
           type: object
-        isLocked:
+        actions:
+          items:
+            $ref: '#/components/schemas/IPreDeployAction'
+            type: object
+          type: array
+        advanced:
+          $ref: '#/components/schemas/IAdvanced'
+          type: object
+        analyticsOnly:
           type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
+        changeManager:
+          type: boolean
+        cloudDeviceId:
+          type: string
+        deploymentStatus:
+          type: string
+        description:
+          type: string
+        deviceGroup:
+          $ref: '#/components/schemas/IDeviceGroup'
           type: object
-        matches:
+        ftdMode:
+          enum:
+          - ROUTED
+          - TRANSPARENT
+          type: string
+        healthMessage:
+          type: string
+        healthPolicy:
+          $ref: '#/components/schemas/IHealthPolicy'
+          type: object
+        healthStatus:
+          type: string
+        hostName:
+          type: string
+        id:
+          type: string
+        isConnected:
+          type: boolean
+        isMCDManaged:
+          type: boolean
+        keepLocalEvents:
+          type: boolean
+        license_caps:
           items:
             type: string
           type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
+        licenseType:
+          enum:
+          - BYOL
+          - SAAS
+          - PAYG
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
           type: object
-        task:
-          $ref: '#/components/schemas/TaskStatus'
+        managementState:
+          enum:
+          - MANAGED
+          - UNMANAGED
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
           type: object
-        timestamp:
+        model:
+          type: string
+        modelId:
+          type: string
+        modelNumber:
+          type: string
+        modelType:
+          type: string
+        name:
+          type: string
+        natID:
+          type: string
+        performanceTier:
+          type: string
+        prohibitPacketTransfer:
+          type: boolean
+        regKey:
+          type: string
+        role:
+          type: string
+        secondaryHostname:
+          type: string
+        serialNumber:
+          type: string
+        skipDeployment:
+          type: boolean
+        snortEngine:
+          enum:
+          - SNORT2
+          - SNORT3
+          type: string
+        status:
+          type: string
+        sw_version:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      required:
+      - hostName
+      - license_caps
+      - regKey
+      type: object
+    IPolicyStatus:
+      properties:
+        modifiedUserInfoList:
+          description: List of ModifiedUserInfo objects containing LastModifiedTime and UserName.
+          items:
+            $ref: '#/components/schemas/IModifiedUserInfo'
+            type: object
+          type: array
+        policy:
+          $ref: '#/components/schemas/IPolicyModel'
+          description: Object which contains Policy Information such as id, name and policy type.
+          type: object
+        referredPolicyList:
+          description: List of PolicyStatus objects which are referred by the policy.
+          items:
+            $ref: '#/components/schemas/IPolicyStatus'
+            type: object
+          type: array
+        trafficInterrupting:
+          description: Boolean indicating a deployment can cause traffic interruption.
+          type: boolean
+        upToDate:
+          description: Boolean indicating whether the policy is out-of-date.
+          type: boolean
+        versionTimeStamp:
+          description: Epoch time, indicating last modified time of the policy.
           format: int32
           type: integer
       type: object
-    DeployableDeviceListContainer:
+    IPolicyModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IDeviceGroup:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        members:
+          items:
+            $ref: '#/components/schemas/IBaseDevice'
+            type: object
+          type: array
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    DeploymentDetailListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/DeployableDevice'
+          $ref: '#/components/schemas/DeploymentDetail'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IRollbackDeviceListEntry:
+      description: Part of request body which contains deployment job ids and list of devices for config rollback.
+      properties:
+        deploymentJobId:
+          description: Deployment job UUID.
+          type: string
+        deviceList:
+          description: List of device UUIDs which are part of deployment job id.
+          items:
+            type: string
+          type: array
+      type: object
+    IHybridZeroTrustFQDNConfig:
+      properties:
+        FQDN:
+          type: string
+        certificate:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        interfaces:
+          items:
+            $ref: '#/components/schemas/IReference'
+            type: object
+          type: array
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    DownloadReport:
+      description: Download Job report
+      properties: {}
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    IValueAdd:
+      properties:
+        fieldName:
+          type: string
+        newValue:
+          type: string
+      type: object
+    EmailReport:
+      description: Email Job Report. Configure and test System->Configuration->Email Notification prior using this request
+      properties:
+        recipientList:
+          description: string array of recipient mailers
+          items:
+            type: string
+          type: array
+      type: object
+    ISubTask:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        status:
+          type: string
+        target:
+          $ref: '#/components/schemas/ITarget'
+          type: object
+      type: object
+    Domain:
+      description: The details about the domain.
+      properties:
+        id:
+          description: Unique UUID of this domain
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
+          type: object
+        name:
+          description: Name of the domain.
+          type: string
+        type:
+          description: Domain type definition (fixed).
+          type: string
+        uuid:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    HealthModule:
+      properties:
+        alertConfig:
+          items:
+            $ref: '#/components/schemas/HealthAlertConfig'
+            type: object
+          type: array
+        alertEnabled:
+          type: boolean
+        criticalThreshold:
+          format: int32
+          type: integer
+        customThresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+        enabled:
+          type: boolean
+        moduleId:
+          type: string
+        severity:
+          type: string
+        type:
+          type: string
+        warningThreshold:
+          format: int32
+          type: integer
+      type: object
+    HealthThreshold:
+      properties:
+        type:
+          type: string
+        value:
+          format: int32
+          type: integer
+      type: object
+    IValueDelete:
+      properties:
+        fieldName:
+          type: string
+        oldValue:
+          type: string
+      type: object
+    JobHistoryListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/JobHistory'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -2845,36 +2552,78 @@ components:
           - APPLY_TEMPLATE
           type: string
       type: object
-    IDomain:
+    PendingChangesListContainer:
       properties:
-        id:
-          type: string
+        items:
+          $ref: '#/components/schemas/PendingChanges'
+          type: array
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        name:
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IDependentPolicy:
+      description: Represents the inter-dependent out-of-date policies with the reason.
+      properties:
+        dependencyReason:
+          description: Describes the reason for the inter-dependency between the out-of-date policies.
           type: string
-        type:
+        dependentTypeList:
+          description: List of out-of-date policies which are inter-dependent.
+          items:
+            type: string
+          type: array
+      type: object
+    IGroupDependencyDetailEntry:
+      description: Represents the dependency information between out-of-date policies
+      properties:
+        dependentPolicyList:
+          description: Describes the dependency between the out-of-date policies with the reason
+          items:
+            $ref: '#/components/schemas/IDependentPolicy'
+            type: object
+          type: array
+        mandatoryDeployablePolicies:
+          description: List of out-of-date policies which must get deployed always in the upcoming deployment. These policies will get added into the deployment by default.
+          items:
+            type: string
+          type: array
+        selectivelyDeployablePolicies:
+          description: List of out-of-date policies which can be selectively deployed.
+          items:
+            type: string
+          type: array
+      type: object
+    DeviceChassisData:
+      properties:
+        chassisSerialNo:
+          type: string
+        chassisUrl:
+          type: string
+        securityModuleNo:
+          format: int32
+          type: integer
+        securityModuleSN:
           type: string
       type: object
-    IBaseDevice:
+    IReferenceUpdate:
       properties:
-        accessPolicy:
-          $ref: '#/components/schemas/IPolicyModel'
-          type: object
-        advanced:
-          $ref: '#/components/schemas/IAdvanced'
-          type: object
+        entityName:
+          type: string
+        entityType:
+          type: string
+        fieldName:
+          type: string
+      type: object
+    ITarget:
+      description: This is the target device.
+      properties:
         description:
           type: string
-        healthMessage:
-          type: string
-        healthPolicy:
-          $ref: '#/components/schemas/IHealthPolicy'
-          type: object
-        healthStatus:
-          type: string
         id:
+          description: Unique ID of the device.
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
@@ -2882,26 +2631,40 @@ components:
         metadata:
           $ref: '#/components/schemas/IMetadata'
           type: object
-        model:
-          type: string
-        modelId:
-          type: string
-        modelNumber:
-          type: string
-        modelType:
-          type: string
         name:
-          type: string
-        role:
-          type: string
-        status:
-          type: string
-        sw_version:
+          description: Name of the device.
           type: string
         type:
+          description: Device
           type: string
         version:
           type: string
+      type: object
+    DownloadReportListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/DownloadReport'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
+      properties:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
       type: object
     TaskStatus:
       properties:
@@ -2982,6 +2745,194 @@ components:
         type:
           type: string
       type: object
+    ITaskStatus:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        status:
+          type: string
+        subTasks:
+          items:
+            $ref: '#/components/schemas/ISubTask'
+            type: object
+          type: array
+        taskType:
+          enum:
+          - DEVICE_REGISTRATION
+          - SMART_LICENSE
+          - DEVICE_DEPLOYMENT
+          - DEVICE_ROLLBACK
+          - NGFWHA_OPERATIONS
+          - COPY_CONFIG_REQUEST
+          - HIT_COUNT_REFRESH
+          - FTD_CLUSTER_BOOTSTRAP
+          - FTD_CLUSTER_CREATE
+          - FTD_CLUSTER_BREAK
+          - FTD_CLUSTER_ADD_NODES
+          - FTD_CLUSTER_REMOVE_NODES
+          - DEVICE_BACKUP
+          - FTD_CLUSTER_UPDATE_BOOTSTRAP
+          - FTD_CLUSTER_COMMAND
+          - SSP_EPM_OIR
+          - SSP_EPM_BREAKOUT_DEPLOY
+          - DEVICE_EXPORT
+          - DEVICE_IMPORT
+          - POLICY_EXPORT
+          - CHASSIS_REGISTRATION
+          - CHANGE_MANAGER
+          - CONFIGURE_DEVICE_VALIDATE
+          - CONFIGURE_DEVICE
+          - CONFIGURE_MANAGER
+          - CONFIGURE_MANAGER_ADD
+          - CONFIGURE_MANAGER_DELETE
+          - INITIATE_MIGRATION
+          - DISCARD_MIGRATION
+          - SWITCH_TO_ANALYTICS
+          - DELETE_DEVICE
+          - GENERATE_REPORTS
+          - FLEXCONFIG_MIGRATION
+          - DEVICE_UNREGISTRATION
+          - PENDING_CHANGES_REQUEST
+          - DEVICE_TROUBLESHOOT
+          - DEVICE_MODEL_MIGRATION
+          - DEVICE_TEMPLATE_CREATION
+          - CHASSIS_CONVERSION_REQUEST
+          - SNORT_PROFILER
+          - CPU_PROFILER
+          - POLICY_REPORT_GENERATION
+          - DEVICE_TEMPLATE_APPLY
+          - LTP_ONBOARDING
+          - POLICY_CLONE_OPERATION
+          - DEVICE_CERTIFICATE_MANAGEMENT
+          - OOB_CHANGES_REQUEST
+          - UPLOAD_TROUBLESHOOT
+          type: string
+        type:
+          type: string
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    MetadataUser:
+      description: This object defines details about the user.
+      properties:
+        id:
+          description: The unique UUID of the user
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Contains the self referencing links to this resource
+          type: object
+        name:
+          description: Name of the user.
+          type: string
+        type:
+          description: The user type (fixed).
+          type: string
+      type: object
+    IDeviceListEntry:
+      properties:
+        canRollback:
+          description: Indicates whether the deployed version to device in the deployment job is rollback capable. This field is available only if context filter parameter has value as RollbackApplicable.
+          type: boolean
+        containerName:
+          description: Name of the container. This will still be displayed after deletion.
+          type: string
+        containerUUID:
+          description: UUID of the container
+          type: string
+        deployedVersion:
+          description: Config version of the device in the deployment job
+          format: int32
+          type: integer
+        deploymentStatus:
+          description: Deployment status of the device in the deployment job
+          enum:
+          - DEPLOYING
+          - SUCCEEDED
+          - PARTIALLY_SUCCEEDED
+          - FAILED
+          - SSP_SUCCEEDED
+          - SSP_FAILED
+          - SSP_PRIMARY_BOOTSTRAP_SUCCEEDED
+          - SSP_PRIMARY_BOOTSTRAP_FAILED
+          - SSP_SECONDARY_BOOTSTRAP_SUCCEEDED
+          - SSP_SECONDARY_BOOTSTRAP_FAILED
+          - PRIMARY_BOOTSTRAP_SUCCEEDED
+          - PRIMARY_BOOTSTRAP_FAILED
+          - SECONDARY_BOOTSTRAP_SUCCEEDED
+          - SECONDARY_BOOTSTRAP_FAILED
+          - BREAK_SUCCEEDED
+          - BREAK_FAILED
+          - PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - SSP_PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - SSP_SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - BREAK_PARTIALLY_SUCCEEDED
+          - CANCELLED
+          - NONE
+          type: string
+        deviceName:
+          description: Name of the device
+          type: string
+        deviceUUID:
+          description: UUID of the device
+          type: string
+      type: object
+    RollbackRequestMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          type: object
+        task:
+          $ref: '#/components/schemas/TaskStatus'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
     DeploymentRequestMetadata:
       properties:
         domain:
@@ -3006,9 +2957,60 @@ components:
           format: int32
           type: integer
       type: object
+    IDeviceInventoryData:
+      properties:
+        cpuCores:
+          type: string
+        cpuType:
+          type: string
+        memoryInMB:
+          type: string
+        storageInGB:
+          type: string
+      type: object
+    IHealthPolicy:
+      description: Description of Health Policy.
+      properties:
+        basePolicyID:
+          type: string
+        defaultPolicy:
+          type: boolean
+        description:
+          description: Description of Health Policy.
+          type: string
+        healthModules:
+          items:
+            $ref: '#/components/schemas/HealthModule'
+            type: object
+          type: array
+        id:
+          description: Unique identifier (UUID) representing the Health policy.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the Health policy.
+          type: object
+        name:
+          description: User-specified name of the Health policy.
+          type: string
+        policyType:
+          type: string
+        setting:
+          $ref: '#/components/schemas/HealthSetting'
+          type: object
+        type:
+          description: Type of the Health policy; this value is always HealthPolicy.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
     PendingChangesRequest:
-      description: Represents the pending changes request object which will be used to generate the delta of the changes pending
-        on the device.
+      description: Represents the pending changes request object which will be used to generate the delta of the changes pending on the device.
       properties:
         description:
           type: string
@@ -3028,8 +3030,7 @@ components:
         name:
           type: string
         requestType:
-          description: 'Specifies whether cli diff or policy diff or both need to be generated. One of: CLI_DIFF | POLICY_DIFF
-            | CLI_AND_POLICY_DIFF.'
+          description: 'Specifies whether cli diff or policy diff or both need to be generated. One of: CLI_DIFF | POLICY_DIFF | CLI_AND_POLICY_DIFF.'
           enum:
           - CLI_DIFF
           - POLICY_DIFF
@@ -3040,26 +3041,38 @@ components:
         version:
           type: string
       type: object
-    ErrorMessagesContainer:
+    IReference:
+      description: Contains reference information.
       properties:
-        bulkPayloadIndex:
-          description: More details about the error.
+        id:
+          description: Unique identifier representing resource.
           type: string
-        code:
-          description: More details about the error.
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        name:
+          description: User chosen resource name.
           type: string
-        description:
-          description: More details about the error.
+        type:
+          description: Response object associated with resource.
           type: string
-        details:
-          description: More details about the error.
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
           type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
         severity:
           description: Specifies the Highest level severity among all the error messages.
           enum:
@@ -3067,87 +3080,22 @@ components:
           - WARN
           type: string
       type: object
-    DeviceInventoryData:
+    IBaseDevice:
       properties:
-        cpuCores:
-          type: string
-        cpuType:
-          type: string
-        memoryInMB:
-          type: string
-        storageInGB:
-          type: string
-      type: object
-    DownloadReportListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/DownloadReport'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
+        accessPolicy:
+          $ref: '#/components/schemas/IPolicyModel'
           type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
+        advanced:
+          $ref: '#/components/schemas/IAdvanced'
           type: object
-      type: object
-    HealthAlertConfig:
-      properties:
-        enabled:
-          type: boolean
-        name:
-          type: string
-        thresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-      type: object
-    IDeviceChassisData:
-      properties:
-        chassisSerialNo:
-          type: string
-        chassisUrl:
-          type: string
-        securityModuleNo:
-          format: int32
-          type: integer
-        securityModuleSN:
-          type: string
-      type: object
-    IValueAdd:
-      properties:
-        fieldName:
-          type: string
-        newValue:
-          type: string
-      type: object
-    DeviceChassisData:
-      properties:
-        chassisSerialNo:
-          type: string
-        chassisUrl:
-          type: string
-        securityModuleNo:
-          format: int32
-          type: integer
-        securityModuleSN:
-          type: string
-      type: object
-    IRollbackDeviceListEntry:
-      description: Part of request body which contains deployment job ids and list of devices for config rollback.
-      properties:
-        deploymentJobId:
-          description: Deployment job UUID.
-          type: string
-        deviceList:
-          description: List of device UUIDs which are part of deployment job id.
-          items:
-            type: string
-          type: array
-      type: object
-    IPolicyModel:
-      properties:
         description:
+          type: string
+        healthMessage:
+          type: string
+        healthPolicy:
+          $ref: '#/components/schemas/IHealthPolicy'
+          type: object
+        healthStatus:
           type: string
         id:
           type: string
@@ -3157,44 +3105,28 @@ components:
         metadata:
           $ref: '#/components/schemas/IMetadata'
           type: object
+        model:
+          type: string
+        modelId:
+          type: string
+        modelNumber:
+          type: string
+        modelType:
+          type: string
         name:
+          type: string
+        role:
+          type: string
+        status:
+          type: string
+        sw_version:
           type: string
         type:
           type: string
         version:
           type: string
       type: object
-    ReadOnly:
-      description: Defines the read only conditions if the referenced resource is read only.
-      properties:
-        reason:
-          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions
-            make it read only) or DOMAIN (if resource is read only in current domain).
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          description: True if this resource us read only and false otherwise.
-          type: boolean
-      type: object
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
     limit:
       description: Number of items to return.
       in: query
@@ -3210,6 +3142,21 @@ components:
       required: true
       schema:
         type: string
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

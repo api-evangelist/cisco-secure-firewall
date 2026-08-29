@@ -247,6 +247,56 @@ components:
       - policyType
       - revisionId
       type: object
+    MpmPolicyPushRequestsPage:
+      properties:
+        lastRequestId:
+          format: uuid
+          type: string
+        lastTimestampInMillis:
+          format: int64
+          type: integer
+        multiReqCursorId:
+          format: uuid
+          type: string
+        requests:
+          items:
+            $ref: '#/components/schemas/MpmRequestInfo'
+          type: array
+      type: object
+    Task:
+      properties:
+        allocatedTime:
+          format: date-time
+          type: string
+        completedTime:
+          format: date-time
+          type: string
+        gwSetId:
+          type: string
+        taskId:
+          type: string
+        taskStatus:
+          enum:
+          - ALLOCATED
+          - DISCARDED
+          - SUCCEEDED
+          - FAILED
+          type: string
+        workerId:
+          type: string
+      type: object
+    MpmMultiPolicyPushRequestApi:
+      properties:
+        gatewaySetId:
+          type: string
+        policyIdentifiers:
+          items:
+            $ref: '#/components/schemas/MpmPolicyIdentifier'
+          type: array
+      required:
+      - gatewaySetId
+      - policyIdentifiers
+      type: object
     SubRequest:
       properties:
         errors:
@@ -286,56 +336,6 @@ components:
           - SKIPPED
           - SUCCEEDED
           - ERRORED
-          type: string
-      type: object
-    MpmPolicyPushRequestsPage:
-      properties:
-        lastRequestId:
-          format: uuid
-          type: string
-        lastTimestampInMillis:
-          format: int64
-          type: integer
-        multiReqCursorId:
-          format: uuid
-          type: string
-        requests:
-          items:
-            $ref: '#/components/schemas/MpmRequestInfo'
-          type: array
-      type: object
-    MpmMultiPolicyPushRequestApi:
-      properties:
-        gatewaySetId:
-          type: string
-        policyIdentifiers:
-          items:
-            $ref: '#/components/schemas/MpmPolicyIdentifier'
-          type: array
-      required:
-      - gatewaySetId
-      - policyIdentifiers
-      type: object
-    Task:
-      properties:
-        allocatedTime:
-          format: date-time
-          type: string
-        completedTime:
-          format: date-time
-          type: string
-        gwSetId:
-          type: string
-        taskId:
-          type: string
-        taskStatus:
-          enum:
-          - ALLOCATED
-          - DISCARDED
-          - SUCCEEDED
-          - FAILED
-          type: string
-        workerId:
           type: string
       type: object
   securitySchemes:

@@ -368,36 +368,6 @@ paths:
       x-publicly-available: true
 components:
   schemas:
-    EntitlementShareRequest:
-      properties:
-        managed_orgs:
-          example:
-          - id: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
-            subscriptions:
-            - id: subs20250110
-              skus:
-              - key: BPT-SEC
-                quantity: 200
-              - key: XDR-ESS
-                quantity: 200
-            - id: subs20250111
-              skus: []
-          - id: 3c74e892-f39d-47e6-8299-5759d941c053
-            subscriptions:
-            - id: subs20250110
-              skus:
-              - key: BPT-SEC
-                quantity: 200
-              - key: XDR-ESS
-                quantity: 100
-            - id: subs20250113
-              skus:
-              - key: UPT-SEC-ESS
-                quantity: 200
-          items:
-            $ref: '#/components/schemas/EntitlementManagedOrg'
-          type: array
-      type: object
     AssignedGroups:
       properties:
         id:
@@ -408,17 +378,6 @@ components:
           description: name of the assigned group
           example: Group A
           type: string
-    Error:
-      properties:
-        code:
-          format: int32
-          type: integer
-        message:
-          type: string
-      required:
-      - code
-      - message
-      type: object
     PostManagedRelationshipResponse:
       properties:
         id:
@@ -433,36 +392,31 @@ components:
           items:
             $ref: '#/components/schemas/AssignedSubscriptions'
           type: array
-    AssignedSubscriptions:
+    AssignedAdmins:
       properties:
-        id:
-          description: id of the subscription
-          example: subs20251011
+        email:
+          description: email of the assigned admin
+          example: john.doe@xyz.com
           type: string
-        skus:
-          items:
-            properties:
-              key:
-                example: XDR-ESS
-                type: string
-              productsInfo:
-                description: products on the subscription
-                items:
-                  properties:
-                    assignedEntitlements:
-                      description: entitlement quantity shared with the managed org
-                      example: 200
-                      type: integer
-                    product:
-                      example: Secure Access
-                      type: string
-                    productRegion:
-                      example: US WEST 2
-                      type: string
-                  type: object
-                type: array
-            type: object
-          type: array
+        id:
+          description: id of the admin
+          example: 00u251alpxbbASGcC0h8
+          type: string
+        name:
+          description: name of the assigned admin
+          example: John Doe
+          type: string
+    Error:
+      properties:
+        code:
+          format: int32
+          type: integer
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
     EntitlementManagedOrg:
       example:
         id: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
@@ -488,24 +442,6 @@ components:
           type: array
       required:
       - id
-    EntitlementSubscription:
-      properties:
-        id:
-          description: subscription id
-          example: subs20250110
-          type: string
-        skus:
-          items:
-            properties:
-              key:
-                example: XDR-ESS
-                type: string
-              quantity:
-                example: 200
-                type: integer
-            type: object
-          type: array
-      type: object
     organizationsRelationship:
       properties:
         assigned_admins:
@@ -554,20 +490,89 @@ components:
           items:
             $ref: '#/components/schemas/AssignedSubscriptions'
           type: array
-    AssignedAdmins:
+    EntitlementShareRequest:
       properties:
-        email:
-          description: email of the assigned admin
-          example: john.doe@xyz.com
-          type: string
+        managed_orgs:
+          example:
+          - id: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
+            subscriptions:
+            - id: subs20250110
+              skus:
+              - key: BPT-SEC
+                quantity: 200
+              - key: XDR-ESS
+                quantity: 200
+            - id: subs20250111
+              skus: []
+          - id: 3c74e892-f39d-47e6-8299-5759d941c053
+            subscriptions:
+            - id: subs20250110
+              skus:
+              - key: BPT-SEC
+                quantity: 200
+              - key: XDR-ESS
+                quantity: 100
+            - id: subs20250113
+              skus:
+              - key: UPT-SEC-ESS
+                quantity: 200
+          items:
+            $ref: '#/components/schemas/EntitlementManagedOrg'
+          type: array
+      type: object
+    AssignedSubscriptions:
+      properties:
         id:
-          description: id of the admin
-          example: 00u251alpxbbASGcC0h8
+          description: id of the subscription
+          example: subs20251011
           type: string
-        name:
-          description: name of the assigned admin
-          example: John Doe
+        skus:
+          items:
+            properties:
+              key:
+                example: XDR-ESS
+                type: string
+              productsInfo:
+                description: products on the subscription
+                items:
+                  properties:
+                    assignedEntitlements:
+                      description: entitlement quantity shared with the managed org
+                      example: 200
+                      type: integer
+                    product:
+                      example: Secure Access
+                      type: string
+                    productRegion:
+                      example: US WEST 2
+                      type: string
+                  type: object
+                type: array
+            type: object
+          type: array
+    EntitlementSubscription:
+      properties:
+        id:
+          description: subscription id
+          example: subs20250110
           type: string
+        skus:
+          items:
+            properties:
+              key:
+                example: XDR-ESS
+                type: string
+              quantity:
+                example: 200
+                type: integer
+            type: object
+          type: array
+      type: object
+  headers:
+    Date:
+      schema:
+        pattern: ^.*$
+        type: string
   responses:
     NotFoundError:
       content:
@@ -587,11 +592,6 @@ components:
       headers:
         Date:
           $ref: '#/components/headers/Date'
-  headers:
-    Date:
-      schema:
-        pattern: ^.*$
-        type: string
   securitySchemes:
     OpenID:
       openIdConnectUrl: https://auth.example.com/.well-known/openid-configuration

@@ -158,15 +158,6 @@ paths:
       x-publicly-available: true
 components:
   schemas:
-    model.PaginationInfo:
-      properties:
-        limit:
-          type: integer
-        offset:
-          type: integer
-        totalRecords:
-          type: integer
-      type: object
     model.ProvisionedSKU:
       properties:
         name:
@@ -176,14 +167,34 @@ components:
             $ref: '#/components/schemas/model.ProductInfo'
           type: array
       type: object
-    model.UserSubscription:
+    model.UpdateEntitlementsRequest:
+      properties:
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/model.UserSubscription'
+          type: array
+      type: object
+    model.ProvisionedSubscription:
       properties:
         id:
           type: string
         skus:
           items:
-            $ref: '#/components/schemas/model.SKU'
+            $ref: '#/components/schemas/model.ProvisionedSKU'
           type: array
+      type: object
+    model.SubnSku:
+      properties:
+        endDate:
+          type: string
+        externalSubscriptionId:
+          type: string
+        licenseType:
+          type: string
+        skus:
+          additionalProperties:
+            $ref: '#/components/schemas/model.MspSku'
+          type: object
       type: object
     model.SharedEntitlement:
       properties:
@@ -196,20 +207,62 @@ components:
             $ref: '#/components/schemas/model.ProductConf'
           type: array
       type: object
-    model.OrgEntitlements:
+    model.Error:
       properties:
-        pagination:
-          $ref: '#/components/schemas/model.PaginationInfo'
+        error:
+          type: string
+        message:
+          type: string
+      type: object
+    model.PaginationInfo:
+      properties:
+        limit:
+          type: integer
+        offset:
+          type: integer
+        totalRecords:
+          type: integer
+      type: object
+    model.UpdateEntitlementResponse:
+      properties:
+        endDate:
+          type: string
+        id:
+          type: string
+        licenseType:
+          type: string
+        provisioningErrors:
+          items:
+            $ref: '#/components/schemas/model.SubscriptionProvisioningError'
+          type: array
         subscriptions:
           items:
-            $ref: '#/components/schemas/model.SubnSku'
+            $ref: '#/components/schemas/model.ProvisionedSubscription'
           type: array
       type: object
-    model.UpdateEntitlementsRequest:
+    model.ProductInfo:
       properties:
-        subscriptions:
+        assignedEntitlements:
+          type: integer
+        product:
+          type: string
+        productRegion:
+          type: string
+      type: object
+    model.SubscriptionProvisioningError:
+      properties:
+        error:
+          type: string
+        subscriptionId:
+          type: string
+      type: object
+    model.UserSubscription:
+      properties:
+        id:
+          type: string
+        skus:
           items:
-            $ref: '#/components/schemas/model.UserSubscription'
+            $ref: '#/components/schemas/model.SKU'
           type: array
       type: object
     model.MspSku:
@@ -231,6 +284,22 @@ components:
         skuName:
           type: string
       type: object
+    model.SKU:
+      properties:
+        name:
+          type: string
+        quantity:
+          type: integer
+      type: object
+    model.OrgEntitlements:
+      properties:
+        pagination:
+          $ref: '#/components/schemas/model.PaginationInfo'
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/model.SubnSku'
+          type: array
+      type: object
     model.ProductConf:
       properties:
         activationStatus:
@@ -243,75 +312,6 @@ components:
           type: string
         region:
           type: string
-      type: object
-    model.Error:
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-      type: object
-    model.ProvisionedSubscription:
-      properties:
-        id:
-          type: string
-        skus:
-          items:
-            $ref: '#/components/schemas/model.ProvisionedSKU'
-          type: array
-      type: object
-    model.ProductInfo:
-      properties:
-        assignedEntitlements:
-          type: integer
-        product:
-          type: string
-        productRegion:
-          type: string
-      type: object
-    model.UpdateEntitlementResponse:
-      properties:
-        endDate:
-          type: string
-        id:
-          type: string
-        licenseType:
-          type: string
-        provisioningErrors:
-          items:
-            $ref: '#/components/schemas/model.SubscriptionProvisioningError'
-          type: array
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/model.ProvisionedSubscription'
-          type: array
-      type: object
-    model.SubscriptionProvisioningError:
-      properties:
-        error:
-          type: string
-        subscriptionId:
-          type: string
-      type: object
-    model.SKU:
-      properties:
-        name:
-          type: string
-        quantity:
-          type: integer
-      type: object
-    model.SubnSku:
-      properties:
-        endDate:
-          type: string
-        externalSubscriptionId:
-          type: string
-        licenseType:
-          type: string
-        skus:
-          additionalProperties:
-            $ref: '#/components/schemas/model.MspSku'
-          type: object
       type: object
   securitySchemes:
     OpenID:

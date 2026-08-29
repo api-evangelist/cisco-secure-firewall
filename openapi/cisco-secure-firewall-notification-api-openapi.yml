@@ -270,18 +270,41 @@ paths:
       - Notification
 components:
   schemas:
-    markNotificationStatusRequest:
-      description: update notification status API request body
+    errorResponse:
+      description: error response
       properties:
-        is_read:
-          description: new read status
-          type: boolean
+        code:
+          description: Error code
+          type: integer
+        details:
+          description: Additional details about the error
+          type: object
+        message:
+          description: Error message
+          type: string
+      type: object
+    deleteNotificationResponse:
+      description: delete notification API response body
+      properties:
+        error:
+          description: deletion error
+          type: string
+        status:
+          description: deletion status
+          enum:
+          - SUCCESS
+          - FAILED
+          type: string
+      type: object
+    deleteBulkNotificationRequest:
+      description: bulk delete notifications request body
+      properties:
         notifications:
-          description: notifications to update
+          description: notifications to delete
           items:
             properties:
               initiation_type:
-                description: notification initiation type
+                description: type of notification initiation
                 type: string
               notification_id:
                 description: notification ID
@@ -294,7 +317,6 @@ components:
           type: array
       required:
       - notifications
-      - is_read
       type: object
     notificationCountResponse:
       description: get notification count API response body
@@ -309,36 +331,14 @@ components:
           description: count of unread notifications
           type: integer
       type: object
-    notificationListResponse:
-      description: list notifications API response body
-      properties:
-        notifications:
-          description: notification object list
-          items:
-            $ref: '#/components/schemas/notification'
-          type: array
-      type: object
-    errorResponse:
-      description: error response
-      properties:
-        code:
-          description: Error code
-          type: integer
-        details:
-          description: Additional details about the error
-          type: object
-        message:
-          description: Error message
-          type: string
-      type: object
-    deleteBulkNotificationResponse:
-      description: bulk delete notifications response body
+    markNotificationStatusResponse:
+      description: update notification status API response body
       properties:
         error:
-          description: deletion error
+          description: update error
           type: string
         status:
-          description: deletion status
+          description: notification status
           enum:
           - SUCCESS
           - FAILED
@@ -385,8 +385,8 @@ components:
           format: date-time
           type: string
       type: object
-    deleteNotificationResponse:
-      description: delete notification API response body
+    deleteBulkNotificationResponse:
+      description: bulk delete notifications response body
       properties:
         error:
           description: deletion error
@@ -398,28 +398,18 @@ components:
           - FAILED
           type: string
       type: object
-    markNotificationStatusResponse:
-      description: update notification status API response body
+    markNotificationStatusRequest:
+      description: update notification status API request body
       properties:
-        error:
-          description: update error
-          type: string
-        status:
-          description: notification status
-          enum:
-          - SUCCESS
-          - FAILED
-          type: string
-      type: object
-    deleteBulkNotificationRequest:
-      description: bulk delete notifications request body
-      properties:
+        is_read:
+          description: new read status
+          type: boolean
         notifications:
-          description: notifications to delete
+          description: notifications to update
           items:
             properties:
               initiation_type:
-                description: type of notification initiation
+                description: notification initiation type
                 type: string
               notification_id:
                 description: notification ID
@@ -432,6 +422,16 @@ components:
           type: array
       required:
       - notifications
+      - is_read
+      type: object
+    notificationListResponse:
+      description: list notifications API response body
+      properties:
+        notifications:
+          description: notification object list
+          items:
+            $ref: '#/components/schemas/notification'
+          type: array
       type: object
   securitySchemes:
     bearerAuth:

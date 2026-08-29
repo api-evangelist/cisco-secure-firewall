@@ -2,20 +2,15 @@ openapi: 3.2.0
 info:
   title: Cisco Secure Firewall Health API
   version: '1.0'
-  description: 'Operations tagged Health across 3 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml,
-    cisco-secure-firewall-scc-provisioning-openapi.json. Each path carries the servers of the definition it was published
-    in.'
+  description: 'Operations tagged Health across 3 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml, cisco-secure-firewall-scc-provisioning-openapi.json. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
     harvested: '2026-08-19'
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of
-      record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API
-      Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and
-      schemas are the provider's, unmodified; only the partition is ours.
+    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
+    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
     derived_from: cisco-secure-firewall-cdfmc-openapi.yml
     operation_coverage: 11/12
   x-evidence:
@@ -46,19 +41,31 @@ tags:
 - name: Health
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/aggregatemetrics:
+    servers:
+    - url: https://api.us.security.cisco.com/firewall
+      description: US
+    - url: https://api.eu.security.cisco.com/firewall
+      description: EU
+    - url: https://api.apj.security.cisco.com/firewall
+      description: APJ
+    - url: https://api.au.security.cisco.com/firewall
+      description: AUS
+    - url: https://api.in.security.cisco.com/firewall
+      description: IN
+    - url: https://api.int.security.cisco.com/firewall
+      description: Staging
+    - url: https://scale.manage.security.cisco.com/api/rest
+      description: Scale
+    - url: https://ci.manage.security.cisco.com/api/rest
+      description: CI
+    - url: https://manage.stg.secure.cisco/api/rest
+      description: Stgf9
     get:
       deprecated: false
       description: '**Get metrics related to the health of the device and interface attributes.**'
       operationId: getAggregateMetrics
       parameters:
-      - description: Metrics are governed by health policies deployed on the FTD. If the health module is disabled, there
-          is a chance that metric data wont be available or is incomplete.<br/>Filter criteria can be specified using the
-          format <code>device_uuid:deviceUuid; metric:metric_name; timeRange:range.</code><br/><br/><code>device_uuid</code>
-          -- Identifier for device. There can only be one device offered per request. This is a mandatory parameter in the
-          filter query.<br/><code>metric</code> -- Indicates the metric to be queried. Possible values are CPU, MEM, INTERFACE,
-          DISK_STATS, CHASSIS_STATS and HA_INFO. If this filter is not used, all available metrics are retrieved.<br><code>timeRange</code>
-          -- Enum which aids in retrieving the average metrics for time intervals. Possible values are 5m, 15m, 30m, and 1h.
-          If this filter is not used, the average of the last five minutes will be shown by default.
+      - description: Metrics are governed by health policies deployed on the FTD. If the health module is disabled, there is a chance that metric data wont be available or is incomplete.<br/>Filter criteria can be specified using the format <code>device_uuid:deviceUuid; metric:metric_name; timeRange:range.</code><br/><br/><code>device_uuid</code> -- Identifier for device. There can only be one device offered per request. This is a mandatory parameter in the filter query.<br/><code>metric</code> -- Indicates the metric to be queried. Possible values are CPU, MEM, INTERFACE, DISK_STATS, CHASSIS_STATS and HA_INFO. If this filter is not used, all available metrics are retrieved.<br><code>timeRange</code> -- Enum which aids in retrieving the average metrics for time intervals. Possible values are 5m, 15m, 30m, and 1h. If this filter is not used, the average of the last five minutes will be shown by default.
         in: query
         name: filter
         required: true
@@ -77,8 +84,7 @@ paths:
           content:
             application/json:
               examples:
-                ? 'Example 1 : GET /api/fmc_config/v1/domain/{domainUUID}/health/aggregateMetrics ( Retrieves aggregate health
-                  metrics of the devices )'
+                ? 'Example 1 : GET /api/fmc_config/v1/domain/{domainUUID}/health/aggregateMetrics ( Retrieves aggregate health metrics of the devices )'
                 : value:
                     items:
                     - chassisStatsHealthMetrics:
@@ -149,6 +155,7 @@ paths:
           description: Error
       tags:
       - Health
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/alerts:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -168,18 +175,12 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/alerts:
     get:
       deprecated: false
       description: '**Get health alerts.**'
       operationId: getHealthAlertModel
       parameters:
-      - description: Various filter criteria can be specified using the format <code>startTime:start_time_in_secs;endTime:end_time_in_secs;deviceUUIDs:List_of_device_uuids;status:List_of_statuses;moduleIDs:List_of_moduleIDs.</code><br/><br/><code>startTime</code>
-          -- start time in unix format - startTime and endTime should be specified together<br/><code>endTime</code> -- end
-          time in unix format - startTime and endTime should be specified together<br/><code>deviceUUIDs</code> -- List of
-          device UUIDs (UUID is 0 for Firewall Management Center).<br/><code>status</code> -- List of status codes to filter
-          delimited by comma, e.g. green,red,yellow.<br/><code>moduleIDs</code> -- List of module ids to filter, delimited
-          by comma.<br/>.
+      - description: Various filter criteria can be specified using the format <code>startTime:start_time_in_secs;endTime:end_time_in_secs;deviceUUIDs:List_of_device_uuids;status:List_of_statuses;moduleIDs:List_of_moduleIDs.</code><br/><br/><code>startTime</code> -- start time in unix format - startTime and endTime should be specified together<br/><code>endTime</code> -- end time in unix format - startTime and endTime should be specified together<br/><code>deviceUUIDs</code> -- List of device UUIDs (UUID is 0 for Firewall Management Center).<br/><code>status</code> -- List of status codes to filter delimited by comma, e.g. green,red,yellow.<br/><code>moduleIDs</code> -- List of module ids to filter, delimited by comma.<br/>.
         in: query
         name: filter
         required: false
@@ -210,6 +211,7 @@ paths:
           description: Error
       tags:
       - Health
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/events:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -229,19 +231,12 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/events:
     get:
       deprecated: false
       description: '**Get health events.**'
       operationId: getHealthEventModel
       parameters:
-      - description: Various filter criteria can be specified using the format <code>startTime:start_time_in_secs;endTime:end_time_in_secs;deviceUUIDs:List_of_device_uuids;status:List_of_statuses;moduleIDs:List_of_moduleIDs
-          or "all".</code><br/><br/><code>startTime</code> -- start time in unix format - startTime and endTime should be
-          specified together<br/><code>endTime</code> -- end time in unix format - startTime and endTime should be specified
-          together<br/><code>deviceUUIDs</code> -- List of device UUIDs (UUID is 0 for Firewall Management Center).<br/><code>status</code>
-          -- List of status codes to filter delimited by comma, e.g. NORMAL,CRITICAL,WARNING.<br/><code>moduleIDs</code> --
-          List of module ids to filter, delimited by comma or "all" (without the quotes) to get descriptive events for all
-          modules per device.<br/>.
+      - description: Various filter criteria can be specified using the format <code>startTime:start_time_in_secs;endTime:end_time_in_secs;deviceUUIDs:List_of_device_uuids;status:List_of_statuses;moduleIDs:List_of_moduleIDs or "all".</code><br/><br/><code>startTime</code> -- start time in unix format - startTime and endTime should be specified together<br/><code>endTime</code> -- end time in unix format - startTime and endTime should be specified together<br/><code>deviceUUIDs</code> -- List of device UUIDs (UUID is 0 for Firewall Management Center).<br/><code>status</code> -- List of status codes to filter delimited by comma, e.g. NORMAL,CRITICAL,WARNING.<br/><code>moduleIDs</code> -- List of module ids to filter, delimited by comma or "all" (without the quotes) to get descriptive events for all modules per device.<br/>.
         in: query
         name: filter
         required: false
@@ -327,6 +322,7 @@ paths:
           description: Error
       tags:
       - Health
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/metrics:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -346,25 +342,12 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/metrics:
     get:
       deprecated: false
-      description: '**Get HealthMonitor metrics for the device. The metrics are governed by the respective health modules
-        in the health policy. Ensure that you enable the health module before fetching the metrics using this API.**'
+      description: '**Get HealthMonitor metrics for the device. The metrics are governed by the respective health modules in the health policy. Ensure that you enable the health module before fetching the metrics using this API.**'
       operationId: getHealthMetric
       parameters:
-      - description: Various filter criteria can be specified using the format <code>deviceUUIDs:uuid1,uuid2;metric:metric_name;startTime:start_time_in_secs;endTime:end_time_in_secs;step:step_in_secs;regexFilter:filter_on_metric</code><br/><br/><code>deviceUUIDs</code>
-          --List UUID of the device to be queried.<br/><code>metric</code> -- name of the prometheus metric to be queried.This
-          is mandatory parameter in the filter query.Possible values are <code>1)cpu 2)mem 3)interface 4)asp_drops 5)disk_stats
-          6)critical_process etc.For detailed metric information contact HM team.</code><br/><code>startTime</code> -- start
-          time in unix format seconds.This is mandatory parameter in the filter query.<br/><code>endTime</code> -- end time
-          in unix format seconds.This is mandatory parameter in the filter query.<br/><code>step</code> -- step interval in
-          seconds over which the data is returned.This is mandatory parameter in the filter query.<br/><code>regexFilter</code>
-          -- filter to be applied on the metric names. Supports GO style regex e.g snort.&#42;&#124;lina.&#42;Optional parameter
-          in the filter query. <br/><code>queryFunction</code> -- optional query function which has to be applied to the query,
-          can be one of <code>"avg", "rate", "min", "max"</code><br/><code>rateFunctionInterval</code> -- optional interval
-          which has to be applied to the rate function, for e.g five minutes should be specified as <code>5m</code><br/>.
-          For e.g. to query all the memory metrics for LINA the filter parameter should be <code>deviceUUID:&lt;uuid&gt;;metric:mem;startTime:&lt;time&gt;;endTime:&lt;time&gt;;step:60;regexFilter:used_percentage_lina</code>
+      - description: Various filter criteria can be specified using the format <code>deviceUUIDs:uuid1,uuid2;metric:metric_name;startTime:start_time_in_secs;endTime:end_time_in_secs;step:step_in_secs;regexFilter:filter_on_metric</code><br/><br/><code>deviceUUIDs</code> --List UUID of the device to be queried.<br/><code>metric</code> -- name of the prometheus metric to be queried.This is mandatory parameter in the filter query.Possible values are <code>1)cpu 2)mem 3)interface 4)asp_drops 5)disk_stats 6)critical_process etc.For detailed metric information contact HM team.</code><br/><code>startTime</code> -- start time in unix format seconds.This is mandatory parameter in the filter query.<br/><code>endTime</code> -- end time in unix format seconds.This is mandatory parameter in the filter query.<br/><code>step</code> -- step interval in seconds over which the data is returned.This is mandatory parameter in the filter query.<br/><code>regexFilter</code> -- filter to be applied on the metric names. Supports GO style regex e.g snort.&#42;&#124;lina.&#42;Optional parameter in the filter query. <br/><code>queryFunction</code> -- optional query function which has to be applied to the query, can be one of <code>"avg", "rate", "min", "max"</code><br/><code>rateFunctionInterval</code> -- optional interval which has to be applied to the rate function, for e.g five minutes should be specified as <code>5m</code><br/>. For e.g. to query all the memory metrics for LINA the filter parameter should be <code>deviceUUID:&lt;uuid&gt;;metric:mem;startTime:&lt;time&gt;;endTime:&lt;time&gt;;step:60;regexFilter:used_percentage_lina</code>
         in: query
         name: filter
         required: true
@@ -402,36 +385,7 @@ paths:
                   value:
                     items:
                     - metric: mem
-                      response: '{"status":"success","data":{"resultType":"matrix","result":[{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"available","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"23671672832"],[1721385104,"23658737664"],[1721385164,"23647248384"],[1721385224,"23653179392"],[1721385284,"23651790848"],[1721385344,"23653158912"],[1721385404,"23678631936"],[1721385464,"23483543552"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"free","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"17461846016"],[1721385104,"17435926528"],[1721385164,"17412587520"],[1721385224,"17423720448"],[1721385284,"17420353536"],[1721385344,"17422729216"],[1721385404,"17473257472"],[1721385464,"17081352192"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"free_swap","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"7052091392"],[1721385104,"7052091392"],[1721385164,"7052091392"],[1721385224,"7052091392"],[1721385284,"7052091392"],[1721385344,"7052091392"],[1721385404,"7052091392"],[1721385464,"7052091392"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"free_system","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"8730923008"],[1721385104,"8717963264"],[1721385164,"8706293760"],[1721385224,"8711860224"],[1721385284,"8710176768"],[1721385344,"8711364608"],[1721385404,"8736628736"],[1721385464,"8540676096"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"total","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"40719867904"],[1721385104,"40719867904"],[1721385164,"40719867904"],[1721385224,"40719867904"],[1721385284,"40719867904"],[1721385344,"40719867904"],[1721385404,"40719867904"],[1721385464,"40719867904"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"total_swap","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"7052091392"],[1721385104,"7052091392"],[1721385164,"7052091392"],[1721385224,"7052091392"],[1721385284,"7052091392"],[1721385344,"7052091392"],[1721385404,"7052091392"],[1721385464,"7052091392"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"total_system","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"33667776512"],[1721385104,"33667776512"],[1721385164,"33667776512"],[1721385224,"33667776512"],[1721385284,"33667776512"],[1721385344,"33667776512"],[1721385404,"33667776512"],[1721385464,"33667776512"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"used","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"9011613696"],[1721385104,"9024548864"],[1721385164,"9036038144"],[1721385224,"9030107136"],[1721385284,"9031495680"],[1721385344,"9030127616"],[1721385404,"9004654592"],[1721385464,"9199734784"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"used_percentage","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"22.13"],[1721385104,"22.16"],[1721385164,"22.19"],[1721385224,"22.17"],[1721385284,"22.17"],[1721385344,"22.17"],[1721385404,"22.11"],[1721385464,"22.59"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"used_percentage_swap","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"0"],[1721385104,"0"],[1721385164,"0"],[1721385224,"0"],[1721385284,"0"],[1721385344,"0"],[1721385404,"0"],[1721385464,"0"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"used_percentage_system","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"26.76"],[1721385104,"26.8"],[1721385164,"26.83"],[1721385224,"26.82"],[1721385284,"26.82"],[1721385344,"26.82"],[1721385404,"26.74"],[1721385464,"27.32"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"used_swap","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"0"],[1721385104,"0"],[1721385164,"0"],[1721385224,"0"],[1721385284,"0"],[1721385344,"0"],[1721385404,"0"],[1721385464,"0"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"used_system","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"9011613696"],[1721385104,"9024548864"],[1721385164,"9036038144"],[1721385224,"9030107136"],[1721385284,"9031495680"],[1721385344,"9030127616"],[1721385404,"9004654592"],[1721385464,"9199734784"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"buff_cache","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"1829957632"],[1721385104,"1830948864"],[1721385164,"1831362560"],[1721385224,"1831043072"],[1721385284,"1832251392"],[1721385344,"1832443904"],[1721385404,"1830731776"],[1721385464,"1830920192"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"free","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"3779878912"],[1721385104,"3772829696"],[1721385164,"3777282048"],[1721385224,"3771334656"],[1721385284,"3761246208"],[1721385344,"3765153792"],[1721385404,"3789975552"],[1721385464,"3789230080"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"max_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"4065080688"],[1721385104,"4065080688"],[1721385164,"4065080688"],[1721385224,"4065080688"],[1721385284,"4065080688"],[1721385344,"4065080688"],[1721385404,"4065080688"],[1721385464,"4065080688"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"max_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"4662906880"],[1721385104,"4662906880"],[1721385164,"4662906880"],[1721385224,"4662906880"],[1721385284,"4662906880"],[1721385344,"4662906880"],[1721385404,"4662906880"],[1721385464,"4662906880"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"max_swap_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"466292736"],[1721385104,"466292736"],[1721385164,"466292736"],[1721385224,"466292736"],[1721385284,"466292736"],[1721385344,"466292736"],[1721385404,"466292736"],[1721385464,"466292736"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_0_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"950"],[1721385104,"950"],[1721385164,"950"],[1721385224,"950"],[1721385284,"950"],[1721385344,"950"],[1721385404,"950"],[1721385464,"950"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_1550_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"6272"],[1721385104,"6272"],[1721385164,"6272"],[1721385224,"6272"],[1721385284,"6272"],[1721385344,"6272"],[1721385404,"6272"],[1721385464,"6272"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_16384_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_2048_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"2100"],[1721385104,"2100"],[1721385164,"2100"],[1721385224,"2100"],[1721385284,"2100"],[1721385344,"2100"],[1721385404,"2100"],[1721385464,"2100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_2560_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"164"],[1721385104,"164"],[1721385164,"164"],[1721385224,"164"],[1721385284,"164"],[1721385344,"164"],[1721385404,"164"],[1721385464,"164"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_256_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"4233"],[1721385104,"4233"],[1721385164,"4233"],[1721385224,"4233"],[1721385284,"4233"],[1721385344,"4233"],[1721385404,"4233"],[1721385464,"4233"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_4096_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_4_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_65664_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"16"],[1721385104,"16"],[1721385164,"16"],[1721385224,"16"],[1721385284,"16"],[1721385344,"16"],[1721385404,"16"],[1721385464,"16"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_80_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"1000"],[1721385104,"1000"],[1721385164,"1000"],[1721385224,"1000"],[1721385284,"1000"],[1721385344,"1000"],[1721385404,"1000"],[1721385464,"1000"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_8192_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_9344_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"total","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"8346763264"],[1721385104,"8346763264"],[1721385164,"8346763264"],[1721385224,"8346763264"],[1721385284,"8346763264"],[1721385344,"8346763264"],[1721385404,"8346763264"],[1721385464,"8346763264"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"total_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"5638893568"],[1721385104,"5638893568"],[1721385164,"5638893568"],[1721385224,"5638893568"],[1721385284,"5638893568"],[1721385344,"5638893568"],[1721385404,"5638893568"],[1721385464,"5638893568"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"2736926720"],[1721385104,"2742984704"],[1721385164,"2738118656"],[1721385224,"2744385536"],[1721385284,"2753265664"],[1721385344,"2749165568"],[1721385404,"2726055936"],[1721385464,"2726612992"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"1820304624"],[1721385104,"1820304448"],[1721385164,"1820303728"],[1721385224,"1820303328"],[1721385284,"1820303392"],[1721385344,"1820303744"],[1721385404,"1820303296"],[1721385464,"1820303728"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_percentage_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"44.77"],[1721385104,"44.77"],[1721385164,"44.77"],[1721385224,"44.77"],[1721385284,"44.77"],[1721385344,"44.77"],[1721385404,"44.77"],[1721385464,"44.77"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_percentage_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"9.64"],[1721385104,"9.64"],[1721385164,"9.64"],[1721385224,"9.64"],[1721385284,"9.64"],[1721385344,"9.64"],[1721385404,"9.64"],[1721385464,"9.64"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_percentage_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"13.39"],[1721385104,"13.39"],[1721385164,"13.39"],[1721385224,"13.4"],[1721385284,"13.4"],[1721385344,"13.4"],[1721385404,"13.46"],[1721385464,"13.46"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_percentage_system","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"32.79"],[1721385104,"32.86"],[1721385164,"32.8"],[1721385224,"32.87"],[1721385284,"32.98"],[1721385344,"32.93"],[1721385404,"32.66"],[1721385464,"32.66"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_percentage_system_and_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"24.96"],[1721385104,"25.01"],[1721385164,"24.98"],[1721385224,"25.02"],[1721385284,"25.09"],[1721385344,"25.06"],[1721385404,"24.92"],[1721385464,"24.92"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"449650688"],[1721385104,"449650688"],[1721385164,"449650688"],[1721385224,"449650688"],[1721385284,"449650688"],[1721385344,"449650688"],[1721385404,"449650688"],[1721385464,"449650688"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"755236864"],[1721385104,"755499008"],[1721385164,"755499008"],[1721385224,"755761152"],[1721385284,"755761152"],[1721385344,"755761152"],[1721385404,"759431168"],[1721385464,"759431168"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_swap_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"0"],[1721385104,"0"],[1721385164,"0"],[1721385224,"0"],[1721385284,"0"],[1721385344,"0"],[1721385404,"0"],[1721385464,"0"]]}]}}'
+                      response: '{"status":"success","data":{"resultType":"matrix","result":[{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"available","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"23671672832"],[1721385104,"23658737664"],[1721385164,"23647248384"],[1721385224,"23653179392"],[1721385284,"23651790848"],[1721385344,"23653158912"],[1721385404,"23678631936"],[1721385464,"23483543552"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"free","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"17461846016"],[1721385104,"17435926528"],[1721385164,"17412587520"],[1721385224,"17423720448"],[1721385284,"17420353536"],[1721385344,"17422729216"],[1721385404,"17473257472"],[1721385464,"17081352192"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"free_swap","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"7052091392"],[1721385104,"7052091392"],[1721385164,"7052091392"],[1721385224,"7052091392"],[1721385284,"7052091392"],[1721385344,"7052091392"],[1721385404,"7052091392"],[1721385464,"7052091392"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"free_system","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"8730923008"],[1721385104,"8717963264"],[1721385164,"8706293760"],[1721385224,"8711860224"],[1721385284,"8710176768"],[1721385344,"8711364608"],[1721385404,"8736628736"],[1721385464,"8540676096"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"total","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"40719867904"],[1721385104,"40719867904"],[1721385164,"40719867904"],[1721385224,"40719867904"],[1721385284,"40719867904"],[1721385344,"40719867904"],[1721385404,"40719867904"],[1721385464,"40719867904"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"total_swap","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"7052091392"],[1721385104,"7052091392"],[1721385164,"7052091392"],[1721385224,"7052091392"],[1721385284,"7052091392"],[1721385344,"7052091392"],[1721385404,"7052091392"],[1721385464,"7052091392"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"total_system","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"33667776512"],[1721385104,"33667776512"],[1721385164,"33667776512"],[1721385224,"33667776512"],[1721385284,"33667776512"],[1721385344,"33667776512"],[1721385404,"33667776512"],[1721385464,"33667776512"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"used","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"9011613696"],[1721385104,"9024548864"],[1721385164,"9036038144"],[1721385224,"9030107136"],[1721385284,"9031495680"],[1721385344,"9030127616"],[1721385404,"9004654592"],[1721385464,"9199734784"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"used_percentage","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"22.13"],[1721385104,"22.16"],[1721385164,"22.19"],[1721385224,"22.17"],[1721385284,"22.17"],[1721385344,"22.17"],[1721385404,"22.11"],[1721385464,"22.59"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"used_percentage_swap","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"0"],[1721385104,"0"],[1721385164,"0"],[1721385224,"0"],[1721385284,"0"],[1721385344,"0"],[1721385404,"0"],[1721385464,"0"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"used_percentage_system","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"26.76"],[1721385104,"26.8"],[1721385164,"26.83"],[1721385224,"26.82"],[1721385284,"26.82"],[1721385344,"26.82"],[1721385404,"26.74"],[1721385464,"27.32"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"used_swap","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"0"],[1721385104,"0"],[1721385164,"0"],[1721385224,"0"],[1721385284,"0"],[1721385344,"0"],[1721385404,"0"],[1721385464,"0"]]},{"metric":{"__name__":"mem","instance":"127.0.0.1:9274","job":"firepower","mem":"used_system","uuid":"7d4bea5a-4575-11ef-b2d7-56c597ce4352"},"values":[[1721385044,"9011613696"],[1721385104,"9024548864"],[1721385164,"9036038144"],[1721385224,"9030107136"],[1721385284,"9031495680"],[1721385344,"9030127616"],[1721385404,"9004654592"],[1721385464,"9199734784"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"buff_cache","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"1829957632"],[1721385104,"1830948864"],[1721385164,"1831362560"],[1721385224,"1831043072"],[1721385284,"1832251392"],[1721385344,"1832443904"],[1721385404,"1830731776"],[1721385464,"1830920192"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"free","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"3779878912"],[1721385104,"3772829696"],[1721385164,"3777282048"],[1721385224,"3771334656"],[1721385284,"3761246208"],[1721385344,"3765153792"],[1721385404,"3789975552"],[1721385464,"3789230080"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"max_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"4065080688"],[1721385104,"4065080688"],[1721385164,"4065080688"],[1721385224,"4065080688"],[1721385284,"4065080688"],[1721385344,"4065080688"],[1721385404,"4065080688"],[1721385464,"4065080688"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"max_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"4662906880"],[1721385104,"4662906880"],[1721385164,"4662906880"],[1721385224,"4662906880"],[1721385284,"4662906880"],[1721385344,"4662906880"],[1721385404,"4662906880"],[1721385464,"4662906880"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"max_swap_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"466292736"],[1721385104,"466292736"],[1721385164,"466292736"],[1721385224,"466292736"],[1721385284,"466292736"],[1721385344,"466292736"],[1721385404,"466292736"],[1721385464,"466292736"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_0_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"950"],[1721385104,"950"],[1721385164,"950"],[1721385224,"950"],[1721385284,"950"],[1721385344,"950"],[1721385404,"950"],[1721385464,"950"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_1550_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"6272"],[1721385104,"6272"],[1721385164,"6272"],[1721385224,"6272"],[1721385284,"6272"],[1721385344,"6272"],[1721385404,"6272"],[1721385464,"6272"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_16384_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_2048_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"2100"],[1721385104,"2100"],[1721385164,"2100"],[1721385224,"2100"],[1721385284,"2100"],[1721385344,"2100"],[1721385404,"2100"],[1721385464,"2100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_2560_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"164"],[1721385104,"164"],[1721385164,"164"],[1721385224,"164"],[1721385284,"164"],[1721385344,"164"],[1721385404,"164"],[1721385464,"164"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_256_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"4233"],[1721385104,"4233"],[1721385164,"4233"],[1721385224,"4233"],[1721385284,"4233"],[1721385344,"4233"],[1721385404,"4233"],[1721385464,"4233"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_4096_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_4_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_65664_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"16"],[1721385104,"16"],[1721385164,"16"],[1721385224,"16"],[1721385284,"16"],[1721385344,"16"],[1721385404,"16"],[1721385464,"16"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_80_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"1000"],[1721385104,"1000"],[1721385164,"1000"],[1721385224,"1000"],[1721385284,"1000"],[1721385344,"1000"],[1721385404,"1000"],[1721385464,"1000"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_8192_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_9344_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"total","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"8346763264"],[1721385104,"8346763264"],[1721385164,"8346763264"],[1721385224,"8346763264"],[1721385284,"8346763264"],[1721385344,"8346763264"],[1721385404,"8346763264"],[1721385464,"8346763264"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"total_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"5638893568"],[1721385104,"5638893568"],[1721385164,"5638893568"],[1721385224,"5638893568"],[1721385284,"5638893568"],[1721385344,"5638893568"],[1721385404,"5638893568"],[1721385464,"5638893568"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"2736926720"],[1721385104,"2742984704"],[1721385164,"2738118656"],[1721385224,"2744385536"],[1721385284,"2753265664"],[1721385344,"2749165568"],[1721385404,"2726055936"],[1721385464,"2726612992"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"1820304624"],[1721385104,"1820304448"],[1721385164,"1820303728"],[1721385224,"1820303328"],[1721385284,"1820303392"],[1721385344,"1820303744"],[1721385404,"1820303296"],[1721385464,"1820303728"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_percentage_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"44.77"],[1721385104,"44.77"],[1721385164,"44.77"],[1721385224,"44.77"],[1721385284,"44.77"],[1721385344,"44.77"],[1721385404,"44.77"],[1721385464,"44.77"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_percentage_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"9.64"],[1721385104,"9.64"],[1721385164,"9.64"],[1721385224,"9.64"],[1721385284,"9.64"],[1721385344,"9.64"],[1721385404,"9.64"],[1721385464,"9.64"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_percentage_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"13.39"],[1721385104,"13.39"],[1721385164,"13.39"],[1721385224,"13.4"],[1721385284,"13.4"],[1721385344,"13.4"],[1721385404,"13.46"],[1721385464,"13.46"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_percentage_system","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"32.79"],[1721385104,"32.86"],[1721385164,"32.8"],[1721385224,"32.87"],[1721385284,"32.98"],[1721385344,"32.93"],[1721385404,"32.66"],[1721385464,"32.66"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_percentage_system_and_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"24.96"],[1721385104,"25.01"],[1721385164,"24.98"],[1721385224,"25.02"],[1721385284,"25.09"],[1721385344,"25.06"],[1721385404,"24.92"],[1721385464,"24.92"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"449650688"],[1721385104,"449650688"],[1721385164,"449650688"],[1721385224,"449650688"],[1721385284,"449650688"],[1721385344,"449650688"],[1721385404,"449650688"],[1721385464,"449650688"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"755236864"],[1721385104,"755499008"],[1721385164,"755499008"],[1721385224,"755761152"],[1721385284,"755761152"],[1721385344,"755761152"],[1721385404,"759431168"],[1721385464,"759431168"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_swap_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"0"],[1721385104,"0"],[1721385164,"0"],[1721385224,"0"],[1721385284,"0"],[1721385344,"0"],[1721385404,"0"],[1721385464,"0"]]}]}}'
                       type: Metric
                     links:
                       self: https://u32c01p12-vrouter.cisco.com:45565/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/health/metrics?offset=0&limit=25&filter=metric:mem;startTime:1721385044;endTime:1721385493;step:60
@@ -440,42 +394,12 @@ paths:
                       limit: 25
                       offset: 0
                       pages: 1
-                ? 'Example 3 : GET /fmc_config/v1/domain/DomainUUID/health/metrics ( Get Simple Health Metric Data for specific
-                  device - mem )'
+                ? 'Example 3 : GET /fmc_config/v1/domain/DomainUUID/health/metrics ( Get Simple Health Metric Data for specific device - mem )'
                 : value:
                     items:
                     - deviceUUID: 59e44006-4595-11ef-a67e-b4187d26b42a
                       metric: mem
-                      response: '{"status":"success","data":{"resultType":"matrix","result":[{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"buff_cache","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"1829957632"],[1721385104,"1830948864"],[1721385164,"1831362560"],[1721385224,"1831043072"],[1721385284,"1832251392"],[1721385344,"1832443904"],[1721385404,"1830731776"],[1721385464,"1830920192"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"free","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"3779878912"],[1721385104,"3772829696"],[1721385164,"3777282048"],[1721385224,"3771334656"],[1721385284,"3761246208"],[1721385344,"3765153792"],[1721385404,"3789975552"],[1721385464,"3789230080"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"max_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"4065080688"],[1721385104,"4065080688"],[1721385164,"4065080688"],[1721385224,"4065080688"],[1721385284,"4065080688"],[1721385344,"4065080688"],[1721385404,"4065080688"],[1721385464,"4065080688"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"max_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"4662906880"],[1721385104,"4662906880"],[1721385164,"4662906880"],[1721385224,"4662906880"],[1721385284,"4662906880"],[1721385344,"4662906880"],[1721385404,"4662906880"],[1721385464,"4662906880"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"max_swap_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"466292736"],[1721385104,"466292736"],[1721385164,"466292736"],[1721385224,"466292736"],[1721385284,"466292736"],[1721385344,"466292736"],[1721385404,"466292736"],[1721385464,"466292736"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_0_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"950"],[1721385104,"950"],[1721385164,"950"],[1721385224,"950"],[1721385284,"950"],[1721385344,"950"],[1721385404,"950"],[1721385464,"950"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_1550_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"6272"],[1721385104,"6272"],[1721385164,"6272"],[1721385224,"6272"],[1721385284,"6272"],[1721385344,"6272"],[1721385404,"6272"],[1721385464,"6272"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_16384_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_2048_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"2100"],[1721385104,"2100"],[1721385164,"2100"],[1721385224,"2100"],[1721385284,"2100"],[1721385344,"2100"],[1721385404,"2100"],[1721385464,"2100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_2560_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"164"],[1721385104,"164"],[1721385164,"164"],[1721385224,"164"],[1721385284,"164"],[1721385344,"164"],[1721385404,"164"],[1721385464,"164"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_256_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"4233"],[1721385104,"4233"],[1721385164,"4233"],[1721385224,"4233"],[1721385284,"4233"],[1721385344,"4233"],[1721385404,"4233"],[1721385464,"4233"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_4096_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_4_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_65664_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"16"],[1721385104,"16"],[1721385164,"16"],[1721385224,"16"],[1721385284,"16"],[1721385344,"16"],[1721385404,"16"],[1721385464,"16"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_80_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"1000"],[1721385104,"1000"],[1721385164,"1000"],[1721385224,"1000"],[1721385284,"1000"],[1721385344,"1000"],[1721385404,"1000"],[1721385464,"1000"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_8192_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"remaining_blocks_9344_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"total","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"8346763264"],[1721385104,"8346763264"],[1721385164,"8346763264"],[1721385224,"8346763264"],[1721385284,"8346763264"],[1721385344,"8346763264"],[1721385404,"8346763264"],[1721385464,"8346763264"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"total_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"5638893568"],[1721385104,"5638893568"],[1721385164,"5638893568"],[1721385224,"5638893568"],[1721385284,"5638893568"],[1721385344,"5638893568"],[1721385404,"5638893568"],[1721385464,"5638893568"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"2736926720"],[1721385104,"2742984704"],[1721385164,"2738118656"],[1721385224,"2744385536"],[1721385284,"2753265664"],[1721385344,"2749165568"],[1721385404,"2726055936"],[1721385464,"2726612992"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"1820304624"],[1721385104,"1820304448"],[1721385164,"1820303728"],[1721385224,"1820303328"],[1721385284,"1820303392"],[1721385344,"1820303744"],[1721385404,"1820303296"],[1721385464,"1820303728"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_percentage_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"44.77"],[1721385104,"44.77"],[1721385164,"44.77"],[1721385224,"44.77"],[1721385284,"44.77"],[1721385344,"44.77"],[1721385404,"44.77"],[1721385464,"44.77"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_percentage_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"9.64"],[1721385104,"9.64"],[1721385164,"9.64"],[1721385224,"9.64"],[1721385284,"9.64"],[1721385344,"9.64"],[1721385404,"9.64"],[1721385464,"9.64"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_percentage_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"13.39"],[1721385104,"13.39"],[1721385164,"13.39"],[1721385224,"13.4"],[1721385284,"13.4"],[1721385344,"13.4"],[1721385404,"13.46"],[1721385464,"13.46"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_percentage_system","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"32.79"],[1721385104,"32.86"],[1721385164,"32.8"],[1721385224,"32.87"],[1721385284,"32.98"],[1721385344,"32.93"],[1721385404,"32.66"],[1721385464,"32.66"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_percentage_system_and_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"24.96"],[1721385104,"25.01"],[1721385164,"24.98"],[1721385224,"25.02"],[1721385284,"25.09"],[1721385344,"25.06"],[1721385404,"24.92"],[1721385464,"24.92"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"449650688"],[1721385104,"449650688"],[1721385164,"449650688"],[1721385224,"449650688"],[1721385284,"449650688"],[1721385344,"449650688"],[1721385404,"449650688"],[1721385464,"449650688"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"755236864"],[1721385104,"755499008"],[1721385164,"755499008"],[1721385224,"755761152"],[1721385284,"755761152"],[1721385344,"755761152"],[1721385404,"759431168"],[1721385464,"759431168"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"used_swap_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"0"],[1721385104,"0"],[1721385164,"0"],[1721385224,"0"],[1721385284,"0"],[1721385344,"0"],[1721385404,"0"],[1721385464,"0"]]}]}}'
+                      response: '{"status":"success","data":{"resultType":"matrix","result":[{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"buff_cache","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"1829957632"],[1721385104,"1830948864"],[1721385164,"1831362560"],[1721385224,"1831043072"],[1721385284,"1832251392"],[1721385344,"1832443904"],[1721385404,"1830731776"],[1721385464,"1830920192"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"free","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"3779878912"],[1721385104,"3772829696"],[1721385164,"3777282048"],[1721385224,"3771334656"],[1721385284,"3761246208"],[1721385344,"3765153792"],[1721385404,"3789975552"],[1721385464,"3789230080"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"max_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"4065080688"],[1721385104,"4065080688"],[1721385164,"4065080688"],[1721385224,"4065080688"],[1721385284,"4065080688"],[1721385344,"4065080688"],[1721385404,"4065080688"],[1721385464,"4065080688"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"max_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"4662906880"],[1721385104,"4662906880"],[1721385164,"4662906880"],[1721385224,"4662906880"],[1721385284,"4662906880"],[1721385344,"4662906880"],[1721385404,"4662906880"],[1721385464,"4662906880"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"max_swap_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"466292736"],[1721385104,"466292736"],[1721385164,"466292736"],[1721385224,"466292736"],[1721385284,"466292736"],[1721385344,"466292736"],[1721385404,"466292736"],[1721385464,"466292736"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_0_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"950"],[1721385104,"950"],[1721385164,"950"],[1721385224,"950"],[1721385284,"950"],[1721385344,"950"],[1721385404,"950"],[1721385464,"950"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_1550_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"6272"],[1721385104,"6272"],[1721385164,"6272"],[1721385224,"6272"],[1721385284,"6272"],[1721385344,"6272"],[1721385404,"6272"],[1721385464,"6272"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_16384_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_2048_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"2100"],[1721385104,"2100"],[1721385164,"2100"],[1721385224,"2100"],[1721385284,"2100"],[1721385344,"2100"],[1721385404,"2100"],[1721385464,"2100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_2560_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"164"],[1721385104,"164"],[1721385164,"164"],[1721385224,"164"],[1721385284,"164"],[1721385344,"164"],[1721385404,"164"],[1721385464,"164"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_256_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"4233"],[1721385104,"4233"],[1721385164,"4233"],[1721385224,"4233"],[1721385284,"4233"],[1721385344,"4233"],[1721385404,"4233"],[1721385464,"4233"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_4096_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_4_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_65664_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"16"],[1721385104,"16"],[1721385164,"16"],[1721385224,"16"],[1721385284,"16"],[1721385344,"16"],[1721385404,"16"],[1721385464,"16"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_80_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"1000"],[1721385104,"1000"],[1721385164,"1000"],[1721385224,"1000"],[1721385284,"1000"],[1721385344,"1000"],[1721385404,"1000"],[1721385464,"1000"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_8192_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"remaining_blocks_9344_bytes","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"100"],[1721385104,"100"],[1721385164,"100"],[1721385224,"100"],[1721385284,"100"],[1721385344,"100"],[1721385404,"100"],[1721385464,"100"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"total","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"8346763264"],[1721385104,"8346763264"],[1721385164,"8346763264"],[1721385224,"8346763264"],[1721385284,"8346763264"],[1721385344,"8346763264"],[1721385404,"8346763264"],[1721385464,"8346763264"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"total_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"5638893568"],[1721385104,"5638893568"],[1721385164,"5638893568"],[1721385224,"5638893568"],[1721385284,"5638893568"],[1721385344,"5638893568"],[1721385404,"5638893568"],[1721385464,"5638893568"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"2736926720"],[1721385104,"2742984704"],[1721385164,"2738118656"],[1721385224,"2744385536"],[1721385284,"2753265664"],[1721385344,"2749165568"],[1721385404,"2726055936"],[1721385464,"2726612992"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"1820304624"],[1721385104,"1820304448"],[1721385164,"1820303728"],[1721385224,"1820303328"],[1721385284,"1820303392"],[1721385344,"1820303744"],[1721385404,"1820303296"],[1721385464,"1820303728"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_percentage_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"44.77"],[1721385104,"44.77"],[1721385164,"44.77"],[1721385224,"44.77"],[1721385284,"44.77"],[1721385344,"44.77"],[1721385404,"44.77"],[1721385464,"44.77"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_percentage_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"9.64"],[1721385104,"9.64"],[1721385164,"9.64"],[1721385224,"9.64"],[1721385284,"9.64"],[1721385344,"9.64"],[1721385404,"9.64"],[1721385464,"9.64"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_percentage_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"13.39"],[1721385104,"13.39"],[1721385164,"13.39"],[1721385224,"13.4"],[1721385284,"13.4"],[1721385344,"13.4"],[1721385404,"13.46"],[1721385464,"13.46"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_percentage_system","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"32.79"],[1721385104,"32.86"],[1721385164,"32.8"],[1721385224,"32.87"],[1721385284,"32.98"],[1721385344,"32.93"],[1721385404,"32.66"],[1721385464,"32.66"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_percentage_system_and_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"24.96"],[1721385104,"25.01"],[1721385164,"24.98"],[1721385224,"25.02"],[1721385284,"25.09"],[1721385344,"25.06"],[1721385404,"24.92"],[1721385464,"24.92"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"449650688"],[1721385104,"449650688"],[1721385164,"449650688"],[1721385224,"449650688"],[1721385284,"449650688"],[1721385344,"449650688"],[1721385404,"449650688"],[1721385464,"449650688"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_swap","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"755236864"],[1721385104,"755499008"],[1721385164,"755499008"],[1721385224,"755761152"],[1721385284,"755761152"],[1721385344,"755761152"],[1721385404,"759431168"],[1721385464,"759431168"]]},{"metric":{"__name__":"mem","instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"used_swap_snort","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"0"],[1721385104,"0"],[1721385164,"0"],[1721385224,"0"],[1721385284,"0"],[1721385344,"0"],[1721385404,"0"],[1721385464,"0"]]}]}}'
                       type: Metric
                     links:
                       self: https://u32c01p12-vrouter.cisco.com:45565/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/health/metrics?offset=0&limit=25&filter=metric:mem;startTime:1721385044;endTime:1721385493;step:60;deviceUUIDs:59e44006-4595-11ef-a67e-b4187d26b42a
@@ -484,19 +408,16 @@ paths:
                       limit: 25
                       offset: 0
                       pages: 1
-                ? 'Example 4 : GET /fmc_config/v1/domain/DomainUUID/health/metrics ( Get  Health Metric Data for specific
-                  device with queryFunction and rateIntervalfunction - mem )'
+                ? 'Example 4 : GET /fmc_config/v1/domain/DomainUUID/health/metrics ( Get  Health Metric Data for specific device with queryFunction and rateIntervalfunction - mem )'
                 : value:
                     items:
                     - deviceUUID: 59e44006-4595-11ef-a67e-b4187d26b42a
                       metric: mem
                       regexFilter: mem=~"max_lina"
-                      response: '{"status":"success","data":{"resultType":"matrix","result":[{"metric":{"instance":"127.0.0.2:9273","job":"10.10.1.195
-                        test device","mem":"max_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"0"],[1721385104,"0"],[1721385164,"0"],[1721385224,"0"],[1721385284,"0"],[1721385344,"0"],[1721385404,"0"],[1721385464,"0"]]}]}}'
+                      response: '{"status":"success","data":{"resultType":"matrix","result":[{"metric":{"instance":"127.0.0.2:9273","job":"10.10.1.195 test device","mem":"max_lina","uuid":"59e44006-4595-11ef-a67e-b4187d26b42a"},"values":[[1721385044,"0"],[1721385104,"0"],[1721385164,"0"],[1721385224,"0"],[1721385284,"0"],[1721385344,"0"],[1721385404,"0"],[1721385464,"0"]]}]}}'
                       type: Metric
                     links:
-                      self: https://u32c01p12-vrouter.cisco.com:45565/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/health/metrics?offset=0&limit=25&filter=metric:mem;startTime:1721385044;endTime:1721385493;step:60;deviceUUIDs:59e44006-4595-11ef-a67e-b4187d26b42a;regexFilter:max_lina;
-                        queryFunction:rate; rateFunctionInterval:5m
+                      self: https://u32c01p12-vrouter.cisco.com:45565/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/health/metrics?offset=0&limit=25&filter=metric:mem;startTime:1721385044;endTime:1721385493;step:60;deviceUUIDs:59e44006-4595-11ef-a67e-b4187d26b42a;regexFilter:max_lina; queryFunction:rate; rateFunctionInterval:5m
                     paging:
                       count: 1
                       limit: 25
@@ -515,6 +436,7 @@ paths:
           description: Error
       tags:
       - Health
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/pathmonitoredinterfaces:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -534,7 +456,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/pathmonitoredinterfaces:
     get:
       deprecated: false
       description: '**Get path-monitored interfaces.**'
@@ -565,6 +486,7 @@ paths:
           description: Error
       tags:
       - Health
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/ravpngateways:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -584,11 +506,9 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/ravpngateways:
     get:
       deprecated: false
-      description: '**Get the Remote Access VPN Gateway Details. This includes RA VPN Certificate expiry dates and maximum
-        sessions supported.**'
+      description: '**Get the Remote Access VPN Gateway Details. This includes RA VPN Certificate expiry dates and maximum sessions supported.**'
       operationId: getRaVpnGateway
       parameters:
       - $ref: '#/components/parameters/domainUUID'
@@ -666,6 +586,7 @@ paths:
           description: Error
       tags:
       - Health
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/ravpnsessions/operational/terminateravpnsessions:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -685,7 +606,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/ravpnsessions/operational/terminateravpnsessions:
     post:
       deprecated: false
       description: '**Terminate active VPN sessions _Check the response section for applicable examples (if any)._**'
@@ -718,6 +638,7 @@ paths:
           description: Error
       tags:
       - Health
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/tunnelstatuses:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -737,17 +658,12 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/tunnelstatuses:
     get:
       deprecated: false
       description: '**Get tunnel status for the Site-to-Site VPN on all managed Firewall Threat Defense devices.**'
       operationId: getAllTunnelStatus
       parameters:
-      - description: The allowed filters are <code>"vpnTopologyId:{uuid}"</code> which filters the tunnel statuses by S2S
-          VPN Topology id, <code>"deviceId:{UUID}"</code> which filters the tunnel statuses by Device id, <code>status:{TUNNEL_UP|TUNNEL_DOWN|UNKNOWN}</code>
-          which filters the tunnel statuses by Tunnel Status, <code>"deployedStatus:{Deployed|Configured|Both}"</code> which
-          is filters the tunnel status by it's deployed state and <code>"sortBy{:|<|>}{Topology|Device|Status|LastChange}"</code>.
-          Filter operators `:` and `<` sorts in ascending order and `>` sorts in descending order.
+      - description: The allowed filters are <code>"vpnTopologyId:{uuid}"</code> which filters the tunnel statuses by S2S VPN Topology id, <code>"deviceId:{UUID}"</code> which filters the tunnel statuses by Device id, <code>status:{TUNNEL_UP|TUNNEL_DOWN|UNKNOWN}</code> which filters the tunnel statuses by Tunnel Status, <code>"deployedStatus:{Deployed|Configured|Both}"</code> which is filters the tunnel status by it's deployed state and <code>"sortBy{:|<|>}{Topology|Device|Status|LastChange}"</code>. Filter operators `:` and `<` sorts in ascending order and `>` sorts in descending order.
         in: query
         name: filter
         required: false
@@ -778,6 +694,7 @@ paths:
           description: Error
       tags:
       - Health
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/tunnelstatuses/{containerUUID}/tunneldetails:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -797,7 +714,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/tunnelstatuses/{containerUUID}/tunneldetails:
     get:
       deprecated: false
       description: '**Get tunnel details for Site-to-Site VPN by executing show commands on managed peers.**'
@@ -834,6 +750,7 @@ paths:
           description: Error
       tags:
       - Health
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/tunnelstatuses/{objectId}:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -853,7 +770,6 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/tunnelstatuses/{objectId}:
     get:
       deprecated: false
       description: '**Get status for the specified Firewall Threat Defense Site-to-Site VPN topology.**'
@@ -884,6 +800,7 @@ paths:
           description: Error
       tags:
       - Health
+  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/tunnelsummaries:
     servers:
     - url: https://api.us.security.cisco.com/firewall
       description: US
@@ -903,15 +820,12 @@ paths:
       description: CI
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
-  /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/health/tunnelsummaries:
     get:
       deprecated: false
       description: '**Get aggregated summary of tunnel status for S2S VPN on all managed Firewall Threat Defense devices.**'
       operationId: getTunnelSummary
       parameters:
-      - description: The allowed filters are <code>"vpnTopologyId:{uuid}"</code> which filters the tunnel summary by S2S VPN
-          Topology id, <code>"deviceId:{UUID}"</code> which filters the tunnel summary by Device id and groupBy <code>"groupBy:Topology|Device"</code>
-          which groups tunnel summary by Topology or Device.
+      - description: The allowed filters are <code>"vpnTopologyId:{uuid}"</code> which filters the tunnel summary by S2S VPN Topology id, <code>"deviceId:{UUID}"</code> which filters the tunnel summary by Device id and groupBy <code>"groupBy:Topology|Device"</code> which groups tunnel summary by Topology or Device.
         in: query
         name: filter
         required: false
@@ -967,26 +881,9 @@ paths:
           description: Error
       tags:
       - Health
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
   /ping:
+    servers:
+    - url: https://api.int.security.cisco.com/provisioning
     get:
       description: Get Server Health by checking if db is active
       tags:
@@ -1006,41 +903,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/model.Error'
-    servers:
-    - url: https://api.int.security.cisco.com/provisioning
 components:
-  parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
-    domainUUID:
-      description: Domain UUID
-      in: path
-      name: domainUUID
-      required: true
-      schema:
-        type: string
-    limit:
-      description: Number of items to return.
-      in: query
-      name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
   schemas:
+    DeviceInventoryData:
+      properties:
+        cpuCores:
+          type: string
+        cpuType:
+          type: string
+        memoryInMB:
+          type: string
+        storageInGB:
+          type: string
+      type: object
     HealthEventModel:
       description: An object representing the health event.
       properties:
@@ -1060,13 +935,7 @@ components:
           $ref: '#/components/schemas/IMetadata'
           type: object
         moduleID:
-          description: ID of the module, it is one of APPLICATION_BYPASS, CARD_RESET, CPU, DISK_USAGE, EVENT_STREAM, HEALTH_MONITOR,
-            HEARTBEAT, INTERFACE, HARDWARE_ALARM, POWER_SUPPLY, LIC, LIC_MONITOR, LINKSTATE_PROPAGATION, MEMORY_USAGE, PEP,
-            PROCESS, DISCOVERY_HEALTH, HOST_LIMIT, RRD_SERVER, SENSOR_HUB, INTRUSION_FILE_STATS, TEST, TIME_SYNC, TIME_SERIES_DATA_MONITOR,
-            URLFILTER, SECURITY_INTELLIGENCE, AMP_FOR_ENDPOINTS, USER_AGENT, SMART_LICENSE, VPN, HIGH_AVAILABILITY, DATABASE,
-            PLATFORM_FAULTS, THREAT_DATA_UPDATES, REALM, ISE, SNORT_IDENTITY_MEMORY_USAGE, MALWARE, DISK_STATUS, BACKLOG,
-            STATIC_ANALYSIS, CLUSTER, INLINELINK_ALARM, RECONFIG_DETECTION, CONNECTIONS, CRITICAL_PROCESS, DEPLOYED_CONFIGURATION,
-            SNORT_STATS FTD_HA and CERTIFICATE_MONITORING
+          description: ID of the module, it is one of APPLICATION_BYPASS, CARD_RESET, CPU, DISK_USAGE, EVENT_STREAM, HEALTH_MONITOR, HEARTBEAT, INTERFACE, HARDWARE_ALARM, POWER_SUPPLY, LIC, LIC_MONITOR, LINKSTATE_PROPAGATION, MEMORY_USAGE, PEP, PROCESS, DISCOVERY_HEALTH, HOST_LIMIT, RRD_SERVER, SENSOR_HUB, INTRUSION_FILE_STATS, TEST, TIME_SYNC, TIME_SERIES_DATA_MONITOR, URLFILTER, SECURITY_INTELLIGENCE, AMP_FOR_ENDPOINTS, USER_AGENT, SMART_LICENSE, VPN, HIGH_AVAILABILITY, DATABASE, PLATFORM_FAULTS, THREAT_DATA_UPDATES, REALM, ISE, SNORT_IDENTITY_MEMORY_USAGE, MALWARE, DISK_STATUS, BACKLOG, STATIC_ANALYSIS, CLUSTER, INLINELINK_ALARM, RECONFIG_DETECTION, CONNECTIONS, CRITICAL_PROCESS, DEPLOYED_CONFIGURATION, SNORT_STATS FTD_HA and CERTIFICATE_MONITORING
           enum:
           - APPLICATION_BYPASS
           - CARD_RESET
@@ -1172,430 +1041,23 @@ components:
         version:
           type: string
       type: object
-    AggregateMetrics:
-      description: Represents various device health metrics in an aggregated format.
+    PathMonitoredInterface:
       properties:
-        chassisStatsHealthMetrics:
-          $ref: '#/components/schemas/ChassisStatsHealthMetrics'
-          type: object
-        cpuHealthMetrics:
-          $ref: '#/components/schemas/CPUHealthMetrics'
-          type: object
         description:
           type: string
-        diskHealthMetrics:
-          $ref: '#/components/schemas/DiskHealthMetrics'
-          type: object
-        endTime:
-          description: End time of the metrics.
-          type: string
-        haInfo:
-          $ref: '#/components/schemas/HAInfo'
-          type: object
-        id:
-          description: Unique identifier of the device.
-          type: string
-        interfaceHealthMetricsList:
-          items:
-            $ref: '#/components/schemas/InterfaceHealthMetrics'
-            type: object
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        memoryHealthMetrics:
-          $ref: '#/components/schemas/MemoryHealthMetrics'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          description: Name of the device.
-          type: string
-        startTime:
-          description: Start time for the metrics.
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    TunnelStatusListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/TunnelStatus'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    IPathMonitoredInterfaceDetails:
-      properties:
-        interface:
+        device:
           $ref: '#/components/schemas/IReference'
           type: object
-        status:
-          enum:
-          - ONLINE
-          - IDLE
-          - OFFLINE
+        id:
           type: string
-      type: object
-    TunnelSummaryListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/TunnelSummary'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    MemoryHealthMetrics:
-      description: Represents device memory metrics in percentage values.
-      properties:
-        linaUsageAvg:
-          type: number
-        snortUsageAvg:
-          type: number
-        systemUsageAvg:
-          type: number
-      type: object
-    IHybridZeroTrustFQDNConfig:
-      properties:
-        FQDN:
-          type: string
-        certificate:
-          $ref: '#/components/schemas/IReference'
-          type: object
         interfaces:
           items:
-            $ref: '#/components/schemas/IReference'
+            $ref: '#/components/schemas/IPathMonitoredInterfaceDetails'
             type: object
           type: array
-      type: object
-    IDeviceInventoryData:
-      properties:
-        cpuCores:
-          type: string
-        cpuType:
-          type: string
-        memoryInMB:
-          type: string
-        storageInGB:
-          type: string
-      type: object
-    HealthModule:
-      properties:
-        alertConfig:
-          items:
-            $ref: '#/components/schemas/HealthAlertConfig'
-            type: object
-          type: array
-        alertEnabled:
-          type: boolean
-        criticalThreshold:
-          format: int32
-          type: integer
-        customThresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-        enabled:
-          type: boolean
-        moduleId:
-          type: string
-        severity:
-          type: string
-        type:
-          type: string
-        warningThreshold:
-          format: int32
-          type: integer
-      type: object
-    IVpnPeerDetail:
-      properties:
-        authMode:
-          enum:
-          - PRESHARED_KEY
-          - CERTIFICATE
-          type: string
-        bytesRx:
-          format: int32
-          type: integer
-        bytesTx:
-          format: int32
-          type: integer
-        device:
-          $ref: '#/components/schemas/IReference_1'
-          type: object
-        port:
-          format: int32
-          type: integer
-        securityAssociations:
-          items:
-            $ref: '#/components/schemas/ISecurityAssociation'
-            type: object
-          type: array
-        showCryptoIpsecSaOutput:
-          $ref: '#/components/schemas/IVpnCliOutput'
-          type: object
-        vpnInterfaceIp:
-          type: string
-        vpnSessionDbOutput:
-          $ref: '#/components/schemas/IVpnCliOutput'
-          type: object
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    DeviceInventoryData:
-      properties:
-        cpuCores:
-          type: string
-        cpuType:
-          type: string
-        memoryInMB:
-          type: string
-        storageInGB:
-          type: string
-      type: object
-    TunnelDetail:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        peerA:
-          $ref: '#/components/schemas/IVpnPeerDetail_1'
-          type: object
-        peerB:
-          $ref: '#/components/schemas/IVpnPeerDetail'
-          type: object
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IReference_2:
-      properties:
-        accessPolicy:
-          $ref: '#/components/schemas/IPolicyModel'
-          type: object
-        actions:
-          items:
-            $ref: '#/components/schemas/IPreDeployAction'
-            type: object
-          type: array
-        advanced:
-          $ref: '#/components/schemas/IAdvanced'
-          type: object
-        analyticsOnly:
-          type: boolean
-        changeManager:
-          type: boolean
-        cloudDeviceId:
-          type: string
-        deploymentStatus:
-          type: string
-        description:
-          type: string
-        deviceGroup:
-          $ref: '#/components/schemas/IDeviceGroup'
-          type: object
-        ftdMode:
-          enum:
-          - ROUTED
-          - TRANSPARENT
-          type: string
-        healthMessage:
-          type: string
-        healthPolicy:
-          $ref: '#/components/schemas/IHealthPolicy'
-          type: object
-        healthStatus:
-          type: string
-        hostName:
-          type: string
-        id:
-          type: string
-        isAWSDevice:
-          type: boolean
-        isAzureDevice:
-          type: boolean
-        isConnected:
-          type: boolean
-        isMCDManaged:
-          type: boolean
-        keepLocalEvents:
-          type: boolean
-        license_caps:
-          items:
-            type: string
-          type: array
-        licenseType:
-          enum:
-          - BYOL
-          - SAAS
-          - PAYG
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        managementState:
-          enum:
-          - MANAGED
-          - UNMANAGED
-          type: string
-        metadata:
-          $ref: '#/components/schemas/DeviceMetadata'
-          type: object
-        model:
-          type: string
-        modelId:
-          type: string
-        modelNumber:
-          type: string
-        modelType:
-          type: string
-        name:
-          type: string
-        natID:
-          type: string
-        performanceTier:
-          type: string
-        prohibitPacketTransfer:
-          type: boolean
-        regKey:
-          type: string
-        role:
-          type: string
-        secondaryHostname:
-          type: string
-        serialNumber:
-          type: string
-        skipDeployment:
-          type: boolean
-        snortEngine:
-          enum:
-          - SNORT2
-          - SNORT3
-          type: string
-        status:
-          type: string
-        sw_version:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      required:
-      - hostName
-      - license_caps
-      - regKey
-      type: object
-    DeviceChassisData:
-      properties:
-        chassisSerialNo:
-          type: string
-        chassisUrl:
-          type: string
-        securityModuleNo:
-          format: int32
-          type: integer
-        securityModuleSN:
-          type: string
-      type: object
-    IpAddresses:
-      properties:
-        ipv4:
-          items:
-            type: string
-          type: array
-        ipv6:
-          items:
-            type: string
-          type: array
-      type: object
-    ReadOnly:
-      description: Defines the read only conditions if the referenced resource is read only.
-      properties:
-        reason:
-          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions
-            make it read only) or DOMAIN (if resource is read only in current domain).
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          description: True if this resource us read only and false otherwise.
-          type: boolean
-      type: object
-    IDeviceGroup:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        members:
-          items:
-            $ref: '#/components/schemas/IBaseDevice'
-            type: object
-          type: array
         metadata:
           $ref: '#/components/schemas/IMetadata'
           type: object
@@ -1604,324 +1066,6 @@ components:
         type:
           type: string
         version:
-          type: string
-      type: object
-    Domain:
-      description: The details about the domain.
-      properties:
-        id:
-          description: Unique UUID of this domain
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
-          type: object
-        name:
-          description: Name of the domain.
-          type: string
-        type:
-          description: Domain type definition (fixed).
-          type: string
-        uuid:
-          type: string
-      type: object
-    Metadata:
-      description: Defines read only details about the object - whether it is system defined, last user who modified the object
-        etc.
-      properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          description: Defines the domains this instance belongs to (if applicable).
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          description: The last user who modified this instance.
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          description: Details regarding the read only status of this instance
-          type: object
-        timestamp:
-          description: The last updated timestamp.
-          format: int32
-          type: integer
-      type: object
-    MetadataUser:
-      description: This object defines details about the user.
-      properties:
-        id:
-          description: The unique UUID of the user
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Contains the self referencing links to this resource
-          type: object
-        name:
-          description: Name of the user.
-          type: string
-        type:
-          description: The user type (fixed).
-          type: string
-      type: object
-    ChassisStatsHealthMetrics:
-      description: Represents chassis status health metrics such as fan speed in RPM values.
-      properties:
-        fanRpmAvgList:
-          items:
-            $ref: '#/components/schemas/FanRpmAvg'
-            type: object
-          type: array
-      type: object
-    InterfaceHealthMetrics:
-      description: Represents various interface metrics. Average counter values are displayed for metrics such as buffer runs
-        and packet drops.
-      properties:
-        bufferOverrunsAvg:
-          type: number
-        bufferUnderrunsAvg:
-          type: number
-        currentLinkStatus:
-          enum:
-          - UP
-          - DOWN
-          type: string
-        currentOperationalStatus:
-          enum:
-          - UP
-          - DOWN
-          type: string
-        dropPacketsAvg:
-          type: number
-        duplexMode:
-          type: string
-        inputBytesAvg:
-          type: number
-        inputErrorsAvg:
-          type: number
-        inputPacketSizeAvg:
-          type: number
-        interface:
-          type: string
-        interfaceName:
-          type: string
-        interfaceType:
-          type: string
-        l2DecodeDropsAvg:
-          type: number
-        outputBytesAvg:
-          type: number
-        outputErrorsAvg:
-          type: number
-        outputPacketSizeAvg:
-          type: number
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    IVpnAddresses:
-      properties:
-        dto:
-          $ref: '#/components/schemas/IpAddresses'
-          type: object
-        v4:
-          items:
-            type: string
-          type: array
-        v6:
-          items:
-            type: string
-          type: array
-      type: object
-    HealthMetric:
-      properties:
-        description:
-          type: string
-        deviceUUID:
-          description: UUID of the device associated with this metric.
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        metric:
-          description: Name of the metric.
-          type: string
-        name:
-          type: string
-        regexFilter:
-          description: 'Regular expression as filter to be applied on the metric. Supports RE2 Syntax documented here : https://github.com/google/re2/wiki/Syntax.
-            Example regexFilter for fetching metrics for cpu for only CPU01 would be cpu=~"CPU01" '
-          type: string
-        response:
-          description: Response containing the values for the metric specified meeting the criteria for the regular expression
-            between the start time and end time at every step interval specified.
-          type: string
-        type:
-          description: Type of the health metric; this value is always Metric.
-          type: string
-        version:
-          type: string
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    IHealthPolicy:
-      description: Description of Health Policy.
-      properties:
-        basePolicyID:
-          type: string
-        defaultPolicy:
-          type: boolean
-        description:
-          description: Description of Health Policy.
-          type: string
-        healthModules:
-          items:
-            $ref: '#/components/schemas/HealthModule'
-            type: object
-          type: array
-        id:
-          description: Unique identifier (UUID) representing the Health policy.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the Health policy.
-          type: object
-        name:
-          description: User-specified name of the Health policy.
-          type: string
-        policyType:
-          type: string
-        setting:
-          $ref: '#/components/schemas/HealthSetting'
-          type: object
-        type:
-          description: Type of the Health policy; this value is always HealthPolicy.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    AggregateMetricsListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/AggregateMetrics'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    RaVpnGatewayListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/RaVpnGateway'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    CertificateInfo:
-      properties:
-        expiry:
-          type: string
-        isCA:
-          type: boolean
-        issuer:
-          $ref: '#/components/schemas/CertificateInfo'
-          type: object
-      type: object
-    TunnelDetailListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/TunnelDetail'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ISecurityAssociation:
-      properties:
-        inUseSettings:
-          type: string
-        inboundSpi:
-          $ref: '#/components/schemas/ISPI'
-          type: object
-        outboundSpi:
-          $ref: '#/components/schemas/ISPI'
-          type: object
-        packetDcaps:
-          format: int32
-          type: integer
-        packetDecrypt:
-          format: int32
-          type: integer
-        packetEncaps:
-          format: int32
-          type: integer
-        packetEncrypt:
-          format: int32
-          type: integer
-        protectedNetwork:
           type: string
       type: object
     HealthAlertConfig:
@@ -1936,604 +1080,6 @@ components:
             type: object
           type: array
       type: object
-    IVpnPeerDetail_1:
-      properties:
-        authMode:
-          enum:
-          - PRESHARED_KEY
-          - CERTIFICATE
-          type: string
-        bytesRx:
-          format: int32
-          type: integer
-        bytesTx:
-          format: int32
-          type: integer
-        device:
-          $ref: '#/components/schemas/IReference_2'
-          type: object
-        port:
-          format: int32
-          type: integer
-        securityAssociations:
-          items:
-            $ref: '#/components/schemas/ISecurityAssociation'
-            type: object
-          type: array
-        showCryptoIpsecSaOutput:
-          $ref: '#/components/schemas/IVpnCliOutput'
-          type: object
-        vpnInterfaceIp:
-          type: string
-        vpnSessionDbOutput:
-          $ref: '#/components/schemas/IVpnCliOutput'
-          type: object
-      type: object
-    IDeviceChassisData:
-      properties:
-        chassisSerialNo:
-          type: string
-        chassisUrl:
-          type: string
-        securityModuleNo:
-          format: int32
-          type: integer
-        securityModuleSN:
-          type: string
-      type: object
-    DiskHealthMetrics:
-      description: Represents device disk metrics in percentage values.
-      properties:
-        totalDiskUsageAvg:
-          type: number
-      type: object
-    HealthSetting:
-      properties:
-        alertEvaluationInterval:
-          format: int32
-          type: integer
-        certFileContent:
-          type: string
-        certFileName:
-          type: string
-        certFileType:
-          type: string
-        certPassphrase:
-          type: string
-        configType:
-          type: string
-        dataCollectionInterval:
-          format: int32
-          type: integer
-        dialInHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        dialOutHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        enabledOpenConfig:
-          type: boolean
-        grpcPassword:
-          type: string
-        grpcUsername:
-          type: string
-        readOnly:
-          type: boolean
-      type: object
-    IPolicyModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    FanRpmAvg:
-      properties:
-        name:
-          type: string
-        rpm:
-          type: number
-      type: object
-    CPUHealthMetrics:
-      description: Represents device CPU metrics in percentage values.
-      properties:
-        linaUsageAvg:
-          type: number
-        snortUsageAvg:
-          type: number
-        systemUsageAvg:
-          type: number
-      type: object
-    IReference:
-      description: Contains reference information.
-      properties:
-        id:
-          description: Unique identifier representing resource.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        name:
-          description: User chosen resource name.
-          type: string
-        type:
-          description: Response object associated with resource.
-          type: string
-      type: object
-    RaVpnGateway:
-      properties:
-        certEnrollments:
-          items:
-            $ref: '#/components/schemas/CertEnrollmentStatus'
-            type: object
-          type: array
-        description:
-          type: string
-        device:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        maxSessions:
-          format: int32
-          type: integer
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        policy:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IAdvanced:
-      properties:
-        enableOGS:
-          type: boolean
-      type: object
-    IAutoVpnRouteSettings:
-      properties:
-        autonomousSystemNumber:
-          format: int32
-          type: integer
-        communityAttribute:
-          format: int32
-          type: integer
-        communityTagToAdvertiseLearntRoutes:
-          format: int32
-          type: integer
-        distributeConnectedNetwork:
-          $ref: '#/components/schemas/IRouteDistributeConnectedNetwork'
-          type: object
-        enableBgp:
-          type: boolean
-        enableMultiPath:
-          type: boolean
-        secondaryHubAutonomousSystemNumber:
-          format: int32
-          type: integer
-      type: object
-    TunnelSummary:
-      description: Represents an aggregated summary of the status of all S2S VPN tunnels.
-      properties:
-        description:
-          type: string
-        group:
-          $ref: '#/components/schemas/IModel'
-          description: Represents the group over which the tunnel statuses are summarized. Can be a Device or a S2S VPN Topology.
-          type: object
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        tunnelCount:
-          description: The total number of S2S VPN Tunnels in the group.
-          format: int32
-          type: integer
-        tunnelDownCount:
-          description: The number of S2S VPN Tunnels that are down.
-          format: int32
-          type: integer
-        tunnelUnknownCount:
-          description: The number of S2S VPN Tunnels whose status is unknown. These may be tunnels just deployed but never
-            came up.
-          format: int32
-          type: integer
-        tunnelUpCount:
-          description: The number of S2S VPN Tunnels that are up.
-          format: int32
-          type: integer
-        type:
-          description: Type of the Response object. This value is always TunnelSummary.
-          type: string
-        version:
-          type: string
-      type: object
-    ITaskStatus:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        status:
-          type: string
-        subTasks:
-          items:
-            $ref: '#/components/schemas/ISubTask'
-            type: object
-          type: array
-        taskType:
-          enum:
-          - DEVICE_REGISTRATION
-          - SMART_LICENSE
-          - DEVICE_DEPLOYMENT
-          - DEVICE_ROLLBACK
-          - NGFWHA_OPERATIONS
-          - COPY_CONFIG_REQUEST
-          - HIT_COUNT_REFRESH
-          - FTD_CLUSTER_BOOTSTRAP
-          - FTD_CLUSTER_CREATE
-          - FTD_CLUSTER_BREAK
-          - FTD_CLUSTER_ADD_NODES
-          - FTD_CLUSTER_REMOVE_NODES
-          - DEVICE_BACKUP
-          - FTD_CLUSTER_UPDATE_BOOTSTRAP
-          - FTD_CLUSTER_COMMAND
-          - SSP_EPM_OIR
-          - SSP_EPM_BREAKOUT_DEPLOY
-          - DEVICE_EXPORT
-          - DEVICE_IMPORT
-          - POLICY_EXPORT
-          - CHASSIS_REGISTRATION
-          - CHANGE_MANAGER
-          - CONFIGURE_DEVICE_VALIDATE
-          - CONFIGURE_DEVICE
-          - CONFIGURE_MANAGER
-          - CONFIGURE_MANAGER_ADD
-          - CONFIGURE_MANAGER_DELETE
-          - INITIATE_MIGRATION
-          - DISCARD_MIGRATION
-          - SWITCH_TO_ANALYTICS
-          - DELETE_DEVICE
-          - GENERATE_REPORTS
-          - FLEXCONFIG_MIGRATION
-          - DEVICE_UNREGISTRATION
-          - PENDING_CHANGES_REQUEST
-          - DEVICE_TROUBLESHOOT
-          - DEVICE_MODEL_MIGRATION
-          - DEVICE_TEMPLATE_CREATION
-          - CHASSIS_CONVERSION_REQUEST
-          - SNORT_PROFILER
-          - CPU_PROFILER
-          - POLICY_REPORT_GENERATION
-          - DEVICE_TEMPLATE_APPLY
-          - LTP_ONBOARDING
-          - POLICY_CLONE_OPERATION
-          - DEVICE_CERTIFICATE_MANAGEMENT
-          - OOB_CHANGES_REQUEST
-          - UPLOAD_TROUBLESHOOT
-          type: string
-        type:
-          type: string
-      type: object
-    ITarget:
-      description: This is the target device.
-      properties:
-        description:
-          type: string
-        id:
-          description: Unique ID of the device.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: Name of the device.
-          type: string
-        type:
-          description: Device
-          type: string
-        version:
-          type: string
-      type: object
-    IFTDS2SVpnModel:
-      properties:
-        advancedSettings:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        autoVpnSettings:
-          $ref: '#/components/schemas/IAutoVpnSettings'
-          type: object
-        description:
-          type: string
-        endpoints:
-          type: object
-        id:
-          type: string
-        ikeSettings:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        ikeV1Enabled:
-          type: boolean
-        ikeV2Enabled:
-          type: boolean
-        ipsecSettings:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        routeBased:
-          type: boolean
-        topologyType:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IVpnInterface:
-      properties:
-        interfaceType:
-          enum:
-          - DYNAMIC
-          - STATIC
-          type: string
-        ipAddress:
-          type: string
-        name:
-          type: string
-        publicIp:
-          type: string
-      type: object
-    IActionInfo:
-      type: object
-    HealthAlertModelListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/HealthAlertModel'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ISubTask:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        status:
-          type: string
-        target:
-          $ref: '#/components/schemas/ITarget'
-          type: object
-      type: object
-    DeviceMetadata:
-      properties:
-        chassisData:
-          $ref: '#/components/schemas/DeviceChassisData'
-          description: This field holds information related to chassis.
-          type: object
-        chassisDetails:
-          $ref: '#/components/schemas/IDeviceChassisData'
-          type: object
-        clusterBootstrapSupported:
-          type: boolean
-        containerDetails:
-          $ref: '#/components/schemas/IBaseDevice'
-          description: If 'isPartOfContainer' field is true then this field will hold the information of container.
-          type: object
-        deviceSerialNumber:
-          type: string
-        domain:
-          $ref: '#/components/schemas/Domain'
-          description: Lists the domains to which this instance belongs if applicable.
-          type: object
-        dummyDevice:
-          type: boolean
-        inventoryData:
-          $ref: '#/components/schemas/DeviceInventoryData'
-          description: Inventory details of the device.
-          type: object
-        inventoryDetails:
-          $ref: '#/components/schemas/IDeviceInventoryData'
-          type: object
-        isDummyDevice:
-          type: boolean
-        isLocked:
-          type: boolean
-        isMultiInstance:
-          description: Indicated if the device is in multiinstance or native mode.
-          type: boolean
-        isPartOfContainer:
-          description: This field indicates whether it is part of any cluster. This will be true for a device which is part
-            of NGFWHA, NGFW cluster and firepower devices which is part of Stack.
-          type: boolean
-        isSnort3:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          description: The last user who modified this instance.
-          type: object
-        lspVersion:
-          type: string
-        matches:
-          items:
-            type: string
-          type: array
-        otherAssociatedPolicies:
-          description: assigned policies to device other than Access Policy
-          items:
-            $ref: '#/components/schemas/IReference'
-            type: object
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          description: Details regarding the read only status of this instance.
-          type: object
-        snortVersion:
-          description: Snort version of a particular device.
-          type: string
-        sruVersion:
-          description: SRU version of a particular device.
-          type: string
-        task:
-          $ref: '#/components/schemas/ITaskStatus'
-          type: object
-        timestamp:
-          description: The last updated timestamp.
-          format: int32
-          type: integer
-        universalZeroTrustSetting:
-          $ref: '#/components/schemas/LLUniversalZeroTrustSetting'
-          type: object
-        universalZeroTrustSupported:
-          type: boolean
-        vdbVersion:
-          description: VDB version of a particular device.
-          type: string
-      required:
-      - otherAssociatedPolicies
-      type: object
-    HealthMetricListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/HealthMetric'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    HAInfo:
-      description: Represents the role and status of a high availability device.
-      properties:
-        role:
-          description: Role of the device. Possible values are PRIMARY or SECONDARY.
-          type: string
-        status:
-          description: Current status of the device. Possible values are Active, Standby, Failed, Disabled, Synchronizing,
-            or Unknown.
-          type: string
-      type: object
-    PathMonitoredInterfaceListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/PathMonitoredInterface'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    TunnelStatus:
-      description: Represents status of all S2S VPN tunnels.
-      properties:
-        description:
-          type: string
-        id:
-          description: The identifier of the Tunnel Status.
-          type: string
-        lastChange:
-          description: The time the status last changed
-          format: int32
-          type: integer
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        peerA:
-          $ref: '#/components/schemas/IVpnPeer'
-          description: This represents one of the peers of the VPN Tunnel.
-          type: object
-        peerB:
-          $ref: '#/components/schemas/IVpnPeer'
-          description: This represents the other peer of the VPN Tunnel.
-          type: object
-        state:
-          enum:
-          - UNKNOWN
-          - TUNNEL_DOWN
-          - TUNNEL_UP
-          type: string
-        type:
-          description: Type of the Response object. This value is always TunnelStatus.
-          type: string
-        version:
-          type: string
-        vpnTopology:
-          $ref: '#/components/schemas/IFTDS2SVpnModel'
-          type: object
-      type: object
     IRouteDistributeConnectedNetwork:
       properties:
         connectedInterface:
@@ -2547,442 +1093,17 @@ components:
           - USER_SELECTED_INTERFACE
           type: string
       type: object
-    IReadonly:
+    IDeviceChassisData:
       properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
+        chassisSerialNo:
           type: string
-        state:
-          type: boolean
-      type: object
-    IAutoVpnSettings:
-      properties:
-        routeSettings:
-          $ref: '#/components/schemas/IAutoVpnRouteSettings'
-          type: object
-        spokeSvtiSecurityZone:
-          $ref: '#/components/schemas/IReference'
-          type: object
-      type: object
-    IReference_1:
-      properties:
-        accessPolicy:
-          $ref: '#/components/schemas/IPolicyModel'
-          type: object
-        actions:
-          items:
-            $ref: '#/components/schemas/IPreDeployAction'
-            type: object
-          type: array
-        advanced:
-          $ref: '#/components/schemas/IAdvanced'
-          type: object
-        analyticsOnly:
-          type: boolean
-        changeManager:
-          type: boolean
-        cloudDeviceId:
+        chassisUrl:
           type: string
-        deploymentStatus:
-          type: string
-        description:
-          type: string
-        deviceGroup:
-          $ref: '#/components/schemas/IDeviceGroup'
-          type: object
-        ftdMode:
-          enum:
-          - ROUTED
-          - TRANSPARENT
-          type: string
-        healthMessage:
-          type: string
-        healthPolicy:
-          $ref: '#/components/schemas/IHealthPolicy'
-          type: object
-        healthStatus:
-          type: string
-        hostName:
-          type: string
-        id:
-          type: string
-        isAWSDevice:
-          type: boolean
-        isAzureDevice:
-          type: boolean
-        isConnected:
-          type: boolean
-        isMCDManaged:
-          type: boolean
-        keepLocalEvents:
-          type: boolean
-        license_caps:
-          items:
-            type: string
-          type: array
-        licenseType:
-          enum:
-          - BYOL
-          - SAAS
-          - PAYG
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        managementState:
-          enum:
-          - MANAGED
-          - UNMANAGED
-          type: string
-        metadata:
-          $ref: '#/components/schemas/DeviceMetadata'
-          type: object
-        model:
-          type: string
-        modelId:
-          type: string
-        modelNumber:
-          type: string
-        modelType:
-          type: string
-        name:
-          type: string
-        natID:
-          type: string
-        performanceTier:
-          type: string
-        prohibitPacketTransfer:
-          type: boolean
-        regKey:
-          type: string
-        role:
-          type: string
-        secondaryHostname:
-          type: string
-        serialNumber:
-          type: string
-        skipDeployment:
-          type: boolean
-        snortEngine:
-          enum:
-          - SNORT2
-          - SNORT3
-          type: string
-        status:
-          type: string
-        sw_version:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      required:
-      - hostName
-      - license_caps
-      - regKey
-      type: object
-    IHybridZeroTrustDeviceSetting:
-      properties:
-        autoDeployEnabled:
-          type: boolean
-        domainSettings:
-          items:
-            $ref: '#/components/schemas/IHybridZeroTrustFQDNConfig'
-            type: object
-          type: array
-        universalZeroTrustEnabled:
-          type: boolean
-      type: object
-    LLUniversalZeroTrustSetting:
-      additionalProperties:
-        $ref: '#/components/schemas/IHybridZeroTrustDeviceSetting'
-        type: object
-      type: object
-    TerminateRAVPNSession:
-      properties:
-        description:
-          type: string
-        deviceId:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        sessionIds:
-          items:
-            type: string
-          type: array
-        terminateBy:
-          enum:
-          - SESSION
-          - USER
-          - DEVICE
-          type: string
-        type:
-          type: string
-        usernames:
-          items:
-            type: string
-          type: array
-        version:
-          type: string
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    DialHost:
-      properties:
-        host:
-          type: string
-        port:
+        securityModuleNo:
           format: int32
           type: integer
-      type: object
-    HealthThreshold:
-      properties:
-        type:
+        securityModuleSN:
           type: string
-        value:
-          format: int32
-          type: integer
-      type: object
-    IModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IVpnPeer:
-      properties:
-        device:
-          $ref: '#/components/schemas/IDevice'
-          type: object
-        ipAddresses:
-          $ref: '#/components/schemas/IVpnAddresses'
-          type: object
-        peerType:
-          enum:
-          - FTD
-          - EXTRANET
-          - UMBRELLA
-          - SECURE_ACCESS
-          type: string
-        role:
-          enum:
-          - PEER
-          - HUB
-          - SPOKE
-          type: string
-        trafficSelector:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        vpnInterface:
-          $ref: '#/components/schemas/IVpnInterface'
-          type: object
-        vtiInterface:
-          $ref: '#/components/schemas/IVpnInterface'
-          type: object
-      type: object
-    HealthAlertModel:
-      description: An object representing the health alert.
-      properties:
-        description:
-          type: string
-        details:
-          type: string
-        deviceUUID:
-          description: UUID of the device on which the alert is raised
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        moduleID:
-          description: ID of the module, it is one of APPLICATION_BYPASS, CARD_RESET, CPU, DISK_USAGE, EVENT_STREAM, HEALTH_MONITOR,
-            HEARTBEAT, INTERFACE, HARDWARE_ALARM, POWER_SUPPLY, LIC, LIC_MONITOR, LINKSTATE_PROPAGATION, MEMORY_USAGE, PEP,
-            PROCESS, DISCOVERY_HEALTH, HOST_LIMIT, RRD_SERVER, SENSOR_HUB, INTRUSION_FILE_STATS, TEST, TIME_SYNC, TIME_SERIES_DATA_MONITOR,
-            URLFILTER, SECURITY_INTELLIGENCE, AMP_FOR_ENDPOINTS, USER_AGENT, SMART_LICENSE, VPN, HIGH_AVAILABILITY, DATABASE,
-            PLATFORM_FAULTS, THREAT_DATA_UPDATES, REALM, ISE, SNORT_IDENTITY_MEMORY_USAGE, MALWARE, DISK_STATUS, BACKLOG,
-            STATIC_ANALYSIS, CLUSTER, INLINELINK_ALARM, RECONFIG_DETECTION, CONNECTIONS, CRITICAL_PROCESS, DEPLOYED_CONFIGURATION,
-            SNORT_STATS FTD_HA, NTPD and CERTIFICATE_MONITORING
-          enum:
-          - APPLICATION_BYPASS
-          - CARD_RESET
-          - CPU
-          - DISK_USAGE
-          - EVENT_STREAM
-          - HEALTH_MONITOR
-          - HEARTBEAT
-          - INTERFACE
-          - PATHMONITORING
-          - HARDWARE_ALARM
-          - POWER_SUPPLY
-          - LICENSE
-          - LINKSTATE_PROPAGATION
-          - MEMORY_USAGE
-          - PEP
-          - PROCESS
-          - DISCOVERY_HEALTH
-          - HOST_LIMIT
-          - RRD_SERVER
-          - APPLIANCE_HEARTBEAT
-          - INTRUSION_FILE_STATS
-          - TEST
-          - TIME_SYNC
-          - TIME_SERIES_DATA_MONITOR
-          - URLFILTER
-          - SECURITY_INTELLIGENCE
-          - AMP_FOR_ENDPOINTS
-          - USER_AGENT
-          - SMART_LICENSE
-          - VPN
-          - HIGH_AVAILABILITY
-          - DATABASE
-          - PLATFORM_FAULTS
-          - THREAT_DATA_UPDATES
-          - REALM
-          - ISE
-          - SNORT_IDENTITY_MEMORY_USAGE
-          - AMP_FOR_FIREPOWER_STATUS
-          - DISK_STATUS
-          - BACKLOG
-          - LOCAL_MALWARE_ANALYSIS
-          - CLUSTER
-          - INLINELINK_ALARM
-          - RECONFIG_DETECTION
-          - CONNECTIONS
-          - CRITICAL_PROCESS
-          - DEPLOYED_CONFIGURATION
-          - SNORT_STATS
-          - FTD_HA
-          - FILE_SYSTEM_INTEGRITY_CHECK
-          - ASP_DROP
-          - HIT_COUNT
-          - NTP_SERVER
-          - ROUTING_STATS
-          - UNRESOLVED_GROUPS_MONITOR
-          - CONN_STATUS_SSE
-          - CONN_STATUS_AMP
-          - FLOW_OFFLOAD
-          - CHASSIS_STATUS_FTD
-          - ADVANCED_SNORT_STATS
-          - OUT_OF_BAND_CHANGES
-          - HM_LTP
-          - FTD_CONFIG_RESOURCE_UTILISATION
-          - SYBASE_STATUS
-          - MYSQL
-          - MONETDB
-          - VPN_STATS
-          - RABBITMQ
-          - EVENT
-          - HARDWARE_STATISTICS_FMC
-          - X_TLS_COUNTER
-          - CSDAC_STATUS
-          - THREAT_GRID_MAP
-          - WEB_SERVER_STATS
-          - NTPD
-          - SD_WAN_MONITORING
-          - PASSIVE_IDENTITY_AGENT_MONITOR
-          - CERTIFICATE_MONITORING
-          - HM_TALOSAGENT
-          - IDENTITY_PROCESS_STATUS
-          - FXOS_HEALTH
-          type: string
-        moduleUUID:
-          description: UUID of the module on which the alert is raised
-          type: string
-        name:
-          type: string
-        params:
-          type: string
-        status:
-          description: Status of the alert, it is one of GREEN, RED, YELLOW, DISABLED and RECOVERED
-          enum:
-          - GREEN
-          - DISABLED
-          - RECOVERED
-          - RED
-          - ERROR
-          - YELLOW
-          - FAILED
-          type: string
-        timestamp:
-          description: Time in seconds at which the alert is raised, timestamp is in unix format
-          format: int32
-          type: integer
-        type:
-          description: Type of the alert. This will always be Alert
-          type: string
-        version:
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    ISPI:
-      properties:
-        bytesRemaining:
-          format: int32
-          type: integer
-        id:
-          type: string
-        secondsRemaining:
-          format: int32
-          type: integer
-      type: object
-    CertEnrollmentStatus:
-      properties:
-        certEnrollment:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        certificateInfo:
-          $ref: '#/components/schemas/CertificateInfo'
-          type: object
       type: object
     IDevice:
       properties:
@@ -3101,17 +1222,1132 @@ components:
       - license_caps
       - regKey
       type: object
-    IPreDeployAction:
+    IDeviceGroup:
       properties:
-        actionInfo:
-          $ref: '#/components/schemas/IActionInfo'
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
           type: object
-        actionType:
-          enum:
-          - APPLY_TEMPLATE
+        members:
+          items:
+            $ref: '#/components/schemas/IBaseDevice'
+            type: object
+          type: array
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
           type: string
       type: object
-    IDomain:
+    IHybridZeroTrustFQDNConfig:
+      properties:
+        FQDN:
+          type: string
+        certificate:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        interfaces:
+          items:
+            $ref: '#/components/schemas/IReference'
+            type: object
+          type: array
+      type: object
+    HealthModule:
+      properties:
+        alertConfig:
+          items:
+            $ref: '#/components/schemas/HealthAlertConfig'
+            type: object
+          type: array
+        alertEnabled:
+          type: boolean
+        criticalThreshold:
+          format: int32
+          type: integer
+        customThresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+        enabled:
+          type: boolean
+        moduleId:
+          type: string
+        severity:
+          type: string
+        type:
+          type: string
+        warningThreshold:
+          format: int32
+          type: integer
+      type: object
+    HealthAlertModel:
+      description: An object representing the health alert.
+      properties:
+        description:
+          type: string
+        details:
+          type: string
+        deviceUUID:
+          description: UUID of the device on which the alert is raised
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        moduleID:
+          description: ID of the module, it is one of APPLICATION_BYPASS, CARD_RESET, CPU, DISK_USAGE, EVENT_STREAM, HEALTH_MONITOR, HEARTBEAT, INTERFACE, HARDWARE_ALARM, POWER_SUPPLY, LIC, LIC_MONITOR, LINKSTATE_PROPAGATION, MEMORY_USAGE, PEP, PROCESS, DISCOVERY_HEALTH, HOST_LIMIT, RRD_SERVER, SENSOR_HUB, INTRUSION_FILE_STATS, TEST, TIME_SYNC, TIME_SERIES_DATA_MONITOR, URLFILTER, SECURITY_INTELLIGENCE, AMP_FOR_ENDPOINTS, USER_AGENT, SMART_LICENSE, VPN, HIGH_AVAILABILITY, DATABASE, PLATFORM_FAULTS, THREAT_DATA_UPDATES, REALM, ISE, SNORT_IDENTITY_MEMORY_USAGE, MALWARE, DISK_STATUS, BACKLOG, STATIC_ANALYSIS, CLUSTER, INLINELINK_ALARM, RECONFIG_DETECTION, CONNECTIONS, CRITICAL_PROCESS, DEPLOYED_CONFIGURATION, SNORT_STATS FTD_HA, NTPD and CERTIFICATE_MONITORING
+          enum:
+          - APPLICATION_BYPASS
+          - CARD_RESET
+          - CPU
+          - DISK_USAGE
+          - EVENT_STREAM
+          - HEALTH_MONITOR
+          - HEARTBEAT
+          - INTERFACE
+          - PATHMONITORING
+          - HARDWARE_ALARM
+          - POWER_SUPPLY
+          - LICENSE
+          - LINKSTATE_PROPAGATION
+          - MEMORY_USAGE
+          - PEP
+          - PROCESS
+          - DISCOVERY_HEALTH
+          - HOST_LIMIT
+          - RRD_SERVER
+          - APPLIANCE_HEARTBEAT
+          - INTRUSION_FILE_STATS
+          - TEST
+          - TIME_SYNC
+          - TIME_SERIES_DATA_MONITOR
+          - URLFILTER
+          - SECURITY_INTELLIGENCE
+          - AMP_FOR_ENDPOINTS
+          - USER_AGENT
+          - SMART_LICENSE
+          - VPN
+          - HIGH_AVAILABILITY
+          - DATABASE
+          - PLATFORM_FAULTS
+          - THREAT_DATA_UPDATES
+          - REALM
+          - ISE
+          - SNORT_IDENTITY_MEMORY_USAGE
+          - AMP_FOR_FIREPOWER_STATUS
+          - DISK_STATUS
+          - BACKLOG
+          - LOCAL_MALWARE_ANALYSIS
+          - CLUSTER
+          - INLINELINK_ALARM
+          - RECONFIG_DETECTION
+          - CONNECTIONS
+          - CRITICAL_PROCESS
+          - DEPLOYED_CONFIGURATION
+          - SNORT_STATS
+          - FTD_HA
+          - FILE_SYSTEM_INTEGRITY_CHECK
+          - ASP_DROP
+          - HIT_COUNT
+          - NTP_SERVER
+          - ROUTING_STATS
+          - UNRESOLVED_GROUPS_MONITOR
+          - CONN_STATUS_SSE
+          - CONN_STATUS_AMP
+          - FLOW_OFFLOAD
+          - CHASSIS_STATUS_FTD
+          - ADVANCED_SNORT_STATS
+          - OUT_OF_BAND_CHANGES
+          - HM_LTP
+          - FTD_CONFIG_RESOURCE_UTILISATION
+          - SYBASE_STATUS
+          - MYSQL
+          - MONETDB
+          - VPN_STATS
+          - RABBITMQ
+          - EVENT
+          - HARDWARE_STATISTICS_FMC
+          - X_TLS_COUNTER
+          - CSDAC_STATUS
+          - THREAT_GRID_MAP
+          - WEB_SERVER_STATS
+          - NTPD
+          - SD_WAN_MONITORING
+          - PASSIVE_IDENTITY_AGENT_MONITOR
+          - CERTIFICATE_MONITORING
+          - HM_TALOSAGENT
+          - IDENTITY_PROCESS_STATUS
+          - FXOS_HEALTH
+          type: string
+        moduleUUID:
+          description: UUID of the module on which the alert is raised
+          type: string
+        name:
+          type: string
+        params:
+          type: string
+        status:
+          description: Status of the alert, it is one of GREEN, RED, YELLOW, DISABLED and RECOVERED
+          enum:
+          - GREEN
+          - DISABLED
+          - RECOVERED
+          - RED
+          - ERROR
+          - YELLOW
+          - FAILED
+          type: string
+        timestamp:
+          description: Time in seconds at which the alert is raised, timestamp is in unix format
+          format: int32
+          type: integer
+        type:
+          description: Type of the alert. This will always be Alert
+          type: string
+        version:
+          type: string
+      type: object
+    Domain:
+      description: The details about the domain.
+      properties:
+        id:
+          description: Unique UUID of this domain
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
+          type: object
+        name:
+          description: Name of the domain.
+          type: string
+        type:
+          description: Domain type definition (fixed).
+          type: string
+        uuid:
+          type: string
+      type: object
+    model.Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    IReference_1:
+      properties:
+        accessPolicy:
+          $ref: '#/components/schemas/IPolicyModel'
+          type: object
+        actions:
+          items:
+            $ref: '#/components/schemas/IPreDeployAction'
+            type: object
+          type: array
+        advanced:
+          $ref: '#/components/schemas/IAdvanced'
+          type: object
+        analyticsOnly:
+          type: boolean
+        changeManager:
+          type: boolean
+        cloudDeviceId:
+          type: string
+        deploymentStatus:
+          type: string
+        description:
+          type: string
+        deviceGroup:
+          $ref: '#/components/schemas/IDeviceGroup'
+          type: object
+        ftdMode:
+          enum:
+          - ROUTED
+          - TRANSPARENT
+          type: string
+        healthMessage:
+          type: string
+        healthPolicy:
+          $ref: '#/components/schemas/IHealthPolicy'
+          type: object
+        healthStatus:
+          type: string
+        hostName:
+          type: string
+        id:
+          type: string
+        isAWSDevice:
+          type: boolean
+        isAzureDevice:
+          type: boolean
+        isConnected:
+          type: boolean
+        isMCDManaged:
+          type: boolean
+        keepLocalEvents:
+          type: boolean
+        license_caps:
+          items:
+            type: string
+          type: array
+        licenseType:
+          enum:
+          - BYOL
+          - SAAS
+          - PAYG
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        managementState:
+          enum:
+          - MANAGED
+          - UNMANAGED
+          type: string
+        metadata:
+          $ref: '#/components/schemas/DeviceMetadata'
+          type: object
+        model:
+          type: string
+        modelId:
+          type: string
+        modelNumber:
+          type: string
+        modelType:
+          type: string
+        name:
+          type: string
+        natID:
+          type: string
+        performanceTier:
+          type: string
+        prohibitPacketTransfer:
+          type: boolean
+        regKey:
+          type: string
+        role:
+          type: string
+        secondaryHostname:
+          type: string
+        serialNumber:
+          type: string
+        skipDeployment:
+          type: boolean
+        snortEngine:
+          enum:
+          - SNORT2
+          - SNORT3
+          type: string
+        status:
+          type: string
+        sw_version:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      required:
+      - hostName
+      - license_caps
+      - regKey
+      type: object
+    CertificateInfo:
+      properties:
+        expiry:
+          type: string
+        isCA:
+          type: boolean
+        issuer:
+          $ref: '#/components/schemas/CertificateInfo'
+          type: object
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    IAutoVpnRouteSettings:
+      properties:
+        autonomousSystemNumber:
+          format: int32
+          type: integer
+        communityAttribute:
+          format: int32
+          type: integer
+        communityTagToAdvertiseLearntRoutes:
+          format: int32
+          type: integer
+        distributeConnectedNetwork:
+          $ref: '#/components/schemas/IRouteDistributeConnectedNetwork'
+          type: object
+        enableBgp:
+          type: boolean
+        enableMultiPath:
+          type: boolean
+        secondaryHubAutonomousSystemNumber:
+          format: int32
+          type: integer
+      type: object
+    IReference_2:
+      properties:
+        accessPolicy:
+          $ref: '#/components/schemas/IPolicyModel'
+          type: object
+        actions:
+          items:
+            $ref: '#/components/schemas/IPreDeployAction'
+            type: object
+          type: array
+        advanced:
+          $ref: '#/components/schemas/IAdvanced'
+          type: object
+        analyticsOnly:
+          type: boolean
+        changeManager:
+          type: boolean
+        cloudDeviceId:
+          type: string
+        deploymentStatus:
+          type: string
+        description:
+          type: string
+        deviceGroup:
+          $ref: '#/components/schemas/IDeviceGroup'
+          type: object
+        ftdMode:
+          enum:
+          - ROUTED
+          - TRANSPARENT
+          type: string
+        healthMessage:
+          type: string
+        healthPolicy:
+          $ref: '#/components/schemas/IHealthPolicy'
+          type: object
+        healthStatus:
+          type: string
+        hostName:
+          type: string
+        id:
+          type: string
+        isAWSDevice:
+          type: boolean
+        isAzureDevice:
+          type: boolean
+        isConnected:
+          type: boolean
+        isMCDManaged:
+          type: boolean
+        keepLocalEvents:
+          type: boolean
+        license_caps:
+          items:
+            type: string
+          type: array
+        licenseType:
+          enum:
+          - BYOL
+          - SAAS
+          - PAYG
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        managementState:
+          enum:
+          - MANAGED
+          - UNMANAGED
+          type: string
+        metadata:
+          $ref: '#/components/schemas/DeviceMetadata'
+          type: object
+        model:
+          type: string
+        modelId:
+          type: string
+        modelNumber:
+          type: string
+        modelType:
+          type: string
+        name:
+          type: string
+        natID:
+          type: string
+        performanceTier:
+          type: string
+        prohibitPacketTransfer:
+          type: boolean
+        regKey:
+          type: string
+        role:
+          type: string
+        secondaryHostname:
+          type: string
+        serialNumber:
+          type: string
+        skipDeployment:
+          type: boolean
+        snortEngine:
+          enum:
+          - SNORT2
+          - SNORT3
+          type: string
+        status:
+          type: string
+        sw_version:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      required:
+      - hostName
+      - license_caps
+      - regKey
+      type: object
+    TerminateRAVPNSession:
+      properties:
+        description:
+          type: string
+        deviceId:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        sessionIds:
+          items:
+            type: string
+          type: array
+        terminateBy:
+          enum:
+          - SESSION
+          - USER
+          - DEVICE
+          type: string
+        type:
+          type: string
+        usernames:
+          items:
+            type: string
+          type: array
+        version:
+          type: string
+      type: object
+    IHealthPolicy:
+      description: Description of Health Policy.
+      properties:
+        basePolicyID:
+          type: string
+        defaultPolicy:
+          type: boolean
+        description:
+          description: Description of Health Policy.
+          type: string
+        healthModules:
+          items:
+            $ref: '#/components/schemas/HealthModule'
+            type: object
+          type: array
+        id:
+          description: Unique identifier (UUID) representing the Health policy.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the Health policy.
+          type: object
+        name:
+          description: User-specified name of the Health policy.
+          type: string
+        policyType:
+          type: string
+        setting:
+          $ref: '#/components/schemas/HealthSetting'
+          type: object
+        type:
+          description: Type of the Health policy; this value is always HealthPolicy.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    IVpnAddresses:
+      properties:
+        dto:
+          $ref: '#/components/schemas/IpAddresses'
+          type: object
+        v4:
+          items:
+            type: string
+          type: array
+        v6:
+          items:
+            type: string
+          type: array
+      type: object
+    CertEnrollmentStatus:
+      properties:
+        certEnrollment:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        certificateInfo:
+          $ref: '#/components/schemas/CertificateInfo'
+          type: object
+      type: object
+    HealthSetting:
+      properties:
+        alertEvaluationInterval:
+          format: int32
+          type: integer
+        certFileContent:
+          type: string
+        certFileName:
+          type: string
+        certFileType:
+          type: string
+        certPassphrase:
+          type: string
+        configType:
+          type: string
+        dataCollectionInterval:
+          format: int32
+          type: integer
+        dialInHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        dialOutHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        enabledOpenConfig:
+          type: boolean
+        grpcPassword:
+          type: string
+        grpcUsername:
+          type: string
+        readOnly:
+          type: boolean
+      type: object
+    LLUniversalZeroTrustSetting:
+      additionalProperties:
+        $ref: '#/components/schemas/IHybridZeroTrustDeviceSetting'
+        type: object
+      type: object
+    model.Health:
+      type: object
+      properties:
+        currentTime:
+          type: string
+        healthStatus:
+          type: string
+        serviceName:
+          type: string
+        serviceStatus:
+          type: string
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    CPUHealthMetrics:
+      description: Represents device CPU metrics in percentage values.
+      properties:
+        linaUsageAvg:
+          type: number
+        snortUsageAvg:
+          type: number
+        systemUsageAvg:
+          type: number
+      type: object
+    FanRpmAvg:
+      properties:
+        name:
+          type: string
+        rpm:
+          type: number
+      type: object
+    ISubTask:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        status:
+          type: string
+        target:
+          $ref: '#/components/schemas/ITarget'
+          type: object
+      type: object
+    MemoryHealthMetrics:
+      description: Represents device memory metrics in percentage values.
+      properties:
+        linaUsageAvg:
+          type: number
+        snortUsageAvg:
+          type: number
+        systemUsageAvg:
+          type: number
+      type: object
+    AggregateMetricsListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/AggregateMetrics'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
+      properties:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
+      type: object
+    ITaskStatus:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        status:
+          type: string
+        subTasks:
+          items:
+            $ref: '#/components/schemas/ISubTask'
+            type: object
+          type: array
+        taskType:
+          enum:
+          - DEVICE_REGISTRATION
+          - SMART_LICENSE
+          - DEVICE_DEPLOYMENT
+          - DEVICE_ROLLBACK
+          - NGFWHA_OPERATIONS
+          - COPY_CONFIG_REQUEST
+          - HIT_COUNT_REFRESH
+          - FTD_CLUSTER_BOOTSTRAP
+          - FTD_CLUSTER_CREATE
+          - FTD_CLUSTER_BREAK
+          - FTD_CLUSTER_ADD_NODES
+          - FTD_CLUSTER_REMOVE_NODES
+          - DEVICE_BACKUP
+          - FTD_CLUSTER_UPDATE_BOOTSTRAP
+          - FTD_CLUSTER_COMMAND
+          - SSP_EPM_OIR
+          - SSP_EPM_BREAKOUT_DEPLOY
+          - DEVICE_EXPORT
+          - DEVICE_IMPORT
+          - POLICY_EXPORT
+          - CHASSIS_REGISTRATION
+          - CHANGE_MANAGER
+          - CONFIGURE_DEVICE_VALIDATE
+          - CONFIGURE_DEVICE
+          - CONFIGURE_MANAGER
+          - CONFIGURE_MANAGER_ADD
+          - CONFIGURE_MANAGER_DELETE
+          - INITIATE_MIGRATION
+          - DISCARD_MIGRATION
+          - SWITCH_TO_ANALYTICS
+          - DELETE_DEVICE
+          - GENERATE_REPORTS
+          - FLEXCONFIG_MIGRATION
+          - DEVICE_UNREGISTRATION
+          - PENDING_CHANGES_REQUEST
+          - DEVICE_TROUBLESHOOT
+          - DEVICE_MODEL_MIGRATION
+          - DEVICE_TEMPLATE_CREATION
+          - CHASSIS_CONVERSION_REQUEST
+          - SNORT_PROFILER
+          - CPU_PROFILER
+          - POLICY_REPORT_GENERATION
+          - DEVICE_TEMPLATE_APPLY
+          - LTP_ONBOARDING
+          - POLICY_CLONE_OPERATION
+          - DEVICE_CERTIFICATE_MANAGEMENT
+          - OOB_CHANGES_REQUEST
+          - UPLOAD_TROUBLESHOOT
+          type: string
+        type:
+          type: string
+      type: object
+    TunnelDetail:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        peerA:
+          $ref: '#/components/schemas/IVpnPeerDetail_1'
+          type: object
+        peerB:
+          $ref: '#/components/schemas/IVpnPeerDetail'
+          type: object
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    MetadataUser:
+      description: This object defines details about the user.
+      properties:
+        id:
+          description: The unique UUID of the user
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Contains the self referencing links to this resource
+          type: object
+        name:
+          description: Name of the user.
+          type: string
+        type:
+          description: The user type (fixed).
+          type: string
+      type: object
+    HealthEventModelListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/HealthEventModel'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IDeviceInventoryData:
+      properties:
+        cpuCores:
+          type: string
+        cpuType:
+          type: string
+        memoryInMB:
+          type: string
+        storageInGB:
+          type: string
+      type: object
+    RaVpnGatewayListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/RaVpnGateway'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IReference:
+      description: Contains reference information.
+      properties:
+        id:
+          description: Unique identifier representing resource.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        name:
+          description: User chosen resource name.
+          type: string
+        type:
+          description: Response object associated with resource.
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    TunnelDetailListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/TunnelDetail'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    DialHost:
+      properties:
+        host:
+          type: string
+        port:
+          format: int32
+          type: integer
+      type: object
+    ISecurityAssociation:
+      properties:
+        inUseSettings:
+          type: string
+        inboundSpi:
+          $ref: '#/components/schemas/ISPI'
+          type: object
+        outboundSpi:
+          $ref: '#/components/schemas/ISPI'
+          type: object
+        packetDcaps:
+          format: int32
+          type: integer
+        packetDecrypt:
+          format: int32
+          type: integer
+        packetEncaps:
+          format: int32
+          type: integer
+        packetEncrypt:
+          format: int32
+          type: integer
+        protectedNetwork:
+          type: string
+      type: object
+    IAdvanced:
+      properties:
+        enableOGS:
+          type: boolean
+      type: object
+    IActionInfo:
+      type: object
+    HealthMetric:
+      properties:
+        description:
+          type: string
+        deviceUUID:
+          description: UUID of the device associated with this metric.
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        metric:
+          description: Name of the metric.
+          type: string
+        name:
+          type: string
+        regexFilter:
+          description: 'Regular expression as filter to be applied on the metric. Supports RE2 Syntax documented here : https://github.com/google/re2/wiki/Syntax. Example regexFilter for fetching metrics for cpu for only CPU01 would be cpu=~"CPU01" '
+          type: string
+        response:
+          description: Response containing the values for the metric specified meeting the criteria for the regular expression between the start time and end time at every step interval specified.
+          type: string
+        type:
+          description: Type of the health metric; this value is always Metric.
+          type: string
+        version:
+          type: string
+      type: object
+    TunnelSummaryListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/TunnelSummary'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IVpnPeerDetail_1:
+      properties:
+        authMode:
+          enum:
+          - PRESHARED_KEY
+          - CERTIFICATE
+          type: string
+        bytesRx:
+          format: int32
+          type: integer
+        bytesTx:
+          format: int32
+          type: integer
+        device:
+          $ref: '#/components/schemas/IReference_2'
+          type: object
+        port:
+          format: int32
+          type: integer
+        securityAssociations:
+          items:
+            $ref: '#/components/schemas/ISecurityAssociation'
+            type: object
+          type: array
+        showCryptoIpsecSaOutput:
+          $ref: '#/components/schemas/IVpnCliOutput'
+          type: object
+        vpnInterfaceIp:
+          type: string
+        vpnSessionDbOutput:
+          $ref: '#/components/schemas/IVpnCliOutput'
+          type: object
+      type: object
+    IHybridZeroTrustDeviceSetting:
+      properties:
+        autoDeployEnabled:
+          type: boolean
+        domainSettings:
+          items:
+            $ref: '#/components/schemas/IHybridZeroTrustFQDNConfig'
+            type: object
+          type: array
+        universalZeroTrustEnabled:
+          type: boolean
+      type: object
+    IpAddresses:
+      properties:
+        ipv4:
+          items:
+            type: string
+          type: array
+        ipv6:
+          items:
+            type: string
+          type: array
+      type: object
+    ISPI:
+      properties:
+        bytesRemaining:
+          format: int32
+          type: integer
+        id:
+          type: string
+        secondsRemaining:
+          format: int32
+          type: integer
+      type: object
+    IVpnCliOutput:
+      properties:
+        command:
+          type: string
+        output:
+          type: string
+      type: object
+    IPolicyModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IMetadataUser:
       properties:
         id:
           type: string
@@ -3123,20 +2359,45 @@ components:
         type:
           type: string
       type: object
-    PathMonitoredInterface:
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    DiskHealthMetrics:
+      description: Represents device disk metrics in percentage values.
+      properties:
+        totalDiskUsageAvg:
+          type: number
+      type: object
+    IPreDeployAction:
+      properties:
+        actionInfo:
+          $ref: '#/components/schemas/IActionInfo'
+          type: object
+        actionType:
+          enum:
+          - APPLY_TEMPLATE
+          type: string
+      type: object
+    ITarget:
+      description: This is the target device.
       properties:
         description:
           type: string
-        device:
-          $ref: '#/components/schemas/IReference'
-          type: object
         id:
+          description: Unique ID of the device.
           type: string
-        interfaces:
-          items:
-            $ref: '#/components/schemas/IPathMonitoredInterfaceDetails'
-            type: object
-          type: array
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
@@ -3144,7 +2405,89 @@ components:
           $ref: '#/components/schemas/IMetadata'
           type: object
         name:
+          description: Name of the device.
           type: string
+        type:
+          description: Device
+          type: string
+        version:
+          type: string
+      type: object
+    ChassisStatsHealthMetrics:
+      description: Represents chassis status health metrics such as fan speed in RPM values.
+      properties:
+        fanRpmAvgList:
+          items:
+            $ref: '#/components/schemas/FanRpmAvg'
+            type: object
+          type: array
+      type: object
+    HealthMetricListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/HealthMetric'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IVpnInterface:
+      properties:
+        interfaceType:
+          enum:
+          - DYNAMIC
+          - STATIC
+          type: string
+        ipAddress:
+          type: string
+        name:
+          type: string
+        publicIp:
+          type: string
+      type: object
+    IPathMonitoredInterfaceDetails:
+      properties:
+        interface:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        status:
+          enum:
+          - ONLINE
+          - IDLE
+          - OFFLINE
+          type: string
+      type: object
+    RaVpnGateway:
+      properties:
+        certEnrollments:
+          items:
+            $ref: '#/components/schemas/CertEnrollmentStatus'
+            type: object
+          type: array
+        description:
+          type: string
+        device:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        maxSessions:
+          format: int32
+          type: integer
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        policy:
+          $ref: '#/components/schemas/IReference'
+          type: object
         type:
           type: string
         version:
@@ -3196,17 +2539,10 @@ components:
         version:
           type: string
       type: object
-    IVpnCliOutput:
-      properties:
-        command:
-          type: string
-        output:
-          type: string
-      type: object
-    HealthEventModelListContainer:
+    HealthAlertModelListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/HealthEventModel'
+          $ref: '#/components/schemas/HealthAlertModel'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -3215,24 +2551,563 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    model.Error:
-      type: object
+    TunnelStatus:
+      description: Represents status of all S2S VPN tunnels.
       properties:
-        error:
+        description:
           type: string
+        id:
+          description: The identifier of the Tunnel Status.
+          type: string
+        lastChange:
+          description: The time the status last changed
+          format: int32
+          type: integer
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
         message:
           type: string
-    model.Health:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        peerA:
+          $ref: '#/components/schemas/IVpnPeer'
+          description: This represents one of the peers of the VPN Tunnel.
+          type: object
+        peerB:
+          $ref: '#/components/schemas/IVpnPeer'
+          description: This represents the other peer of the VPN Tunnel.
+          type: object
+        state:
+          enum:
+          - UNKNOWN
+          - TUNNEL_DOWN
+          - TUNNEL_UP
+          type: string
+        type:
+          description: Type of the Response object. This value is always TunnelStatus.
+          type: string
+        version:
+          type: string
+        vpnTopology:
+          $ref: '#/components/schemas/IFTDS2SVpnModel'
+          type: object
       type: object
+    TunnelStatusListContainer:
       properties:
-        currentTime:
+        items:
+          $ref: '#/components/schemas/TunnelStatus'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IFTDS2SVpnModel:
+      properties:
+        advancedSettings:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        autoVpnSettings:
+          $ref: '#/components/schemas/IAutoVpnSettings'
+          type: object
+        description:
           type: string
-        healthStatus:
+        endpoints:
+          type: object
+        id:
           type: string
-        serviceName:
+        ikeSettings:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        ikeV1Enabled:
+          type: boolean
+        ikeV2Enabled:
+          type: boolean
+        ipsecSettings:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
           type: string
-        serviceStatus:
+        routeBased:
+          type: boolean
+        topologyType:
           type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IAutoVpnSettings:
+      properties:
+        routeSettings:
+          $ref: '#/components/schemas/IAutoVpnRouteSettings'
+          type: object
+        spokeSvtiSecurityZone:
+          $ref: '#/components/schemas/IReference'
+          type: object
+      type: object
+    DeviceMetadata:
+      properties:
+        chassisData:
+          $ref: '#/components/schemas/DeviceChassisData'
+          description: This field holds information related to chassis.
+          type: object
+        chassisDetails:
+          $ref: '#/components/schemas/IDeviceChassisData'
+          type: object
+        clusterBootstrapSupported:
+          type: boolean
+        containerDetails:
+          $ref: '#/components/schemas/IBaseDevice'
+          description: If 'isPartOfContainer' field is true then this field will hold the information of container.
+          type: object
+        deviceSerialNumber:
+          type: string
+        domain:
+          $ref: '#/components/schemas/Domain'
+          description: Lists the domains to which this instance belongs if applicable.
+          type: object
+        dummyDevice:
+          type: boolean
+        inventoryData:
+          $ref: '#/components/schemas/DeviceInventoryData'
+          description: Inventory details of the device.
+          type: object
+        inventoryDetails:
+          $ref: '#/components/schemas/IDeviceInventoryData'
+          type: object
+        isDummyDevice:
+          type: boolean
+        isLocked:
+          type: boolean
+        isMultiInstance:
+          description: Indicated if the device is in multiinstance or native mode.
+          type: boolean
+        isPartOfContainer:
+          description: This field indicates whether it is part of any cluster. This will be true for a device which is part of NGFWHA, NGFW cluster and firepower devices which is part of Stack.
+          type: boolean
+        isSnort3:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          description: The last user who modified this instance.
+          type: object
+        lspVersion:
+          type: string
+        matches:
+          items:
+            type: string
+          type: array
+        otherAssociatedPolicies:
+          description: assigned policies to device other than Access Policy
+          items:
+            $ref: '#/components/schemas/IReference'
+            type: object
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          description: Details regarding the read only status of this instance.
+          type: object
+        snortVersion:
+          description: Snort version of a particular device.
+          type: string
+        sruVersion:
+          description: SRU version of a particular device.
+          type: string
+        task:
+          $ref: '#/components/schemas/ITaskStatus'
+          type: object
+        timestamp:
+          description: The last updated timestamp.
+          format: int32
+          type: integer
+        universalZeroTrustSetting:
+          $ref: '#/components/schemas/LLUniversalZeroTrustSetting'
+          type: object
+        universalZeroTrustSupported:
+          type: boolean
+        vdbVersion:
+          description: VDB version of a particular device.
+          type: string
+      required:
+      - otherAssociatedPolicies
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    HealthThreshold:
+      properties:
+        type:
+          type: string
+        value:
+          format: int32
+          type: integer
+      type: object
+    DeviceChassisData:
+      properties:
+        chassisSerialNo:
+          type: string
+        chassisUrl:
+          type: string
+        securityModuleNo:
+          format: int32
+          type: integer
+        securityModuleSN:
+          type: string
+      type: object
+    IVpnPeer:
+      properties:
+        device:
+          $ref: '#/components/schemas/IDevice'
+          type: object
+        ipAddresses:
+          $ref: '#/components/schemas/IVpnAddresses'
+          type: object
+        peerType:
+          enum:
+          - FTD
+          - EXTRANET
+          - UMBRELLA
+          - SECURE_ACCESS
+          type: string
+        role:
+          enum:
+          - PEER
+          - HUB
+          - SPOKE
+          type: string
+        trafficSelector:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        vpnInterface:
+          $ref: '#/components/schemas/IVpnInterface'
+          type: object
+        vtiInterface:
+          $ref: '#/components/schemas/IVpnInterface'
+          type: object
+      type: object
+    IVpnPeerDetail:
+      properties:
+        authMode:
+          enum:
+          - PRESHARED_KEY
+          - CERTIFICATE
+          type: string
+        bytesRx:
+          format: int32
+          type: integer
+        bytesTx:
+          format: int32
+          type: integer
+        device:
+          $ref: '#/components/schemas/IReference_1'
+          type: object
+        port:
+          format: int32
+          type: integer
+        securityAssociations:
+          items:
+            $ref: '#/components/schemas/ISecurityAssociation'
+            type: object
+          type: array
+        showCryptoIpsecSaOutput:
+          $ref: '#/components/schemas/IVpnCliOutput'
+          type: object
+        vpnInterfaceIp:
+          type: string
+        vpnSessionDbOutput:
+          $ref: '#/components/schemas/IVpnCliOutput'
+          type: object
+      type: object
+    InterfaceHealthMetrics:
+      description: Represents various interface metrics. Average counter values are displayed for metrics such as buffer runs and packet drops.
+      properties:
+        bufferOverrunsAvg:
+          type: number
+        bufferUnderrunsAvg:
+          type: number
+        currentLinkStatus:
+          enum:
+          - UP
+          - DOWN
+          type: string
+        currentOperationalStatus:
+          enum:
+          - UP
+          - DOWN
+          type: string
+        dropPacketsAvg:
+          type: number
+        duplexMode:
+          type: string
+        inputBytesAvg:
+          type: number
+        inputErrorsAvg:
+          type: number
+        inputPacketSizeAvg:
+          type: number
+        interface:
+          type: string
+        interfaceName:
+          type: string
+        interfaceType:
+          type: string
+        l2DecodeDropsAvg:
+          type: number
+        outputBytesAvg:
+          type: number
+        outputErrorsAvg:
+          type: number
+        outputPacketSizeAvg:
+          type: number
+      type: object
+    AggregateMetrics:
+      description: Represents various device health metrics in an aggregated format.
+      properties:
+        chassisStatsHealthMetrics:
+          $ref: '#/components/schemas/ChassisStatsHealthMetrics'
+          type: object
+        cpuHealthMetrics:
+          $ref: '#/components/schemas/CPUHealthMetrics'
+          type: object
+        description:
+          type: string
+        diskHealthMetrics:
+          $ref: '#/components/schemas/DiskHealthMetrics'
+          type: object
+        endTime:
+          description: End time of the metrics.
+          type: string
+        haInfo:
+          $ref: '#/components/schemas/HAInfo'
+          type: object
+        id:
+          description: Unique identifier of the device.
+          type: string
+        interfaceHealthMetricsList:
+          items:
+            $ref: '#/components/schemas/InterfaceHealthMetrics'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        memoryHealthMetrics:
+          $ref: '#/components/schemas/MemoryHealthMetrics'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          description: Name of the device.
+          type: string
+        startTime:
+          description: Start time for the metrics.
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    HAInfo:
+      description: Represents the role and status of a high availability device.
+      properties:
+        role:
+          description: Role of the device. Possible values are PRIMARY or SECONDARY.
+          type: string
+        status:
+          description: Current status of the device. Possible values are Active, Standby, Failed, Disabled, Synchronizing, or Unknown.
+          type: string
+      type: object
+    Metadata:
+      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          description: Defines the domains this instance belongs to (if applicable).
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          description: The last user who modified this instance.
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          description: Details regarding the read only status of this instance
+          type: object
+        timestamp:
+          description: The last updated timestamp.
+          format: int32
+          type: integer
+      type: object
+    PathMonitoredInterfaceListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/PathMonitoredInterface'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    TunnelSummary:
+      description: Represents an aggregated summary of the status of all S2S VPN tunnels.
+      properties:
+        description:
+          type: string
+        group:
+          $ref: '#/components/schemas/IModel'
+          description: Represents the group over which the tunnel statuses are summarized. Can be a Device or a S2S VPN Topology.
+          type: object
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        tunnelCount:
+          description: The total number of S2S VPN Tunnels in the group.
+          format: int32
+          type: integer
+        tunnelDownCount:
+          description: The number of S2S VPN Tunnels that are down.
+          format: int32
+          type: integer
+        tunnelUnknownCount:
+          description: The number of S2S VPN Tunnels whose status is unknown. These may be tunnels just deployed but never came up.
+          format: int32
+          type: integer
+        tunnelUpCount:
+          description: The number of S2S VPN Tunnels that are up.
+          format: int32
+          type: integer
+        type:
+          description: Type of the Response object. This value is always TunnelSummary.
+          type: string
+        version:
+          type: string
+      type: object
+  parameters:
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
