@@ -3091,6 +3091,9 @@ apis:
   - type: Postman
     url: https://github.com/CiscoDevNet/scc-public-api-docs/blob/main/cdo/postman-collection.json
 common:
+- type: CapabilityMap
+  url: capabilities/cisco-secure-firewall-capability-edges.yml
+  name: Cisco Secure Firewall Business Capability Map
 - type: Authentication
   url: authentication/cisco-secure-firewall-authentication.yml
 - type: VulnerabilityDisclosure
