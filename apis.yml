@@ -252,7 +252,7 @@ apis:
   humanURL: https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
   baseURL: https://api.us.security.cisco.com/firewall
   tags:
-  - ApiKeys
+  - APIKeys
   tags_raw:
   - ApiKeys
   properties:
