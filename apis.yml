@@ -603,6 +603,8 @@ apis:
     https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
   baseURL: https://api.us.security.cisco.com/firewall
   tags:
+  - Changelog
+  tags_raw:
   - Changelogs
   properties:
   - type: OpenAPI
@@ -868,6 +870,8 @@ apis:
     https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
   baseURL: https://api.us.security.cisco.com/firewall
   tags:
+  - Conversations
+  tags_raw:
   - Conversation
   properties:
   - type: OpenAPI
@@ -1299,6 +1303,8 @@ apis:
     https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
   baseURL: https://api.us.security.cisco.com/firewall
   tags:
+  - Gateways
+  tags_raw:
   - Gateway
   properties:
   - type: OpenAPI
@@ -3648,6 +3654,8 @@ apis:
     https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
   baseURL: https://api.us.security.cisco.com/firewall
   tags:
+  - APIKeys
+  tags_raw:
   - API Keys
   properties:
   - type: OpenAPI
