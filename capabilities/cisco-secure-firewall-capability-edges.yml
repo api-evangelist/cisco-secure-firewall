@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 20
+edge_count: 29
 edges:
 - tag: User group management
   spec_file: cisco-secure-firewall-user-group-management-api-openapi.yml
@@ -98,6 +98,18 @@ edges:
     Generate Token for API-only user, schemas UserRole, ActiveDirectoryGroup
   reason: Tenant/FMC user accounts, roles, AD group mapping and API token issuance/revocation — administration
     of identities and their access rights to the security platform.
+- tag: Claim Code
+  spec_file: cisco-secure-firewall-claim-code-api-openapi.yml
+  capability_id: BC-4240.30
+  capability_id_l1: BC-4240
+  capability_name: Subscription Provisioning
+  confidence: 0.78
+  evidence: '"Provisioning APIs for activating and managing entitlements, subscriptions, and claim codes";
+    POST /claim-code/claim "Claim Code for Subscription"; schema model.ClaimSubscription'
+  reason: Redeeming a claim code activates a subscription entitlement and returns product instances —
+    subscription provisioning/activation. Some chance the better fit is plan & entitlement design, hence
+    not higher.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: MSP Entitlements Management
   spec_file: cisco-secure-firewall-msp-entitlements-management-api-openapi.yml
   capability_id: BC-4240
@@ -130,6 +142,38 @@ edges:
   reason: 'CRUD on firewall access-control policy rules — a cybersecurity control capability. Sub-capability
     is ambiguous between security architecture/design and operational control enforcement, so only L1
     asserted. Not telecom network operations: this is enterprise firewall policy tooling.'
+- tag: Domains and Identity providers
+  spec_file: cisco-secure-firewall-domains-and-identity-providers-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: addExternalIdp 'Authorize external IdP for this enterprise'; createIdpGroupMapping; verifyPendingEnterpriseDomain
+  reason: Enterprise domain verification, authorisation of external identity providers and IdP group-to-role
+    mappings — federation and access control, i.e. Identity & Access Management. Tenant Identity Federation
+    (BC-4230.50) is a close alternative, which is why confidence is 0.75 rather than higher.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: MPM Policy Push
+  spec_file: cisco-secure-firewall-mpm-policy-push-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.75
+  evidence: POST /mpm/policy/request  createPolicyPushRequest  Create Policy Push Request; GET /mpm/policy/request/gateway-set/{gwSetId}
+  reason: Deployment of security policy to firewall gateway sets — enforcement of security controls, part
+    of Cybersecurity Management; L1 only as no L2 covers firewall policy deployment.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: MPM Rule
+  spec_file: cisco-secure-firewall-mpm-rule-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.75
+  evidence: Get the Rule Objects in pagination for Manager Id, Policy ID and Revision ID; schemas MpmRuleObj,
+    MpmNatRuleObj
+  reason: Firewall rule objects within security policies; supports cybersecurity control configuration.
+    L1 only, as the candidate L2s do not cover network firewall rule management.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: MPM Policy
   spec_file: cisco-secure-firewall-mpm-policy-api-openapi.yml
   capability_id: BC-620
@@ -158,6 +202,29 @@ edges:
   evidence: POST /v1/policies/asa/accessgroups createAccessGroup 'Create Access Group'; path /v1/policies/asa/accessgroups
   reason: Manages ASA access groups (binding of access lists) within firewall policy — a cybersecurity
     control configuration surface. L2 not determinable from the thin evidence.
+- tag: Change Management
+  spec_file: cisco-secure-firewall-change-management-api-openapi.yml
+  capability_id: BC-600.30
+  capability_id_l1: BC-600
+  capability_name: IT Service Management
+  confidence: 0.7
+  evidence: POST .../changemanagement/tickets createTicket; GET .../changemanagement/tickets/{containerUUID}/previewchanges;
+    .../validationresults getTicketValidationResult
+  reason: Ticket-based approval workflow with change preview and validation before firewall configuration
+    changes are applied — this is IT change management within ITSM. L2 chosen because BC-600.30 explicitly
+    covers change; not BC-910 which is organisational change.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: Chassis
+  spec_file: cisco-secure-firewall-chassis-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: getAllFMCManagedChassis; getAllEtherChannelInterface; schemas ChassisInterface, ChassisInventorySummary,
+    ChassisStorageLocalDisk, NetworkModuleSync
+  reason: Operations configure and inventory physical firewall chassis, network modules, interfaces and
+    etherchannels — network/compute infrastructure management, not a security-programme capability.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: Device Health
   spec_file: cisco-secure-firewall-device-health-api-openapi.yml
   capability_id: BC-600.40
@@ -181,6 +248,16 @@ edges:
   reason: Large surface for registering and configuring firewall appliances — device records, interfaces,
     DHCP/DDNS, routing, certificates. This is configuration and management of network security infrastructure,
     mapping to Cross-Industry IT Infrastructure Management rather than any telecom carrier-network capability.
+- tag: Health
+  spec_file: cisco-secure-firewall-health-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.7
+  evidence: getHealthMetric, getHealthAlertModel, getAllTunnelStatus, GET /ping  Get Server Health
+  reason: Health metrics, alerts, tunnel and interface status monitoring of firewall devices — operational
+    monitoring of IT estate, i.e. IT Operations Management. Not financial-crime alerting despite 'alerts'.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: Inventory
   spec_file: cisco-secure-firewall-inventory-api-openapi.yml
   capability_id: BC-620
@@ -192,6 +269,17 @@ edges:
   reason: Onboarding, configuration read and change deployment for firewall/security appliances (ASA,
     FTD, cdFMC, Duo panels) — management of the enterprise's security control estate. Could arguably be
     IT infrastructure, so L1 only.
+- tag: MPM Changeset
+  spec_file: cisco-secure-firewall-mpm-changeset-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.7
+  evidence: POST /mpm/changeset createChangeset ... schemas RuleChange, NatRuleChange, PolicyChange
+  reason: Changesets here bundle firewall security policy/rule/NAT changes in Cisco's Mesh Policy Manager,
+    so the surface serves security control administration (Cybersecurity Management). No L2 clearly fits
+    firewall policy authoring, so L1 only.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: Object
   spec_file: cisco-secure-firewall-object-api-openapi.yml
   capability_id: BC-620
@@ -214,3 +302,15 @@ edges:
   reason: CRUD over firewall access policies, access rules, NAT and decryption policies — enterprise security
     control configuration, not telecom network security ops. Mapped at L1 as no L2 covers firewall rule
     management exactly.
+- tag: Policy Assignments
+  spec_file: cisco-secure-firewall-policy-assignments-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.7
+  evidence: POST .../assignment/policyassignments createPolicyAssignment; schemas IPolicyModel, PolicyAssignment,
+    ITarget
+  reason: Assigning firewall/access-control policies to target devices in Secure Firewall Management Center
+    is security control configuration, i.e. cybersecurity management; no single L2 clearly fits (governance
+    vs architecture), so L1 only.
+  recovered_from: sweep-20260828T235257Z-edges.json
