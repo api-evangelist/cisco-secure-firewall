@@ -453,60 +453,18 @@ paths:
       - MPM Search
 components:
   schemas:
-    MpmPolicyWithoutRulesObj:
+    MpmEndpointsAndEndpointGroupsResult:
       properties:
-        description:
-          type: string
-        id:
-          format: uuid
-          type: string
-        installTargets:
+        endpointGroups:
           items:
-            type: string
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
           type: array
-        name:
-          type: string
-        policyType:
-          enum:
-          - SECURITY
-          - GOVERNANCE_PREPEND
-          - GOVERNANCE_APPEND
-          - NAT
-          type: string
-      type: object
-    MpmAppObj:
-      properties:
-        alg:
-          type: string
-        anyApp:
-          type: boolean
-        description:
-          type: string
-        ianaProtocol:
-          format: int32
-          type: integer
-        icmpCode:
-          format: int32
-          type: integer
-        icmpType:
-          format: int32
-          type: integer
-        id:
-          format: uuid
-          type: string
-        name:
-          type: string
-        portEnd:
-          format: int32
-          type: integer
-        portStart:
-          format: int32
-          type: integer
-        timeout:
-          format: int32
-          type: integer
-        value:
-          type: string
+          uniqueItems: true
+        endpoints:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+          uniqueItems: true
       type: object
     MpmRuleSearchResults:
       properties:
@@ -552,6 +510,19 @@ components:
           type: array
           uniqueItems: true
       type: object
+    MpmAppsAndAppGroupsResult:
+      properties:
+        appGroups:
+          items:
+            $ref: '#/components/schemas/MpmAppGroupObj'
+          type: array
+          uniqueItems: true
+        apps:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+          uniqueItems: true
+      type: object
     MpmAppGroupObj:
       properties:
         aps:
@@ -566,18 +537,26 @@ components:
         name:
           type: string
       type: object
-    MpmEndpointsAndEndpointGroupsResult:
+    MpmPolicyWithoutRulesObj:
       properties:
-        endpointGroups:
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        installTargets:
           items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
+            type: string
           type: array
-          uniqueItems: true
-        endpoints:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
-          uniqueItems: true
+        name:
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
       type: object
     MpmEndpointObj:
       properties:
@@ -597,19 +576,6 @@ components:
         value:
           type: string
       type: object
-    MpmAppsAndAppGroupsResult:
-      properties:
-        appGroups:
-          items:
-            $ref: '#/components/schemas/MpmAppGroupObj'
-          type: array
-          uniqueItems: true
-        apps:
-          items:
-            $ref: '#/components/schemas/MpmAppObj'
-          type: array
-          uniqueItems: true
-      type: object
     MpmEndpointGroupObj:
       properties:
         description:
@@ -626,6 +592,40 @@ components:
           format: uuid
           type: string
         name:
+          type: string
+      type: object
+    MpmAppObj:
+      properties:
+        alg:
+          type: string
+        anyApp:
+          type: boolean
+        description:
+          type: string
+        ianaProtocol:
+          format: int32
+          type: integer
+        icmpCode:
+          format: int32
+          type: integer
+        icmpType:
+          format: int32
+          type: integer
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        portEnd:
+          format: int32
+          type: integer
+        portStart:
+          format: int32
+          type: integer
+        timeout:
+          format: int32
+          type: integer
+        value:
           type: string
       type: object
   securitySchemes:

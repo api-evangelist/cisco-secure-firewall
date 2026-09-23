@@ -176,6 +176,30 @@ paths:
       - Adjacent Zone
 components:
   schemas:
+    AdjacentZonesToGatewaySets:
+      properties:
+        adjacentZonesToGatewaySets:
+          items:
+            $ref: '#/components/schemas/AdjacentZoneToGatewaySet'
+          type: array
+      type: object
+    AdjacentZones:
+      properties:
+        adjacentZones:
+          items:
+            $ref: '#/components/schemas/ZonePair'
+          type: array
+      type: object
+    ZonePair:
+      properties:
+        zoneOneId:
+          type: string
+        zoneTwoId:
+          type: string
+      required:
+      - zoneOneId
+      - zoneTwoId
+      type: object
     ReqIdAndReqSystem:
       properties:
         id:
@@ -198,6 +222,13 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
+    TopologyRequestsResponse:
+      properties:
+        requests:
+          items:
+            $ref: '#/components/schemas/ReqIdAndReqSystem'
+          type: array
+      type: object
     AdjacentZoneToGatewaySet:
       properties:
         gatewaySetId:
@@ -215,37 +246,6 @@ components:
       properties:
         request:
           $ref: '#/components/schemas/ReqIdAndReqSystem'
-      type: object
-    ZonePair:
-      properties:
-        zoneOneId:
-          type: string
-        zoneTwoId:
-          type: string
-      required:
-      - zoneOneId
-      - zoneTwoId
-      type: object
-    AdjacentZones:
-      properties:
-        adjacentZones:
-          items:
-            $ref: '#/components/schemas/ZonePair'
-          type: array
-      type: object
-    AdjacentZonesToGatewaySets:
-      properties:
-        adjacentZonesToGatewaySets:
-          items:
-            $ref: '#/components/schemas/AdjacentZoneToGatewaySet'
-          type: array
-      type: object
-    TopologyRequestsResponse:
-      properties:
-        requests:
-          items:
-            $ref: '#/components/schemas/ReqIdAndReqSystem'
-          type: array
       type: object
   securitySchemes:
     BearerJWT:

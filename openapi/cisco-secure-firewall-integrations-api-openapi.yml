@@ -317,7 +317,6 @@ paths:
       - Integrations
   /integrations:
     get:
-      description: Get all integrations which are part of provided Enterprise
       operationId: getAllEnterprisesIntegration
       parameters:
       - description: Token issued by PIAM
@@ -781,52 +780,6 @@ paths:
       - Integrations
 components:
   schemas:
-    CreateIntegrationReq:
-      description: Create integration payload object
-      properties:
-        name:
-          description: Integration name
-          example: ISE_Demo_400
-          pattern: '[a-zA-Z0-9_][a-zA-Z0-9_.-]*'
-          type: string
-        otp:
-          description: otp for integration creation
-          example: ibyo14652V8r9GXxc4FTbPO8tImmggJsAieRbZCaGRmc4jERfyYsKtN9kYUj9c9Z
-          pattern: '[a-zA-Z0-9]+'
-          type: string
-        region:
-          description: Region where created Integration will be working in
-          example: us-west-2
-          type: string
-      required:
-      - name
-      - region
-      - otp
-      type: object
-    '404':
-      description: Typical 404 response body for Context Service requests
-      properties:
-        code:
-          description: HTTP error code
-          example: 404
-          type: integer
-        message:
-          description: brief description of the error
-          example: Integration matching the id is not found
-          type: string
-      type: object
-    '400':
-      description: Typical 400 response body for Context Service requests
-      properties:
-        code:
-          description: HTTP error code
-          example: 400
-          type: integer
-        message:
-          description: brief description of the error
-          example: Integration Id is not a valid UUID
-          type: string
-      type: object
     Instruction:
       description: Main item of IntegrationDetails and CreateIntegrationDetails objects
       properties:
@@ -876,6 +829,27 @@ components:
       required:
       - title
       - instructionChapters
+      type: object
+    '401':
+      description: Typical 401 response body for Context Service requests
+      properties:
+        code:
+          description: HTTP error code
+          example: 401
+          type: integer
+        message:
+          description: brief description of the error
+          example: Authorization Header not found.
+          type: string
+        timestamp:
+          description: timestamp of the error event
+          example: '2024-01-22T03:12:46.090049959'
+          format: date-time
+          type: string
+        trackingId:
+          description: logs tracking ID
+          example: trackingId_placeholder
+          type: string
       type: object
     IntegrationHub:
       description: IntegrationHub object needed for integration hub page rendering
@@ -949,6 +923,42 @@ components:
       required:
       - integrationCategory
       type: object
+    '400':
+      description: Typical 400 response body for Context Service requests
+      properties:
+        code:
+          description: HTTP error code
+          example: 400
+          type: integer
+        message:
+          description: brief description of the error
+          example: Integration Id is not a valid UUID
+          type: string
+      type: object
+    '500':
+      description: Typical 500 response body for Context Service requests
+      properties:
+        code:
+          description: HTTP error code
+          example: 500
+          type: integer
+        message:
+          description: brief description of the error
+          example: Something went wrong
+          type: string
+      type: object
+    '404':
+      description: Typical 404 response body for Context Service requests
+      properties:
+        code:
+          description: HTTP error code
+          example: 404
+          type: integer
+        message:
+          description: brief description of the error
+          example: Integration matching the id is not found
+          type: string
+      type: object
     Integration:
       description: Integration object
       properties:
@@ -1018,114 +1028,6 @@ components:
         region:
           description: region of the integration
           example: us-west-2
-          type: string
-      type: object
-    HelpLink:
-      description: Object needed for Help link components rendering and routing
-      properties:
-        title:
-          description: Help link text to be displayed
-          example: Help
-          type: string
-        url:
-          description: URL to the help documentation for current instructions
-          example: https://www.cisco.com/c/en_uk/support/index.html
-          type: string
-      required:
-      - title
-      - url
-      type: object
-    CreateIntegrationDetails:
-      description: Object needed for create integration related pages and components rendering
-      properties:
-        addIntegrationDetails:
-          description: details related create new integration steps
-          properties:
-            description:
-              description: general description and necessary links for Integration creation process
-              example: Configure Security Cloud Control with your application connector's One-Time Password (OTP).  This allows Security Cloud Control to consume ISE data <a href="https://cisco-public.com/help">Help</a>
-              type: string
-            hint:
-              description: hint message with explanations of integration creation specifics
-              example: This integration modules will be configured in the same integration group where this Secure  Access instance belongs. Only customers in this group can use the integration module.
-              type: string
-            instructionsHelp:
-              $ref: '#/components/schemas/HelpLink'
-            integrationDetailsParameters:
-              description: list of input field details for create integration form
-              items:
-                properties:
-                  defaultValue:
-                    description: "Supposed default value for input component. \nShould be parsed as a value of type listed in this object\n"
-                    example: Security_Group_1
-                    type: string
-                  info:
-                    description: Additional information to be listed in hint near the input column title.
-                    example: Integration group is default for all applications for now.  This field might become editable in future.
-                    type: string
-                  key:
-                    description: property name to be sent on the backend for Integration creation
-                    example: integrationGroup
-                    type: string
-                  required:
-                    description: "Flag if the property is required for Integration creation process. \nShould be marked with * on UI side.\n"
-                    example: true
-                    type: boolean
-                  title:
-                    description: description for current property input component
-                    example: Integration group
-                    type: string
-                  type:
-                    description: type of the input field and parameter to be sent on the backend respectively
-                    example: string
-                    type: string
-                  validationRegex:
-                    description: regular expression to validate current parameter inheritance. E.g. is it a valid email
-                    example: /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
-                    type: string
-                required:
-                - title
-                - validationRegex
-                - type
-                - info
-                - required
-                - key
-                type: object
-              type: array
-            title:
-              description: title of the add new integration component
-              example: Integration Details
-              type: string
-          required:
-          - title
-          - description
-          - integrationDetailsParameters
-          type: object
-        integrationCreationInstructions:
-          $ref: '#/components/schemas/Instruction'
-      required:
-      - integrationCreationInstructions
-      - addIntegrationDetails
-      type: object
-    '401':
-      description: Typical 401 response body for Context Service requests
-      properties:
-        code:
-          description: HTTP error code
-          example: 401
-          type: integer
-        message:
-          description: brief description of the error
-          example: Authorization Header not found.
-          type: string
-        timestamp:
-          description: timestamp of the error event
-          example: '2024-01-22T03:12:46.090049959'
-          format: date-time
-          type: string
-        trackingId:
-          description: logs tracking ID
-          example: trackingId_placeholder
           type: string
       type: object
     IntegrationDetails:
@@ -1241,6 +1143,94 @@ components:
       required:
       - compatibleProducts
       type: object
+    CreateIntegrationDetails:
+      description: Object needed for create integration related pages and components rendering
+      properties:
+        addIntegrationDetails:
+          description: details related create new integration steps
+          properties:
+            description:
+              description: general description and necessary links for Integration creation process
+              example: Configure Security Cloud Control with your application connector's One-Time Password (OTP).  This allows Security Cloud Control to consume ISE data <a href="https://cisco-public.com/help">Help</a>
+              type: string
+            hint:
+              description: hint message with explanations of integration creation specifics
+              example: This integration modules will be configured in the same integration group where this Secure  Access instance belongs. Only customers in this group can use the integration module.
+              type: string
+            instructionsHelp:
+              $ref: '#/components/schemas/HelpLink'
+            integrationDetailsParameters:
+              description: list of input field details for create integration form
+              items:
+                properties:
+                  defaultValue:
+                    description: "Supposed default value for input component. \nShould be parsed as a value of type listed in this object\n"
+                    example: Security_Group_1
+                    type: string
+                  info:
+                    description: Additional information to be listed in hint near the input column title.
+                    example: Integration group is default for all applications for now.  This field might become editable in future.
+                    type: string
+                  key:
+                    description: property name to be sent on the backend for Integration creation
+                    example: integrationGroup
+                    type: string
+                  required:
+                    description: "Flag if the property is required for Integration creation process. \nShould be marked with * on UI side.\n"
+                    example: true
+                    type: boolean
+                  title:
+                    description: description for current property input component
+                    example: Integration group
+                    type: string
+                  type:
+                    description: type of the input field and parameter to be sent on the backend respectively
+                    example: string
+                    type: string
+                  validationRegex:
+                    description: regular expression to validate current parameter inheritance. E.g. is it a valid email
+                    example: /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
+                    type: string
+                required:
+                - title
+                - validationRegex
+                - type
+                - info
+                - required
+                - key
+                type: object
+              type: array
+            title:
+              description: title of the add new integration component
+              example: Integration Details
+              type: string
+          required:
+          - title
+          - description
+          - integrationDetailsParameters
+          type: object
+        integrationCreationInstructions:
+          $ref: '#/components/schemas/Instruction'
+      required:
+      - integrationCreationInstructions
+      - addIntegrationDetails
+      type: object
+    UpdateIntegrationReq:
+      description: Update integration payload object
+      properties:
+        integrationStatus:
+          description: enabled / disabled status of the integration
+          enum:
+          - enabled
+          - disabled
+          example: enabled
+          type: string
+        name:
+          description: updated name of the integration
+          example: ISE_Demo_400
+          pattern: '[a-zA-Z0-9_][a-zA-Z0-9_.-]*'
+          type: string
+      type: object
     IntegrationList:
       description: A page of Integration objects
       example:
@@ -1283,22 +1273,6 @@ components:
           example: 100
           type: integer
       type: object
-    UpdateIntegrationReq:
-      description: Update integration payload object
-      properties:
-        integrationStatus:
-          description: enabled / disabled status of the integration
-          enum:
-          - enabled
-          - disabled
-          example: enabled
-          type: string
-        name:
-          description: updated name of the integration
-          example: ISE_Demo_400
-          pattern: '[a-zA-Z0-9_][a-zA-Z0-9_.-]*'
-          type: string
-      type: object
     '403':
       description: Typical 403 response body for Context Service requests
       properties:
@@ -1320,34 +1294,43 @@ components:
           example: trackingId_placeholder
           type: string
       type: object
-    '500':
-      description: Typical 500 response body for Context Service requests
+    HelpLink:
+      description: Object needed for Help link components rendering and routing
       properties:
-        code:
-          description: HTTP error code
-          example: 500
-          type: integer
-        message:
-          description: brief description of the error
-          example: Something went wrong
+        title:
+          description: Help link text to be displayed
+          example: Help
           type: string
+        url:
+          description: URL to the help documentation for current instructions
+          example: https://www.cisco.com/c/en_uk/support/index.html
+          type: string
+      required:
+      - title
+      - url
       type: object
-  parameters:
-    ProductId:
-      description: Name of the product
-      example: Secure Access
-      in: header
-      name: x-Product-Id
-      required: true
-      schema:
-        type: string
-    ProductTenantId:
-      description: Tenant ID of the product
-      in: header
-      name: x-Product-Tenant-Id
-      required: true
-      schema:
-        type: string
+    CreateIntegrationReq:
+      description: Create integration payload object
+      properties:
+        name:
+          description: Integration name
+          example: ISE_Demo_400
+          pattern: '[a-zA-Z0-9_][a-zA-Z0-9_.-]*'
+          type: string
+        otp:
+          description: otp for integration creation
+          example: ibyo14652V8r9GXxc4FTbPO8tImmggJsAieRbZCaGRmc4jERfyYsKtN9kYUj9c9Z
+          pattern: '[a-zA-Z0-9]+'
+          type: string
+        region:
+          description: Region where created Integration will be working in
+          example: us-west-2
+          type: string
+      required:
+      - name
+      - region
+      - otp
+      type: object
   headers:
     Date:
       description: Response date and time
@@ -1358,6 +1341,22 @@ components:
     Location:
       description: Location for the resource created/updated
       example: /integrations/v1/ise/
+      schema:
+        type: string
+  parameters:
+    ProductTenantId:
+      description: Tenant ID of the product
+      in: header
+      name: x-Product-Tenant-Id
+      required: true
+      schema:
+        type: string
+    ProductId:
+      description: Name of the product
+      example: Secure Access
+      in: header
+      name: x-Product-Id
+      required: true
       schema:
         type: string
   securitySchemes:

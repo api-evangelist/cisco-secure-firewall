@@ -27,12 +27,12 @@ security:
 - OpenID: []
 - bearerAuth: []
 tags:
-- name: User group management
+- name: User Group Management
 paths:
   /enterprises/{id}/rbac/groups:
     get:
       tags:
-      - User group management
+      - User Group Management
       x-try-it-enabled: true
       operationId: listRBACUserGroups
       description: List all RBAC user groups related to the enterprise
@@ -58,9 +58,11 @@ paths:
                       $ref: '#/components/schemas/RBACGroup'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: List RBAC user groups
+      x-summary-source: derived
     post:
       tags:
-      - User group management
+      - User Group Management
       x-try-it-enabled: true
       operationId: createRBACUserGroup
       description: Create new RBAC user group for the enterprise
@@ -90,10 +92,12 @@ paths:
           $ref: '#/components/responses/ValidationError'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: Create RBAC user group
+      x-summary-source: derived
   /enterprises/{id}/rbac/groups/{groupId}:
     put:
       tags:
-      - User group management
+      - User Group Management
       x-try-it-enabled: true
       operationId: updateRBACUserGroup
       description: update RBAC user group by id for the enterprise
@@ -130,9 +134,11 @@ paths:
           $ref: '#/components/responses/ValidationError'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: Update RBAC user group
+      x-summary-source: derived
     delete:
       tags:
-      - User group management
+      - User Group Management
       x-try-it-enabled: true
       operationId: deleteRBACUserGroup
       description: Deletes a RBAC user group by id from the enterprise
@@ -158,10 +164,12 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: Delete RBAC user group
+      x-summary-source: derived
   /enterprises/{id}/rbac/users/{userId}/groups:
     get:
       tags:
-      - User group management
+      - User Group Management
       x-try-it-enabled: true
       operationId: listRBACUserGroupAssignments
       description: List all RBAC user group assignments related to the user
@@ -193,9 +201,11 @@ paths:
                       $ref: '#/components/schemas/RBACUserAssignmentGroup'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: List RBAC user group assignments
+      x-summary-source: derived
     post:
       tags:
-      - User group management
+      - User Group Management
       x-try-it-enabled: true
       operationId: createRBACUserGroupAssignment
       description: Create new RBAC user group assignment
@@ -234,10 +244,12 @@ paths:
           $ref: '#/components/responses/ValidationError'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: Create RBAC user group assignment
+      x-summary-source: derived
   /enterprises/{id}/rbac/users/{userId}/groups/{entityId}:
     delete:
       tags:
-      - User group management
+      - User Group Management
       x-try-it-enabled: true
       operationId: deleteRBACUserGroupAssignment
       description: Deletes a RBAC user group assignment by id
@@ -269,31 +281,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: Delete RBAC user group assignment
+      x-summary-source: derived
 components:
   schemas:
-    RBACUserAssignmentGroup:
-      type: object
-      description: Represent entity of RBAC user group assignment
-      required:
-      - id
-      - userId
-      - enterpriseId
-      - groupId
-      properties:
-        id:
-          type: string
-          format: uuid
-        userId:
-          type: string
-        enterpriseId:
-          type: string
-          format: uuid
-        groupId:
-          type: string
-          format: uuid
-    GroupAssignmentIdInput:
-      type: string
-      format: uuid
     RBACGroupInputRequestBody:
       type: object
       description: Represent request body for RBAC user group
@@ -310,17 +301,9 @@ components:
           - Local
           - Federated
           description: Specifies whether the group is local or federated. Defaults to Local
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
+    GroupAssignmentIdInput:
+      type: string
+      format: uuid
     RBACGroup:
       type: object
       description: RBAC user group
@@ -346,9 +329,43 @@ components:
           - Local
           - Federated
           description: Specifies whether the group is local or federated
+    RBACUserAssignmentGroup:
+      type: object
+      description: Represent entity of RBAC user group assignment
+      required:
+      - id
+      - userId
+      - enterpriseId
+      - groupId
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        enterpriseId:
+          type: string
+          format: uuid
+        groupId:
+          type: string
+          format: uuid
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+  headers:
+    Date:
+      schema:
+        type: string
+        pattern: ^.*$
   responses:
-    NoContent:
-      description: No content
     NotFoundError:
       description: Not Found
       headers:
@@ -376,11 +393,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  headers:
-    Date:
-      schema:
-        type: string
-        pattern: ^.*$
+    NoContent:
+      description: No content
   securitySchemes:
     OpenID:
       type: openIdConnect

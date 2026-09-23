@@ -1,25 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Cisco Secure Firewall System Configuration API
+  title: Cisco Cloud-delivered Firewall Management Center (cdFMC)…
   version: 1.13.0
+  description: Use the documentation to explore the endpoints the cdFMC has to offer
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged System Configuration across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
-  x-provenance:
-    method: harvested
-    first_party: true
-    harvested: '2026-08-19'
-    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
-    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
-    operation_coverage: 3/3
-  x-evidence:
-    fetched: '2026-08-19'
-    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    http_status: 200
 servers:
 - url: https://api.us.security.cisco.com/firewall
   description: US
@@ -43,25 +29,6 @@ tags:
 - name: System Configuration
 paths:
   /v1/cdfmc/api/fmc_platform/v1/systemconfiguration/changemanagementconfigs:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get change management configuration.**'
@@ -108,26 +75,9 @@ paths:
           description: Error
       tags:
       - System Configuration
+      summary: Get all change management system config
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_platform/v1/systemconfiguration/changemanagementconfigs/{objectId}:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get the change management configuration associated with the specified ID.**'
@@ -166,6 +116,8 @@ paths:
           description: Error
       tags:
       - System Configuration
+      summary: Get change management system config
+      x-summary-source: derived
     put:
       deprecated: false
       description: '**Modify the change management configuration associated with the specified ID. _Check the response section for applicable examples (if any)._**'
@@ -222,20 +174,10 @@ paths:
           description: Error
       tags:
       - System Configuration
+      summary: Update change management system config
+      x-summary-source: derived
 components:
   schemas:
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
     IReadonly:
       properties:
         reason:
@@ -246,70 +188,6 @@ components:
           type: string
         state:
           type: boolean
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
       type: object
     ChangeManagementSystemConfig:
       description: Contains information about the global system configuration for change management workflow.
@@ -352,17 +230,32 @@ components:
       required:
       - changeMgmtWorkflowEnabled
       type: object
-    ChangeManagementSystemConfigListContainer:
+    IDomain:
       properties:
-        items:
-          $ref: '#/components/schemas/ChangeManagementSystemConfig'
-          type: array
+        id:
+          type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
       type: object
     ErrorResponse:
       properties:
@@ -386,6 +279,40 @@ components:
           - WARN
           type: string
       type: object
+    ChangeManagementSystemConfigListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ChangeManagementSystemConfig'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
     IMetadata:
       properties:
         domain:
@@ -407,11 +334,38 @@ components:
           format: int32
           type: integer
       type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
   parameters:
-    offset:
-      description: Index of first item to return.
+    limit:
+      description: Number of items to return.
       in: query
-      name: offset
+      name: limit
       required: false
       schema:
         format: int32
@@ -423,10 +377,10 @@ components:
       required: false
       schema:
         type: boolean
-    limit:
-      description: Number of items to return.
+    offset:
+      description: Index of first item to return.
       in: query
-      name: limit
+      name: offset
       required: false
       schema:
         format: int32
@@ -436,6 +390,3 @@ components:
       bearerFormat: JWT
       scheme: bearer
       type: http
-x-refined-from:
-- cdfmc-openapi.yaml
-- cisco-secure-firewall-cdfmc-openapi.yml

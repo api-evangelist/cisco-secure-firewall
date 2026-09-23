@@ -148,20 +148,15 @@ paths:
       - Zone Tag
 components:
   schemas:
-    TopologyTagsRequest:
-      properties:
-        tags:
-          description: TopologyTag is combination of key and value pair separated by delimiter
-          example:
-          - value: tagKey:tagValue
-          items:
-            $ref: '#/components/schemas/StringValue'
-          type: array
-      type: object
     StringValue:
       properties:
         value:
           type: string
+      type: object
+    RequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ApiRequest'
       type: object
     TopologyTag:
       properties:
@@ -176,23 +171,28 @@ components:
       - tagKey
       - tagValue
       type: object
-    TopologyTagsApi:
-      properties:
-        tags:
-          items:
-            $ref: '#/components/schemas/TopologyTag'
-          type: array
-      type: object
     ApiRequest:
       properties:
         id:
           example: 03502bc3-c140-4951-b467-bd17312a9b0b
           type: string
       type: object
-    RequestResponse:
+    TopologyTagsRequest:
       properties:
-        request:
-          $ref: '#/components/schemas/ApiRequest'
+        tags:
+          description: TopologyTag is combination of key and value pair separated by delimiter
+          example:
+          - value: tagKey:tagValue
+          items:
+            $ref: '#/components/schemas/StringValue'
+          type: array
+      type: object
+    TopologyTagsApi:
+      properties:
+        tags:
+          items:
+            $ref: '#/components/schemas/TopologyTag'
+          type: array
       type: object
   securitySchemes:
     BearerJWT:

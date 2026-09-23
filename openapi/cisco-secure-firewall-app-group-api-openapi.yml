@@ -199,27 +199,26 @@ paths:
       - App Group
 components:
   schemas:
-    AppGroupUserApi:
+    PolicyReference:
       properties:
-        description:
+        id:
           type: string
-        memberApps:
-          example:
-          - 6_ignore_80_80_null
-          format: MemberApps should be a valid list of service strings
+        ruleIds:
           items:
-            example: '["6_ignore_80_80_null"]'
-            format: MemberApps should be a valid list of service strings
             type: string
           type: array
-        memberGroups:
-          example:
-          - memberGroup1
-          format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+          uniqueItems: true
+      type: object
+    GroupReferences:
+      properties:
+        groupIds:
           items:
-            example: '["memberGroup1"]'
-            format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
             type: string
+          type: array
+          uniqueItems: true
+        policies:
+          items:
+            $ref: '#/components/schemas/PolicyReference'
           type: array
       type: object
     ReqIdAndReqSystem:
@@ -244,22 +243,28 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
-    GroupReferences:
+    AppGroupUserApi:
       properties:
-        groupIds:
+        description:
+          type: string
+        memberApps:
+          example:
+          - 6_ignore_80_80_null
+          format: MemberApps should be a valid list of service strings
           items:
+            example: '["6_ignore_80_80_null"]'
+            format: MemberApps should be a valid list of service strings
             type: string
           type: array
-          uniqueItems: true
-        policies:
+        memberGroups:
+          example:
+          - memberGroup1
+          format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
           items:
-            $ref: '#/components/schemas/PolicyReference'
+            example: '["memberGroup1"]'
+            format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+            type: string
           type: array
-      type: object
-    TopologyRequestResponse:
-      properties:
-        request:
-          $ref: '#/components/schemas/ReqIdAndReqSystem'
       type: object
     AppGroupApi:
       properties:
@@ -291,15 +296,10 @@ components:
           format: int32
           type: integer
       type: object
-    PolicyReference:
+    TopologyRequestResponse:
       properties:
-        id:
-          type: string
-        ruleIds:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
       type: object
   securitySchemes:
     BearerJWT:

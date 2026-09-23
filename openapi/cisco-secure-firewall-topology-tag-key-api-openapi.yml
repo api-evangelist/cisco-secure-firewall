@@ -82,6 +82,15 @@ paths:
       - Topology Tag Key
 components:
   schemas:
+    TagKeyPage:
+      properties:
+        cursor:
+          type: string
+        tagKeys:
+          items:
+            type: string
+          type: array
+      type: object
     TopologyTagKey:
       properties:
         id:
@@ -97,15 +106,6 @@ components:
       - mutuallyExclusive
       - required
       - strict
-      type: object
-    TagKeyPage:
-      properties:
-        cursor:
-          type: string
-        tagKeys:
-          items:
-            type: string
-          type: array
       type: object
     TopologyTagKeysApi:
       properties:

@@ -95,6 +95,8 @@ paths:
       tags:
       - ManageEntitlements
       x-publicly-available: true
+      operationId: getOrganizationsByManagerIdManagedByManagedIdEntitlements
+      x-operation-id-source: derived
     patch:
       description: Updates the quantity of entitlements shared from a manager organization to a managed organization. Specific scopes are required to access the API `security:provisioning:subscriptions:write`. Client credentials are issued by IAM team individually.
       parameters:
@@ -156,23 +158,22 @@ paths:
       - ManageEntitlements
       x-codegen-request-body-name: body
       x-publicly-available: true
+      operationId: patchOrganizationsByManagerIdManagedByManagedIdEntitlements
+      x-operation-id-source: derived
 components:
   schemas:
-    model.ProvisionedSKU:
+    model.ProductConf:
       properties:
+        activationStatus:
+          type: string
         name:
           type: string
-        productInfo:
-          items:
-            $ref: '#/components/schemas/model.ProductInfo'
-          type: array
-      type: object
-    model.UpdateEntitlementsRequest:
-      properties:
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/model.UserSubscription'
-          type: array
+        operand:
+          type: integer
+        operator:
+          type: string
+        region:
+          type: string
       type: object
     model.ProvisionedSubscription:
       properties:
@@ -181,88 +182,6 @@ components:
         skus:
           items:
             $ref: '#/components/schemas/model.ProvisionedSKU'
-          type: array
-      type: object
-    model.SubnSku:
-      properties:
-        endDate:
-          type: string
-        externalSubscriptionId:
-          type: string
-        licenseType:
-          type: string
-        skus:
-          additionalProperties:
-            $ref: '#/components/schemas/model.MspSku'
-          type: object
-      type: object
-    model.SharedEntitlement:
-      properties:
-        assignedEntitlements:
-          type: integer
-        managedOrgId:
-          type: string
-        productsList:
-          items:
-            $ref: '#/components/schemas/model.ProductConf'
-          type: array
-      type: object
-    model.Error:
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-      type: object
-    model.PaginationInfo:
-      properties:
-        limit:
-          type: integer
-        offset:
-          type: integer
-        totalRecords:
-          type: integer
-      type: object
-    model.UpdateEntitlementResponse:
-      properties:
-        endDate:
-          type: string
-        id:
-          type: string
-        licenseType:
-          type: string
-        provisioningErrors:
-          items:
-            $ref: '#/components/schemas/model.SubscriptionProvisioningError'
-          type: array
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/model.ProvisionedSubscription'
-          type: array
-      type: object
-    model.ProductInfo:
-      properties:
-        assignedEntitlements:
-          type: integer
-        product:
-          type: string
-        productRegion:
-          type: string
-      type: object
-    model.SubscriptionProvisioningError:
-      properties:
-        error:
-          type: string
-        subscriptionId:
-          type: string
-      type: object
-    model.UserSubscription:
-      properties:
-        id:
-          type: string
-        skus:
-          items:
-            $ref: '#/components/schemas/model.SKU'
           type: array
       type: object
     model.MspSku:
@@ -291,6 +210,79 @@ components:
         quantity:
           type: integer
       type: object
+    model.UpdateEntitlementsRequest:
+      properties:
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/model.UserSubscription'
+          type: array
+      type: object
+    model.ProvisionedSKU:
+      properties:
+        name:
+          type: string
+        productInfo:
+          items:
+            $ref: '#/components/schemas/model.ProductInfo'
+          type: array
+      type: object
+    model.SubscriptionProvisioningError:
+      properties:
+        error:
+          type: string
+        subscriptionId:
+          type: string
+      type: object
+    model.SubnSku:
+      properties:
+        endDate:
+          type: string
+        externalSubscriptionId:
+          type: string
+        licenseType:
+          type: string
+        skus:
+          additionalProperties:
+            $ref: '#/components/schemas/model.MspSku'
+          type: object
+      type: object
+    model.SharedEntitlement:
+      properties:
+        assignedEntitlements:
+          type: integer
+        managedOrgId:
+          type: string
+        productsList:
+          items:
+            $ref: '#/components/schemas/model.ProductConf'
+          type: array
+      type: object
+    model.PaginationInfo:
+      properties:
+        limit:
+          type: integer
+        offset:
+          type: integer
+        totalRecords:
+          type: integer
+      type: object
+    model.UpdateEntitlementResponse:
+      properties:
+        endDate:
+          type: string
+        id:
+          type: string
+        licenseType:
+          type: string
+        provisioningErrors:
+          items:
+            $ref: '#/components/schemas/model.SubscriptionProvisioningError'
+          type: array
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/model.ProvisionedSubscription'
+          type: array
+      type: object
     model.OrgEntitlements:
       properties:
         pagination:
@@ -300,17 +292,29 @@ components:
             $ref: '#/components/schemas/model.SubnSku'
           type: array
       type: object
-    model.ProductConf:
+    model.ProductInfo:
       properties:
-        activationStatus:
-          type: string
-        name:
-          type: string
-        operand:
+        assignedEntitlements:
           type: integer
-        operator:
+        product:
           type: string
-        region:
+        productRegion:
+          type: string
+      type: object
+    model.UserSubscription:
+      properties:
+        id:
+          type: string
+        skus:
+          items:
+            $ref: '#/components/schemas/model.SKU'
+          type: array
+      type: object
+    model.Error:
+      properties:
+        error:
+          type: string
+        message:
           type: string
       type: object
   securitySchemes:

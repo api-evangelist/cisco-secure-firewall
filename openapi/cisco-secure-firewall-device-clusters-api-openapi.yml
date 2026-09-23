@@ -1,25 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Cisco Secure Firewall Device Clusters API
+  title: Cisco Cloud-delivered Firewall Management Center (cdFMC)…
   version: 1.13.0
+  description: Use the documentation to explore the endpoints the cdFMC has to offer
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Device Clusters across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
-  x-provenance:
-    method: harvested
-    first_party: true
-    harvested: '2026-08-19'
-    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
-    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
-    operation_coverage: 9/9
-  x-evidence:
-    fetched: '2026-08-19'
-    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    http_status: 200
 servers:
 - url: https://api.us.security.cisco.com/firewall
   description: US
@@ -43,25 +29,6 @@ tags:
 - name: Device Clusters
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deviceclusters/{containerUUID}/operational/ftdclusterdevicecommands:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     post:
       deprecated: false
       description: '**Execute given command on the Firewall Threat Defense Cluster. _Check the response section for applicable examples (if any)._**'
@@ -114,26 +81,9 @@ paths:
           description: Error
       tags:
       - Device Clusters
+      summary: Create FTD cluster device command container
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deviceclusters/ftdclusterreadinesscheck:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     post:
       deprecated: false
       description: '**Check if cluster is ready to become control and if the data devices are compatible with that control. This readiness check is for platforms that support cluster bootstrap from Firewall Management Center. _Check the response section for applicable examples (if any)._**'
@@ -172,26 +122,9 @@ paths:
           description: Error
       tags:
       - Device Clusters
+      summary: Create FTD cluster device readiness container
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deviceclusters/ftddevicecluster:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get a list of all Firewall Threat Defense clusters.**'
@@ -251,6 +184,8 @@ paths:
           description: Error
       tags:
       - Device Clusters
+      summary: Get all rest FTD cluster device container
+      x-summary-source: derived
     post:
       deprecated: false
       description: '**Create a Firewall Threat Defense cluster. _Check the response section for applicable examples (if any)._**'
@@ -376,27 +311,10 @@ paths:
           description: Error
       tags:
       - Device Clusters
+      summary: Create rest FTD cluster device container
+      x-summary-source: derived
   ? /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deviceclusters/ftddevicecluster/{containerUUID}/clusterhealthmonitorsettings/{clusterUuid}
-  : servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
-    get:
+  : get:
       deprecated: false
       description: '**Get health check monitor settings of a Firewall Threat Defense cluster.**'
       operationId: getClusterHealthMonitorSettingsModel
@@ -479,6 +397,8 @@ paths:
           description: Error
       tags:
       - Device Clusters
+      summary: Get cluster health monitor settings model
+      x-summary-source: derived
     put:
       deprecated: false
       description: '**Modify health check monitor settings of a Firewall Threat Defense cluster. _Check the response section for applicable examples (if any)._**'
@@ -598,26 +518,9 @@ paths:
           description: Error
       tags:
       - Device Clusters
+      summary: Update cluster health monitor settings model
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/deviceclusters/ftddevicecluster/{objectId}:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     delete:
       deprecated: false
       description: '**Delete the Firewall Threat Defense Cluster record associated with the specified ID. _Check the response section for applicable examples (if any)._**'
@@ -719,6 +622,8 @@ paths:
           description: Error
       tags:
       - Device Clusters
+      summary: Delete rest FTD cluster device container
+      x-summary-source: derived
     get:
       deprecated: false
       description: '**Get the Firewall Threat Defense Cluster record associated with the specified ID.**'
@@ -814,6 +719,8 @@ paths:
           description: Error
       tags:
       - Device Clusters
+      summary: Get rest FTD cluster device container
+      x-summary-source: derived
     put:
       deprecated: false
       description: '**Modify the Firewall Threat Defense Cluster record associated with the specified ID. _Check the response section for applicable examples (if any)._**'
@@ -1005,102 +912,42 @@ paths:
           description: Error
       tags:
       - Device Clusters
+      summary: Update rest FTD cluster device container
+      x-summary-source: derived
 components:
   schemas:
-    RestFTDClusterDevice:
+    IFTDClusterDeviceReadinessEntity:
       properties:
-        clusterNodeBootstrap:
-          $ref: '#/components/schemas/IFTDClusterNodeBootstrap'
+        clusterReadiness:
+          $ref: '#/components/schemas/IDeviceClusterReadinessData'
           type: object
-        deviceDetails:
-          $ref: '#/components/schemas/IFTDDeviceDetails'
-          type: object
-      type: object
-    RestFTDClusterDeviceContainerListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/RestFTDClusterDeviceContainer'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IInterfaceAutoRejoin:
-      properties:
-        clusterInterface:
-          $ref: '#/components/schemas/IClusterAutoRejoin'
-          type: object
-        dataInterface:
-          $ref: '#/components/schemas/IClusterAutoRejoin'
-          type: object
-      type: object
-    IFTDDeviceDetails:
-      properties:
         id:
           type: string
         name:
           type: string
-        status:
-          enum:
-          - ADDED_OUT_OF_BOX
-          - DISABLED
-          - JOINING
-          - NORMAL
-          - NOT_AVAILABLE
-          type: string
         type:
           type: string
       type: object
-    FTDClusterDeviceReadinessContainer:
-      description: A model representing FTD Cluster Device Readiness Model
+    ErrorResponse:
       properties:
-        clusterMode:
-          description: INDIVIDUAL or SPANNED mode
+        category:
+          description: Describes the category of the error thrown.
           enum:
-          - SPANNED
-          - INDIVIDUAL
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
           type: string
-        controlDevice:
-          $ref: '#/components/schemas/IFTDClusterDeviceReadinessEntity'
-          description: Control device details
-          type: object
-        dataDevices:
-          description: List of data devices
+        messages:
+          description: List of error messages which the response has.
           items:
-            $ref: '#/components/schemas/IFTDClusterDeviceReadinessEntity'
+            $ref: '#/components/schemas/ErrorMessagesContainer'
             type: object
           type: array
-        description:
-          type: string
-        mtuWarningMsg:
-          type: string
-        name:
-          type: string
-        version:
-          type: string
-      required:
-      - controlDevice
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    RestIFTDBaseInterface:
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
           type: string
       type: object
     ErrorMessagesContainer:
@@ -1129,27 +976,6 @@ components:
           - ERROR
           - WARN
           type: string
-      type: object
-    IFTDClusterNodeBootstrap:
-      properties:
-        cclIp:
-          type: string
-        localUnit:
-          type: string
-        priority:
-          format: int32
-          type: integer
-        siteId:
-          format: int32
-          type: integer
-      type: object
-    IClusterMonitorInterface:
-      properties:
-        debounceTime:
-          format: int32
-          type: integer
-        isServiceApplicationEnabled:
-          type: boolean
       type: object
     ClusterHealthMonitorSettingsModel:
       description: A model representing FTD Cluster Health Check Monitor Settings
@@ -1203,6 +1029,86 @@ components:
       - errors
       - status
       type: object
+    IFTDClusterNodeBootstrap:
+      properties:
+        cclIp:
+          type: string
+        localUnit:
+          type: string
+        priority:
+          format: int32
+          type: integer
+        siteId:
+          format: int32
+          type: integer
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    FTDClusterDeviceReadinessContainer:
+      description: A model representing FTD Cluster Device Readiness Model
+      properties:
+        clusterMode:
+          description: INDIVIDUAL or SPANNED mode
+          enum:
+          - SPANNED
+          - INDIVIDUAL
+          type: string
+        controlDevice:
+          $ref: '#/components/schemas/IFTDClusterDeviceReadinessEntity'
+          description: Control device details
+          type: object
+        dataDevices:
+          description: List of data devices
+          items:
+            $ref: '#/components/schemas/IFTDClusterDeviceReadinessEntity'
+            type: object
+          type: array
+        description:
+          type: string
+        mtuWarningMsg:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+      required:
+      - controlDevice
+      type: object
+    ClusterHealthMonitorSettingMetadata:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        type:
+          type: string
+      type: object
     RestFTDClusterDeviceMetadata:
       properties:
         analyticsOnly:
@@ -1224,90 +1130,71 @@ components:
           $ref: '#/components/schemas/RestTaskStatus'
           type: object
       type: object
-    PagingContainer:
+    IClusterMonitorInterface:
       properties:
-        count:
+        debounceTime:
           format: int32
           type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
+        isServiceApplicationEnabled:
+          type: boolean
       type: object
-    FTDClusterDeviceCommandContainer:
-      description: A model representing FTD Cluster Device enable nodes, disable nodes and change control Model
+    IInterfaceAutoRejoin:
       properties:
-        command:
-          description: 'command that needs to b executed on cluster, For eg: enable, disable, control'
-          enum:
-          - enable
-          - disable
-          - control
-          type: string
-        description:
-          type: string
+        clusterInterface:
+          $ref: '#/components/schemas/IClusterAutoRejoin'
+          type: object
+        dataInterface:
+          $ref: '#/components/schemas/IClusterAutoRejoin'
+          type: object
+      type: object
+    RestIFTDBaseInterface:
+      properties:
         id:
           type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/RestFTDClusterDeviceMetadata'
-          type: object
         name:
           type: string
         type:
           type: string
       type: object
-    RestFTDClusterDeviceContainer:
+    IFTDDeviceDetails:
       properties:
-        action:
-          enum:
-          - CREATE_CLUSTER
-          - ADD_NODES
-          - REMOVE_NODES
-          - UPDATE_BOOTSTRAP
-          - UPDATE_CLUSTER_NAME
-          - BREAK
-          - DELETE_CLUSTER
+        id:
           type: string
-        clusterMode:
-          enum:
-          - SPANNED
-          - INDIVIDUAL
+        name:
           type: string
-        commonBootstrap:
-          $ref: '#/components/schemas/RestIFTDClusterBootstrap'
+        status:
+          enum:
+          - ADDED_OUT_OF_BOX
+          - DISABLED
+          - JOINING
+          - NORMAL
+          - NOT_AVAILABLE
+          type: string
+        type:
+          type: string
+      type: object
+    RestIFTDClusterDevice:
+      properties:
+        clusterNodeBootstrap:
+          $ref: '#/components/schemas/IFTDClusterNodeBootstrap'
           type: object
-        controlDevice:
-          $ref: '#/components/schemas/RestFTDClusterDevice'
+        deviceDetails:
+          $ref: '#/components/schemas/IFTDDeviceDetails'
           type: object
-        dataDevices:
-          items:
-            $ref: '#/components/schemas/RestIFTDClusterDevice'
-            type: object
+        keepLocalEvents:
+          type: boolean
+      type: object
+    RestFTDClusterDeviceContainerListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/RestFTDClusterDeviceContainer'
           type: array
-        id:
-          type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        metadata:
-          $ref: '#/components/schemas/RestFTDClusterDeviceMetadata'
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
           type: object
-        name:
-          type: string
-        type:
-          type: string
-      required:
-      - commonBootstrap
-      - controlDevice
-      - dataDevices
       type: object
     RestTaskStatus:
       properties:
@@ -1375,6 +1262,97 @@ components:
         type:
           type: string
       type: object
+    IClusterAutoRejoin:
+      properties:
+        attempts:
+          format: int32
+          type: integer
+        interval:
+          format: int32
+          type: integer
+        nextInterval:
+          format: int32
+          type: integer
+      type: object
+    RestFTDClusterDeviceContainer:
+      properties:
+        action:
+          enum:
+          - CREATE_CLUSTER
+          - ADD_NODES
+          - REMOVE_NODES
+          - UPDATE_BOOTSTRAP
+          - UPDATE_CLUSTER_NAME
+          - BREAK
+          - DELETE_CLUSTER
+          type: string
+        clusterMode:
+          enum:
+          - SPANNED
+          - INDIVIDUAL
+          type: string
+        commonBootstrap:
+          $ref: '#/components/schemas/RestIFTDClusterBootstrap'
+          type: object
+        controlDevice:
+          $ref: '#/components/schemas/RestFTDClusterDevice'
+          type: object
+        dataDevices:
+          items:
+            $ref: '#/components/schemas/RestIFTDClusterDevice'
+            type: object
+          type: array
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/RestFTDClusterDeviceMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      required:
+      - commonBootstrap
+      - controlDevice
+      - dataDevices
+      type: object
+    RestFTDClusterDevice:
+      properties:
+        clusterNodeBootstrap:
+          $ref: '#/components/schemas/IFTDClusterNodeBootstrap'
+          type: object
+        deviceDetails:
+          $ref: '#/components/schemas/IFTDDeviceDetails'
+          type: object
+      type: object
+    FTDClusterDeviceCommandContainer:
+      description: A model representing FTD Cluster Device enable nodes, disable nodes and change control Model
+      properties:
+        command:
+          description: 'command that needs to b executed on cluster, For eg: enable, disable, control'
+          enum:
+          - enable
+          - disable
+          - control
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/RestFTDClusterDeviceMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
     RestIFTDClusterBootstrap:
       properties:
         cclInterface:
@@ -1409,76 +1387,22 @@ components:
       - clusterKey
       - vniNetwork
       type: object
-    IClusterAutoRejoin:
-      properties:
-        attempts:
-          format: int32
-          type: integer
-        interval:
-          format: int32
-          type: integer
-        nextInterval:
-          format: int32
-          type: integer
-      type: object
-    RestIFTDClusterDevice:
-      properties:
-        clusterNodeBootstrap:
-          $ref: '#/components/schemas/IFTDClusterNodeBootstrap'
-          type: object
-        deviceDetails:
-          $ref: '#/components/schemas/IFTDDeviceDetails'
-          type: object
-        keepLocalEvents:
-          type: boolean
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    ClusterHealthMonitorSettingMetadata:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        type:
-          type: string
-      type: object
-    IFTDClusterDeviceReadinessEntity:
-      properties:
-        clusterReadiness:
-          $ref: '#/components/schemas/IDeviceClusterReadinessData'
-          type: object
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-      type: object
   parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
     limit:
       description: Number of items to return.
       in: query
@@ -1494,26 +1418,8 @@ components:
       required: true
       schema:
         type: string
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
       scheme: bearer
       type: http
-x-refined-from:
-- cdfmc-openapi.yaml
-- cisco-secure-firewall-cdfmc-openapi.yml

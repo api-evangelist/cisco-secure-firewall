@@ -1389,7 +1389,7 @@ paths:
           description: Not Found
         '500':
           description: Internal Server Error
-      summary: 'Update the status after monitoring for the Pensando DSC manager '
+      summary: Update the status after monitoring for the Pensando DSC manager
       tags:
       - Intermediary Manager
   /topology/manager/pensando-dsc/zone:
@@ -1981,70 +1981,16 @@ paths:
       - Intermediary Manager
 components:
   schemas:
-    IntermediaryManagerMetadata:
+    IdValue:
       properties:
-        lastMonitoredTimestamp:
-          format: date-time
-          type: string
-        modifiedTimestamp:
-          format: date-time
-          type: string
-        monitorMessage:
-          type: string
-        monitorRetryCount:
-          format: int32
-          type: integer
-      type: object
-    MultiCloudDefenseManagerApi:
-      properties:
-        credentialName:
-          type: string
-        hostDetails:
-          items:
-            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
-          type: array
         id:
           type: string
-        status:
-          enum:
-          - INACTIVE
-          - ACTIVE
-          type: string
       type: object
-    PsmPdtRetireZoneResponse:
+    IntermediaryManagersResponse:
       properties:
-        decommissionedGwSet:
+        intermediaryManagers:
           items:
-            type: string
-          type: array
-          uniqueItems: true
-        reqId:
-          format: uuid
-          type: string
-        requestingSystem:
-          enum:
-          - PCM
-          - SDI
-          - MPM
-          - RED
-          - SEEDING
-          - TOPOLOGY
-          - PCM_TOPOLOGY_CHANGE
-          - SDI_TOPOLOGY_CHANGE
-          - MPM_SECURITY_TOPOLOGY_CHANGE
-          - MPM_POLICY_IMPORT
-          - ZONE_PATH_TOPOLOGY_CHANGE
-          - MPM_MULTI_POLICY_PUSH
-          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
-          type: string
-        zoneId:
-          type: string
-      type: object
-    TopologyRequestsResponse:
-      properties:
-        requests:
-          items:
-            $ref: '#/components/schemas/ReqIdAndReqSystem'
+            $ref: '#/components/schemas/IntermediaryManagerInfo'
           type: array
       type: object
     PensandoDssManagerAddAddressesApi:
@@ -2065,6 +2011,134 @@ components:
       - addresses
       - vlanId
       - vrfId
+      type: object
+    PensandoDssManagerCreateVrfApi:
+      properties:
+        vrfId:
+          pattern: '[A-Za-z0-9]+[A-Za-z0-9-.]*[A-Za-z0-9]+'
+          type: string
+      required:
+      - vrfId
+      type: object
+    PensandoDssManagerDeleteAddressesApi:
+      properties:
+        addresses:
+          items:
+            type: string
+          type: array
+        vlanId:
+          format: int32
+          type: integer
+        vrfId:
+          type: string
+      required:
+      - addresses
+      - vlanId
+      - vrfId
+      type: object
+    PensandoDssManagerApi:
+      properties:
+        credentialName:
+          type: string
+        hostDetails:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+          type: array
+        id:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IntermediaryManagerMetadata'
+        status:
+          description: Monitoring Status
+          enum:
+          - INACTIVE
+          - ACTIVE
+          type: string
+      required:
+      - hostDetails
+      - id
+      - status
+      type: object
+    ReqIdAndReqSystem:
+      properties:
+        id:
+          example: 03502bc3-c140-4951-b467-bd17312a9b0b
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    AddressApi:
+      properties:
+        address:
+          description: Valid IPV4 addresses
+          example: 1.1.1.1/32
+          type: string
+      type: object
+    RuleSetApi:
+      properties:
+        id:
+          type: string
+        intermediaryManagerId:
+          type: string
+      type: object
+    IntermediaryManagerInfo:
+      properties:
+        hostname:
+          type: string
+        id:
+          type: string
+        port:
+          format: int32
+          type: integer
+      type: object
+    IntermediaryManagerHostDetails:
+      properties:
+        hostname:
+          type: string
+        port:
+          format: int32
+          type: integer
+        priority:
+          default: 1
+          format: int32
+          minimum: 1
+          type: integer
+      required:
+      - hostname
+      - port
+      type: object
+    ZoneResp:
+      properties:
+        id:
+          type: string
+      required:
+      - id
+      type: object
+    StringValue:
+      properties:
+        value:
+          type: string
+      type: object
+    GatewaySets:
+      properties:
+        gatewaySets:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
       type: object
     PsmPdtTopologyAffectedEntities:
       properties:
@@ -2099,42 +2173,6 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
-    AddressesApi:
-      properties:
-        addresses:
-          description: List of valid IPV4 addresses
-          example:
-          - value: 1.1.1.1/32
-          items:
-            $ref: '#/components/schemas/StringValue'
-          type: array
-      type: object
-    PensandoDssManagerDeleteAddressesApi:
-      properties:
-        addresses:
-          items:
-            type: string
-          type: array
-        vlanId:
-          format: int32
-          type: integer
-        vrfId:
-          type: string
-      required:
-      - addresses
-      - vlanId
-      - vrfId
-      type: object
-    StringValue:
-      properties:
-        value:
-          type: string
-      type: object
-    TopologyRequestResponse:
-      properties:
-        request:
-          $ref: '#/components/schemas/ReqIdAndReqSystem'
-      type: object
     PensandoDscManagerApi:
       properties:
         credentialName:
@@ -2160,96 +2198,22 @@ components:
       - id
       - status
       type: object
-    IdValue:
+    AddressesApi:
       properties:
-        id:
-          type: string
-      type: object
-    AddressApi:
-      properties:
-        address:
-          description: Valid IPV4 addresses
-          example: 1.1.1.1/32
-          type: string
-      type: object
-    PensandoDssManagerApi:
-      properties:
-        credentialName:
-          type: string
-        hostDetails:
+        addresses:
+          description: List of valid IPV4 addresses
+          example:
+          - value: 1.1.1.1/32
           items:
-            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+            $ref: '#/components/schemas/StringValue'
           type: array
-        id:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IntermediaryManagerMetadata'
-        status:
-          description: Monitoring Status
-          enum:
-          - INACTIVE
-          - ACTIVE
-          type: string
-      required:
-      - hostDetails
-      - id
-      - status
       type: object
-    CredentialNameRequest:
+    TopologyRequestsResponse:
       properties:
-        credentialName:
-          type: string
-      type: object
-    IntermediaryManagerUpdateApi:
-      properties:
-        hostDetails:
+        requests:
           items:
-            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+            $ref: '#/components/schemas/ReqIdAndReqSystem'
           type: array
-        id:
-          type: string
-      required:
-      - hostDetails
-      - id
-      type: object
-    ReqIdAndReqSystem:
-      properties:
-        id:
-          example: 03502bc3-c140-4951-b467-bd17312a9b0b
-          type: string
-        requestingSystem:
-          enum:
-          - PCM
-          - SDI
-          - MPM
-          - RED
-          - SEEDING
-          - TOPOLOGY
-          - PCM_TOPOLOGY_CHANGE
-          - SDI_TOPOLOGY_CHANGE
-          - MPM_SECURITY_TOPOLOGY_CHANGE
-          - MPM_POLICY_IMPORT
-          - ZONE_PATH_TOPOLOGY_CHANGE
-          - MPM_MULTI_POLICY_PUSH
-          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
-          type: string
-      type: object
-    IntermediaryManagerStatusRequest:
-      properties:
-        status:
-          enum:
-          - INACTIVE
-          - ACTIVE
-          type: string
-      type: object
-    PensandoPdtAddAddressesToInfraApi:
-      properties:
-        address:
-          $ref: '#/components/schemas/AddressWithZoneMatch'
-        parentZone:
-          type: string
-      required:
-      - address
       type: object
     IntermediaryManagerIdPage:
       properties:
@@ -2259,15 +2223,6 @@ components:
           items:
             type: string
           type: array
-      type: object
-    UpdateMonitoringStatusRequest:
-      properties:
-        managerId:
-          type: string
-        message:
-          type: string
-        status:
-          type: boolean
       type: object
     CdoManagerRequest:
       properties:
@@ -2294,12 +2249,37 @@ components:
       - id
       - status
       type: object
-    GatewaySets:
+    PensandoPdtAddAddressesToInfraApi:
       properties:
-        gatewaySets:
-          items:
-            $ref: '#/components/schemas/IdValue'
-          type: array
+        address:
+          $ref: '#/components/schemas/AddressWithZoneMatch'
+        parentZone:
+          type: string
+      required:
+      - address
+      type: object
+    CdoAsaGatewaySetRequest:
+      properties:
+        deviceName:
+          type: string
+        direction:
+          enum:
+          - INBOUND
+          - OUTBOUND
+          type: string
+        interfaceName:
+          type: string
+        intermediaryManagerId:
+          type: string
+        isGlobal:
+          type: boolean
+        status:
+          enum:
+          - ACTIVE
+          - HELD
+          - SKIPPED
+          - UNMANAGED
+          type: string
       type: object
     PensandoDscPdtManagerApi:
       properties:
@@ -2326,11 +2306,45 @@ components:
       - id
       - status
       type: object
-    ZoneResp:
+    PsmPdtRetireZoneResponse:
       properties:
+        decommissionedGwSet:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        reqId:
+          format: uuid
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+        zoneId:
+          type: string
+      type: object
+    IntermediaryManagerUpdateApi:
+      properties:
+        hostDetails:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+          type: array
         id:
           type: string
       required:
+      - hostDetails
       - id
       type: object
     AddressWithExactMatch:
@@ -2344,19 +2358,50 @@ components:
       required:
       - addresses
       type: object
-    RuleSetApi:
+    IntermediaryManagerStatusRequest:
+      properties:
+        status:
+          enum:
+          - INACTIVE
+          - ACTIVE
+          type: string
+      type: object
+    IntermediaryManagerIdResponse:
       properties:
         id:
           type: string
-        intermediaryManagerId:
-          type: string
+      required:
+      - id
       type: object
-    IntermediaryManagersResponse:
+    IntermediaryManagerMetadata:
       properties:
-        intermediaryManagers:
+        lastMonitoredTimestamp:
+          format: date-time
+          type: string
+        modifiedTimestamp:
+          format: date-time
+          type: string
+        monitorMessage:
+          type: string
+        monitorRetryCount:
+          format: int32
+          type: integer
+      type: object
+    MultiCloudDefenseManagerApi:
+      properties:
+        credentialName:
+          type: string
+        hostDetails:
           items:
-            $ref: '#/components/schemas/IntermediaryManagerInfo'
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
           type: array
+        id:
+          type: string
+        status:
+          enum:
+          - INACTIVE
+          - ACTIVE
+          type: string
       type: object
     AddressWithZoneMatch:
       properties:
@@ -2367,69 +2412,24 @@ components:
           example: 1.1.1.1/32
           type: string
       type: object
-    CdoAsaGatewaySetRequest:
+    CredentialNameRequest:
       properties:
-        deviceName:
+        credentialName:
           type: string
-        direction:
-          enum:
-          - INBOUND
-          - OUTBOUND
+      type: object
+    UpdateMonitoringStatusRequest:
+      properties:
+        managerId:
           type: string
-        interfaceName:
+        message:
           type: string
-        intermediaryManagerId:
-          type: string
-        isGlobal:
-          type: boolean
         status:
-          enum:
-          - ACTIVE
-          - HELD
-          - SKIPPED
-          - UNMANAGED
-          type: string
+          type: boolean
       type: object
-    PensandoDssManagerCreateVrfApi:
+    TopologyRequestResponse:
       properties:
-        vrfId:
-          pattern: '[A-Za-z0-9]+[A-Za-z0-9-.]*[A-Za-z0-9]+'
-          type: string
-      required:
-      - vrfId
-      type: object
-    IntermediaryManagerIdResponse:
-      properties:
-        id:
-          type: string
-      required:
-      - id
-      type: object
-    IntermediaryManagerInfo:
-      properties:
-        hostname:
-          type: string
-        id:
-          type: string
-        port:
-          format: int32
-          type: integer
-      type: object
-    IntermediaryManagerHostDetails:
-      properties:
-        hostname:
-          type: string
-        port:
-          format: int32
-          type: integer
-        priority:
-          default: 1
-          format: int32
-          minimum: 1
-          type: integer
-      required:
-      - hostname
-      - port
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
       type: object
   securitySchemes:
     BearerJWT:

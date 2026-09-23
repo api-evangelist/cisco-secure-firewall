@@ -98,7 +98,15 @@ paths:
       - Gateway
   /gateway-sets/{id}:
     delete:
-      description: "Preconditions for deletion of GatewaySet : \nGatewaySet is not locked and is in [SKIPPED or UNMANAGED] state\nSubRequests are in [ERRORED,SUCCEDED,SKIPPED,HELD] State\nNo Task associated with GatewaySet\nRoles allowed: support,topology-rw"
+      description: 'Preconditions for deletion of GatewaySet :
+
+        GatewaySet is not locked and is in [SKIPPED or UNMANAGED] state
+
+        SubRequests are in [ERRORED,SUCCEDED,SKIPPED,HELD] State
+
+        No Task associated with GatewaySet
+
+        Roles allowed: support,topology-rw'
       operationId: deleteGatewaySet
       parameters:
       - in: path
@@ -285,11 +293,6 @@ components:
       - networkDevices
       - status
       type: object
-    CredentialNameRequest:
-      properties:
-        credentialName:
-          type: string
-      type: object
     NetworkDevice:
       properties:
         hostname:
@@ -306,6 +309,20 @@ components:
       required:
       - id
       - port
+      type: object
+    GatewaySetRespPage:
+      properties:
+        cursor:
+          type: string
+        gatewaySets:
+          items:
+            $ref: '#/components/schemas/GatewaySetResp'
+          type: array
+      type: object
+    CredentialNameRequest:
+      properties:
+        credentialName:
+          type: string
       type: object
     GatewaySetApi:
       properties:
@@ -342,15 +359,6 @@ components:
       - deviceType
       - networkDevices
       - status
-      type: object
-    GatewaySetRespPage:
-      properties:
-        cursor:
-          type: string
-        gatewaySets:
-          items:
-            $ref: '#/components/schemas/GatewaySetResp'
-          type: array
       type: object
   securitySchemes:
     BearerJWT:

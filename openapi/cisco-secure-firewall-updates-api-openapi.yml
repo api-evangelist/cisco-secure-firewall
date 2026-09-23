@@ -1,25 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Cisco Secure Firewall Updates API
+  title: Cisco Cloud-delivered Firewall Management Center (cdFMC)…
   version: 1.13.0
+  description: Use the documentation to explore the endpoints the cdFMC has to offer
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Updates across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
-  x-provenance:
-    method: harvested
-    first_party: true
-    harvested: '2026-08-19'
-    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
-    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
-    operation_coverage: 8/8
-  x-evidence:
-    fetched: '2026-08-19'
-    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    http_status: 200
 servers:
 - url: https://api.us.security.cisco.com/firewall
   description: US
@@ -43,25 +29,6 @@ tags:
 - name: Updates
 paths:
   /v1/cdfmc/api/fmc_platform/v1/updates/cancelupgrades:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     post:
       deprecated: false
       description: '**Cancel a failed upgrade. _Check the response section for applicable examples (if any)._**'
@@ -117,26 +84,9 @@ paths:
           description: Error
       tags:
       - Updates
+      summary: Create cancel upgrade
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_platform/v1/updates/retryupgrades:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     post:
       deprecated: false
       description: '**Retry a failed upgrade. _Check the response section for applicable examples (if any)._**'
@@ -192,26 +142,9 @@ paths:
           description: Error
       tags:
       - Updates
+      summary: Create retry upgrade
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_platform/v1/updates/revertupgrades:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     post:
       deprecated: false
       description: '**Trigger reversion of an upgrade. _Check the response section for applicable examples (if any)._**'
@@ -267,26 +200,9 @@ paths:
           description: Error
       tags:
       - Updates
+      summary: Create revert upgrade
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_platform/v1/updates/upgradepackages:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get the list of all upgrade packages.**'
@@ -426,26 +342,9 @@ paths:
           description: Error
       tags:
       - Updates
+      summary: Get all upgrade package
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_platform/v1/updates/upgradepackages/{containerUUID}/applicabledevices:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get the list of devices available for the specified upgrade package.**'
@@ -480,26 +379,9 @@ paths:
           description: Error
       tags:
       - Updates
+      summary: Get all applicable device
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_platform/v1/updates/upgradepackages/{objectId}:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     delete:
       deprecated: false
       description: '**Delete the upgrade package associated with the specified ID. _Check the response section for applicable examples (if any)._**'
@@ -558,6 +440,8 @@ paths:
           description: Error
       tags:
       - Updates
+      summary: Delete upgrade package
+      x-summary-source: derived
     get:
       deprecated: false
       description: '**Get the upgrade package associated with the specified ID.**'
@@ -662,26 +546,9 @@ paths:
           description: Error
       tags:
       - Updates
+      summary: Get upgrade package
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_platform/v1/updates/upgrades:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     post:
       deprecated: false
       description: '**Create a task to trigger a Threat Defense upgrade/readiness check on a list of devices or push an upgrade file to a list of devices. If neither pushUpgradeFileOnly nor readinessCheckOnly is set, execute upgrade on the device. _Check the response section for applicable examples (if any)._**'
@@ -840,8 +707,130 @@ paths:
           description: Error
       tags:
       - Updates
+      summary: Create upgrade
+      x-summary-source: derived
 components:
   schemas:
+    ITarget:
+      description: This is the target device.
+      properties:
+        description:
+          type: string
+        id:
+          description: Unique ID of the device.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the device.
+          type: string
+        type:
+          description: Device
+          type: string
+        version:
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    ApplicableDeviceListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ApplicableDevice'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
     Upgrade:
       description: This API is to trigger an upgrade/readinesscheck on a list of devices or just push an upgrade file to a list of devices.
       properties:
@@ -893,17 +882,40 @@ components:
           description: Version number of the response object.
           type: string
       type: object
-    HealthAlertConfig:
+    CancelUpgrade:
+      description: This operation is to cancel a failed upgrade.
       properties:
-        enabled:
+        description:
+          description: Cancel a failed upgrade.
+          type: string
+        forceCancel:
+          description: Set to True if cancelling an ongoing upgrade by force, False otherwise.
           type: boolean
+        id:
+          description: Unique Task ID of this request.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
         name:
           type: string
-        thresholds:
+        targets:
+          description: A list of FTD devices
           items:
-            $ref: '#/components/schemas/HealthThreshold'
+            $ref: '#/components/schemas/ITarget'
             type: object
           type: array
+        type:
+          description: CancelUpgrade
+          type: string
+        upgradeId:
+          type: string
+        version:
+          type: string
       type: object
     HealthSetting:
       properties:
@@ -942,94 +954,48 @@ components:
         readOnly:
           type: boolean
       type: object
-    UpgradePackageListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/UpgradePackage'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    DialHost:
-      properties:
-        host:
-          type: string
-        port:
-          format: int32
-          type: integer
-      type: object
-    IAdvanced:
-      properties:
-        enableOGS:
-          type: boolean
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    UpgradePackage:
+    RevertUpgrade:
+      description: This operation reverts an upgrade.
       properties:
         description:
+          description: More details about the operation.
           type: string
+        id:
+          description: Unique Task ID of this request.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the triggered task.
+          type: object
+        name:
+          description: The name of the operation.
+          type: string
+        targets:
+          description: A list of FTD devices.
+          items:
+            $ref: '#/components/schemas/ITarget'
+            type: object
+          type: array
+        type:
+          description: RevertUpgrade
+          type: string
+        version:
+          type: string
+      type: object
+    IDomain:
+      properties:
         id:
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
         name:
           type: string
         type:
-          type: string
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
           type: string
       type: object
     IPolicyModel:
@@ -1061,193 +1027,6 @@ components:
         name:
           type: string
         type:
-          type: string
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    HealthModule:
-      properties:
-        alertConfig:
-          items:
-            $ref: '#/components/schemas/HealthAlertConfig'
-            type: object
-          type: array
-        alertEnabled:
-          type: boolean
-        criticalThreshold:
-          format: int32
-          type: integer
-        customThresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-        enabled:
-          type: boolean
-        moduleId:
-          type: string
-        severity:
-          type: string
-        type:
-          type: string
-        warningThreshold:
-          format: int32
-          type: integer
-      type: object
-    HealthThreshold:
-      properties:
-        type:
-          type: string
-        value:
-          format: int32
-          type: integer
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    ApplicableDeviceListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/ApplicableDevice'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    CancelUpgrade:
-      description: This operation is to cancel a failed upgrade.
-      properties:
-        description:
-          description: Cancel a failed upgrade.
-          type: string
-        forceCancel:
-          description: Set to True if cancelling an ongoing upgrade by force, False otherwise.
-          type: boolean
-        id:
-          description: Unique Task ID of this request.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        targets:
-          description: A list of FTD devices
-          items:
-            $ref: '#/components/schemas/ITarget'
-            type: object
-          type: array
-        type:
-          description: CancelUpgrade
-          type: string
-        upgradeId:
-          type: string
-        version:
-          type: string
-      type: object
-    ITarget:
-      description: This is the target device.
-      properties:
-        description:
-          type: string
-        id:
-          description: Unique ID of the device.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: Name of the device.
-          type: string
-        type:
-          description: Device
-          type: string
-        version:
-          type: string
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    RetryUpgrade:
-      description: This operation retries a failed upgrade.
-      properties:
-        description:
-          description: More details about the operation.
-          type: string
-        id:
-          description: Unique Task ID of this request.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the triggered task.
-          type: object
-        name:
-          description: The name of the operation.
-          type: string
-        targets:
-          description: A list of FTD devices.
-          items:
-            $ref: '#/components/schemas/ITarget'
-            type: object
-          type: array
-        type:
-          description: RetryUpgrade
-          type: string
-        version:
           type: string
       type: object
     ApplicableDevice:
@@ -1303,6 +1082,68 @@ components:
         version:
           type: string
       type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    UpgradePackage:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    HealthAlertConfig:
+      properties:
+        enabled:
+          type: boolean
+        name:
+          type: string
+        thresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+      type: object
+    UpgradePackageListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/UpgradePackage'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
     IHealthPolicy:
       description: Description of Health Policy.
       properties:
@@ -1344,30 +1185,58 @@ components:
           description: Version number of the response object.
           type: string
       type: object
-    ErrorResponse:
+    HealthModule:
       properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
+        alertConfig:
           items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
+            $ref: '#/components/schemas/HealthAlertConfig'
             type: object
           type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
+        alertEnabled:
+          type: boolean
+        criticalThreshold:
+          format: int32
+          type: integer
+        customThresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+        enabled:
+          type: boolean
+        moduleId:
           type: string
+        severity:
+          type: string
+        type:
+          type: string
+        warningThreshold:
+          format: int32
+          type: integer
       type: object
-    RevertUpgrade:
-      description: This operation reverts an upgrade.
+    IAdvanced:
+      properties:
+        enableOGS:
+          type: boolean
+      type: object
+    DialHost:
+      properties:
+        host:
+          type: string
+        port:
+          format: int32
+          type: integer
+      type: object
+    HealthThreshold:
+      properties:
+        type:
+          type: string
+        value:
+          format: int32
+          type: integer
+      type: object
+    RetryUpgrade:
+      description: This operation retries a failed upgrade.
       properties:
         description:
           description: More details about the operation.
@@ -1393,20 +1262,19 @@ components:
             type: object
           type: array
         type:
-          description: RevertUpgrade
+          description: RetryUpgrade
           type: string
         version:
           type: string
       type: object
   parameters:
-    limit:
-      description: Number of items to return.
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
       in: query
-      name: limit
+      name: expanded
       required: false
       schema:
-        format: int32
-        type: integer
+        type: boolean
     offset:
       description: Index of first item to return.
       in: query
@@ -1415,18 +1283,16 @@ components:
       schema:
         format: int32
         type: integer
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
+    limit:
+      description: Number of items to return.
       in: query
-      name: expanded
+      name: limit
       required: false
       schema:
-        type: boolean
+        format: int32
+        type: integer
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
       scheme: bearer
       type: http
-x-refined-from:
-- cdfmc-openapi.yaml
-- cisco-secure-firewall-cdfmc-openapi.yml

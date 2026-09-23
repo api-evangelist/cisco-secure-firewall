@@ -30,7 +30,7 @@ paths:
       description: API for getting the revoked managed orgs info for a given manager enterprise and update the status as shown
       tags:
       - MSP Organizations Management
-      summary: Get the revoked managed orgs info for a given manager enterprise and update the status as shown
+      summary: Get the revoked managed orgs info for a given manager enterprise and update the…
       operationId: HandleMspRevokedManagedOrgsInfo
       parameters:
       - description: Id of the Manager Org whose Managed Orgs are revoked
@@ -66,13 +66,6 @@ paths:
                 $ref: '#/components/schemas/model.Error'
 components:
   schemas:
-    model.ManagedOrgProductsList:
-      type: object
-      properties:
-        name:
-          type: string
-        quantity:
-          type: integer
     model.Error:
       type: object
       properties:
@@ -80,6 +73,20 @@ components:
           type: string
         message:
           type: string
+    model.ManagedOrgProductsList:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: integer
+    model.MspRevokedManagedOrgsInfo:
+      type: object
+      properties:
+        managedOrgs:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ManagedOrg'
     model.ManagedOrg:
       type: object
       properties:
@@ -91,13 +98,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/model.ManagedOrgProductsList'
-    model.MspRevokedManagedOrgsInfo:
-      type: object
-      properties:
-        managedOrgs:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.ManagedOrg'
   securitySchemes:
     EnterpriseAdminBearerAuth:
       type: oauth2

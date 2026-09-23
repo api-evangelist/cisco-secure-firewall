@@ -1,11 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Cisco Secure Firewall Device Health API
+  title: Cisco Security Cloud Control Firewall Manager Device Health…
   version: 1.13.0
+  description: Use the documentation to explore the endpoints Security Cloud Control Firewall Manager has to offer
   contact:
     name: Cisco Security Cloud Control TAC
     email: cdo.tac@cisco.com
-  description: 'Operations tagged Device Health across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml, scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
@@ -13,9 +13,6 @@ info:
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
     note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
-    derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
-    operation_coverage: 4/4
   x-evidence:
     fetched: '2026-08-19'
     url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
@@ -43,25 +40,6 @@ tags:
 - name: Device Health
 paths:
   /v1/inventory/devices/asas/health/{deviceUid}/interfaces:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       description: Returns time-series interface metrics - including link status, overruns, and other key performance indicators - over a specified time range. Supports filtering by interface and metric. Pagination applies only when interface UIDs are not specified.
       operationId: getAsaInterfaceHealthMetrics
@@ -174,25 +152,6 @@ paths:
       tags:
       - Device Health
   /v1/inventory/devices/asas/health/metrics:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     delete:
       description: Allows a tenant to opt out of receiving health metrics for their ASAs.
       operationId: optOutOfAsaHealthMetrics
@@ -350,31 +309,6 @@ paths:
       tags:
       - Device Health
 components:
-  responses:
-    http400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http401Unauthorised:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
   schemas:
     Metric:
       properties:
@@ -385,22 +319,16 @@ components:
         summary:
           $ref: '#/components/schemas/Summary'
       type: object
-    MetricsResponse:
+    AuthenticationError:
       properties:
-        items:
-          items:
-            $ref: '#/components/schemas/MetricsItem'
-          type: array
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        total:
-          format: int32
-          type: integer
-      type: object
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
     MetricsItem:
       properties:
         description:
@@ -414,18 +342,6 @@ components:
         uid:
           format: uuid
           type: string
-      type: object
-    Summary:
-      properties:
-        average:
-          format: double
-          type: number
-        latest:
-          format: double
-          type: number
-        max:
-          format: double
-          type: number
       type: object
     CommonApiError:
       properties:
@@ -457,6 +373,18 @@ components:
           description: A human-readable error description in English.
           example: sample error
           type: string
+    Summary:
+      properties:
+        average:
+          format: double
+          type: number
+        latest:
+          format: double
+          type: number
+        max:
+          format: double
+          type: number
+      type: object
     CdoTransaction:
       properties:
         cdoTransactionStatus:
@@ -568,6 +496,22 @@ components:
           format: uuid
           type: string
       type: object
+    MetricsResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/MetricsItem'
+          type: array
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        total:
+          format: int32
+          type: integer
+      type: object
     Series:
       properties:
         timestamp:
@@ -577,21 +521,33 @@ components:
           format: double
           type: number
       type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
+  responses:
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
       scheme: bearer
       type: http
-x-refined-from:
-- cisco-secure-firewall-scc-firewall-manager-openapi.yml
-- scc-firewall-manager-openapi.yaml

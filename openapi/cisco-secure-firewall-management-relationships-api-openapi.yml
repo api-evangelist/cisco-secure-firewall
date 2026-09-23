@@ -368,6 +368,24 @@ paths:
       x-publicly-available: true
 components:
   schemas:
+    EntitlementSubscription:
+      properties:
+        id:
+          description: subscription id
+          example: subs20250110
+          type: string
+        skus:
+          items:
+            properties:
+              key:
+                example: XDR-ESS
+                type: string
+              quantity:
+                example: 200
+                type: integer
+            type: object
+          type: array
+      type: object
     AssignedGroups:
       properties:
         id:
@@ -378,45 +396,36 @@ components:
           description: name of the assigned group
           example: Group A
           type: string
-    PostManagedRelationshipResponse:
+    AssignedSubscriptions:
       properties:
         id:
-          description: id of the org
-          example: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
+          description: id of the subscription
+          example: subs20251011
           type: string
-        name:
-          description: name of the org
-          example: Test Enterprise
-          type: string
-        subscriptions:
+        skus:
           items:
-            $ref: '#/components/schemas/AssignedSubscriptions'
+            properties:
+              key:
+                example: XDR-ESS
+                type: string
+              productsInfo:
+                description: products on the subscription
+                items:
+                  properties:
+                    assignedEntitlements:
+                      description: entitlement quantity shared with the managed org
+                      example: 200
+                      type: integer
+                    product:
+                      example: Secure Access
+                      type: string
+                    productRegion:
+                      example: US WEST 2
+                      type: string
+                  type: object
+                type: array
+            type: object
           type: array
-    AssignedAdmins:
-      properties:
-        email:
-          description: email of the assigned admin
-          example: john.doe@xyz.com
-          type: string
-        id:
-          description: id of the admin
-          example: 00u251alpxbbASGcC0h8
-          type: string
-        name:
-          description: name of the assigned admin
-          example: John Doe
-          type: string
-    Error:
-      properties:
-        code:
-          format: int32
-          type: integer
-        message:
-          type: string
-      required:
-      - code
-      - message
-      type: object
     EntitlementManagedOrg:
       example:
         id: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
@@ -490,6 +499,34 @@ components:
           items:
             $ref: '#/components/schemas/AssignedSubscriptions'
           type: array
+    PostManagedRelationshipResponse:
+      properties:
+        id:
+          description: id of the org
+          example: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
+          type: string
+        name:
+          description: name of the org
+          example: Test Enterprise
+          type: string
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/AssignedSubscriptions'
+          type: array
+    AssignedAdmins:
+      properties:
+        email:
+          description: email of the assigned admin
+          example: john.doe@xyz.com
+          type: string
+        id:
+          description: id of the admin
+          example: 00u251alpxbbASGcC0h8
+          type: string
+        name:
+          description: name of the assigned admin
+          example: John Doe
+          type: string
     EntitlementShareRequest:
       properties:
         managed_orgs:
@@ -520,53 +557,16 @@ components:
             $ref: '#/components/schemas/EntitlementManagedOrg'
           type: array
       type: object
-    AssignedSubscriptions:
+    Error:
       properties:
-        id:
-          description: id of the subscription
-          example: subs20251011
+        code:
+          format: int32
+          type: integer
+        message:
           type: string
-        skus:
-          items:
-            properties:
-              key:
-                example: XDR-ESS
-                type: string
-              productsInfo:
-                description: products on the subscription
-                items:
-                  properties:
-                    assignedEntitlements:
-                      description: entitlement quantity shared with the managed org
-                      example: 200
-                      type: integer
-                    product:
-                      example: Secure Access
-                      type: string
-                    productRegion:
-                      example: US WEST 2
-                      type: string
-                  type: object
-                type: array
-            type: object
-          type: array
-    EntitlementSubscription:
-      properties:
-        id:
-          description: subscription id
-          example: subs20250110
-          type: string
-        skus:
-          items:
-            properties:
-              key:
-                example: XDR-ESS
-                type: string
-              quantity:
-                example: 200
-                type: integer
-            type: object
-          type: array
+      required:
+      - code
+      - message
       type: object
   headers:
     Date:

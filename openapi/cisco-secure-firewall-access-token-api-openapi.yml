@@ -55,6 +55,15 @@ paths:
       - Access Token
 components:
   schemas:
+    RefreshTokenResponse:
+      properties:
+        accessToken:
+          description: The newly generated access token.
+          type: string
+        refreshToken:
+          description: The newly generated refresh token.
+          type: string
+      type: object
     RefreshTokenFormRequest:
       properties:
         apiKeyId:
@@ -90,15 +99,6 @@ components:
       - trackingId
       - message
       - timestamp
-      type: object
-    RefreshTokenResponse:
-      properties:
-        accessToken:
-          description: The newly generated access token.
-          type: string
-        refreshToken:
-          description: The newly generated refresh token.
-          type: string
       type: object
   securitySchemes:
     bearerAuth:

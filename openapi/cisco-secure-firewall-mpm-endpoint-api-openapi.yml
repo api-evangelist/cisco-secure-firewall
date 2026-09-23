@@ -283,6 +283,15 @@ components:
             $ref: '#/components/schemas/MpmPolicyMetadataToRules'
           type: array
       type: object
+    MpmEndpointsPage:
+      properties:
+        cursor:
+          type: string
+        endpoints:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+      type: object
     MpmEndpointObj:
       properties:
         addressEnd:
@@ -300,15 +309,6 @@ components:
           type: string
         value:
           type: string
-      type: object
-    MpmEndpointsPage:
-      properties:
-        cursor:
-          type: string
-        endpoints:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
       type: object
     MpmPolicyMetadataToRules:
       properties:

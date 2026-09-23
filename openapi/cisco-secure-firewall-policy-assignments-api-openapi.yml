@@ -1,25 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Cisco Secure Firewall Policy Assignments API
+  title: Cisco Cloud-delivered Firewall Management Center (cdFMC)…
   version: 1.13.0
+  description: Use the documentation to explore the endpoints the cdFMC has to offer
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Policy Assignments across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
-  x-provenance:
-    method: harvested
-    first_party: true
-    harvested: '2026-08-19'
-    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
-    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
-    operation_coverage: 4/4
-  x-evidence:
-    fetched: '2026-08-19'
-    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    http_status: 200
 servers:
 - url: https://api.us.security.cisco.com/firewall
   description: US
@@ -43,25 +29,6 @@ tags:
 - name: Policy Assignments
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/assignment/policyassignments:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get the list of all policy assignments to target devices.**'
@@ -164,6 +131,8 @@ paths:
           description: Error
       tags:
       - Policy Assignments
+      summary: Get all policy assignment
+      x-summary-source: derived
     post:
       deprecated: false
       description: '**Create a policy assignment. _Check the response section for applicable examples (if any)._**'
@@ -253,26 +222,9 @@ paths:
           description: Error
       tags:
       - Policy Assignments
+      summary: Create policy assignment
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/assignment/policyassignments/{objectId}:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get the policy assignment associated with the specified ID.**'
@@ -371,6 +323,8 @@ paths:
           description: Error
       tags:
       - Policy Assignments
+      summary: Get policy assignment
+      x-summary-source: derived
     put:
       deprecated: false
       description: '**Modify the policy assignment associated with the specified ID. _Check the response section for applicable examples (if any)._**'
@@ -469,38 +423,9 @@ paths:
           description: Error
       tags:
       - Policy Assignments
+      summary: Update policy assignment
+      x-summary-source: derived
 components:
-  parameters:
-    limit:
-      description: Number of items to return.
-      in: query
-      name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
-    domainUUID:
-      description: Domain UUID
-      in: path
-      name: domainUUID
-      required: true
-      schema:
-        type: string
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
   schemas:
     IReadonly:
       properties:
@@ -512,6 +437,77 @@ components:
           type: string
         state:
           type: boolean
+      type: object
+    ITarget:
+      description: This is the target device.
+      properties:
+        description:
+          type: string
+        id:
+          description: Unique ID of the device.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the device.
+          type: string
+        type:
+          description: Device
+          type: string
+        version:
+          type: string
+      type: object
+    Metadata:
+      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          description: Defines the domains this instance belongs to (if applicable).
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          description: The last user who modified this instance.
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          description: Details regarding the read only status of this instance
+          type: object
+        timestamp:
+          description: The last updated timestamp.
+          format: int32
+          type: integer
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
       type: object
     ErrorMessagesContainer:
       properties:
@@ -540,6 +536,52 @@ components:
           - WARN
           type: string
       type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    PolicyAssignmentListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/PolicyAssignment'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    Domain:
+      description: The details about the domain.
+      properties:
+        id:
+          description: Unique UUID of this domain
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
+          type: object
+        name:
+          description: Name of the domain.
+          type: string
+        type:
+          description: Domain type definition (fixed).
+          type: string
+        uuid:
+          type: string
+      type: object
     ILinks:
       description: This defines the self referencing links for the given resource.
       properties:
@@ -550,11 +592,30 @@ components:
           description: Full resource URL path to reference this particular resource.
           type: string
       type: object
-    Links:
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
       properties:
-        parent:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
           type: string
-        self:
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
           type: string
       type: object
     IPolicyModel:
@@ -576,18 +637,6 @@ components:
         version:
           type: string
       type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
     IMetadataUser:
       properties:
         id:
@@ -599,77 +648,6 @@ components:
           type: string
         type:
           type: string
-      type: object
-    Domain:
-      description: The details about the domain.
-      properties:
-        id:
-          description: Unique UUID of this domain
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
-          type: object
-        name:
-          description: Name of the domain.
-          type: string
-        type:
-          description: Domain type definition (fixed).
-          type: string
-        uuid:
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    ITarget:
-      description: This is the target device.
-      properties:
-        description:
-          type: string
-        id:
-          description: Unique ID of the device.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: Name of the device.
-          type: string
-        type:
-          description: Device
-          type: string
-        version:
-          type: string
-      type: object
-    ReadOnly:
-      description: Defines the read only conditions if the referenced resource is read only.
-      properties:
-        reason:
-          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          description: True if this resource us read only and false otherwise.
-          type: boolean
       type: object
     IMetadata:
       properties:
@@ -692,32 +670,6 @@ components:
           format: int32
           type: integer
       type: object
-    Metadata:
-      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
-      properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          description: Defines the domains this instance belongs to (if applicable).
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          description: The last user who modified this instance.
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          description: Details regarding the read only status of this instance
-          type: object
-        timestamp:
-          description: The last updated timestamp.
-          format: int32
-          type: integer
-      type: object
     MetadataUser:
       description: This object defines details about the user.
       properties:
@@ -733,6 +685,13 @@ components:
           type: string
         type:
           description: The user type (fixed).
+          type: string
+      type: object
+    Links:
+      properties:
+        parent:
+          type: string
+        self:
           type: string
       type: object
     PolicyAssignment:
@@ -762,45 +721,39 @@ components:
         version:
           type: string
       type: object
-    PolicyAssignmentListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/PolicyAssignment'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
+  parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
       scheme: bearer
       type: http
-x-refined-from:
-- cdfmc-openapi.yaml
-- cisco-secure-firewall-cdfmc-openapi.yml

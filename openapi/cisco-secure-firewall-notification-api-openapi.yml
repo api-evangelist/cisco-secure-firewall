@@ -122,7 +122,7 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
-      summary: Bulk deletes the notifications for the user based on the initiation_type, user_id and tenant_key
+      summary: Bulk deletes the notifications for the user based on the initiation_type…
       tags:
       - Notification
   /v2/notifications/{notification_id}/initiation_type/{initiation_type}:
@@ -270,80 +270,6 @@ paths:
       - Notification
 components:
   schemas:
-    errorResponse:
-      description: error response
-      properties:
-        code:
-          description: Error code
-          type: integer
-        details:
-          description: Additional details about the error
-          type: object
-        message:
-          description: Error message
-          type: string
-      type: object
-    deleteNotificationResponse:
-      description: delete notification API response body
-      properties:
-        error:
-          description: deletion error
-          type: string
-        status:
-          description: deletion status
-          enum:
-          - SUCCESS
-          - FAILED
-          type: string
-      type: object
-    deleteBulkNotificationRequest:
-      description: bulk delete notifications request body
-      properties:
-        notifications:
-          description: notifications to delete
-          items:
-            properties:
-              initiation_type:
-                description: type of notification initiation
-                type: string
-              notification_id:
-                description: notification ID
-                format: uuid
-                type: string
-            required:
-            - notification_id
-            - initiation_type
-            type: object
-          type: array
-      required:
-      - notifications
-      type: object
-    notificationCountResponse:
-      description: get notification count API response body
-      properties:
-        error:
-          description: error encountered while fetching counts
-          type: string
-        notificationCount:
-          description: count of notifications
-          type: integer
-        unreadNotificationCount:
-          description: count of unread notifications
-          type: integer
-      type: object
-    markNotificationStatusResponse:
-      description: update notification status API response body
-      properties:
-        error:
-          description: update error
-          type: string
-        status:
-          description: notification status
-          enum:
-          - SUCCESS
-          - FAILED
-          type: string
-      type: object
     notification:
       description: notification object
       properties:
@@ -385,8 +311,8 @@ components:
           format: date-time
           type: string
       type: object
-    deleteBulkNotificationResponse:
-      description: bulk delete notifications response body
+    deleteNotificationResponse:
+      description: delete notification API response body
       properties:
         error:
           description: deletion error
@@ -423,6 +349,80 @@ components:
       required:
       - notifications
       - is_read
+      type: object
+    errorResponse:
+      description: error response
+      properties:
+        code:
+          description: Error code
+          type: integer
+        details:
+          description: Additional details about the error
+          type: object
+        message:
+          description: Error message
+          type: string
+      type: object
+    notificationCountResponse:
+      description: get notification count API response body
+      properties:
+        error:
+          description: error encountered while fetching counts
+          type: string
+        notificationCount:
+          description: count of notifications
+          type: integer
+        unreadNotificationCount:
+          description: count of unread notifications
+          type: integer
+      type: object
+    deleteBulkNotificationResponse:
+      description: bulk delete notifications response body
+      properties:
+        error:
+          description: deletion error
+          type: string
+        status:
+          description: deletion status
+          enum:
+          - SUCCESS
+          - FAILED
+          type: string
+      type: object
+    markNotificationStatusResponse:
+      description: update notification status API response body
+      properties:
+        error:
+          description: update error
+          type: string
+        status:
+          description: notification status
+          enum:
+          - SUCCESS
+          - FAILED
+          type: string
+      type: object
+    deleteBulkNotificationRequest:
+      description: bulk delete notifications request body
+      properties:
+        notifications:
+          description: notifications to delete
+          items:
+            properties:
+              initiation_type:
+                description: type of notification initiation
+                type: string
+              notification_id:
+                description: notification ID
+                format: uuid
+                type: string
+            required:
+            - notification_id
+            - initiation_type
+            type: object
+          type: array
+      required:
+      - notifications
       type: object
     notificationListResponse:
       description: list notifications API response body

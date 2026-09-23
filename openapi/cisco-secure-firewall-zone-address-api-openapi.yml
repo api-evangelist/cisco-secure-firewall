@@ -179,6 +179,18 @@ paths:
       - Zone Address
 components:
   schemas:
+    StringValue:
+      properties:
+        value:
+          type: string
+      type: object
+    AddressesWithTagsToZones:
+      properties:
+        addressesWithTagsToZones:
+          items:
+            $ref: '#/components/schemas/AddressWithTagsToZones'
+          type: array
+      type: object
     AddressesApi:
       properties:
         addresses:
@@ -187,6 +199,15 @@ components:
           - value: 1.1.1.1/32
           items:
             $ref: '#/components/schemas/StringValue'
+          type: array
+      type: object
+    AddressWithTagsToZones:
+      properties:
+        addressWithTags:
+          type: string
+        zones:
+          items:
+            type: string
           type: array
       type: object
     ReqIdAndReqSystem:
@@ -211,32 +232,6 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
-    AddressWithTagsToZones:
-      properties:
-        addressWithTags:
-          type: string
-        zones:
-          items:
-            type: string
-          type: array
-      type: object
-    StringValue:
-      properties:
-        value:
-          type: string
-      type: object
-    AddressesWithTagsToZones:
-      properties:
-        addressesWithTagsToZones:
-          items:
-            $ref: '#/components/schemas/AddressWithTagsToZones'
-          type: array
-      type: object
-    TopologyRequestResponse:
-      properties:
-        request:
-          $ref: '#/components/schemas/ReqIdAndReqSystem'
-      type: object
     AddressWithZoneMatchApi:
       properties:
         addresses:
@@ -252,6 +247,11 @@ components:
           description: Valid IPV4 address
           example: 1.1.1.1/32
           type: string
+      type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
       type: object
     AddressesWithTags:
       properties:

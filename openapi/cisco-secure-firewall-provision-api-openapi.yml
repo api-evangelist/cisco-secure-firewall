@@ -159,6 +159,22 @@ paths:
       - Provision
 components:
   schemas:
+    '401':
+      properties:
+        code:
+          example: 401
+          type: integer
+        message:
+          example: Authorization Header not found.
+          type: string
+        timestamp:
+          example: trackingId_placeholder
+          format: date-time
+          type: string
+        trackingId:
+          example: trackingId_placeholder
+          type: string
+      type: object
     '400':
       properties:
         code:
@@ -167,67 +183,6 @@ components:
         message:
           example: Enterprise Id is not found
           type: string
-      type: object
-    UpdateTenantResp:
-      properties:
-        customer:
-          example:
-            customer_name: Foo Corporation
-            initial_admin: kit@foo.com
-          properties:
-            customer_name:
-              type: string
-            initial_admin:
-              type: string
-          type: object
-        enterprise_id:
-          example: ab820f93-ba17-451d-8e4e-7da6ff8b8ff7
-          type: string
-        entitlements:
-          items:
-            example:
-              enforce_quantity: true
-              name: tier
-              quantity:
-                unit: users
-                value: 32000
-              value: advantage
-            properties:
-              enforce_quantity:
-                type: boolean
-              name:
-                type: string
-              quantity:
-                properties:
-                  unit:
-                    type: string
-                  value:
-                    type: integer
-                type: object
-              value:
-                type: string
-            type: object
-          type: array
-        id:
-          example: cff290b1-ed17-45a9-a47c-c6dce643715a
-          type: string
-        meta:
-          example:
-            lastModified: '2023-11-20T10:24:58.123Z'
-            location: http://context-service-prod-svc.svc-commons:9090/context/provision/v1/Tenants/cff290b1-ed17-45a9-a47c-c6dce643715a
-            resourceType: Tenant
-          properties:
-            lastModified:
-              type: string
-            location:
-              type: string
-            resourceType:
-              type: string
-          type: object
-        schemas:
-          items:
-            example: urn:cisco:security:scim:tenant:core:1.0
-          type: array
       type: object
     CreateTenantReq:
       properties:
@@ -296,20 +251,13 @@ components:
             example: urn:cisco:security:scim:tenant:core:1.0
           type: array
       type: object
-    '401':
+    '500':
       properties:
         code:
-          example: 401
+          example: 500
           type: integer
         message:
-          example: Authorization Header not found.
-          type: string
-        timestamp:
-          example: trackingId_placeholder
-          format: date-time
-          type: string
-        trackingId:
-          example: trackingId_placeholder
+          example: Something went wrong
           type: string
       type: object
     CreateTenantResp:
@@ -439,14 +387,66 @@ components:
           example: trackingId_placeholder
           type: string
       type: object
-    '500':
+    UpdateTenantResp:
       properties:
-        code:
-          example: 500
-          type: integer
-        message:
-          example: Something went wrong
+        customer:
+          example:
+            customer_name: Foo Corporation
+            initial_admin: kit@foo.com
+          properties:
+            customer_name:
+              type: string
+            initial_admin:
+              type: string
+          type: object
+        enterprise_id:
+          example: ab820f93-ba17-451d-8e4e-7da6ff8b8ff7
           type: string
+        entitlements:
+          items:
+            example:
+              enforce_quantity: true
+              name: tier
+              quantity:
+                unit: users
+                value: 32000
+              value: advantage
+            properties:
+              enforce_quantity:
+                type: boolean
+              name:
+                type: string
+              quantity:
+                properties:
+                  unit:
+                    type: string
+                  value:
+                    type: integer
+                type: object
+              value:
+                type: string
+            type: object
+          type: array
+        id:
+          example: cff290b1-ed17-45a9-a47c-c6dce643715a
+          type: string
+        meta:
+          example:
+            lastModified: '2023-11-20T10:24:58.123Z'
+            location: http://context-service-prod-svc.svc-commons:9090/context/provision/v1/Tenants/cff290b1-ed17-45a9-a47c-c6dce643715a
+            resourceType: Tenant
+          properties:
+            lastModified:
+              type: string
+            location:
+              type: string
+            resourceType:
+              type: string
+          type: object
+        schemas:
+          items:
+            example: urn:cisco:security:scim:tenant:core:1.0
+          type: array
       type: object
   headers:
     Date:

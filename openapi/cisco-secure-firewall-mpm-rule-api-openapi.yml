@@ -191,38 +191,9 @@ paths:
       - MPM Rule
 components:
   schemas:
-    MpmAppObj:
+    IdValue:
       properties:
-        alg:
-          type: string
-        anyApp:
-          type: boolean
-        description:
-          type: string
-        ianaProtocol:
-          format: int32
-          type: integer
-        icmpCode:
-          format: int32
-          type: integer
-        icmpType:
-          format: int32
-          type: integer
         id:
-          format: uuid
-          type: string
-        name:
-          type: string
-        portEnd:
-          format: int32
-          type: integer
-        portStart:
-          format: int32
-          type: integer
-        timeout:
-          format: int32
-          type: integer
-        value:
           type: string
       type: object
     MpmRulesPage:
@@ -233,61 +204,16 @@ components:
         mpmRuleResponse:
           $ref: '#/components/schemas/MpmRuleResp'
       type: object
-    MpmNatRuleObj:
+    MpmRuleResp:
       properties:
-        apTranslated:
-          $ref: '#/components/schemas/MpmAppObj'
-        apgsMatch:
+        natRules:
           items:
-            $ref: '#/components/schemas/MpmAppGroupObj'
+            $ref: '#/components/schemas/MpmNatRuleObj'
           type: array
-        appNatType:
-          enum:
-          - MATCH
-          - STATIC
-          type: string
-        apsMatch:
+        rules:
           items:
-            $ref: '#/components/schemas/MpmAppObj'
+            $ref: '#/components/schemas/MpmRuleObj'
           type: array
-        description:
-          type: string
-        dstEpTranslated:
-          $ref: '#/components/schemas/MpmEndpointObj'
-        dstEpgsMatch:
-          items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
-          type: array
-        dstEpsMatch:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
-        dstNatType:
-          enum:
-          - MATCH
-          - STATIC
-          type: string
-        enabled:
-          type: boolean
-        id:
-          format: uuid
-          type: string
-        srcEpTranslated:
-          $ref: '#/components/schemas/MpmEndpointObj'
-        srcEpgsMatch:
-          items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
-          type: array
-        srcEpsMatch:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
-        srcNatType:
-          enum:
-          - MATCH
-          - STATIC
-          - HIDE
-          type: string
       type: object
     MpmAppGroupObj:
       properties:
@@ -297,6 +223,24 @@ components:
           type: array
         description:
           type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+      type: object
+    MpmEndpointGroupObj:
+      properties:
+        description:
+          type: string
+        epgs:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        eps:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
         id:
           format: uuid
           type: string
@@ -376,38 +320,94 @@ components:
             $ref: '#/components/schemas/MpmEndpointObj'
           type: array
       type: object
-    MpmRuleResp:
+    MpmAppObj:
       properties:
-        natRules:
-          items:
-            $ref: '#/components/schemas/MpmNatRuleObj'
-          type: array
-        rules:
-          items:
-            $ref: '#/components/schemas/MpmRuleObj'
-          type: array
-      type: object
-    MpmEndpointGroupObj:
-      properties:
+        alg:
+          type: string
+        anyApp:
+          type: boolean
         description:
           type: string
-        epgs:
-          items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
-          type: array
-        eps:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
+        ianaProtocol:
+          format: int32
+          type: integer
+        icmpCode:
+          format: int32
+          type: integer
+        icmpType:
+          format: int32
+          type: integer
         id:
           format: uuid
           type: string
         name:
           type: string
+        portEnd:
+          format: int32
+          type: integer
+        portStart:
+          format: int32
+          type: integer
+        timeout:
+          format: int32
+          type: integer
+        value:
+          type: string
       type: object
-    IdValue:
+    MpmNatRuleObj:
       properties:
+        apTranslated:
+          $ref: '#/components/schemas/MpmAppObj'
+        apgsMatch:
+          items:
+            $ref: '#/components/schemas/MpmAppGroupObj'
+          type: array
+        appNatType:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+        apsMatch:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+        description:
+          type: string
+        dstEpTranslated:
+          $ref: '#/components/schemas/MpmEndpointObj'
+        dstEpgsMatch:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        dstEpsMatch:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+        dstNatType:
+          enum:
+          - MATCH
+          - STATIC
+          type: string
+        enabled:
+          type: boolean
         id:
+          format: uuid
+          type: string
+        srcEpTranslated:
+          $ref: '#/components/schemas/MpmEndpointObj'
+        srcEpgsMatch:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        srcEpsMatch:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+        srcNatType:
+          enum:
+          - MATCH
+          - STATIC
+          - HIDE
           type: string
       type: object
   securitySchemes:

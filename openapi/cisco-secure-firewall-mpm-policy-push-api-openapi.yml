@@ -45,7 +45,7 @@ paths:
           description: Not Found
         '500':
           description: Internal Server Error
-      summary: 'Create a multi-policy Push Request '
+      summary: Create a multi-policy Push Request
       tags:
       - MPM Policy Push
   /mpm/policy/request:
@@ -71,7 +71,7 @@ paths:
           description: Not Found
         '500':
           description: Internal Server Error
-      summary: 'Create Policy Push Request '
+      summary: Create Policy Push Request
       tags:
       - MPM Policy Push
   /mpm/policy/request/gateway-set/{gwSetId}:
@@ -196,6 +196,75 @@ components:
             $ref: '#/components/schemas/Task'
           type: array
       type: object
+    SubRequest:
+      properties:
+        errors:
+          type: string
+        executionCount:
+          format: int32
+          type: integer
+        gatewaySetInfo:
+          enum:
+          - ACTIVE
+          - HELD
+          - SKIPPED
+          - UNMANAGED
+          type: string
+        gwSetId:
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        priorityValue:
+          format: int32
+          type: integer
+        queuedTime:
+          format: date-time
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        retryThreshold:
+          format: int32
+          type: integer
+        subReqStatus:
+          enum:
+          - READY
+          - IN_PROGRESS
+          - HELD
+          - SKIPPED
+          - SUCCEEDED
+          - ERRORED
+          type: string
+      type: object
+    MpmPolicyPushRequestsPage:
+      properties:
+        lastRequestId:
+          format: uuid
+          type: string
+        lastTimestampInMillis:
+          format: int64
+          type: integer
+        multiReqCursorId:
+          format: uuid
+          type: string
+        requests:
+          items:
+            $ref: '#/components/schemas/MpmRequestInfo'
+          type: array
+      type: object
+    MpmMultiPolicyPushRequestApi:
+      properties:
+        gatewaySetId:
+          type: string
+        policyIdentifiers:
+          items:
+            $ref: '#/components/schemas/MpmPolicyIdentifier'
+          type: array
+      required:
+      - gatewaySetId
+      - policyIdentifiers
+      type: object
     MpmPolicyPushRequestApi:
       properties:
         gatewaySetId:
@@ -247,22 +316,6 @@ components:
       - policyType
       - revisionId
       type: object
-    MpmPolicyPushRequestsPage:
-      properties:
-        lastRequestId:
-          format: uuid
-          type: string
-        lastTimestampInMillis:
-          format: int64
-          type: integer
-        multiReqCursorId:
-          format: uuid
-          type: string
-        requests:
-          items:
-            $ref: '#/components/schemas/MpmRequestInfo'
-          type: array
-      type: object
     Task:
       properties:
         allocatedTime:
@@ -283,59 +336,6 @@ components:
           - FAILED
           type: string
         workerId:
-          type: string
-      type: object
-    MpmMultiPolicyPushRequestApi:
-      properties:
-        gatewaySetId:
-          type: string
-        policyIdentifiers:
-          items:
-            $ref: '#/components/schemas/MpmPolicyIdentifier'
-          type: array
-      required:
-      - gatewaySetId
-      - policyIdentifiers
-      type: object
-    SubRequest:
-      properties:
-        errors:
-          type: string
-        executionCount:
-          format: int32
-          type: integer
-        gatewaySetInfo:
-          enum:
-          - ACTIVE
-          - HELD
-          - SKIPPED
-          - UNMANAGED
-          type: string
-        gwSetId:
-          type: string
-        modifiedTime:
-          format: date-time
-          type: string
-        priorityValue:
-          format: int32
-          type: integer
-        queuedTime:
-          format: date-time
-          type: string
-        reqId:
-          format: uuid
-          type: string
-        retryThreshold:
-          format: int32
-          type: integer
-        subReqStatus:
-          enum:
-          - READY
-          - IN_PROGRESS
-          - HELD
-          - SKIPPED
-          - SUCCEEDED
-          - ERRORED
           type: string
       type: object
   securitySchemes:

@@ -103,16 +103,25 @@ paths:
       - Integration Health
 components:
   schemas:
-    '404':
-      description: Typical 404 response body for Context Service requests
+    '401':
+      description: Typical 401 response body for Context Service requests
       properties:
         code:
           description: HTTP error code
-          example: 404
+          example: 401
           type: integer
         message:
           description: brief description of the error
-          example: Integration matching the id is not found
+          example: Authorization Header not found.
+          type: string
+        timestamp:
+          description: timestamp of the error event
+          example: '2024-01-22T03:12:46.090049959'
+          format: date-time
+          type: string
+        trackingId:
+          description: logs tracking ID
+          example: trackingId_placeholder
           type: string
       type: object
     '400':
@@ -127,16 +136,40 @@ components:
           example: Integration Id is not a valid UUID
           type: string
       type: object
-    '401':
-      description: Typical 401 response body for Context Service requests
+    '500':
+      description: Typical 500 response body for Context Service requests
       properties:
         code:
           description: HTTP error code
-          example: 401
+          example: 500
           type: integer
         message:
           description: brief description of the error
-          example: Authorization Header not found.
+          example: Something went wrong
+          type: string
+      type: object
+    '404':
+      description: Typical 404 response body for Context Service requests
+      properties:
+        code:
+          description: HTTP error code
+          example: 404
+          type: integer
+        message:
+          description: brief description of the error
+          example: Integration matching the id is not found
+          type: string
+      type: object
+    '403':
+      description: Typical 403 response body for Context Service requests
+      properties:
+        code:
+          description: HTTP error code
+          example: 403
+          type: integer
+        message:
+          description: brief description of the error
+          example: Forbidden
           type: string
         timestamp:
           description: timestamp of the error event
@@ -165,48 +198,14 @@ components:
           example: active
           type: string
       type: object
-    '403':
-      description: Typical 403 response body for Context Service requests
-      properties:
-        code:
-          description: HTTP error code
-          example: 403
-          type: integer
-        message:
-          description: brief description of the error
-          example: Forbidden
-          type: string
-        timestamp:
-          description: timestamp of the error event
-          example: '2024-01-22T03:12:46.090049959'
-          format: date-time
-          type: string
-        trackingId:
-          description: logs tracking ID
-          example: trackingId_placeholder
-          type: string
-      type: object
-    '500':
-      description: Typical 500 response body for Context Service requests
-      properties:
-        code:
-          description: HTTP error code
-          example: 500
-          type: integer
-        message:
-          description: brief description of the error
-          example: Something went wrong
-          type: string
-      type: object
-  parameters:
-    ProductId:
-      description: Name of the product
-      example: Secure Access
-      in: header
-      name: x-Product-Id
-      required: true
+  headers:
+    Date:
+      description: Response date and time
+      example: Tue, 23 Jul 2024 16:13:30 UTC
       schema:
+        pattern: (((Mon|Tue|Wed|Thu|Fri|Sat|Sun))[,]\s[0-9]{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s([0-9]{4})\s([0-9]{2}):([0-9]{2})(:([0-9]{2}))?\sUTC\s?
         type: string
+  parameters:
     ProductTenantId:
       description: Tenant ID of the product
       in: header
@@ -214,12 +213,13 @@ components:
       required: true
       schema:
         type: string
-  headers:
-    Date:
-      description: Response date and time
-      example: Tue, 23 Jul 2024 16:13:30 UTC
+    ProductId:
+      description: Name of the product
+      example: Secure Access
+      in: header
+      name: x-Product-Id
+      required: true
       schema:
-        pattern: (((Mon|Tue|Wed|Thu|Fri|Sat|Sun))[,]\s[0-9]{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s([0-9]{4})\s([0-9]{2}):([0-9]{2})(:([0-9]{2}))?\sUTC\s?
         type: string
   securitySchemes:
     bearerAuth:

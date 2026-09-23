@@ -80,15 +80,17 @@ paths:
       - Terminal Zone
 components:
   schemas:
-    FromToZone:
+    IdValue:
       properties:
-        fromZoneId:
+        id:
           type: string
-        toZoneId:
-          type: string
-      required:
-      - fromZoneId
-      - toZoneId
+      type: object
+    AdjacentZones:
+      properties:
+        adjacentZones:
+          items:
+            $ref: '#/components/schemas/ZonePair'
+          type: array
       type: object
     ZonePair:
       properties:
@@ -100,20 +102,6 @@ components:
       - zoneOneId
       - zoneTwoId
       type: object
-    AdjacentZones:
-      properties:
-        adjacentZones:
-          items:
-            $ref: '#/components/schemas/ZonePair'
-          type: array
-      type: object
-    GatewaySets:
-      properties:
-        gatewaySets:
-          items:
-            $ref: '#/components/schemas/IdValue'
-          type: array
-      type: object
     TerminalZonePairs:
       properties:
         terminalZonePairs:
@@ -121,10 +109,22 @@ components:
             $ref: '#/components/schemas/FromToZone'
           type: array
       type: object
-    IdValue:
+    FromToZone:
       properties:
-        id:
+        fromZoneId:
           type: string
+        toZoneId:
+          type: string
+      required:
+      - fromZoneId
+      - toZoneId
+      type: object
+    GatewaySets:
+      properties:
+        gatewaySets:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
       type: object
   securitySchemes:
     BearerJWT:

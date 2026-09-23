@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   version: 1.4.0
-  title: Identity and Access Management Domains and Identity providers API
+  title: Identity and Access Management Domains and Identity…
   description: APIs for creating and updating the customer enterprise, including user access control.
   x-provenance:
     method: harvested
@@ -74,6 +74,8 @@ paths:
           $ref: '#/components/responses/GeneralError'
       tags:
       - Domains and Identity providers
+      summary: Verify pending enterprise domain
+      x-summary-source: derived
   /enterprises/{id}/domains:
     get:
       tags:
@@ -107,6 +109,8 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: Get enterprise domains
+      x-summary-source: derived
     post:
       tags:
       - Domains and Identity providers
@@ -146,12 +150,14 @@ paths:
           $ref: '#/components/responses/ValidationError'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: Initiate pending enterprise domain
+      x-summary-source: derived
   /enterprises/{id}/groupMappings:
     put:
       tags:
       - Domains and Identity providers
       operationId: createIdpGroupMapping
-      summary: Create or update an IDP group mapping, if a set of group mappings exist for the IDP already, this should be updated in-place. Requires enterprise admin to invoke this endpoint.
+      summary: Create or update an IDP group mapping, if a set of group mappings exist for the…
       security:
       - bearerAuth: []
       parameters:
@@ -182,7 +188,7 @@ paths:
     get:
       tags:
       - Domains and Identity providers
-      summary: List authorize external IdP for this enterprise. Requires enterprise admin to invoke this endpoint.
+      summary: List authorize external IdP for this enterprise.
       operationId: listExternalIdp
       parameters:
       - name: id
@@ -207,7 +213,7 @@ paths:
         default:
           $ref: '#/components/responses/GeneralError'
     post:
-      summary: Authorize external IdP for this enterprise. Requires enterprise admin to invoke this endpoint.
+      summary: Authorize external IdP for this enterprise.
       operationId: addExternalIdp
       tags:
       - Domains and Identity providers
@@ -262,6 +268,61 @@ components:
               rbacGroupId:
                 type: string
                 format: uuid
+    DomainStatus:
+      type: string
+      enum:
+      - pending
+      - verified
+    ExternalIdpGroupMappingInput:
+      type: object
+      description: Request body for authorizedExternalIdps endpoint
+      properties:
+        idpId:
+          type: string
+          format: uuid
+    ExternalIdpGroupMappingCreateResponse:
+      type: object
+      properties:
+        idpId:
+          type: string
+          format: uuid
+        enterpriseId:
+          type: string
+          format: uuid
+        samlIdpIssuer:
+          type: string
+    Domain:
+      type: object
+      required:
+      - domain
+      - status
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainName'
+        status:
+          $ref: '#/components/schemas/DomainStatus'
+    UpdatedIDPGroupMapping:
+      type: object
+      properties:
+        enterpriseId:
+          type: string
+          format: uuid
+        groupMappings:
+          type: array
+          items:
+            type: object
+            required:
+            - idpGroupName
+            - rbacGroupId
+            properties:
+              idpGroupName:
+                type: string
+              idpId:
+                type: string
+                format: uuid
+              rbacGroupId:
+                type: string
+                format: uuid
     ExternalIdpGroupMappingListResponse:
       type: object
       properties:
@@ -286,39 +347,6 @@ components:
               rbacGroupId:
                 type: string
                 format: uuid
-    UpdatedIDPGroupMapping:
-      type: object
-      properties:
-        enterpriseId:
-          type: string
-          format: uuid
-        groupMappings:
-          type: array
-          items:
-            type: object
-            required:
-            - idpGroupName
-            - rbacGroupId
-            properties:
-              idpGroupName:
-                type: string
-              idpId:
-                type: string
-                format: uuid
-              rbacGroupId:
-                type: string
-                format: uuid
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
     PendingDomain:
       properties:
         createdAt:
@@ -343,55 +371,33 @@ components:
       - entityID
       - domain
       type: object
-    ExternalIdpGroupMappingCreateResponse:
+    Error:
       type: object
+      required:
+      - code
+      - message
       properties:
-        idpId:
+        code:
+          type: integer
+          format: int32
+        message:
           type: string
-          format: uuid
-        enterpriseId:
-          type: string
-          format: uuid
-        samlIdpIssuer:
-          type: string
-    DomainStatus:
-      type: string
-      enum:
-      - pending
-      - verified
     DomainName:
       type: string
       pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
       example: cisco.com
-    ExternalIdpGroupMappingInput:
-      type: object
-      description: Request body for authorizedExternalIdps endpoint
-      properties:
-        idpId:
-          type: string
-          format: uuid
-    Domain:
-      type: object
-      required:
-      - domain
-      - status
-      properties:
-        domain:
-          $ref: '#/components/schemas/DomainName'
-        status:
-          $ref: '#/components/schemas/DomainStatus'
+  headers:
+    Date:
+      schema:
+        type: string
+        pattern: ^.*$
+    Location:
+      schema:
+        type: string
+        format: uri
   responses:
     NotFoundError:
       description: Not Found
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request was invalid
       headers:
         Date:
           $ref: '#/components/headers/Date'
@@ -408,15 +414,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  headers:
-    Date:
-      schema:
-        type: string
-        pattern: ^.*$
-    Location:
-      schema:
-        type: string
-        format: uri
+    ValidationError:
+      description: The request was invalid
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     OpenID:
       type: openIdConnect

@@ -168,7 +168,7 @@ paths:
       description: Creates Customer Enterprise Record, Platform Bootstrap Subscription and provision Platform Bootstrap Products for given enterpriseId
       tags:
       - Enterprise
-      summary: Creates Platform Bootstrap Subscription and provision Platform Bootstrap Products for given enterpriseId
+      summary: Creates Platform Bootstrap Subscription and provision Platform Bootstrap…
       operationId: PostPlatformRoute
       parameters:
       - description: enterprise Id(uuid)
@@ -211,17 +211,13 @@ paths:
                 $ref: '#/components/schemas/model.Error'
 components:
   schemas:
-    model.ProductInstanceWithMetadata:
+    model.Region:
       type: object
       properties:
-        id:
+        description:
           type: string
-        external_tenant_id:
+        name:
           type: string
-        provisioning_status:
-          type: string
-        region:
-          $ref: '#/components/schemas/model.Region'
     model.EnterpriseProductInstances:
       type: object
       properties:
@@ -233,46 +229,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/model.MergedProductInstancesInfo'
-    model.MergedProductInstancesInfo:
-      type: object
-      properties:
-        id:
-          type: string
-        productName:
-          type: string
-        productType:
-          type: string
-        externalTenantId:
-          type: string
-        region:
-          $ref: '#/components/schemas/model.Region'
-        provisioningStatus:
-          type: string
-        isPlatformProduct:
-          type: boolean
-    model.Region:
-      type: object
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-    routes.PlatformBootstrapRequest:
-      type: object
-      required:
-      - enterprise_name
-      properties:
-        enterprise_name:
-          type: string
-        initial_admin:
-          type: string
-    model.Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     model.RegionalHierarchy:
       type: object
       properties:
@@ -290,6 +246,50 @@ components:
           type: integer
         tier:
           type: integer
+    model.ProductInstanceWithMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+        external_tenant_id:
+          type: string
+        provisioning_status:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
+    model.MergedProductInstancesInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        productName:
+          type: string
+        productType:
+          type: string
+        externalTenantId:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
+        provisioningStatus:
+          type: string
+        isPlatformProduct:
+          type: boolean
+    routes.PlatformBootstrapRequest:
+      type: object
+      required:
+      - enterprise_name
+      properties:
+        enterprise_name:
+          type: string
+        initial_admin:
+          type: string
+    model.Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
   securitySchemes:
     EnterpriseAdminBearerAuth:
       type: oauth2

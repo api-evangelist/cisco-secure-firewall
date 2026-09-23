@@ -1,25 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Cisco Secure Firewall Analysis API
+  title: Cisco Cloud-delivered Firewall Management Center (cdFMC)…
   version: 1.13.0
+  description: Use the documentation to explore the endpoints the cdFMC has to offer
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Analysis across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
-  x-provenance:
-    method: harvested
-    first_party: true
-    harvested: '2026-08-19'
-    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
-    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
-    operation_coverage: 6/6
-  x-evidence:
-    fetched: '2026-08-19'
-    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    http_status: 200
 servers:
 - url: https://api.us.security.cisco.com/firewall
   description: US
@@ -43,25 +29,6 @@ tags:
 - name: Analysis
 paths:
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/analysis/activesessions:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     delete:
       deprecated: false
       description: '**Administratively logout active user session. _Check the response section for applicable examples (if any)._**'
@@ -111,6 +78,8 @@ paths:
           description: Error
       tags:
       - Analysis
+      summary: Delete multiple active session
+      x-summary-source: derived
     get:
       deprecated: false
       description: '**Retrieves active sessions.**'
@@ -297,26 +266,9 @@ paths:
           description: Error
       tags:
       - Analysis
+      summary: Get all active session
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/analysis/identifiedusers:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     delete:
       deprecated: false
       description: '**Deletes users. Use query parameters described below to narrow the deletion. _Check the response section for applicable examples (if any)._**'
@@ -443,6 +395,8 @@ paths:
           description: Error
       tags:
       - Analysis
+      summary: Delete multiple identified user
+      x-summary-source: derived
     get:
       deprecated: false
       description: '**Gets user activities.**'
@@ -563,26 +517,9 @@ paths:
           description: Error
       tags:
       - Analysis
+      summary: Get all identified user
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_config/v1/domain/{domainUUID}/analysis/useractivity:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     delete:
       deprecated: false
       description: '**Delete users. Use query parameters to limit which users will be deleted. _Check the response section for applicable examples (if any)._**'
@@ -782,6 +719,8 @@ paths:
           description: Error
       tags:
       - Analysis
+      summary: Delete multiple user activity
+      x-summary-source: derived
     get:
       deprecated: false
       description: '**Get a list of identified users.**'
@@ -968,46 +907,10 @@ paths:
           description: Error
       tags:
       - Analysis
+      summary: Get all user activity
+      x-summary-source: derived
 components:
   schemas:
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
     IdentifiedUser:
       properties:
         activeSessionCount:
@@ -1056,17 +959,16 @@ components:
         version:
           type: string
       type: object
-    IdentifiedUserListContainer:
+    IReadonly:
       properties:
-        items:
-          $ref: '#/components/schemas/IdentifiedUser'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
       type: object
     UserActivityListContainer:
       properties:
@@ -1080,112 +982,16 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
+    IDomain:
       properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    UserActivity:
-      properties:
-        authenticationType:
-          type: string
-        description:
-          type: string
-        device:
-          type: string
-        discoveryApplication:
-          type: string
-        endPort:
-          format: int32
-          type: integer
-        endpointLocation:
-          type: string
-        endpointProfile:
-          type: string
-        event:
-          type: string
         id:
-          type: string
-        ipAddress:
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
         name:
           type: string
-        realmName:
-          type: string
-        securityGroupTag:
-          type: string
-        startPort:
-          format: int32
-          type: integer
-        time:
-          format: int32
-          type: integer
         type:
-          type: string
-        username:
-          type: string
-        version:
-          type: string
-        vpnBytesIn:
-          format: int32
-          type: integer
-        vpnBytesOut:
-          format: int32
-          type: integer
-        vpnClientApplication:
-          type: string
-        vpnClientCountry:
-          type: string
-        vpnClientOS:
-          type: string
-        vpnClientPublicIP:
-          type: string
-        vpnConnectionDuration:
-          format: int32
-          type: integer
-        vpnConnectionProfile:
-          type: string
-        vpnGroupPolicy:
-          type: string
-        vpnSessionType:
           type: string
       type: object
     ActiveSession:
@@ -1264,6 +1070,92 @@ components:
         vpnSessionType:
           type: string
       type: object
+    UserActivity:
+      properties:
+        authenticationType:
+          type: string
+        description:
+          type: string
+        device:
+          type: string
+        discoveryApplication:
+          type: string
+        endPort:
+          format: int32
+          type: integer
+        endpointLocation:
+          type: string
+        endpointProfile:
+          type: string
+        event:
+          type: string
+        id:
+          type: string
+        ipAddress:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        realmName:
+          type: string
+        securityGroupTag:
+          type: string
+        startPort:
+          format: int32
+          type: integer
+        time:
+          format: int32
+          type: integer
+        type:
+          type: string
+        username:
+          type: string
+        version:
+          type: string
+        vpnBytesIn:
+          format: int32
+          type: integer
+        vpnBytesOut:
+          format: int32
+          type: integer
+        vpnClientApplication:
+          type: string
+        vpnClientCountry:
+          type: string
+        vpnClientOS:
+          type: string
+        vpnClientPublicIP:
+          type: string
+        vpnConnectionDuration:
+          format: int32
+          type: integer
+        vpnConnectionProfile:
+          type: string
+        vpnGroupPolicy:
+          type: string
+        vpnSessionType:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
     ErrorResponse:
       properties:
         category:
@@ -1298,6 +1190,28 @@ components:
         type:
           type: string
       type: object
+    ActiveSessionListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ActiveSession'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
     IMetadata:
       properties:
         domain:
@@ -1319,10 +1233,10 @@ components:
           format: int32
           type: integer
       type: object
-    ActiveSessionListContainer:
+    IdentifiedUserListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/ActiveSession'
+          $ref: '#/components/schemas/IdentifiedUser'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -1331,7 +1245,49 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
   parameters:
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
     offset:
       description: Index of first item to return.
       in: query
@@ -1347,26 +1303,8 @@ components:
       required: true
       schema:
         type: string
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
-    limit:
-      description: Number of items to return.
-      in: query
-      name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
       scheme: bearer
       type: http
-x-refined-from:
-- cdfmc-openapi.yaml
-- cisco-secure-firewall-cdfmc-openapi.yml

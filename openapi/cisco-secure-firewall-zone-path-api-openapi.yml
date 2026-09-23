@@ -229,28 +229,23 @@ paths:
       - Zone Path
 components:
   schemas:
-    ZonePath:
-      properties:
-        nodes:
-          items:
-            $ref: '#/components/schemas/ZonePathNode'
-          type: array
-      type: object
     ZonePathId:
       properties:
         id:
           format: uuid
           type: string
       type: object
-    CreateZonePathApiResponse:
+    ZoneId:
       properties:
-        gatewaySetPushRequests:
-          items:
-            $ref: '#/components/schemas/ReqIdAndReqSystem'
-          type: array
-        zonePathId:
-          format: uuid
+        zone:
           type: string
+      type: object
+    ZonePathsApiResponse:
+      properties:
+        zonePaths:
+          items:
+            $ref: '#/components/schemas/ZonePathId'
+          type: array
       type: object
     ReqIdAndReqSystem:
       properties:
@@ -274,6 +269,16 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
+    CreateZonePathApiResponse:
+      properties:
+        gatewaySetPushRequests:
+          items:
+            $ref: '#/components/schemas/ReqIdAndReqSystem'
+          type: array
+        zonePathId:
+          format: uuid
+          type: string
+      type: object
     ZonePathNode:
       properties:
         ids:
@@ -285,25 +290,6 @@ components:
           enum:
           - ZONE
           - DEVICE
-          type: string
-      type: object
-    ZonePathRequest:
-      properties:
-        zonePath:
-          items:
-            $ref: '#/components/schemas/ZoneId'
-          type: array
-      type: object
-    ZonePathsApiResponse:
-      properties:
-        zonePaths:
-          items:
-            $ref: '#/components/schemas/ZonePathId'
-          type: array
-      type: object
-    ZoneId:
-      properties:
-        zone:
           type: string
       type: object
     DeleteZonePathApiResponse:
@@ -318,6 +304,20 @@ components:
         zonePaths:
           items:
             $ref: '#/components/schemas/ZonePath'
+          type: array
+      type: object
+    ZonePath:
+      properties:
+        nodes:
+          items:
+            $ref: '#/components/schemas/ZonePathNode'
+          type: array
+      type: object
+    ZonePathRequest:
+      properties:
+        zonePath:
+          items:
+            $ref: '#/components/schemas/ZoneId'
           type: array
       type: object
   securitySchemes:

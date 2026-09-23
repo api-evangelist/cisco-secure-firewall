@@ -113,6 +113,16 @@ components:
           format: uuid
           type: string
       type: object
+    MpmDynamicGroupRelations:
+      properties:
+        relations:
+          items:
+            $ref: '#/components/schemas/MpmDynamicGroupRelation'
+          type: array
+        revision:
+          format: int32
+          type: integer
+      type: object
     MpmDynamicGroupMpmRulesPage:
       properties:
         cursor:
@@ -126,16 +136,6 @@ components:
       properties:
         id:
           type: string
-      type: object
-    MpmDynamicGroupRelations:
-      properties:
-        relations:
-          items:
-            $ref: '#/components/schemas/MpmDynamicGroupRelation'
-          type: array
-        revision:
-          format: int32
-          type: integer
       type: object
   securitySchemes:
     BearerJWT:

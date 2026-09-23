@@ -132,6 +132,36 @@ paths:
       - Usage
 components:
   schemas:
+    productUsage:
+      description: product usage object
+      properties:
+        freeUnits:
+          description: amount of free units used by the AI assistant
+          type: integer
+        paidUnits:
+          description: amount of paid units used by the AI assistant
+          type: integer
+        product:
+          description: product that used the units
+          enum:
+          - INVALID
+          - FIREWALL
+          - XDR
+          - SSE
+          - DUO
+          - HSD
+          - UNIFIED
+          type: string
+      type: object
+    usageHistoryResponse:
+      description: Response containing the AI Assistant Usage
+      properties:
+        history:
+          description: list of aggregated data based on day or month
+          items:
+            $ref: '#/components/schemas/history'
+          type: array
+      type: object
     errorResponse:
       description: error response
       properties:
@@ -162,36 +192,6 @@ components:
         totalUnits:
           description: total number of units used by the AI assistant
           type: integer
-      type: object
-    usageHistoryResponse:
-      description: Response containing the AI Assistant Usage
-      properties:
-        history:
-          description: list of aggregated data based on day or month
-          items:
-            $ref: '#/components/schemas/history'
-          type: array
-      type: object
-    productUsage:
-      description: product usage object
-      properties:
-        freeUnits:
-          description: amount of free units used by the AI assistant
-          type: integer
-        paidUnits:
-          description: amount of paid units used by the AI assistant
-          type: integer
-        product:
-          description: product that used the units
-          enum:
-          - INVALID
-          - FIREWALL
-          - XDR
-          - SSE
-          - DUO
-          - HSD
-          - UNIFIED
-          type: string
       type: object
     history:
       description: history object

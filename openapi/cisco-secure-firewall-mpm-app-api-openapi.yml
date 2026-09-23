@@ -316,10 +316,71 @@ paths:
       - MPM App
 components:
   schemas:
+    ProtocolEnumObj:
+      properties:
+        name:
+          type: string
+        number:
+          format: int32
+          type: integer
+      type: object
+    MpmAppsPage:
+      properties:
+        apps:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+        cursor:
+          type: string
+      type: object
     SearchCriteriaValue:
       properties:
         searchCriteria:
           type: string
+      type: object
+    MpmEntityRelations:
+      properties:
+        appGroups:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        endpointGroups:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        policyToRules:
+          items:
+            $ref: '#/components/schemas/MpmPolicyMetadataToRules'
+          type: array
+      type: object
+    MpmPolicyMetadataToRules:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        ruleIds:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    ApplicationProtocolEnumObj:
+      properties:
+        applicationProtocolName:
+          type: string
+        validProtocols:
+          items:
+            $ref: '#/components/schemas/ProtocolEnumObj'
+          type: array
       type: object
     MpmAppObj:
       properties:
@@ -355,72 +416,11 @@ components:
         value:
           type: string
       type: object
-    MpmPolicyMetadataToRules:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        policyId:
-          format: uuid
-          type: string
-        ruleIds:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
-    ProtocolEnumObj:
-      properties:
-        name:
-          type: string
-        number:
-          format: int32
-          type: integer
-      type: object
-    MpmAppsPage:
-      properties:
-        apps:
-          items:
-            $ref: '#/components/schemas/MpmAppObj'
-          type: array
-        cursor:
-          type: string
-      type: object
     MpmSearchCriteriaResp:
       properties:
         searchCriteriaResp:
           items:
             $ref: '#/components/schemas/SearchCriteriaValue'
-          type: array
-      type: object
-    MpmEntityRelations:
-      properties:
-        appGroups:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        endpointGroups:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        policyToRules:
-          items:
-            $ref: '#/components/schemas/MpmPolicyMetadataToRules'
-          type: array
-      type: object
-    ApplicationProtocolEnumObj:
-      properties:
-        applicationProtocolName:
-          type: string
-        validProtocols:
-          items:
-            $ref: '#/components/schemas/ProtocolEnumObj'
           type: array
       type: object
   securitySchemes:

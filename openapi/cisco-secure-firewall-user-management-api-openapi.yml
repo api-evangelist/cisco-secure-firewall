@@ -87,6 +87,8 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: List enterprise users
+      x-summary-source: derived
     post:
       x-try-it-enabled: true
       tags:
@@ -98,9 +100,7 @@ paths:
 
         New user accounts will created for Okta-managed credentials(i.e., `credType=OKTA`) unless the enterprise is configured with an identity provider for the user''s email domain (i.e., `credType=FEDERATION`).
 
-        As a side effect of creating a new `credType=OKTA` account, an account activation email will be sent by Okta to the user.
-
-        '
+        As a side effect of creating a new `credType=OKTA` account, an account activation email will be sent by Okta to the user.'
       parameters:
       - name: id
         in: path
@@ -129,6 +129,8 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: Add enterprise user
+      x-summary-source: derived
   /enterprises/{id}/users/{userId}:
     put:
       tags:
@@ -169,6 +171,8 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: Update enterprise user
+      x-summary-source: derived
     delete:
       tags:
       - User Management
@@ -195,6 +199,8 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: Remove enterprise user
+      x-summary-source: derived
   /enterprises/{id}/users/{userId}/lifecycle/enable:
     post:
       tags:
@@ -205,9 +211,7 @@ paths:
 
         Removes an user from `enterprise-disabled-{enterpriseId}` group to re-enable any existing access rights.
 
-        Further, all access control checks would be verified if user is present in `enterprise-disabled-{enterpriseId}` group or not.
-
-        '
+        Further, all access control checks would be verified if user is present in `enterprise-disabled-{enterpriseId}` group or not.'
       parameters:
       - name: id
         in: path
@@ -228,57 +232,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         default:
           $ref: '#/components/responses/GeneralError'
+      summary: Enable enterprise user
+      x-summary-source: derived
 components:
   schemas:
-    EnterpriseUserProfile:
-      type: object
-      required:
-      - firstName
-      - lastName
-      - login
-      - email
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        login:
-          type: string
-        email:
-          type: string
-        mobilePhone:
-          type: string
-        secondEmail:
-          type: string
-    ResponsibleActor:
-      type: object
-      required:
-      - id
-      - disabledAt
-      - firstName
-      - lastName
-      properties:
-        id:
-          type: string
-          format: uuid
-        disabledAt:
-          type: string
-          format: date-time
-        firstName:
-          type: string
-        lastName:
-          type: string
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
     EnterpriseUser:
       type: object
       required:
@@ -337,9 +294,61 @@ components:
           description: it is referencing same type as [provider object's type](https://developer.okta.com/docs/reference/api/users/#provider-object)
         profile:
           $ref: '#/components/schemas/EnterpriseUserProfile'
+    EnterpriseUserProfile:
+      type: object
+      required:
+      - firstName
+      - lastName
+      - login
+      - email
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        login:
+          type: string
+        email:
+          type: string
+        mobilePhone:
+          type: string
+        secondEmail:
+          type: string
+    ResponsibleActor:
+      type: object
+      required:
+      - id
+      - disabledAt
+      - firstName
+      - lastName
+      properties:
+        id:
+          type: string
+          format: uuid
+        disabledAt:
+          type: string
+          format: date-time
+        firstName:
+          type: string
+        lastName:
+          type: string
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+  headers:
+    Date:
+      schema:
+        type: string
+        pattern: ^.*$
   responses:
-    NoContent:
-      description: No content
     NotFoundError:
       description: Not Found
       headers:
@@ -358,11 +367,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  headers:
-    Date:
-      schema:
-        type: string
-        pattern: ^.*$
+    NoContent:
+      description: No content
   securitySchemes:
     OpenID:
       type: openIdConnect

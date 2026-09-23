@@ -263,22 +263,19 @@ paths:
                 $ref: '#/components/schemas/model.Error'
 components:
   schemas:
-    model.ProvisionedSKU:
+    model.ProductConf:
       type: object
       properties:
+        activationStatus:
+          type: string
         name:
           type: string
-        productInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.ProductInfo'
-    model.UpdateEntitlementsRequest:
-      type: object
-      properties:
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.UserSubscription'
+        operand:
+          type: integer
+        operator:
+          type: string
+        region:
+          type: string
     model.ProvisionedSubscription:
       type: object
       properties:
@@ -292,6 +289,55 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/model.ProvisionedSKU'
+    model.MspSku:
+      type: object
+      properties:
+        availableEntitlements:
+          type: integer
+        minEntitlementsQuantity:
+          type: integer
+        productsList:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProductConf'
+        reservedEntitlements:
+          type: integer
+        sharedEntitlements:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.SharedEntitlement'
+        skuName:
+          type: string
+    model.UpdateEntitlementsRequest:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.UserSubscription'
+    model.ProvisionedSKU:
+      type: object
+      properties:
+        name:
+          type: string
+        productInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProductInfo'
+    model.SubscriptionProvisioningError:
+      type: object
+      properties:
+        error:
+          type: string
+        subscriptionId:
+          type: string
+    model.SKU:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: integer
     model.SubnSku:
       type: object
       properties:
@@ -325,13 +371,6 @@ components:
           type: integer
         totalRecords:
           type: integer
-    model.Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     model.UpdateEntitlementResponse:
       type: object
       properties:
@@ -345,13 +384,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/model.ProvisionedSubscription'
-    model.RevokeAPIResponse:
+    model.OrgEntitlements:
       type: object
       properties:
-        revokedSubscriptions:
+        pagination:
+          $ref: '#/components/schemas/model.PaginationInfo'
+        subscriptions:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/model.SubnSku'
     model.ProductInfo:
       type: object
       properties:
@@ -360,32 +401,6 @@ components:
         product:
           type: string
         productRegion:
-          type: string
-    model.MspSku:
-      type: object
-      properties:
-        availableEntitlements:
-          type: integer
-        minEntitlementsQuantity:
-          type: integer
-        productsList:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.ProductConf'
-        reservedEntitlements:
-          type: integer
-        sharedEntitlements:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.SharedEntitlement'
-        skuName:
-          type: string
-    model.SubscriptionProvisioningError:
-      type: object
-      properties:
-        error:
-          type: string
-        subscriptionId:
           type: string
     model.UserSubscription:
       type: object
@@ -396,34 +411,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/model.SKU'
-    model.SKU:
+    model.RevokeAPIResponse:
       type: object
       properties:
-        name:
-          type: string
-        quantity:
-          type: integer
-    model.OrgEntitlements:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/model.PaginationInfo'
-        subscriptions:
+        revokedSubscriptions:
           type: array
           items:
-            $ref: '#/components/schemas/model.SubnSku'
-    model.ProductConf:
+            type: string
+    model.Error:
       type: object
       properties:
-        activationStatus:
+        error:
           type: string
-        name:
-          type: string
-        operand:
-          type: integer
-        operator:
-          type: string
-        region:
+        message:
           type: string
   securitySchemes:
     EnterpriseAdminBearerAuth:

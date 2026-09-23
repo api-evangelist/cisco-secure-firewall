@@ -264,49 +264,6 @@ paths:
       - MPM Endpoint Group
 components:
   schemas:
-    MpmPolicyMetadataToRules:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        policyId:
-          format: uuid
-          type: string
-        ruleIds:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
-    MpmEndpointGroupsPage:
-      properties:
-        cursor:
-          type: string
-        endpointGroups:
-          items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
-          type: array
-      type: object
-    MpmEndpointObj:
-      properties:
-        addressEnd:
-          format: int64
-          type: integer
-        addressStart:
-          format: int64
-          type: integer
-        description:
-          type: string
-        id:
-          format: uuid
-          type: string
-        name:
-          type: string
-        value:
-          type: string
-      type: object
     MpmEntityRelations:
       properties:
         appGroups:
@@ -325,6 +282,49 @@ components:
           items:
             $ref: '#/components/schemas/MpmPolicyMetadataToRules'
           type: array
+      type: object
+    MpmEndpointGroupsPage:
+      properties:
+        cursor:
+          type: string
+        endpointGroups:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+      type: object
+    MpmPolicyMetadataToRules:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        ruleIds:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    MpmEndpointObj:
+      properties:
+        addressEnd:
+          format: int64
+          type: integer
+        addressStart:
+          format: int64
+          type: integer
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        value:
+          type: string
       type: object
     MpmEndpointGroupObj:
       properties:

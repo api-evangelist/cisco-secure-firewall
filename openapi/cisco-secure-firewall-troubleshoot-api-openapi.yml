@@ -1,25 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Cisco Secure Firewall Troubleshoot API
+  title: Cisco Cloud-delivered Firewall Management Center (cdFMC)…
   version: 1.13.0
+  description: Use the documentation to explore the endpoints the cdFMC has to offer
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Troubleshoot across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
-  x-provenance:
-    method: harvested
-    first_party: true
-    harvested: '2026-08-19'
-    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
-    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
-    operation_coverage: 18/18
-  x-evidence:
-    fetched: '2026-08-19'
-    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    http_status: 200
 servers:
 - url: https://api.us.security.cisco.com/firewall
   description: US
@@ -43,25 +29,6 @@ tags:
 - name: Troubleshoot
 paths:
   /v1/cdfmc/api/fmc_troubleshoot/v1/domain/{domainUUID}/cpuprofiler/{containerUUID}/modules:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get all CPU profiling data of a Snort3 module on a given device.**'
@@ -144,6 +111,8 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Get all CPU profiler
+      x-summary-source: derived
     post:
       deprecated: false
       description: '**Create the CPU profiling data of a Snort3 module on a given device. _Check the response section for applicable examples (if any)._**'
@@ -211,26 +180,9 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Create CPU profiler
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_troubleshoot/v1/domain/{domainUUID}/cpuprofiler/{containerUUID}/modules/{profilerFileName}:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get the CPU Profiling data of Snort modules from the specified profiler file.**'
@@ -300,26 +252,9 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Get CPU profiler
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_troubleshoot/v1/domain/{domainUUID}/packettracer/files:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     delete:
       deprecated: false
       description: '**Delete all PCAP files from the Firewall Management Center. _Check the response section for applicable examples (if any)._**'
@@ -375,6 +310,8 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Delete multiple packet tracer PCAP files
+      x-summary-source: derived
     get:
       deprecated: false
       description: '**Get all PCAP files from the Firewall Management Center.**'
@@ -405,6 +342,8 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Get all packet tracer PCAP files
+      x-summary-source: derived
     post:
       deprecated: false
       description: '**Create a PCAP file on the Firewall Management Center. _Check the response section for applicable examples (if any)._**'
@@ -451,26 +390,9 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Create packet tracer PCAP files
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_troubleshoot/v1/domain/{domainUUID}/packettracer/files/{pcapFileName}:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     delete:
       deprecated: false
       description: '**Delete the specified PCAP file from the Firewall Management Center. _Check the response section for applicable examples (if any)._**'
@@ -520,6 +442,8 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Delete packet tracer PCAP files
+      x-summary-source: derived
     get:
       deprecated: false
       description: '**Get the specified PCAP file from the Firewall Management Center.**'
@@ -577,26 +501,9 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Get packet tracer PCAP files
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_troubleshoot/v1/domain/{domainUUID}/packettracer/files/{pcapFileName}/details:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get the packet details from a PCAP file.**'
@@ -651,26 +558,9 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Get packet tracer PCAP extract
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_troubleshoot/v1/domain/{domainUUID}/packettracer/pcaptraces:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     post:
       deprecated: false
       description: '**Get the Packet Tracer using a PCAP file command output for Firewall Threat Defense. _Check the response section for applicable examples (if any)._**'
@@ -788,26 +678,9 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Create packet tracer PCAP
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_troubleshoot/v1/domain/{domainUUID}/packettracer/traces:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     post:
       deprecated: false
       description: '**Get the Packet Tracer command output for a Firewall Threat Defense or Cluster. _Check the response section for applicable examples (if any)._**'
@@ -898,26 +771,9 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Create packet tracer
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_troubleshoot/v1/domain/{domainUUID}/radkit/services:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get all RADKit Service data from the FMC.**'
@@ -966,6 +822,8 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Get all RAD kit service
+      x-summary-source: derived
     post:
       deprecated: false
       description: '**Creates the RADKit Service on the FMC. _Check the response section for applicable examples (if any)._**'
@@ -1021,26 +879,9 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Create RAD kit service
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_troubleshoot/v1/domain/{domainUUID}/radkit/services/{id}:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get the RADKit Service data from the specified ID.**'
@@ -1083,26 +924,9 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Get RAD kit service
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_troubleshoot/v1/domain/{domainUUID}/snortprofiler/{containerUUID}/rules:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get all Snort Rule Profiling data for a given device.**'
@@ -1184,6 +1008,8 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Get all snort profiler
+      x-summary-source: derived
     post:
       deprecated: false
       description: '**Create Snort Rule Profiling data for a given device. _Check the response section for applicable examples (if any)._**'
@@ -1250,26 +1076,9 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Create snort profiler
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_troubleshoot/v1/domain/{domainUUID}/snortprofiler/{containerUUID}/rules/{profilerFileName}:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       deprecated: false
       description: '**Get the Snort rule profiling data from the specified profiler file.**'
@@ -1352,26 +1161,9 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Get snort profiler
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_troubleshoot/v1/domain/{domainUUID}/troubleshoot/device:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     post:
       deprecated: false
       description: '**Trigger troubleshooting for chassis models 3100 and 4200. _Check the response section for applicable examples (if any)._**'
@@ -1429,243 +1221,32 @@ paths:
           description: Error
       tags:
       - Troubleshoot
+      summary: Create device troubleshoot
+      x-summary-source: derived
 components:
   schemas:
-    PacketTracerPCAPExtract:
-      description: Represents the extracted packet details of a PCAP file.
+    ITarget:
+      description: This is the target device.
       properties:
         description:
           type: string
-        destinationIPType:
-          description: String representing the type of the Destination IP.
-          enum:
-          - IPv4
-          - ipv4
-          - IPv6
-          - ipv6
-          - FQDN
-          - fqdn
-          - SecurityGroup
-          - securitygroup
-          type: string
-        destinationIPValue:
-          description: String representing the value of the Destination IP.
-          type: string
-        destinationPort:
-          description: String representing the destination port.
-          format: int32
-          type: integer
         id:
+          description: Unique ID of the device.
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
         metadata:
-          $ref: '#/components/schemas/Metadata'
+          $ref: '#/components/schemas/IMetadata'
           type: object
         name:
+          description: Name of the device.
           type: string
-        protocol:
-          description: String specifying the packet Protocol.
-          enum:
-          - ESP
-          - esp
-          - GRE
-          - gre
-          - ICMP
-          - icmp
-          - IPIP
-          - ipip
-          - RAWIP
-          - rawip
-          - SCTP
-          - sctp
-          - TCP
-          - tcp
-          - UDP
-          - udp
-          type: string
-        sourceIPType:
-          description: String representing the type of the Source IP.
-          enum:
-          - IPv4
-          - ipv4
-          - IPv6
-          - ipv6
-          - FQDN
-          - fqdn
-          - User
-          - user
-          - SecurityGroup
-          - securitygroup
-          type: string
-        sourceIPValue:
-          description: String representing the value of the Source IP.
-          type: string
-        sourcePort:
-          description: String representing the source port.
-          format: int32
-          type: integer
         type:
+          description: Device
           type: string
         version:
           type: string
-        vlanId:
-          description: Integer representing the value of the VLan ID.
-          format: int32
-          type: integer
-      type: object
-    IPacketTracerUnitDetails:
-      description: Represents the Packet Tracer Cluster Unit Details.
-      properties:
-        ip:
-          description: String representing the value of the Cluster Node IP.
-          type: string
-        name:
-          description: String representing the value of the Cluster Node Name.
-          type: string
-        state:
-          description: String representing the value of the Cluster Node State.
-          type: string
-      type: object
-    CPUProfilerModule:
-      description: Object representing a Snort module returned by the CPU Profiler.
-      properties:
-        avgCheckUs:
-          description: Average time spent by module on each check
-          format: int32
-          type: integer
-        callerPercentage:
-          description: Percentage of time taken by module with respect to parent module (if module is of layer 1, then this will be same as totalPercentage).
-          type: number
-        checks:
-          description: Number of times this module is called.
-          format: int32
-          type: integer
-        layer:
-          description: Layer of Snort module. If submodule is registered then layer increases.
-          format: int32
-          type: integer
-        name:
-          description: Name of the Snort module.
-          type: string
-        number:
-          description: The order number of each module.
-          format: int32
-          type: integer
-        timeUs:
-          description: Total time spent by module for all checks.
-          format: int32
-          type: integer
-        totalPercentage:
-          description: Percentage of time taken by module with respect to total.
-          type: number
-      type: object
-    IPacketTracerPhase:
-      description: Represents the Packet Tracer Phase section of the CLI output.
-      properties:
-        additionalInformation:
-          description: String representing additional information.
-          type: string
-        config:
-          description: String representing the phase config.
-          type: string
-        elapsedTime:
-          description: String representing the phase elapsed time.
-          type: string
-        id:
-          description: String representing the phase id.
-          format: int32
-          type: integer
-        result:
-          description: String representing the phase result.
-          type: string
-        subType:
-          description: String representing the phase subtype.
-          type: string
-        type:
-          description: String representing the phase type.
-          type: string
-      type: object
-    PacketTracerPCAPFiles:
-      description: Represents handling operations of the PCAP files on FMC for the Packet Tracer feature.
-      properties:
-        description:
-          type: string
-        files:
-          description: Array of strings representing the existing PCAP files on FMC or the ones deleted.
-          items:
-            type: string
-          type: array
-        filesMap:
-          $ref: '#/components/schemas/LLFilesMap'
-          type: object
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        pcapFileName:
-          description: String representing the name of a previously uploaded or deleted PCAP file.
-          type: string
-        replaceFile:
-          description: Boolean representing a flag for replacing an existing PCAP file upon upload.
-          type: boolean
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    ITroubleshootableDevice:
-      properties:
-        configurationDownloadUrl:
-          type: string
-        id:
-          type: string
-        includeTroubleshootForInstances:
-          items:
-            type: string
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        troubleshootConfigurationType:
-          enum:
-          - CYLON
-          - LIGHT
-          - FULL
-          type: string
-        troubleshootOptions:
-          description: Contains troubleshooting information for the chassis and FXOS. ALL_DATA and FXOS options both provide the same data.
-          items:
-            enum:
-            - ALL_DATA
-            - FXOS
-            type: string
-          type: array
-        troubleshootUploadUrl:
-          type: string
-        type:
-          type: string
-      type: object
-    RADKitServiceListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/RADKitService'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
       type: object
     IReadonly:
       properties:
@@ -1678,113 +1259,18 @@ components:
         state:
           type: boolean
       type: object
-    IPacketTracerDeviceResponse:
-      description: Represents the device response for both FTD and Cluster.
-      properties:
-        deviceDetails:
-          $ref: '#/components/schemas/IReference'
-          description: Referenced object representing the name, type and ID of the Device where the CLI command is run.
-          type: object
-        phases:
-          description: List of packet tracer phase objects containing the output from CLI.
-          items:
-            $ref: '#/components/schemas/IPacketTracerPhase'
-            type: object
-          type: array
-        result:
-          $ref: '#/components/schemas/IPacketTracerResult'
-          description: Object representing part of the response from CLI.
-          type: object
-        unitDetails:
-          $ref: '#/components/schemas/IPacketTracerUnitDetails'
-          description: String representing the cluster unit details.
-          type: object
-      type: object
-    PacketTracerPCAPExtractListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/PacketTracerPCAPExtract'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    DeviceTroubleshoot:
-      description: A model representing device troubleshoot attributes
-      properties:
-        description:
-          type: string
-        devices:
-          description: Represents an array of devices which can be TPK Chassis
-          items:
-            $ref: '#/components/schemas/ITroubleshootableDevice'
-            type: object
-          type: array
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/TroubleshootMetadata'
-          description: Metadata section that contains the task status details with which user can track the progress
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    TroubleshootMetadata:
+    Metadata:
+      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
       properties:
         domain:
           $ref: '#/components/schemas/Domain'
+          description: Defines the domains this instance belongs to (if applicable).
           type: object
         isLocked:
           type: boolean
         lastUser:
           $ref: '#/components/schemas/MetadataUser'
+          description: The last user who modified this instance.
           type: object
         matches:
           items:
@@ -1792,118 +1278,12 @@ components:
           type: array
         readOnly:
           $ref: '#/components/schemas/ReadOnly'
-          type: object
-        task:
-          $ref: '#/components/schemas/TaskStatus'
+          description: Details regarding the read only status of this instance
           type: object
         timestamp:
+          description: The last updated timestamp.
           format: int32
           type: integer
-      type: object
-    CPUProfiler:
-      description: Represents the CPU Profiler of the Snort modules.
-      properties:
-        accessPolicyExported:
-          description: Access Control Policy revision time.
-          type: string
-        accessPolicyName:
-          description: Access Control Policy name deployed to the device.
-          type: string
-        description:
-          type: string
-        duration:
-          description: Duration set for the profiler to run in minutes (optional), the default is 120 minutes, range <15-120> minutes.
-          format: int32
-          type: integer
-        endTime:
-          description: The profiling session end time timestamp contained in the profiler generated file.
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        lsp:
-          description: Device Lightweight Security Package (LSP) version.
-          type: string
-        message:
-          description: Contains the last command return message, or an error message if any.
-          type: string
-        metadata:
-          $ref: '#/components/schemas/SnortProfilerMetadata'
-          type: object
-        modules:
-          description: Array of the Snort Modules for which the profiling was run.
-          items:
-            $ref: '#/components/schemas/CPUProfilerModule'
-            type: object
-          type: array
-        name:
-          type: string
-        profilerFileName:
-          description: Name of the file containing the profiling data.
-          type: string
-        snortVersion:
-          description: Device Snort version.
-          type: string
-        startTime:
-          description: The profiling session start time timestamp contained in the profiler generated file.
-          type: string
-        status:
-          description: Indicates whether the CPU Profiler is running. It can be ENABLED or DISABLED.
-          enum:
-          - ENABLED
-          - DISABLED
-          type: string
-        swBuild:
-          description: Device Software build number.
-          type: string
-        swVersion:
-          description: Device Software version.
-          type: string
-        type:
-          type: string
-        vdb:
-          description: Device Vulnerability And Fingerprint Database (VDB) version.
-          type: string
-        version:
-          type: string
-      type: object
-    CPUProfilerListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/CPUProfiler'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
       type: object
     SnortProfiler:
       description: Snort Rule Profiler
@@ -1966,25 +1346,6 @@ components:
         version:
           type: string
       type: object
-    Domain:
-      description: The details about the domain.
-      properties:
-        id:
-          description: Unique UUID of this domain
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
-          type: object
-        name:
-          description: Name of the domain.
-          type: string
-        type:
-          description: Domain type definition (fixed).
-          type: string
-        uuid:
-          type: string
-      type: object
     ISubTask:
       properties:
         description:
@@ -2002,155 +1363,53 @@ components:
           $ref: '#/components/schemas/ITarget'
           type: object
       type: object
-    IPacketTracerResult:
-      description: Represents the Packet Tracer Result section of the CLI output.
+    ErrorResponse:
       properties:
-        action:
-          description: String representing the action taken.
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
           type: string
-        dropDetail:
-          description: String representing the packet drop details.
-          type: string
-        dropReason:
-          description: String representing the packet drop reason.
-          type: string
-        inputInterface:
-          description: String representing the input interface.
-          type: string
-        inputLineStatus:
-          description: String representing the input line status.
-          type: string
-        inputStatus:
-          description: String representing the input status.
-          type: string
-        outputInterface:
-          description: String representing the output interface.
-          type: string
-        outputLineStatus:
-          description: String representing the output line status.
-          type: string
-        outputStatus:
-          description: String representing the output status.
-          type: string
-        timeTaken:
-          description: String representing the execution time.
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    PacketTracerPCAP:
-      description: Represents the Trace operation using a PCAP file on the Packet Tracer feature.
-      properties:
-        description:
-          type: string
-        device:
-          $ref: '#/components/schemas/IReference'
-          description: Object representing the device where the PCAP Trace is run.
-          type: object
-        id:
-          type: string
-        interface:
-          $ref: '#/components/schemas/IReference'
-          description: Object representing an enabled physical, redundant, etherchannel or sub interface.
-          type: object
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        packets:
-          description: List of packet objects containing the output from the Device CLI.
+        messages:
+          description: List of error messages which the response has.
           items:
-            $ref: '#/components/schemas/IPacketTracerPCAPPackets'
+            $ref: '#/components/schemas/ErrorMessagesContainer'
             type: object
           type: array
-        pcapErrorMessage:
-          description: Represents the error message string coming from the device.
-          type: string
-        pcapFileName:
-          description: Represents the name of a previously uploaded PCAP file on FMC.
-          type: string
-        type:
-          type: string
-        version:
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
           type: string
       type: object
-    SnortProfilerMetadata:
+    IPacketTracerPhase:
+      description: Represents the Packet Tracer Phase section of the CLI output.
       properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          type: object
-        task:
-          $ref: '#/components/schemas/TaskStatus'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    ITarget:
-      description: This is the target device.
-      properties:
-        description:
+        additionalInformation:
+          description: String representing additional information.
+          type: string
+        config:
+          description: String representing the phase config.
+          type: string
+        elapsedTime:
+          description: String representing the phase elapsed time.
           type: string
         id:
-          description: Unique ID of the device.
+          description: String representing the phase id.
+          format: int32
+          type: integer
+        result:
+          description: String representing the phase result.
           type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: Name of the device.
+        subType:
+          description: String representing the phase subtype.
           type: string
         type:
-          description: Device
+          description: String representing the phase type.
           type: string
-        version:
-          type: string
-      type: object
-    ReadOnly:
-      description: Defines the read only conditions if the referenced resource is read only.
-      properties:
-        reason:
-          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          description: True if this resource us read only and false otherwise.
-          type: boolean
       type: object
     TaskStatus:
       properties:
@@ -2231,110 +1490,37 @@ components:
         type:
           type: string
       type: object
-    IPacketTracerPCAPDetails:
-      description: Represents the packet details.
+    ErrorMessagesContainer:
       properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
         details:
-          description: String representing the summary of the packet tracer command for each packet.
+          description: More details about the error.
           type: string
-        sourceIP:
-          description: String representing the value of the Source IP.
+        errorCode:
+          description: More details about the error.
           type: string
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    Metadata:
-      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
-      properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          description: Defines the domains this instance belongs to (if applicable).
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          description: The last user who modified this instance.
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          description: Details regarding the read only status of this instance
-          type: object
-        timestamp:
-          description: The last updated timestamp.
-          format: int32
-          type: integer
-      type: object
-    MetadataUser:
-      description: This object defines details about the user.
-      properties:
-        id:
-          description: The unique UUID of the user
+        location:
+          description: More details about the error.
           type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Contains the self referencing links to this resource
-          type: object
-        name:
-          description: Name of the user.
-          type: string
-        type:
-          description: The user type (fixed).
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
           type: string
       type: object
-    IPacketTracerPCAPPackets:
-      description: Represents the object structure of the packets after the Trace operation using a PCAP file on the Packet Tracer feature is run.
-      properties:
-        deviceDetails:
-          $ref: '#/components/schemas/IReference'
-          description: Referenced object representing the name, type and ID of the Device where the CLI command is run.
-          type: object
-        packetDetails:
-          $ref: '#/components/schemas/IPacketTracerPCAPDetails'
-          description: Represents some details of the packet such as interface, protocol, IPs etc.
-          type: object
-        packetID:
-          description: Represents the ID of each packet returned by device CLI.
-          format: int32
-          type: integer
-        phases:
-          description: Represents the Packet Tracer Phase section of the CLI output.
-          items:
-            $ref: '#/components/schemas/IPacketTracerPhase'
-            type: object
-          type: array
-        result:
-          $ref: '#/components/schemas/IPacketTracerResult'
-          description: Represents the Packet Tracer Result section of the CLI output.
-          type: object
-      type: object
-    SnortProfilerListContainer:
+    RADKitServiceListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/SnortProfiler'
+          $ref: '#/components/schemas/RADKitService'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -2342,22 +1528,6 @@ components:
         paging:
           $ref: '#/components/schemas/PagingContainer'
           type: object
-      type: object
-    PacketTracerPCAPFilesListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/PacketTracerPCAPFiles'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    LLFilesMap:
-      additionalProperties:
-        type: string
       type: object
     PacketTracer:
       description: Represents the Trace operation on the Packet Tracer feature.
@@ -2527,6 +1697,79 @@ components:
           format: int32
           type: integer
       type: object
+    IPacketTracerResult:
+      description: Represents the Packet Tracer Result section of the CLI output.
+      properties:
+        action:
+          description: String representing the action taken.
+          type: string
+        dropDetail:
+          description: String representing the packet drop details.
+          type: string
+        dropReason:
+          description: String representing the packet drop reason.
+          type: string
+        inputInterface:
+          description: String representing the input interface.
+          type: string
+        inputLineStatus:
+          description: String representing the input line status.
+          type: string
+        inputStatus:
+          description: String representing the input status.
+          type: string
+        outputInterface:
+          description: String representing the output interface.
+          type: string
+        outputLineStatus:
+          description: String representing the output line status.
+          type: string
+        outputStatus:
+          description: String representing the output status.
+          type: string
+        timeTaken:
+          description: String representing the execution time.
+          type: string
+      type: object
+    SnortProfilerMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          type: object
+        task:
+          $ref: '#/components/schemas/TaskStatus'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
     IReference:
       description: Contains reference information.
       properties:
@@ -2542,66 +1785,6 @@ components:
           type: string
         type:
           description: Response object associated with resource.
-          type: string
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    RADKitService:
-      description: Cisco Remote Automation Development Kit Service
-      properties:
-        description:
-          type: string
-        id:
-          description: RADKit Service ID.
-          type: string
-        isCloudConnected:
-          type: boolean
-        isEnrolled:
-          description: Boolean value that indicates if the service is enrolled in the RADKit Cisco cloud
-          type: boolean
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        message:
-          description: Optional message about the RADKit Service which may include status or other information.
-          type: string
-        name:
-          type: string
-        serviceId:
-          description: Service ID string for a cloud enrolled service to be used for connecting from the RADKit client
-          type: string
-        status:
-          description: (ENUM) Can be either ENABLED, DISABLED, STARTING or RUNNING.
-          enum:
-          - ENABLED
-          - DISABLED
-          - STARTING
-          - RUNNING
-          type: string
-        type:
-          description: RADKitService
-          type: string
-        version:
           type: string
       type: object
     SnortProfilerRule:
@@ -2647,7 +1830,633 @@ components:
           format: int32
           type: integer
       type: object
+    Domain:
+      description: The details about the domain.
+      properties:
+        id:
+          description: Unique UUID of this domain
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
+          type: object
+        name:
+          description: Name of the domain.
+          type: string
+        type:
+          description: Domain type definition (fixed).
+          type: string
+        uuid:
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    IPacketTracerPCAPPackets:
+      description: Represents the object structure of the packets after the Trace operation using a PCAP file on the Packet Tracer feature is run.
+      properties:
+        deviceDetails:
+          $ref: '#/components/schemas/IReference'
+          description: Referenced object representing the name, type and ID of the Device where the CLI command is run.
+          type: object
+        packetDetails:
+          $ref: '#/components/schemas/IPacketTracerPCAPDetails'
+          description: Represents some details of the packet such as interface, protocol, IPs etc.
+          type: object
+        packetID:
+          description: Represents the ID of each packet returned by device CLI.
+          format: int32
+          type: integer
+        phases:
+          description: Represents the Packet Tracer Phase section of the CLI output.
+          items:
+            $ref: '#/components/schemas/IPacketTracerPhase'
+            type: object
+          type: array
+        result:
+          $ref: '#/components/schemas/IPacketTracerResult'
+          description: Represents the Packet Tracer Result section of the CLI output.
+          type: object
+      type: object
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
+      properties:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
+      type: object
+    IPacketTracerUnitDetails:
+      description: Represents the Packet Tracer Cluster Unit Details.
+      properties:
+        ip:
+          description: String representing the value of the Cluster Node IP.
+          type: string
+        name:
+          description: String representing the value of the Cluster Node Name.
+          type: string
+        state:
+          description: String representing the value of the Cluster Node State.
+          type: string
+      type: object
+    TroubleshootMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          type: object
+        task:
+          $ref: '#/components/schemas/TaskStatus'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    PacketTracerPCAPExtract:
+      description: Represents the extracted packet details of a PCAP file.
+      properties:
+        description:
+          type: string
+        destinationIPType:
+          description: String representing the type of the Destination IP.
+          enum:
+          - IPv4
+          - ipv4
+          - IPv6
+          - ipv6
+          - FQDN
+          - fqdn
+          - SecurityGroup
+          - securitygroup
+          type: string
+        destinationIPValue:
+          description: String representing the value of the Destination IP.
+          type: string
+        destinationPort:
+          description: String representing the destination port.
+          format: int32
+          type: integer
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        protocol:
+          description: String specifying the packet Protocol.
+          enum:
+          - ESP
+          - esp
+          - GRE
+          - gre
+          - ICMP
+          - icmp
+          - IPIP
+          - ipip
+          - RAWIP
+          - rawip
+          - SCTP
+          - sctp
+          - TCP
+          - tcp
+          - UDP
+          - udp
+          type: string
+        sourceIPType:
+          description: String representing the type of the Source IP.
+          enum:
+          - IPv4
+          - ipv4
+          - IPv6
+          - ipv6
+          - FQDN
+          - fqdn
+          - User
+          - user
+          - SecurityGroup
+          - securitygroup
+          type: string
+        sourceIPValue:
+          description: String representing the value of the Source IP.
+          type: string
+        sourcePort:
+          description: String representing the source port.
+          format: int32
+          type: integer
+        type:
+          type: string
+        version:
+          type: string
+        vlanId:
+          description: Integer representing the value of the VLan ID.
+          format: int32
+          type: integer
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    CPUProfiler:
+      description: Represents the CPU Profiler of the Snort modules.
+      properties:
+        accessPolicyExported:
+          description: Access Control Policy revision time.
+          type: string
+        accessPolicyName:
+          description: Access Control Policy name deployed to the device.
+          type: string
+        description:
+          type: string
+        duration:
+          description: Duration set for the profiler to run in minutes (optional), the default is 120 minutes, range <15-120> minutes.
+          format: int32
+          type: integer
+        endTime:
+          description: The profiling session end time timestamp contained in the profiler generated file.
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        lsp:
+          description: Device Lightweight Security Package (LSP) version.
+          type: string
+        message:
+          description: Contains the last command return message, or an error message if any.
+          type: string
+        metadata:
+          $ref: '#/components/schemas/SnortProfilerMetadata'
+          type: object
+        modules:
+          description: Array of the Snort Modules for which the profiling was run.
+          items:
+            $ref: '#/components/schemas/CPUProfilerModule'
+            type: object
+          type: array
+        name:
+          type: string
+        profilerFileName:
+          description: Name of the file containing the profiling data.
+          type: string
+        snortVersion:
+          description: Device Snort version.
+          type: string
+        startTime:
+          description: The profiling session start time timestamp contained in the profiler generated file.
+          type: string
+        status:
+          description: Indicates whether the CPU Profiler is running. It can be ENABLED or DISABLED.
+          enum:
+          - ENABLED
+          - DISABLED
+          type: string
+        swBuild:
+          description: Device Software build number.
+          type: string
+        swVersion:
+          description: Device Software version.
+          type: string
+        type:
+          type: string
+        vdb:
+          description: Device Vulnerability And Fingerprint Database (VDB) version.
+          type: string
+        version:
+          type: string
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    PacketTracerPCAPFilesListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/PacketTracerPCAPFiles'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    PacketTracerPCAP:
+      description: Represents the Trace operation using a PCAP file on the Packet Tracer feature.
+      properties:
+        description:
+          type: string
+        device:
+          $ref: '#/components/schemas/IReference'
+          description: Object representing the device where the PCAP Trace is run.
+          type: object
+        id:
+          type: string
+        interface:
+          $ref: '#/components/schemas/IReference'
+          description: Object representing an enabled physical, redundant, etherchannel or sub interface.
+          type: object
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        packets:
+          description: List of packet objects containing the output from the Device CLI.
+          items:
+            $ref: '#/components/schemas/IPacketTracerPCAPPackets'
+            type: object
+          type: array
+        pcapErrorMessage:
+          description: Represents the error message string coming from the device.
+          type: string
+        pcapFileName:
+          description: Represents the name of a previously uploaded PCAP file on FMC.
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    SnortProfilerListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/SnortProfiler'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    RADKitService:
+      description: Cisco Remote Automation Development Kit Service
+      properties:
+        description:
+          type: string
+        id:
+          description: RADKit Service ID.
+          type: string
+        isCloudConnected:
+          type: boolean
+        isEnrolled:
+          description: Boolean value that indicates if the service is enrolled in the RADKit Cisco cloud
+          type: boolean
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        message:
+          description: Optional message about the RADKit Service which may include status or other information.
+          type: string
+        name:
+          type: string
+        serviceId:
+          description: Service ID string for a cloud enrolled service to be used for connecting from the RADKit client
+          type: string
+        status:
+          description: (ENUM) Can be either ENABLED, DISABLED, STARTING or RUNNING.
+          enum:
+          - ENABLED
+          - DISABLED
+          - STARTING
+          - RUNNING
+          type: string
+        type:
+          description: RADKitService
+          type: string
+        version:
+          type: string
+      type: object
+    DeviceTroubleshoot:
+      description: A model representing device troubleshoot attributes
+      properties:
+        description:
+          type: string
+        devices:
+          description: Represents an array of devices which can be TPK Chassis
+          items:
+            $ref: '#/components/schemas/ITroubleshootableDevice'
+            type: object
+          type: array
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/TroubleshootMetadata'
+          description: Metadata section that contains the task status details with which user can track the progress
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    PacketTracerPCAPExtractListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/PacketTracerPCAPExtract'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IPacketTracerPCAPDetails:
+      description: Represents the packet details.
+      properties:
+        details:
+          description: String representing the summary of the packet tracer command for each packet.
+          type: string
+        sourceIP:
+          description: String representing the value of the Source IP.
+          type: string
+      type: object
+    ITroubleshootableDevice:
+      properties:
+        configurationDownloadUrl:
+          type: string
+        id:
+          type: string
+        includeTroubleshootForInstances:
+          items:
+            type: string
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        troubleshootConfigurationType:
+          enum:
+          - CYLON
+          - LIGHT
+          - FULL
+          type: string
+        troubleshootOptions:
+          description: Contains troubleshooting information for the chassis and FXOS. ALL_DATA and FXOS options both provide the same data.
+          items:
+            enum:
+            - ALL_DATA
+            - FXOS
+            type: string
+          type: array
+        troubleshootUploadUrl:
+          type: string
+        type:
+          type: string
+      type: object
+    CPUProfilerModule:
+      description: Object representing a Snort module returned by the CPU Profiler.
+      properties:
+        avgCheckUs:
+          description: Average time spent by module on each check
+          format: int32
+          type: integer
+        callerPercentage:
+          description: Percentage of time taken by module with respect to parent module (if module is of layer 1, then this will be same as totalPercentage).
+          type: number
+        checks:
+          description: Number of times this module is called.
+          format: int32
+          type: integer
+        layer:
+          description: Layer of Snort module. If submodule is registered then layer increases.
+          format: int32
+          type: integer
+        name:
+          description: Name of the Snort module.
+          type: string
+        number:
+          description: The order number of each module.
+          format: int32
+          type: integer
+        timeUs:
+          description: Total time spent by module for all checks.
+          format: int32
+          type: integer
+        totalPercentage:
+          description: Percentage of time taken by module with respect to total.
+          type: number
+      type: object
+    LLFilesMap:
+      additionalProperties:
+        type: string
+      type: object
+    MetadataUser:
+      description: This object defines details about the user.
+      properties:
+        id:
+          description: The unique UUID of the user
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Contains the self referencing links to this resource
+          type: object
+        name:
+          description: Name of the user.
+          type: string
+        type:
+          description: The user type (fixed).
+          type: string
+      type: object
+    PacketTracerPCAPFiles:
+      description: Represents handling operations of the PCAP files on FMC for the Packet Tracer feature.
+      properties:
+        description:
+          type: string
+        files:
+          description: Array of strings representing the existing PCAP files on FMC or the ones deleted.
+          items:
+            type: string
+          type: array
+        filesMap:
+          $ref: '#/components/schemas/LLFilesMap'
+          type: object
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        pcapFileName:
+          description: String representing the name of a previously uploaded or deleted PCAP file.
+          type: string
+        replaceFile:
+          description: Boolean representing a flag for replacing an existing PCAP file upon upload.
+          type: boolean
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    CPUProfilerListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/CPUProfiler'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IPacketTracerDeviceResponse:
+      description: Represents the device response for both FTD and Cluster.
+      properties:
+        deviceDetails:
+          $ref: '#/components/schemas/IReference'
+          description: Referenced object representing the name, type and ID of the Device where the CLI command is run.
+          type: object
+        phases:
+          description: List of packet tracer phase objects containing the output from CLI.
+          items:
+            $ref: '#/components/schemas/IPacketTracerPhase'
+            type: object
+          type: array
+        result:
+          $ref: '#/components/schemas/IPacketTracerResult'
+          description: Object representing part of the response from CLI.
+          type: object
+        unitDetails:
+          $ref: '#/components/schemas/IPacketTracerUnitDetails'
+          description: String representing the cluster unit details.
+          type: object
+      type: object
   parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
     limit:
       description: Number of items to return.
       in: query
@@ -2663,26 +2472,8 @@ components:
       required: true
       schema:
         type: string
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
       scheme: bearer
       type: http
-x-refined-from:
-- cdfmc-openapi.yaml
-- cisco-secure-firewall-cdfmc-openapi.yml

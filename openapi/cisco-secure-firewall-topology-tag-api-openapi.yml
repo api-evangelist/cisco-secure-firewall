@@ -48,13 +48,6 @@ paths:
       - Topology Tag
 components:
   schemas:
-    TopologyTagsApi:
-      properties:
-        tags:
-          items:
-            $ref: '#/components/schemas/TopologyTag'
-          type: array
-      type: object
     TopologyTag:
       properties:
         priority:
@@ -67,6 +60,13 @@ components:
       required:
       - tagKey
       - tagValue
+      type: object
+    TopologyTagsApi:
+      properties:
+        tags:
+          items:
+            $ref: '#/components/schemas/TopologyTag'
+          type: array
       type: object
   securitySchemes:
     BearerJWT:

@@ -1,11 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Cisco Secure Firewall Tenant Management API
+  title: Cisco Security Cloud Control Firewall Manager Tenant…
   version: 1.13.0
+  description: Use the documentation to explore the endpoints Security Cloud Control Firewall Manager has to offer
   contact:
     name: Cisco Security Cloud Control TAC
     email: cdo.tac@cisco.com
-  description: 'Operations tagged Tenant Management across 2 of this provider''s published API definitions: cisco-secure-firewall-scc-firewall-manager-openapi.yml, scc-firewall-manager-openapi.yaml. Each path carries the servers of the definition it was published in.'
   x-provenance:
     method: harvested
     first_party: true
@@ -13,9 +13,6 @@ info:
     source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
     source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
     note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-scc-firewall-manager-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
-    derived_from: cisco-secure-firewall-scc-firewall-manager-openapi.yml
-    operation_coverage: 5/5
   x-evidence:
     fetched: '2026-08-19'
     url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/openapi.yaml
@@ -43,25 +40,6 @@ tags:
 - name: Tenant Management
 paths:
   /v1/features:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       description: Get the feature flags enabled in the Security Cloud Control tenant.
       operationId: getFeatureFlags
@@ -91,25 +69,6 @@ paths:
       tags:
       - Tenant Management
   /v1/settings/tenant:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       description: Get the settings for the Security Cloud Control tenant.
       operationId: getTenantSettings
@@ -175,25 +134,6 @@ paths:
       tags:
       - Tenant Management
   /v1/tenants:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       description: Get a list of tenants with which the Security Cloud Control user is associated.
       operationId: getTenants
@@ -238,25 +178,6 @@ paths:
       tags:
       - Tenant Management
   /v1/tenants/{tenantUid}:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     get:
       description: Fetch a tenant by UID in Security Cloud Control. This will return a 200 response only if the user is associated with the tenant.
       operationId: getTenant
@@ -296,18 +217,6 @@ paths:
       - Tenant Management
 components:
   responses:
-    http400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
     http403Forbidden:
       content:
         application/json:
@@ -320,66 +229,52 @@ components:
           schema:
             $ref: '#/components/schemas/AuthenticationError'
       description: Request not authorized.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
   schemas:
-    TenantSettings:
+    AuthenticationError:
       properties:
-        aiAssistant:
-          description: Indicates if the tenant has the AI assistant enabled.
-          example: true
-          type: boolean
-        asaHealthMetrics:
-          description: Indicates if the tenant collects ASA health metrics.
-          example: false
-          type: boolean
-        autoAcceptDeviceChanges:
-          description: Indicates if changes made out-of-band on devices on the tenant are automatically accepted without manual approval.
-          example: true
-          type: boolean
-        autoDiscoverOnPremFmcs:
-          description: Indicates if the system automatically discovers on-premise FMCs.
-          example: true
-          type: boolean
-        changeRequestSupport:
-          description: Indicates if the tenant supports change requests.
-          example: true
-          type: boolean
-        conflictDetectionInterval:
-          $ref: '#/components/schemas/ConflictDetectionInterval'
-          description: Specifies the default interval at which Security Cloud Control checks for changes made out-of-band on the devices on the tenant.
-          example: EVERY_6_HOURS
-        denyCiscoSupportAccessToTenant:
-          description: Indicates if Cisco support is denied access to the tenant.
-          example: true
-          type: boolean
-        multicloudDefense:
-          description: Indicates if the tenant has the multicloud defense enabled.
-          example: false
-          type: boolean
-        policyAnalyzer:
-          description: Indicates if the tenant has the policy analyzer enabled.
-          example: true
-          type: boolean
-        scheduledDeployments:
-          description: Indicates if the tenant has scheduled deployments enabled.
-          example: false
-          type: boolean
-        uid:
-          description: The unique identifier, represented as a UUID, of the tenant in Security Cloud Control.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
           type: string
-        webAnalytics:
-          description: Indicates if web analytics are enabled for the tenant.
-          example: true
-          type: boolean
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    TenantPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/Tenant'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
       type: object
-    ConflictDetectionInterval:
-      enum:
-      - EVERY_10_MINUTES
-      - EVERY_HOUR
-      - EVERY_6_HOURS
-      - EVERY_24_HOURS
-      type: string
     Tenant:
       properties:
         displayName:
@@ -444,44 +339,67 @@ components:
           description: A human-readable error description in English.
           example: sample error
           type: string
-    AuthenticationError:
+    ConflictDetectionInterval:
+      enum:
+      - EVERY_10_MINUTES
+      - EVERY_HOUR
+      - EVERY_6_HOURS
+      - EVERY_24_HOURS
+      type: string
+    TenantSettings:
       properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
+        aiAssistant:
+          description: Indicates if the tenant has the AI assistant enabled.
+          example: true
+          type: boolean
+        asaHealthMetrics:
+          description: Indicates if the tenant collects ASA health metrics.
+          example: false
+          type: boolean
+        autoAcceptDeviceChanges:
+          description: Indicates if changes made out-of-band on devices on the tenant are automatically accepted without manual approval.
+          example: true
+          type: boolean
+        autoDiscoverOnPremFmcs:
+          description: Indicates if the system automatically discovers on-premise FMCs.
+          example: true
+          type: boolean
+        changeRequestSupport:
+          description: Indicates if the tenant supports change requests.
+          example: true
+          type: boolean
+        conflictDetectionInterval:
+          $ref: '#/components/schemas/ConflictDetectionInterval'
+          description: Specifies the default interval at which Security Cloud Control checks for changes made out-of-band on the devices on the tenant.
+          example: EVERY_6_HOURS
+        denyCiscoSupportAccessToTenant:
+          description: Indicates if Cisco support is denied access to the tenant.
+          example: true
+          type: boolean
+        multicloudDefense:
+          description: Indicates if the tenant has the multicloud defense enabled.
+          example: false
+          type: boolean
+        policyAnalyzer:
+          description: Indicates if the tenant has the policy analyzer enabled.
+          example: true
+          type: boolean
+        scheduledDeployments:
+          description: Indicates if the tenant has scheduled deployments enabled.
+          example: false
+          type: boolean
+        uid:
+          description: The unique identifier, represented as a UUID, of the tenant in Security Cloud Control.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
           type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
-    TenantPage:
-      properties:
-        count:
-          description: The total number of results available.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/Tenant'
-          type: array
-        limit:
-          description: The number of results retrieved.
-          example: 50
-          format: int32
-          type: integer
-        offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
-          format: int32
-          type: integer
+        webAnalytics:
+          description: Indicates if web analytics are enabled for the tenant.
+          example: true
+          type: boolean
       type: object
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
       scheme: bearer
       type: http
-x-refined-from:
-- cisco-secure-firewall-scc-firewall-manager-openapi.yml
-- scc-firewall-manager-openapi.yaml

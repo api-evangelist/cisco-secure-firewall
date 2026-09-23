@@ -1,25 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Cisco Secure Firewall Network Map API
+  title: Cisco Cloud-delivered Firewall Management Center (cdFMC)…
   version: 1.13.0
+  description: Use the documentation to explore the endpoints the cdFMC has to offer
   contact:
     name: Cisco Firepower TAC
     email: ngfw-support@cisco.com
-  description: 'Operations tagged Network Map across 2 of this provider''s published API definitions: cdfmc-openapi.yaml, cisco-secure-firewall-cdfmc-openapi.yml. Each path carries the servers of the definition it was published in.'
-  x-provenance:
-    method: harvested
-    first_party: true
-    harvested: '2026-08-19'
-    source: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    source_repo: https://github.com/CiscoDevNet/scc-public-api-docs
-    note: Verbatim first-party OpenAPI published by Cisco in the CiscoDevNet scc-public-api-docs repository, the source of record for developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/. Not authored or modified by API Evangelist.
-    derived_view: Per-tag view of cisco-secure-firewall-cdfmc-openapi.yml, the provider's source document. Operations and schemas are the provider's, unmodified; only the partition is ours.
-    derived_from: cisco-secure-firewall-cdfmc-openapi.yml
-    operation_coverage: 10/10
-  x-evidence:
-    fetched: '2026-08-19'
-    url: https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml
-    http_status: 200
 servers:
 - url: https://api.us.security.cisco.com/firewall
   description: US
@@ -43,25 +29,6 @@ tags:
 - name: Network Map
 paths:
   /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/hosts:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     delete:
       deprecated: false
       description: '**Delete the entire network map. _Check the response section for applicable examples (if any)._**'
@@ -118,6 +85,8 @@ paths:
           description: Error
       tags:
       - Network Map
+      summary: Delete multiple netmap host
+      x-summary-source: derived
     get:
       deprecated: false
       description: '**Get the list of all hosts in the network map.**'
@@ -157,6 +126,8 @@ paths:
           description: Error
       tags:
       - Network Map
+      summary: Get all netmap host
+      x-summary-source: derived
     post:
       deprecated: false
       description: '**Create a host in the network map. _Check the response section for applicable examples (if any)._**'
@@ -212,26 +183,9 @@ paths:
           description: Error
       tags:
       - Network Map
+      summary: Create multiple netmap host
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/hosts/{objectId}:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     delete:
       deprecated: false
       description: '**Delete the host associated with the specified ID in the Network Map. _Check the response section for applicable examples (if any)._**'
@@ -282,6 +236,8 @@ paths:
           description: Error
       tags:
       - Network Map
+      summary: Delete netmap host
+      x-summary-source: derived
     get:
       deprecated: false
       description: '**Get the host associated with the specified ID in the Network Map.**'
@@ -354,26 +310,9 @@ paths:
           description: Error
       tags:
       - Network Map
+      summary: Get netmap host
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/vulns:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     delete:
       deprecated: false
       description: '**Delete all the vulnerabilities in the network map. _Check the response section for applicable examples (if any)._**'
@@ -446,6 +385,8 @@ paths:
           description: Error
       tags:
       - Network Map
+      summary: Delete multiple netmap vuln
+      x-summary-source: derived
     get:
       deprecated: false
       description: '**Get the list of all vulnerabilities in the network map.**'
@@ -537,6 +478,8 @@ paths:
           description: Error
       tags:
       - Network Map
+      summary: Get all netmap vuln
+      x-summary-source: derived
     post:
       deprecated: false
       description: '**Create a vulnerability in the network map. _Check the response section for applicable examples (if any)._**'
@@ -599,26 +542,9 @@ paths:
           description: Error
       tags:
       - Network Map
+      summary: Create multiple netmap vuln
+      x-summary-source: derived
   /v1/cdfmc/api/fmc_netmap/v1/domain/{domainUUID}/vulns/{objectId}:
-    servers:
-    - url: https://api.us.security.cisco.com/firewall
-      description: US
-    - url: https://api.eu.security.cisco.com/firewall
-      description: EU
-    - url: https://api.apj.security.cisco.com/firewall
-      description: APJ
-    - url: https://api.au.security.cisco.com/firewall
-      description: AUS
-    - url: https://api.in.security.cisco.com/firewall
-      description: IN
-    - url: https://api.int.security.cisco.com/firewall
-      description: Staging
-    - url: https://scale.manage.security.cisco.com/api/rest
-      description: Scale
-    - url: https://ci.manage.security.cisco.com/api/rest
-      description: CI
-    - url: https://manage.stg.secure.cisco/api/rest
-      description: Stgf9
     delete:
       deprecated: false
       description: '**Delete the vulnerability in the network map with the specified ID. _Check the response section for applicable examples (if any)._**'
@@ -685,6 +611,8 @@ paths:
           description: Error
       tags:
       - Network Map
+      summary: Delete netmap vuln
+      x-summary-source: derived
     get:
       deprecated: false
       description: '**Get the vulnerability in the network map with the specified ID.**'
@@ -728,8 +656,141 @@ paths:
           description: Error
       tags:
       - Network Map
+      summary: Get netmap vuln
+      x-summary-source: derived
 components:
   schemas:
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    NetmapService:
+      properties:
+        confidence:
+          type: string
+        port:
+          format: int32
+          type: integer
+        protocol:
+          type: string
+      type: object
+    NetmapHostListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/NetmapHost'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    NetmapVulnListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/NetmapVuln'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
     NetmapHost:
       description: Represents the host object in the Network Map
       properties:
@@ -795,98 +856,6 @@ components:
         version:
           type: string
       type: object
-    NetmapVulnListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/NetmapVuln'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    NetmapService:
-      properties:
-        confidence:
-          type: string
-        port:
-          format: int32
-          type: integer
-        protocol:
-          type: string
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    NetmapApplication:
-      properties:
-        AppVersion:
-          type: string
-        appVersion:
-          type: string
-        clientAppId:
-          format: int32
-          type: integer
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
     IMetadataUser:
       properties:
         id:
@@ -897,85 +866,6 @@ components:
         name:
           type: string
         type:
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    NetmapHostListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/NetmapHost'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    NetmapOS:
-      properties:
-        osProduct:
-          type: string
-        osVendor:
-          type: string
-        osVersion:
           type: string
       type: object
     NetmapVuln:
@@ -1016,15 +906,47 @@ components:
         version:
           type: string
       type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    NetmapOS:
+      properties:
+        osProduct:
+          type: string
+        osVendor:
+          type: string
+        osVersion:
+          type: string
+      type: object
+    NetmapApplication:
+      properties:
+        AppVersion:
+          type: string
+        appVersion:
+          type: string
+        clientAppId:
+          format: int32
+          type: integer
+      type: object
   parameters:
-    limit:
-      description: Number of items to return.
-      in: query
-      name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
     expanded:
       description: If set to true, the GET response displays a list of objects with additional attributes.
       in: query
@@ -1032,13 +954,6 @@ components:
       required: false
       schema:
         type: boolean
-    domainUUID:
-      description: Domain UUID
-      in: path
-      name: domainUUID
-      required: true
-      schema:
-        type: string
     offset:
       description: Index of first item to return.
       in: query
@@ -1047,11 +962,23 @@ components:
       schema:
         format: int32
         type: integer
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
       scheme: bearer
       type: http
-x-refined-from:
-- cdfmc-openapi.yaml
-- cisco-secure-firewall-cdfmc-openapi.yml
