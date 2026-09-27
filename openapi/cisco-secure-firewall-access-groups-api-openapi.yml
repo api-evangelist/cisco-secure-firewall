@@ -236,6 +236,36 @@ paths:
       - Access Groups
 components:
   schemas:
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
     AccessGroupCreateInput:
       properties:
         appliedTo:
@@ -270,63 +300,6 @@ components:
       required:
       - entityUid
       type: object
-    AccessGroupUpdateInput:
-      properties:
-        appliedTo:
-          description: The set of device unique identifiers to which this Access Group was applied. Only valid for shared access group.
-          example: '[deviceUid1, deviceUid2, ..., deviceUidN]'
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        isShared:
-          description: The flag that identifies if access group is shared.  If set to true, appliedTo field should be provided as well and entityUid should point to source device.
-          example: false
-          type: boolean
-        name:
-          description: A human-readable name for the Access Group.
-          example: Access-Group1
-          type: string
-        resources:
-          description: The set of of interface and direction pairs or global resource.  Resource is an attribute applicable only to devices and will not be propagated to appliedTo devices if Access Group is shared.
-          example: 'Interface resource: [{"interfaceName": "outside","direction": "OUTBOUND"] or Global resource: [{"global": true}]'
-          items:
-            additionalProperties: {}
-            type: object
-          type: array
-          uniqueItems: true
-      type: object
-    CommonApiError:
-      properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
-          description: A human-readable error description in English.
-          example: sample error
-          type: string
     AccessGroup:
       properties:
         appliedTo:
@@ -406,6 +379,33 @@ components:
           example: 0
           format: int32
           type: integer
+      type: object
+    AccessGroupUpdateInput:
+      properties:
+        appliedTo:
+          description: The set of device unique identifiers to which this Access Group was applied. Only valid for shared access group.
+          example: '[deviceUid1, deviceUid2, ..., deviceUidN]'
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        isShared:
+          description: The flag that identifies if access group is shared.  If set to true, appliedTo field should be provided as well and entityUid should point to source device.
+          example: false
+          type: boolean
+        name:
+          description: A human-readable name for the Access Group.
+          example: Access-Group1
+          type: string
+        resources:
+          description: The set of of interface and direction pairs or global resource.  Resource is an attribute applicable only to devices and will not be propagated to appliedTo devices if Access Group is shared.
+          example: 'Interface resource: [{"interfaceName": "outside","direction": "OUTBOUND"] or Global resource: [{"global": true}]'
+          items:
+            additionalProperties: {}
+            type: object
+          type: array
+          uniqueItems: true
       type: object
   responses:
     http403Forbidden:

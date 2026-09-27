@@ -73,14 +73,14 @@ paths:
       - Feedback
 components:
   schemas:
-    quickPickFeedbacks:
+    quickPicks:
       description: quick pick feedbacks object
       properties:
-        quickPickFeedback:
-          description: A list of quick pick feedback items.
-          items:
-            $ref: '#/components/schemas/quickPickFeedback'
-          type: array
+        quickPicks:
+          additionalProperties:
+            $ref: '#/components/schemas/quickPickFeedbacks'
+          description: Map containing model_type <> quick picks.
+          type: object
       type: object
     quickPickFeedback:
       description: quick pick feedback object
@@ -95,14 +95,14 @@ components:
           description: The unique identifier for the quick pick feedback.
           type: string
       type: object
-    quickPicks:
+    quickPickFeedbacks:
       description: quick pick feedbacks object
       properties:
-        quickPicks:
-          additionalProperties:
-            $ref: '#/components/schemas/quickPickFeedbacks'
-          description: Map containing model_type <> quick picks.
-          type: object
+        quickPickFeedback:
+          description: A list of quick pick feedback items.
+          items:
+            $ref: '#/components/schemas/quickPickFeedback'
+          type: array
       type: object
     errorResponse:
       description: error response

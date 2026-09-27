@@ -109,6 +109,24 @@ paths:
       - Install Target
 components:
   schemas:
+    MpmGatewaySetsPage:
+      properties:
+        cursor:
+          type: string
+        gatewaySets:
+          items:
+            $ref: '#/components/schemas/MpmGatewaySetResp'
+          type: array
+      type: object
+    MpmGatewayResp:
+      properties:
+        hostname:
+          type: string
+        managementIp:
+          type: string
+        name:
+          type: string
+      type: object
     MpmGatewaySetResp:
       properties:
         createdTimestamp:
@@ -145,24 +163,6 @@ components:
           - HELD
           - SKIPPED
           - UNMANAGED
-          type: string
-      type: object
-    MpmGatewaySetsPage:
-      properties:
-        cursor:
-          type: string
-        gatewaySets:
-          items:
-            $ref: '#/components/schemas/MpmGatewaySetResp'
-          type: array
-      type: object
-    MpmGatewayResp:
-      properties:
-        hostname:
-          type: string
-        managementIp:
-          type: string
-        name:
           type: string
       type: object
     MpmPolicy:

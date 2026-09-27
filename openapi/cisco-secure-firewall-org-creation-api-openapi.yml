@@ -399,20 +399,11 @@ components:
           createdAt:
             format: date-time
             type: string
-    Idp:
-      type: object
-      required:
-      - id
-      - inputs
-      - outputs
-      properties:
-        id:
-          type: string
-          format: uuid
-        inputs:
-          $ref: '#/components/schemas/IdpInputs'
-        outputs:
-          $ref: '#/components/schemas/IdpOutputs'
+    DomainStatus:
+      type: string
+      enum:
+      - pending
+      - verified
     Enterprise:
       type: object
       description: Represents a specific enterprise, includes metadata all users associated with the enterprise would be permitted to see.
@@ -456,11 +447,16 @@ components:
           items:
             type: string
             format: uuid
-    DomainStatus:
-      type: string
-      enum:
-      - pending
-      - verified
+    Domain:
+      type: object
+      required:
+      - domain
+      - status
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainName'
+        status:
+          $ref: '#/components/schemas/DomainStatus'
     IdpInputs:
       type: object
       required:
@@ -484,6 +480,93 @@ components:
         audienceUrl:
           type: string
         cert:
+          type: string
+    EnterpriseSupportAccessStatusRequest:
+      type: object
+      properties:
+        supportAccessUntil:
+          type: string
+          format: date-time
+          default: '2024-07-10T16:04:03Z'
+    IdpOutputs:
+      type: object
+      required:
+      - acsUrl
+      - audienceUrl
+      - cert
+      - metadataUrl
+      - isEnabled
+      properties:
+        acsUrl:
+          type: string
+        audienceUrl:
+          type: string
+        cert:
+          type: string
+        metadataUrl:
+          type: string
+        isEnabled:
+          type: boolean
+    UpdateEnterpriseRequestBody:
+      type: object
+      description: Represent request body for updating enterprise name, displayName and region, required to have at least one param
+      properties:
+        name:
+          type: string
+        displayName:
+          type: string
+        region:
+          type: object
+          properties:
+            label:
+              type: string
+            value:
+              type: string
+        country:
+          type: object
+          properties:
+            label:
+              type: string
+            value:
+              type: string
+    Idp:
+      type: object
+      required:
+      - id
+      - inputs
+      - outputs
+      properties:
+        id:
+          type: string
+          format: uuid
+        inputs:
+          $ref: '#/components/schemas/IdpInputs'
+        outputs:
+          $ref: '#/components/schemas/IdpOutputs'
+    DomainName:
+      type: string
+      pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
+      example: cisco.com
+    EnterpriseSupportAccessStatusResponse:
+      type: object
+      properties:
+        supportAccessAllowed:
+          type: boolean
+          default: false
+        supportAccessUntil:
+          type: string
+          format: date-time
+          default: '2024-07-10T16:04:03Z'
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
           type: string
     UserEnterprise:
       type: object
@@ -531,101 +614,9 @@ components:
             format: uuid
         isManager:
           type: boolean
-    EnterpriseSupportAccessStatusRequest:
-      type: object
-      properties:
-        supportAccessUntil:
-          type: string
-          format: date-time
-          default: '2024-07-10T16:04:03Z'
-    UpdateEnterpriseRequestBody:
-      type: object
-      description: Represent request body for updating enterprise name, displayName and region, required to have at least one param
-      properties:
-        name:
-          type: string
-        displayName:
-          type: string
-        region:
-          type: object
-          properties:
-            label:
-              type: string
-            value:
-              type: string
-        country:
-          type: object
-          properties:
-            label:
-              type: string
-            value:
-              type: string
-    Domain:
-      type: object
-      required:
-      - domain
-      - status
-      properties:
-        domain:
-          $ref: '#/components/schemas/DomainName'
-        status:
-          $ref: '#/components/schemas/DomainStatus'
-    IdpOutputs:
-      type: object
-      required:
-      - acsUrl
-      - audienceUrl
-      - cert
-      - metadataUrl
-      - isEnabled
-      properties:
-        acsUrl:
-          type: string
-        audienceUrl:
-          type: string
-        cert:
-          type: string
-        metadataUrl:
-          type: string
-        isEnabled:
-          type: boolean
-    EnterpriseSupportAccessStatusResponse:
-      type: object
-      properties:
-        supportAccessAllowed:
-          type: boolean
-          default: false
-        supportAccessUntil:
-          type: string
-          format: date-time
-          default: '2024-07-10T16:04:03Z'
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-    DomainName:
-      type: string
-      pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
-      example: cisco.com
-  headers:
-    Date:
-      schema:
-        type: string
-        pattern: ^.*$
-    Location:
-      schema:
-        type: string
-        format: uri
   responses:
-    NotFoundError:
-      description: Not Found
+    GeneralError:
+      description: An unknown error occurred
       headers:
         Date:
           $ref: '#/components/headers/Date'
@@ -633,8 +624,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    GeneralError:
-      description: An unknown error occurred
+    NotFoundError:
+      description: Not Found
       headers:
         Date:
           $ref: '#/components/headers/Date'
@@ -651,6 +642,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  headers:
+    Date:
+      schema:
+        type: string
+        pattern: ^.*$
+    Location:
+      schema:
+        type: string
+        format: uri
   securitySchemes:
     OpenID:
       type: openIdConnect

@@ -389,11 +389,20 @@ paths:
       - Request
 components:
   schemas:
-    PushGatewayRequest:
+    MpmRequest:
       properties:
+        createdBy:
+          type: string
         createdTime:
           format: date-time
           type: string
+        gatewaySetId:
+          type: string
+        id:
+          format: uuid
+          type: string
+        lockAcquired:
+          type: boolean
         managedStatus:
           enum:
           - RECEIVED
@@ -404,44 +413,25 @@ components:
           - REJECTED
           - NOT_APPLICABLE
           type: string
+        managerId:
+          format: uuid
+          type: string
         modifiedTime:
           format: date-time
           type: string
-        objectIdRef:
-          type: string
-        reqId:
+        policyId:
           format: uuid
           type: string
-      type: object
-    ApiRequest:
-      properties:
-        id:
-          example: 03502bc3-c140-4951-b467-bd17312a9b0b
-          type: string
-      type: object
-    MpmGovernancePolicyDynamicGroupRequest:
-      properties:
-        createdTime:
-          format: date-time
-          type: string
-        dynamicGroupId:
-          type: string
-        id:
-          format: uuid
-          type: string
-        managedStatus:
+        policyType:
           enum:
-          - RECEIVED
-          - VALIDATED
-          - IN_PROGRESS
-          - PENDING
-          - SUCCEEDED
-          - REJECTED
-          - NOT_APPLICABLE
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
           type: string
-        modifiedTime:
-          format: date-time
-          type: string
+        revisionId:
+          format: int32
+          type: integer
       type: object
     PcmRequest:
       properties:
@@ -494,12 +484,47 @@ components:
           format: int32
           type: integer
       type: object
-    ChildRequestsResponse:
+    RequestAndChildrenStatusesResponse:
       properties:
-        childRequests:
+        childRequestStatuses:
           items:
-            $ref: '#/components/schemas/ChildRequestApi'
+            $ref: '#/components/schemas/ChildRequestStatusResponse'
           type: array
+        parentRequestStatus:
+          $ref: '#/components/schemas/RequestStatusResponse'
+      type: object
+    MpmGovernancePolicyDynamicGroupRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        dynamicGroupId:
+          type: string
+        id:
+          format: uuid
+          type: string
+        managedStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+      type: object
+    GatewaySetDetails:
+      properties:
+        errMsg:
+          type: string
+        gwSetId:
+          type: string
+        subRequestStatus:
+          type: string
       type: object
     ChildRequestStatusResponse:
       properties:
@@ -522,7 +547,7 @@ components:
         status:
           $ref: '#/components/schemas/RequestStatusResponse'
       type: object
-    ZoneTopologyRequest:
+    SdiRequest:
       properties:
         createdTime:
           format: date-time
@@ -539,48 +564,35 @@ components:
           - REJECTED
           - NOT_APPLICABLE
           type: string
+        manualStatus:
+          enum:
+          - RECEIVED
+          - VALIDATED
+          - IN_PROGRESS
+          - PENDING
+          - SUCCEEDED
+          - REJECTED
+          - NOT_APPLICABLE
+          type: string
         modifiedTime:
           format: date-time
-          type: string
-        reqAction:
-          enum:
-          - ADD
-          - DELETE
           type: string
         reqId:
           format: uuid
           type: string
         reqType:
           enum:
-          - ADDRESS
-          - TAG
+          - PROVISION_FLOWS
           type: string
-        zoneId:
+        sdiReqId:
           type: string
       type: object
-    TopologyChangeRequest:
+    ChildRequestsResponse:
       properties:
-        createdTime:
-          format: date-time
-          type: string
-        externalReqPayload:
-          type: string
-        managedStatus:
-          enum:
-          - RECEIVED
-          - VALIDATED
-          - IN_PROGRESS
-          - PENDING
-          - SUCCEEDED
-          - REJECTED
-          - NOT_APPLICABLE
-          type: string
-        modifiedTime:
-          format: date-time
-          type: string
-        reqId:
-          format: uuid
-          type: string
+        childRequests:
+          items:
+            $ref: '#/components/schemas/ChildRequestApi'
+          type: array
       type: object
     RequestStatusResponse:
       properties:
@@ -651,64 +663,11 @@ components:
         sdiReqId:
           type: string
       type: object
-    RequestStatusResponses:
+    PushGatewayRequest:
       properties:
-        requestStatuses:
-          items:
-            $ref: '#/components/schemas/RequestStatusResponse'
-          type: array
-      type: object
-    RequestsResponse:
-      properties:
-        requests:
-          items:
-            $ref: '#/components/schemas/ApiRequest'
-          type: array
-      type: object
-    RequestingSystemRequestDetails:
-      properties:
-        hasRequestDetail:
-          type: boolean
-        mpmGovernanceDynamicGroupRequest:
-          $ref: '#/components/schemas/MpmGovernancePolicyDynamicGroupRequest'
-        mpmRequest:
-          items:
-            $ref: '#/components/schemas/MpmRequest'
-          type: array
-        pcmRequest:
-          $ref: '#/components/schemas/PcmRequest'
-        pushGatewayRequest:
-          $ref: '#/components/schemas/PushGatewayRequest'
-        sdiRequest:
-          $ref: '#/components/schemas/SdiRequest'
-        topologyChangeRequest:
-          $ref: '#/components/schemas/TopologyChangeRequest'
-        topologyRequest:
-          $ref: '#/components/schemas/ZoneTopologyRequest'
-      type: object
-    GatewaySetDetails:
-      properties:
-        errMsg:
-          type: string
-        gwSetId:
-          type: string
-        subRequestStatus:
-          type: string
-      type: object
-    MpmRequest:
-      properties:
-        createdBy:
-          type: string
         createdTime:
           format: date-time
           type: string
-        gatewaySetId:
-          type: string
-        id:
-          format: uuid
-          type: string
-        lockAcquired:
-          type: boolean
         managedStatus:
           enum:
           - RECEIVED
@@ -719,46 +678,13 @@ components:
           - REJECTED
           - NOT_APPLICABLE
           type: string
-        managerId:
-          format: uuid
-          type: string
         modifiedTime:
           format: date-time
           type: string
-        policyId:
+        objectIdRef:
+          type: string
+        reqId:
           format: uuid
-          type: string
-        policyType:
-          enum:
-          - SECURITY
-          - GOVERNANCE_PREPEND
-          - GOVERNANCE_APPEND
-          - NAT
-          type: string
-        revisionId:
-          format: int32
-          type: integer
-      type: object
-    ChildRequestApi:
-      properties:
-        requestId:
-          format: uuid
-          type: string
-        requestingSystem:
-          enum:
-          - PCM
-          - SDI
-          - MPM
-          - RED
-          - SEEDING
-          - TOPOLOGY
-          - PCM_TOPOLOGY_CHANGE
-          - SDI_TOPOLOGY_CHANGE
-          - MPM_SECURITY_TOPOLOGY_CHANGE
-          - MPM_POLICY_IMPORT
-          - ZONE_PATH_TOPOLOGY_CHANGE
-          - MPM_MULTI_POLICY_PUSH
-          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
     FullRequestDetails:
@@ -808,16 +734,14 @@ components:
         username:
           type: string
       type: object
-    RequestAndChildrenStatusesResponse:
+    RequestStatusResponses:
       properties:
-        childRequestStatuses:
+        requestStatuses:
           items:
-            $ref: '#/components/schemas/ChildRequestStatusResponse'
+            $ref: '#/components/schemas/RequestStatusResponse'
           type: array
-        parentRequestStatus:
-          $ref: '#/components/schemas/RequestStatusResponse'
       type: object
-    SdiRequest:
+    ZoneTopologyRequest:
       properties:
         createdTime:
           format: date-time
@@ -834,7 +758,33 @@ components:
           - REJECTED
           - NOT_APPLICABLE
           type: string
-        manualStatus:
+        modifiedTime:
+          format: date-time
+          type: string
+        reqAction:
+          enum:
+          - ADD
+          - DELETE
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        reqType:
+          enum:
+          - ADDRESS
+          - TAG
+          type: string
+        zoneId:
+          type: string
+      type: object
+    TopologyChangeRequest:
+      properties:
+        createdTime:
+          format: date-time
+          type: string
+        externalReqPayload:
+          type: string
+        managedStatus:
           enum:
           - RECEIVED
           - VALIDATED
@@ -850,12 +800,62 @@ components:
         reqId:
           format: uuid
           type: string
-        reqType:
+      type: object
+    RequestingSystemRequestDetails:
+      properties:
+        hasRequestDetail:
+          type: boolean
+        mpmGovernanceDynamicGroupRequest:
+          $ref: '#/components/schemas/MpmGovernancePolicyDynamicGroupRequest'
+        mpmRequest:
+          items:
+            $ref: '#/components/schemas/MpmRequest'
+          type: array
+        pcmRequest:
+          $ref: '#/components/schemas/PcmRequest'
+        pushGatewayRequest:
+          $ref: '#/components/schemas/PushGatewayRequest'
+        sdiRequest:
+          $ref: '#/components/schemas/SdiRequest'
+        topologyChangeRequest:
+          $ref: '#/components/schemas/TopologyChangeRequest'
+        topologyRequest:
+          $ref: '#/components/schemas/ZoneTopologyRequest'
+      type: object
+    ApiRequest:
+      properties:
+        id:
+          example: 03502bc3-c140-4951-b467-bd17312a9b0b
+          type: string
+      type: object
+    ChildRequestApi:
+      properties:
+        requestId:
+          format: uuid
+          type: string
+        requestingSystem:
           enum:
-          - PROVISION_FLOWS
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
-        sdiReqId:
-          type: string
+      type: object
+    RequestsResponse:
+      properties:
+        requests:
+          items:
+            $ref: '#/components/schemas/ApiRequest'
+          type: array
       type: object
   securitySchemes:
     BearerJWT:

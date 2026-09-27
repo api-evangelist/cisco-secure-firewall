@@ -660,26 +660,25 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    IReadonly:
+    ILinks:
+      description: This defines the self referencing links for the given resource.
       properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
           type: string
-        state:
-          type: boolean
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
       type: object
-    NetmapService:
+    NetmapApplication:
       properties:
-        confidence:
+        AppVersion:
           type: string
-        port:
+        appVersion:
+          type: string
+        clientAppId:
           format: int32
           type: integer
-        protocol:
-          type: string
       type: object
     NetmapHostListContainer:
       properties:
@@ -693,103 +692,15 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    ErrorResponse:
+    NetmapService:
       properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
+        confidence:
           type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
+        port:
           format: int32
           type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
+        protocol:
           type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    NetmapVulnListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/NetmapVuln'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
       type: object
     NetmapHost:
       description: Represents the host object in the Network Map
@@ -868,6 +779,102 @@ components:
         type:
           type: string
       type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    NetmapOS:
+      properties:
+        osProduct:
+          type: string
+        osVendor:
+          type: string
+        osVersion:
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
     NetmapVuln:
       description: Represents the vulnerability object which is used to add a vuln to the Network Map
       properties:
@@ -927,33 +934,19 @@ components:
           format: int32
           type: integer
       type: object
-    NetmapOS:
+    NetmapVulnListContainer:
       properties:
-        osProduct:
-          type: string
-        osVendor:
-          type: string
-        osVersion:
-          type: string
-      type: object
-    NetmapApplication:
-      properties:
-        AppVersion:
-          type: string
-        appVersion:
-          type: string
-        clientAppId:
-          format: int32
-          type: integer
+        items:
+          $ref: '#/components/schemas/NetmapVuln'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
       type: object
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
     offset:
       description: Index of first item to return.
       in: query
@@ -977,6 +970,13 @@ components:
       required: true
       schema:
         type: string
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

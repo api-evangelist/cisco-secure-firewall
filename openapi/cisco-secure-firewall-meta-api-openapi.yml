@@ -101,64 +101,6 @@ paths:
       - Meta
 components:
   schemas:
-    CdoRegionList:
-      properties:
-        items:
-          description: The list of items.
-          items:
-            $ref: '#/components/schemas/CdoRegion'
-          type: array
-      type: object
-    CdoRegion:
-      properties:
-        apiDomain:
-          description: The domain for API services in the region.
-          type: string
-        description:
-          description: Human readable description of the region.
-          type: string
-        domain:
-          description: The domain for the region.
-          type: string
-      type: object
-    JsonWebKey:
-      properties:
-        alg:
-          description: The specific cryptographic algorithm used with the key.
-          type: string
-        e:
-          description: The exponent for the RSA public key.
-          type: string
-        kid:
-          description: The unique identifier for the key.
-          type: string
-        kty:
-          description: The family of cryptographic algorithms used with the key.
-          type: string
-        n:
-          description: The modulus for the RSA public key.
-          type: string
-        use:
-          description: How the key was meant to be used.
-          type: string
-      type: object
-    Meta:
-      properties:
-        cloudConnectorIps:
-          description: The IP addresses from which to allow inbound access to your network if you wish to connect to your devices through Security Cloud Control's Cloud Connector.
-          example: 35.157.12.126
-          items:
-            type: string
-          type: array
-      type: object
-    JwkSet:
-      properties:
-        keys:
-          description: The JSON Web Key Set.
-          items:
-            $ref: '#/components/schemas/JsonWebKey'
-          type: array
-      type: object
     CommonApiError:
       properties:
         details:
@@ -189,6 +131,64 @@ components:
           description: A human-readable error description in English.
           example: sample error
           type: string
+    CdoRegionList:
+      properties:
+        items:
+          description: The list of items.
+          items:
+            $ref: '#/components/schemas/CdoRegion'
+          type: array
+      type: object
+    JsonWebKey:
+      properties:
+        alg:
+          description: The specific cryptographic algorithm used with the key.
+          type: string
+        e:
+          description: The exponent for the RSA public key.
+          type: string
+        kid:
+          description: The unique identifier for the key.
+          type: string
+        kty:
+          description: The family of cryptographic algorithms used with the key.
+          type: string
+        n:
+          description: The modulus for the RSA public key.
+          type: string
+        use:
+          description: How the key was meant to be used.
+          type: string
+      type: object
+    JwkSet:
+      properties:
+        keys:
+          description: The JSON Web Key Set.
+          items:
+            $ref: '#/components/schemas/JsonWebKey'
+          type: array
+      type: object
+    CdoRegion:
+      properties:
+        apiDomain:
+          description: The domain for API services in the region.
+          type: string
+        description:
+          description: Human readable description of the region.
+          type: string
+        domain:
+          description: The domain for the region.
+          type: string
+      type: object
+    Meta:
+      properties:
+        cloudConnectorIps:
+          description: The IP addresses from which to allow inbound access to your network if you wish to connect to your devices through Security Cloud Control's Cloud Connector.
+          example: 35.157.12.126
+          items:
+            type: string
+          type: array
+      type: object
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

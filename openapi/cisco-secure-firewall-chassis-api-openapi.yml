@@ -3291,6 +3291,386 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    IPolicyLockData:
+      description: Represents information about a policy's lock status.
+      properties:
+        lock:
+          description: Boolean indicating whether the policy must be locked or unlocked. When set to 'true' policy is locked and when set to 'false' will unlock the policy.
+          type: boolean
+        lockParentsInHierarchy:
+          description: Boolean indicating whether the policy and all parents in hierarchy must be locked or unlocked. When set to 'true' policy and parents in hierarchy are locked and will 'unlock' when set to false.
+          type: boolean
+        metadata:
+          $ref: '#/components/schemas/IPolicyLockMetadata'
+          description: Object representing metadata attributes for Policy Lock.
+          type: object
+        policy:
+          $ref: '#/components/schemas/IReference'
+          description: specifies the details of the policy which was locked
+          type: object
+        status:
+          description: String indicating whether the policy is locked
+          enum:
+          - LOCKED
+          - UNLOCKED
+          type: string
+        type:
+          description: Type must be PolicyLock
+          type: string
+      required:
+      - policy
+      - status
+      - type
+      type: object
+    IPV6:
+      description: IPv6 details
+      properties:
+        gateway:
+          description: IPv6 gateway
+          type: string
+        ip:
+          description: IPv6 IP Address
+          type: string
+        prefixLength:
+          description: IPv6 prefix length
+          type: string
+      type: object
+    IInterfaceHardwareContainer:
+      properties:
+        autoNegState:
+          type: boolean
+        duplex:
+          enum:
+          - AUTO
+          - FULL
+          - HALF
+          type: string
+        fecMode:
+          enum:
+          - AUTO
+          - CL108RS
+          - CL74FC
+          - CL91RS
+          - DISABLE
+          type: string
+        speed:
+          enum:
+          - AUTO
+          - TEN_MBPS
+          - HUNDRED_MBPS
+          - ONE_GBPS
+          - TEN_GBPS
+          - TWENTY_FIVE_GBPS
+          - FORTY_GBPS
+          - HUNDRED_GBPS
+          - TWO_HUNDRED_GBPS
+          - FOUR_HUNDRED_GBPS
+          - DETECT_SFP
+          type: string
+      type: object
+    EpmRequestMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          type: object
+        task:
+          $ref: '#/components/schemas/TaskStatus'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    ChassisInterfaceSummary:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        interfaceList:
+          description: List of all interfaces on the chassis
+          items:
+            $ref: '#/components/schemas/SummaryInterfaceModel'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        modifiedTime:
+          description: Time (in ISO 8601 format) when this interface data was obtained from chassis
+          type: string
+        name:
+          type: string
+        type:
+          description: Type of the interface summary. This is always InterfaceSummary
+          type: string
+        version:
+          type: string
+      type: object
+    IPV4:
+      description: IPv4 details
+      properties:
+        gateway:
+          description: IPv4 Gateway
+          type: string
+        ip:
+          description: IPv4 IP Address
+          type: string
+        mask:
+          description: IPv4 Netmask
+          type: string
+      type: object
+    LogicalDeviceListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/LogicalDevice'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ChassisFaultSummary:
+      properties:
+        description:
+          type: string
+        faultList:
+          description: List of all faults on the chassis
+          items:
+            $ref: '#/components/schemas/SummaryFaultModel'
+            type: object
+          type: array
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        modifiedTime:
+          description: Time (in ISO 8601 format) when this fault data was obtained from chassis
+          type: string
+        name:
+          type: string
+        type:
+          description: Type of the fault summary. This is always FaultSummary
+          type: string
+        version:
+          type: string
+      type: object
+    ChassisInterfaceEventListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ChassisInterfaceEvent'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    HealthAlertConfig:
+      properties:
+        enabled:
+          type: boolean
+        name:
+          type: string
+        thresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+      type: object
+    ChassisAppInfoListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ChassisAppInfo'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    FMCManagedChassisListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/FMCManagedChassis'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    NetworkModuleSync:
+      description: Represents sync status of the Network Modules.
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        syncStatus:
+          description: Describes the status of the Sync operation.
+          type: string
+        type:
+          description: Payload type. This will always be NetworkModuleSync.
+          type: string
+      type: object
+    Domain:
+      description: The details about the domain.
+      properties:
+        id:
+          description: Unique UUID of this domain
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
+          type: object
+        name:
+          description: Name of the domain.
+          type: string
+        type:
+          description: Domain type definition (fixed).
+          type: string
+        uuid:
+          type: string
+      type: object
+    FMCManagedChassis:
+      description: Represents the chassis of the FMC Managed Device.
+      properties:
+        chassisHostName:
+          type: string
+        chassisMode:
+          description: Describes the mode of the chassis, native/multi-instance
+          enum:
+          - MULTIINSTANCE
+          - NATIVE
+          - MULTIINSTANCE_LEGACY
+          type: string
+        chassisName:
+          description: Describes the name of the chassis.
+          type: string
+        description:
+          type: string
+        deviceGroup:
+          $ref: '#/components/schemas/DeviceGroup'
+          description: Refers to the device group
+          type: object
+        id:
+          description: UUID of the chassis.
+          type: string
+        isConnected:
+          description: Tells if the device is connected to FMC or not
+          type: boolean
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes of the Device.
+          type: object
+        model:
+          description: Describes model type of the chassis.
+          type: string
+        modelNumber:
+          description: Model number of the registered device.
+          type: string
+        natID:
+          description: Unique ID for a Network address translation (NAT)  (optional; used for chassis registration). If the chassis to be registered and the Firepower Management Center are separated by a NAT device, enter a unique NAT ID.
+          type: string
+        regKey:
+          description: Registration Key that you entered while configuring FMC on the device.
+          type: string
+        swBuild:
+          type: string
+        swVersion:
+          description: Chassis version
+          type: string
+        type:
+          description: Type of the payload. This will always be FMCManagedChassis.
+          type: string
+        version:
+          type: string
+      required:
+      - regKey
+      type: object
+    ChassisAppInfo:
+      properties:
+        appVersion:
+          description: Image version
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        type:
+          description: Type of the data. This will be AppInfo
+          type: string
+        version:
+          type: string
+      type: object
+    ChassisInterfaceListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ChassisInterface'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
     SubInterface:
       properties:
         description:
@@ -3324,405 +3704,37 @@ components:
           format: int32
           type: integer
       type: object
-    Metadata:
-      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
+    IAdvanced:
       properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          description: Defines the domains this instance belongs to (if applicable).
-          type: object
-        isLocked:
+        enableOGS:
           type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          description: The last user who modified this instance.
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          description: Details regarding the read only status of this instance
-          type: object
-        timestamp:
-          description: The last updated timestamp.
-          format: int32
-          type: integer
       type: object
-    SummaryFaultModel:
-      properties:
-        cause:
-          type: string
-        code:
-          type: string
-        createdTime:
-          type: string
-        description:
-          type: string
-        highestSeverity:
-          type: string
-        id:
-          format: int32
-          type: integer
-        isAcknowledged:
-          type: string
-        lastTransitionTime:
-          type: string
-        occurrence:
-          type: string
-        severity:
-          type: string
-      type: object
-    DeviceConversionReadinessDeviceEntity:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        readinessStatus:
-          $ref: '#/components/schemas/DeviceConversionReadinessData'
-          type: object
-        type:
-          type: string
-      type: object
-    ChassisInterfaceSummaryListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/ChassisInterfaceSummary'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    LogicalDeviceListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/LogicalDevice'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    NetworkModule:
-      description: Represents the Network Module of the Chassis.
+    ChassisSnmpSettings:
+      description: Description of Chassis SnmpSettings policy
       properties:
         description:
-          description: A one line description of the EPM.
           type: string
         id:
-          description: Describes the UUID of the module object.
+          description: Unique Identifier of the Snmp Settings Policy.
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
         metadata:
           $ref: '#/components/schemas/Metadata'
+          description: Object representing metadata attributes for the Snmp Settings policy.
           type: object
-        model:
-          description: Model of the EPM inserted.
-          type: string
-        moduleState:
-          description: User configurable setting to power On/Off EPM (permissible values enabled/disabled).
-          enum:
-          - ENABLED
-          - DISABLED
-          - ONLINE
-          - BUSY
-          - ENABLE_IN_PROGRESS
-          - DISABLE_IN_PROGRESS
-          type: string
         name:
-          description: Name of the Network Module.
           type: string
-        numOfPorts:
-          description: Number of Ports present on EPM, Maryland has 4 ports, Brentwood has 8 ports.
-          format: int32
-          type: integer
-        operationState:
-          description: Operation State returned by FXOS, (sample values operable/inoperable/degraded/powered-off/power-problem/voltage-problem/thermal-problem/performance-problem/accessibility-problem/disabled ).
-          type: string
-        slotId:
-          description: ' Slot ID of the EPM slot.'
-          type: string
+        snmpAdminInstance:
+          $ref: '#/components/schemas/LogicalDevicePolicy'
+          description: Details of the logical device that is SNMP Admin Instance
+          type: object
         type:
-          description: Payload type. This will always be NetworkModule.
-          type: string
-        vendor:
-          description: Describes the vendor name of the module.
+          description: Type of the Snmp Settings policy; this value is always SnmpSetting.
           type: string
         version:
           type: string
-      type: object
-    EtherChannelInterfaceListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/EtherChannelInterface'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    NetworkModuleListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/NetworkModule'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IUsageData:
-      properties:
-        action:
-          type: string
-        cause:
-          type: string
-        conflictType:
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        policyGroupInfo:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        severity:
-          type: string
-        type:
-          type: string
-      type: object
-    ChassisInstanceSummaryListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/ChassisInstanceSummary'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ChassisConversionModel:
-      properties:
-        conversionType:
-          enum:
-          - NATIVE_TO_MULTI_INSTANCE
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        items:
-          items:
-            $ref: '#/components/schemas/ChassisConversionDeviceModel'
-            type: object
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/ChassisConversionMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    ChassisInventorySummary:
-      properties:
-        description:
-          type: string
-        fanList:
-          description: List of all fans on the chassis
-          items:
-            $ref: '#/components/schemas/ChassisFan'
-            type: object
-          type: array
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        memoryList:
-          description: List of all memory units on the chassis
-          items:
-            $ref: '#/components/schemas/ChassisMemory'
-            type: object
-          type: array
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        modifiedTime:
-          description: Time (in ISO 8601 format) when this inventory data was obtained from chassis
-          type: string
-        name:
-          type: string
-        powerSupplyList:
-          description: List of all power supplies on the chassis
-          items:
-            $ref: '#/components/schemas/ChassisPowerSupply'
-            type: object
-          type: array
-        processorList:
-          description: List of all processors on the chassis
-          items:
-            $ref: '#/components/schemas/ChassisProcessor'
-            type: object
-          type: array
-        securityModuleList:
-          description: List of all security modules on the chassis
-          items:
-            $ref: '#/components/schemas/ChassisSecurityModule'
-            type: object
-          type: array
-        storageControllerList:
-          description: List of all storage controllers on the chassis
-          items:
-            $ref: '#/components/schemas/ChassisStorageController'
-            type: object
-          type: array
-        type:
-          description: Type of the inventory summary. This is always InventorySummary
-          type: string
-        version:
-          type: string
-      type: object
-    ChassisAppInfoListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/ChassisAppInfo'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ChassisProcessor:
-      properties:
-        id:
-          format: int32
-          type: integer
-        model:
-          type: string
-        operability:
-          type: string
-        operationalState:
-          type: string
-        serialNumber:
-          type: string
-        thermalStatus:
-          type: string
-        type:
-          type: string
-        vendor:
-          type: string
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    IPolicyLockMetadata:
-      description: Represents the information of the Metadata for Policy lock
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        lockedByUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          description: String indicating the user who has locked the policy. This field will be empty if the policy is not locked.
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      required:
-      - lockedByUser
-      type: object
-    ChassisFaultSummaryListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/ChassisFaultSummary'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    DialHost:
-      properties:
-        host:
-          type: string
-        port:
-          format: int32
-          type: integer
       type: object
     ChassisSnmpSettingsListContainer:
       properties:
@@ -3735,134 +3747,6 @@ components:
         paging:
           $ref: '#/components/schemas/PagingContainer'
           type: object
-      type: object
-    IPV4:
-      description: IPv4 details
-      properties:
-        gateway:
-          description: IPv4 Gateway
-          type: string
-        ip:
-          description: IPv4 IP Address
-          type: string
-        mask:
-          description: IPv4 Netmask
-          type: string
-      type: object
-    LogicalDevice:
-      description: Logical Device Model for Chassis
-      properties:
-        adminState:
-          description: Admin State of the Logical Device. Possible values are 'enabled'/'disabled'
-          type: string
-        description:
-          type: string
-        deviceRegistration:
-          $ref: '#/components/schemas/DeviceRegistration'
-          type: object
-        externalPortLink:
-          description: Interface assignment to the Logical Device. Atleast one interface should be assigned
-          items:
-            $ref: '#/components/schemas/ExternalPortLink'
-            type: object
-          type: array
-        ftdApplicationVersion:
-          description: FTD version. This is applicable only for CREATE request
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        logicalDeviceMode:
-          type: string
-        managementBootstrap:
-          $ref: '#/components/schemas/MgmtBootstrap'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/LogicalDeviceMetadata'
-          type: object
-        name:
-          description: Logical Device name. This is applicable only for CREATE request
-          type: string
-        operationalState:
-          type: string
-        resourceProfile:
-          $ref: '#/components/schemas/ReferenceObject'
-          description: Resource Profile assigned to the Logical Device
-          type: object
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    EtherChannelInterface:
-      properties:
-        adminState:
-          enum:
-          - ENABLED
-          - DISABLED
-          - ONLINE
-          - BUSY
-          - ENABLE_IN_PROGRESS
-          - DISABLE_IN_PROGRESS
-          type: string
-        description:
-          type: string
-        etherChannelId:
-          format: int32
-          type: integer
-        hardware:
-          $ref: '#/components/schemas/IInterfaceHardwareContainer'
-          type: object
-        id:
-          type: string
-        lacpMode:
-          enum:
-          - ACTIVE
-          - 'ON'
-          - PASSIVE
-          type: string
-        lacpRate:
-          enum:
-          - DEFAULT
-          - FAST
-          - NORMAL
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        portType:
-          enum:
-          - DATA
-          - DATA_SHARING
-          type: string
-        selectedInterfaces:
-          items:
-            $ref: '#/components/schemas/IFTDInterface'
-            type: object
-          type: array
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    DeviceConversionReadinessData:
-      properties:
-        errorMsgs:
-          items:
-            type: string
-          type: array
-        status:
-          enum:
-          - READY
-          - NOT_READY
-          type: string
       type: object
     ChassisPowerSupply:
       properties:
@@ -3882,125 +3766,104 @@ components:
         vendor:
           type: string
       type: object
-    ReferenceObject:
+    ChassisInterfaceEvent:
       properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    IReference:
-      description: Contains reference information.
-      properties:
-        id:
-          description: Unique identifier representing resource.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        name:
-          description: User chosen resource name.
-          type: string
-        type:
-          description: Response object associated with resource.
-          type: string
-      type: object
-    DeviceConversionReadinessModel:
-      description: Represents the payload required to check readiness of Devices for Conversion
-      properties:
-        conversionType:
-          description: Conversion type
+        action:
           enum:
-          - NATIVE_TO_MULTI_INSTANCE
+          - SYNC_WITH_DEVICE
+          - ACCEPT_CHANGES
+          type: string
+        change:
           type: string
         description:
           type: string
-        devices:
-          description: List of devices which user wants to verify for conversion
-          items:
-            $ref: '#/components/schemas/DeviceConversionReadinessDeviceEntity'
-            type: object
-          type: array
+        hasPendingChanges:
+          type: boolean
         id:
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
         metadata:
-          $ref: '#/components/schemas/IMetadata'
+          $ref: '#/components/schemas/Metadata'
           type: object
         name:
+          type: string
+        state:
+          enum:
+          - DISASSOCIATED
+          - ASSOCIATED
+          - MODIFIED
           type: string
         type:
           type: string
         version:
           type: string
       type: object
-    MgmtBootstrap:
-      description: Management bootstrap for Logical Device
+    DialHost:
       properties:
-        adminPassword:
-          description: Admin Password to login to the FTD. This is applicable only for CREATE request
+        host:
           type: string
-        dnsServers:
-          type: string
-        firepowerManagerIP:
-          description: Manager IP to manage the FTD from
-          type: string
-        firewallMode:
-          description: Firewall Mode for Logical Device. Possible values are 'routed'/'transparent'
-          type: string
-        fqdn:
-          description: FQDN configuration for the Logical Device. This is applicable only for CREATE request
-          type: string
-        ipv4:
-          $ref: '#/components/schemas/IPV4'
-          description: IPv4 details for Logical Device. This is applicable only for CREATE request
-          type: object
-        ipv6:
-          $ref: '#/components/schemas/IPV6'
-          description: IPv6 details for Logical Device. This is applicable only for CREATE request
-          type: object
-        natId:
-          type: string
-        permitExpertMode:
-          description: Permit Expert mode for CLI. Possible values are 'yes'/'no'
-          type: string
-        registrationKey:
-          type: string
-        searchDomain:
-          type: string
+        port:
+          format: int32
+          type: integer
       type: object
-    NetworkModuleSync:
-      description: Represents sync status of the Network Modules.
+    ChassisInterfaceMetadata:
       properties:
-        metadata:
-          $ref: '#/components/schemas/Metadata'
+        breakoutCapability:
+          type: string
+        breakoutFactor:
+          type: string
+        breakoutType:
+          enum:
+          - FOUR_X_TEN
+          - FOUR_X_TEN_TWENTYFIVE
+          - FOUR_X_HUNDRED
+          - TWO_X_HUNDRED
+          - TWO_X_TWOHUNDRED
+          type: string
+        domain:
+          $ref: '#/components/schemas/Domain'
           type: object
-        syncStatus:
-          description: Describes the status of the Sync operation.
-          type: string
-        type:
-          description: Payload type. This will always be NetworkModuleSync.
-          type: string
-      type: object
-    ChassisInventorySummaryListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/ChassisInventorySummary'
+        instances:
+          items:
+            $ref: '#/components/schemas/IFTDInterface'
+            type: object
           type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
+        isBreakOutCapable:
+          type: boolean
+        isBreakoutCapable:
+          type: boolean
+        isLocked:
+          type: boolean
+        isSplitInterface:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
           type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
+        lockingStatus:
+          $ref: '#/components/schemas/IPolicyLockData'
           type: object
+        matches:
+          items:
+            type: string
+          type: array
+        mediaType:
+          type: string
+        netModEventState:
+          type: string
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          type: object
+        sfpType:
+          type: string
+        sfptype:
+          type: string
+        supportedSpeed:
+          type: string
+        timestamp:
+          format: int32
+          type: integer
       type: object
     HealthSetting:
       properties:
@@ -4039,85 +3902,10 @@ components:
         readOnly:
           type: boolean
       type: object
-    IInterfaceHardwareContainer:
-      properties:
-        autoNegState:
-          type: boolean
-        duplex:
-          enum:
-          - AUTO
-          - FULL
-          - HALF
-          type: string
-        fecMode:
-          enum:
-          - AUTO
-          - CL108RS
-          - CL74FC
-          - CL91RS
-          - DISABLE
-          type: string
-        speed:
-          enum:
-          - AUTO
-          - TEN_MBPS
-          - HUNDRED_MBPS
-          - ONE_GBPS
-          - TEN_GBPS
-          - TWENTY_FIVE_GBPS
-          - FORTY_GBPS
-          - HUNDRED_GBPS
-          - TWO_HUNDRED_GBPS
-          - FOUR_HUNDRED_GBPS
-          - DETECT_SFP
-          type: string
-      type: object
-    SummaryInstanceModel:
-      properties:
-        adminState:
-          type: string
-        coresUsed:
-          format: int32
-          type: integer
-        deployType:
-          type: string
-        ipv4:
-          $ref: '#/components/schemas/IPV4'
-          type: object
-        ipv6:
-          $ref: '#/components/schemas/IPV6'
-          type: object
-        managementPort:
-          type: string
-        name:
-          type: string
-        operationalState:
-          type: string
-        slotId:
-          type: string
-        startupVersion:
-          type: string
-      type: object
-    ChassisStorageLocalDisk:
-      properties:
-        id:
-          format: int32
-          type: integer
-        model:
-          type: string
-        operability:
-          type: string
-        serialNumber:
-          type: string
-        thermalStatus:
-          type: string
-        vendor:
-          type: string
-      type: object
-    EvaluateChassisOperationListContainer:
+    PhysicalInterfaceListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/EvaluateChassisOperation'
+          $ref: '#/components/schemas/PhysicalInterface'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -4125,79 +3913,6 @@ components:
         paging:
           $ref: '#/components/schemas/PagingContainer'
           type: object
-      type: object
-    ChassisInterfaceListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/ChassisInterface'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ChassisConversionMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          type: object
-        task:
-          $ref: '#/components/schemas/TaskStatus'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    LogicalDevicePolicy:
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    MetadataUser:
-      description: This object defines details about the user.
-      properties:
-        id:
-          description: The unique UUID of the user
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Contains the self referencing links to this resource
-          type: object
-        name:
-          description: Name of the user.
-          type: string
-        type:
-          description: The user type (fixed).
-          type: string
-      type: object
-    ExternalPortLink:
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        portType:
-          type: string
-        type:
-          type: string
       type: object
     HealthModule:
       properties:
@@ -4228,107 +3943,14 @@ components:
           format: int32
           type: integer
       type: object
-    ChassisInterfaceEvent:
+    LogicalDeviceMetadata:
       properties:
-        action:
-          enum:
-          - SYNC_WITH_DEVICE
-          - ACCEPT_CHANGES
-          type: string
-        change:
-          type: string
-        description:
-          type: string
-        hasPendingChanges:
-          type: boolean
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
+        containerDetails:
+          $ref: '#/components/schemas/IBaseDevice'
           type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
+        deviceRecordDetails:
+          $ref: '#/components/schemas/IReference'
           type: object
-        name:
-          type: string
-        state:
-          enum:
-          - DISASSOCIATED
-          - ASSOCIATED
-          - MODIFIED
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    PhysicalInterfaceListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/PhysicalInterface'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    IPV6:
-      description: IPv6 details
-      properties:
-        gateway:
-          description: IPv6 gateway
-          type: string
-        ip:
-          description: IPv6 IP Address
-          type: string
-        prefixLength:
-          description: IPv6 prefix length
-          type: string
-      type: object
-    ChassisFaultSummary:
-      properties:
-        description:
-          type: string
-        faultList:
-          description: List of all faults on the chassis
-          items:
-            $ref: '#/components/schemas/SummaryFaultModel'
-            type: object
-          type: array
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        modifiedTime:
-          description: Time (in ISO 8601 format) when this fault data was obtained from chassis
-          type: string
-        name:
-          type: string
-        type:
-          description: Type of the fault summary. This is always FaultSummary
-          type: string
-        version:
-          type: string
-      type: object
-    EpmRequestMetadata:
-      properties:
         domain:
           $ref: '#/components/schemas/Domain'
           type: object
@@ -4344,12 +3966,274 @@ components:
         readOnly:
           $ref: '#/components/schemas/ReadOnly'
           type: object
-        task:
-          $ref: '#/components/schemas/TaskStatus'
-          type: object
         timestamp:
           format: int32
           type: integer
+      type: object
+    SubInterfaceListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/SubInterface'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IBaseDevice:
+      properties:
+        accessPolicy:
+          $ref: '#/components/schemas/IPolicyModel'
+          type: object
+        advanced:
+          $ref: '#/components/schemas/IAdvanced'
+          type: object
+        description:
+          type: string
+        healthMessage:
+          type: string
+        healthPolicy:
+          $ref: '#/components/schemas/IHealthPolicy'
+          type: object
+        healthStatus:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        model:
+          type: string
+        modelId:
+          type: string
+        modelNumber:
+          type: string
+        modelType:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        status:
+          type: string
+        sw_version:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    ChassisFaultSummaryListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ChassisFaultSummary'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ExternalPortLink:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        portType:
+          type: string
+        type:
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ChassisInventorySummaryListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ChassisInventorySummary'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    ChassisConversionModel:
+      properties:
+        conversionType:
+          enum:
+          - NATIVE_TO_MULTI_INSTANCE
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/ChassisConversionDeviceModel'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/ChassisConversionMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    ISubTask:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        status:
+          type: string
+        target:
+          $ref: '#/components/schemas/ITarget'
+          type: object
+      type: object
+    ChassisStorageController:
+      properties:
+        id:
+          format: int32
+          type: integer
+        model:
+          type: string
+        operability:
+          type: string
+        operationalState:
+          type: string
+        partNumber:
+          type: string
+        serialNumber:
+          type: string
+        storageLocalDisk:
+          items:
+            $ref: '#/components/schemas/ChassisStorageLocalDisk'
+            type: object
+          type: array
+        thermalStatus:
+          type: string
+        vendor:
+          type: string
+      type: object
+    DeviceRegistration:
+      description: Data required for auto registration. This is applicable only for CREATE request
+      properties:
+        accessPolicy:
+          $ref: '#/components/schemas/DeviceAcessPolicy'
+          type: object
+        deviceGroup:
+          $ref: '#/components/schemas/ReferenceObject'
+          type: object
+        licenseCaps:
+          description: Licenses assigned to the Logical Device
+          items:
+            type: string
+          type: array
+        platformSettings:
+          $ref: '#/components/schemas/ReferenceObject'
+          type: object
+      type: object
+    ChassisMemory:
+      properties:
+        array:
+          format: int32
+          type: integer
+        bank:
+          format: int32
+          type: integer
+        capacity:
+          format: int32
+          type: integer
+        id:
+          format: int32
+          type: integer
+        location:
+          type: string
+        model:
+          type: string
+        operability:
+          type: string
+        operationalState:
+          type: string
+        performance:
+          type: string
+        power:
+          type: string
+        serialNumber:
+          type: string
+        thermalStatus:
+          type: string
+        vendor:
+          type: string
+      type: object
+    ChassisInstanceSummaryListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ChassisInstanceSummary'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ReferenceObject:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
       type: object
     TaskStatus:
       properties:
@@ -4430,559 +4314,6 @@ components:
         type:
           type: string
       type: object
-    IBaseDevice:
-      properties:
-        accessPolicy:
-          $ref: '#/components/schemas/IPolicyModel'
-          type: object
-        advanced:
-          $ref: '#/components/schemas/IAdvanced'
-          type: object
-        description:
-          type: string
-        healthMessage:
-          type: string
-        healthPolicy:
-          $ref: '#/components/schemas/IHealthPolicy'
-          type: object
-        healthStatus:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        model:
-          type: string
-        modelId:
-          type: string
-        modelNumber:
-          type: string
-        modelType:
-          type: string
-        name:
-          type: string
-        role:
-          type: string
-        status:
-          type: string
-        sw_version:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IPolicyLockData:
-      description: Represents information about a policy's lock status.
-      properties:
-        lock:
-          description: Boolean indicating whether the policy must be locked or unlocked. When set to 'true' policy is locked and when set to 'false' will unlock the policy.
-          type: boolean
-        lockParentsInHierarchy:
-          description: Boolean indicating whether the policy and all parents in hierarchy must be locked or unlocked. When set to 'true' policy and parents in hierarchy are locked and will 'unlock' when set to false.
-          type: boolean
-        metadata:
-          $ref: '#/components/schemas/IPolicyLockMetadata'
-          description: Object representing metadata attributes for Policy Lock.
-          type: object
-        policy:
-          $ref: '#/components/schemas/IReference'
-          description: specifies the details of the policy which was locked
-          type: object
-        status:
-          description: String indicating whether the policy is locked
-          enum:
-          - LOCKED
-          - UNLOCKED
-          type: string
-        type:
-          description: Type must be PolicyLock
-          type: string
-      required:
-      - policy
-      - status
-      - type
-      type: object
-    Domain:
-      description: The details about the domain.
-      properties:
-        id:
-          description: Unique UUID of this domain
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
-          type: object
-        name:
-          description: Name of the domain.
-          type: string
-        type:
-          description: Domain type definition (fixed).
-          type: string
-        uuid:
-          type: string
-      type: object
-    ChassisInstanceSummary:
-      description: Description of Chassis Instance Summary api
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        instanceList:
-          description: List of all instances on the chassis
-          items:
-            $ref: '#/components/schemas/SummaryInstanceModel'
-            type: object
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        modifiedTime:
-          description: Time (in ISO 8601 format) when this instance data was obtained from chassis
-          type: string
-        name:
-          type: string
-        type:
-          description: Type of the instance summary. This is always InstanceSummary
-          type: string
-        version:
-          type: string
-      type: object
-    ChassisSnmpSettings:
-      description: Description of Chassis SnmpSettings policy
-      properties:
-        description:
-          type: string
-        id:
-          description: Unique Identifier of the Snmp Settings Policy.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          description: Object representing metadata attributes for the Snmp Settings policy.
-          type: object
-        name:
-          type: string
-        snmpAdminInstance:
-          $ref: '#/components/schemas/LogicalDevicePolicy'
-          description: Details of the logical device that is SNMP Admin Instance
-          type: object
-        type:
-          description: Type of the Snmp Settings policy; this value is always SnmpSetting.
-          type: string
-        version:
-          type: string
-      type: object
-    IPolicyModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    LogicalDeviceMetadata:
-      properties:
-        containerDetails:
-          $ref: '#/components/schemas/IBaseDevice'
-          type: object
-        deviceRecordDetails:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        domain:
-          $ref: '#/components/schemas/Domain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    BreakoutInterface:
-      properties:
-        breakOutType:
-          enum:
-          - FOUR_X_TEN
-          - FOUR_X_TEN_TWENTYFIVE
-          - FOUR_X_HUNDRED
-          - TWO_X_HUNDRED
-          - TWO_X_TWOHUNDRED
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        ignoreWarning:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/EpmRequestMetadata'
-          type: object
-        name:
-          type: string
-        targetInterfaces:
-          items:
-            $ref: '#/components/schemas/IReference'
-            type: object
-          type: array
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    ChassisMemory:
-      properties:
-        array:
-          format: int32
-          type: integer
-        bank:
-          format: int32
-          type: integer
-        capacity:
-          format: int32
-          type: integer
-        id:
-          format: int32
-          type: integer
-        location:
-          type: string
-        model:
-          type: string
-        operability:
-          type: string
-        operationalState:
-          type: string
-        performance:
-          type: string
-        power:
-          type: string
-        serialNumber:
-          type: string
-        thermalStatus:
-          type: string
-        vendor:
-          type: string
-      type: object
-    IAdvanced:
-      properties:
-        enableOGS:
-          type: boolean
-      type: object
-    HealthThreshold:
-      properties:
-        type:
-          type: string
-        value:
-          format: int32
-          type: integer
-      type: object
-    DeviceRegistration:
-      description: Data required for auto registration. This is applicable only for CREATE request
-      properties:
-        accessPolicy:
-          $ref: '#/components/schemas/DeviceAcessPolicy'
-          type: object
-        deviceGroup:
-          $ref: '#/components/schemas/ReferenceObject'
-          type: object
-        licenseCaps:
-          description: Licenses assigned to the Logical Device
-          items:
-            type: string
-          type: array
-        platformSettings:
-          $ref: '#/components/schemas/ReferenceObject'
-          type: object
-      type: object
-    EvaluateChassisOperation:
-      properties:
-        breakoutType:
-          type: string
-        breakoutTypeSelected:
-          type: string
-        description:
-          type: string
-        evaluateAction:
-          type: string
-        id:
-          type: string
-        interfaceUUID:
-          type: string
-        interfaceUsages:
-          items:
-            $ref: '#/components/schemas/IUsageData'
-            type: object
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        operationType:
-          type: string
-        readinessState:
-          enum:
-          - READY
-          - NOT_READY
-          - READY_WITH_WARNING
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    ITarget:
-      description: This is the target device.
-      properties:
-        description:
-          type: string
-        id:
-          description: Unique ID of the device.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: Name of the device.
-          type: string
-        type:
-          description: Device
-          type: string
-        version:
-          type: string
-      type: object
-    PhysicalInterface:
-      properties:
-        adminState:
-          enum:
-          - ENABLED
-          - DISABLED
-          - ONLINE
-          - BUSY
-          - ENABLE_IN_PROGRESS
-          - DISABLE_IN_PROGRESS
-          type: string
-        channelGroupId:
-          format: int32
-          type: integer
-        description:
-          type: string
-        hardware:
-          $ref: '#/components/schemas/IInterfaceHardwareContainer'
-          type: object
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        portType:
-          enum:
-          - DATA
-          - DATA_SHARING
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    ChassisInterfaceMetadata:
-      properties:
-        breakoutCapability:
-          type: string
-        breakoutFactor:
-          type: string
-        breakoutType:
-          enum:
-          - FOUR_X_TEN
-          - FOUR_X_TEN_TWENTYFIVE
-          - FOUR_X_HUNDRED
-          - TWO_X_HUNDRED
-          - TWO_X_TWOHUNDRED
-          type: string
-        domain:
-          $ref: '#/components/schemas/Domain'
-          type: object
-        instances:
-          items:
-            $ref: '#/components/schemas/IFTDInterface'
-            type: object
-          type: array
-        isBreakOutCapable:
-          type: boolean
-        isBreakoutCapable:
-          type: boolean
-        isLocked:
-          type: boolean
-        isSplitInterface:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          type: object
-        lockingStatus:
-          $ref: '#/components/schemas/IPolicyLockData'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        mediaType:
-          type: string
-        netModEventState:
-          type: string
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          type: object
-        sfpType:
-          type: string
-        sfptype:
-          type: string
-        supportedSpeed:
-          type: string
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    ChassisStorageController:
-      properties:
-        id:
-          format: int32
-          type: integer
-        model:
-          type: string
-        operability:
-          type: string
-        operationalState:
-          type: string
-        partNumber:
-          type: string
-        serialNumber:
-          type: string
-        storageLocalDisk:
-          items:
-            $ref: '#/components/schemas/ChassisStorageLocalDisk'
-            type: object
-          type: array
-        thermalStatus:
-          type: string
-        vendor:
-          type: string
-      type: object
-    IFTDInterface:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        ifname:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    ISubTask:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        status:
-          type: string
-        target:
-          $ref: '#/components/schemas/ITarget'
-          type: object
-      type: object
-    ChassisConversionDeviceModel:
-      description: Represents the payload required for a Device for Chassis Conversion
-      properties:
-        displayName:
-          description: Display name of the device after conversion
-          type: string
-        id:
-          description: UUID of the Device
-          type: string
-        ipv4:
-          $ref: '#/components/schemas/IPV4'
-          description: IPv4 bootstrap details for the device after conversion
-          type: object
-        ipv6:
-          $ref: '#/components/schemas/IPV6'
-          description: IPv6 bootstrap details for the device after conversion
-          type: object
-        natID:
-          type: string
-        regKey:
-          type: string
-      type: object
     DeviceGroup:
       description: A model representing a DeviceGroup.
       properties:
@@ -5016,6 +4347,173 @@ components:
           description: Version number of the response object.
           type: string
       type: object
+    ChassisInventorySummary:
+      properties:
+        description:
+          type: string
+        fanList:
+          description: List of all fans on the chassis
+          items:
+            $ref: '#/components/schemas/ChassisFan'
+            type: object
+          type: array
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        memoryList:
+          description: List of all memory units on the chassis
+          items:
+            $ref: '#/components/schemas/ChassisMemory'
+            type: object
+          type: array
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        modifiedTime:
+          description: Time (in ISO 8601 format) when this inventory data was obtained from chassis
+          type: string
+        name:
+          type: string
+        powerSupplyList:
+          description: List of all power supplies on the chassis
+          items:
+            $ref: '#/components/schemas/ChassisPowerSupply'
+            type: object
+          type: array
+        processorList:
+          description: List of all processors on the chassis
+          items:
+            $ref: '#/components/schemas/ChassisProcessor'
+            type: object
+          type: array
+        securityModuleList:
+          description: List of all security modules on the chassis
+          items:
+            $ref: '#/components/schemas/ChassisSecurityModule'
+            type: object
+          type: array
+        storageControllerList:
+          description: List of all storage controllers on the chassis
+          items:
+            $ref: '#/components/schemas/ChassisStorageController'
+            type: object
+          type: array
+        type:
+          description: Type of the inventory summary. This is always InventorySummary
+          type: string
+        version:
+          type: string
+      type: object
+    MgmtBootstrap:
+      description: Management bootstrap for Logical Device
+      properties:
+        adminPassword:
+          description: Admin Password to login to the FTD. This is applicable only for CREATE request
+          type: string
+        dnsServers:
+          type: string
+        firepowerManagerIP:
+          description: Manager IP to manage the FTD from
+          type: string
+        firewallMode:
+          description: Firewall Mode for Logical Device. Possible values are 'routed'/'transparent'
+          type: string
+        fqdn:
+          description: FQDN configuration for the Logical Device. This is applicable only for CREATE request
+          type: string
+        ipv4:
+          $ref: '#/components/schemas/IPV4'
+          description: IPv4 details for Logical Device. This is applicable only for CREATE request
+          type: object
+        ipv6:
+          $ref: '#/components/schemas/IPV6'
+          description: IPv6 details for Logical Device. This is applicable only for CREATE request
+          type: object
+        natId:
+          type: string
+        permitExpertMode:
+          description: Permit Expert mode for CLI. Possible values are 'yes'/'no'
+          type: string
+        registrationKey:
+          type: string
+        searchDomain:
+          type: string
+      type: object
+    SummaryInterfaceModel:
+      properties:
+        adminDuplex:
+          type: string
+        adminSpeed:
+          type: string
+        adminState:
+          type: string
+        autoNegotiation:
+          type: string
+        mediaType:
+          type: string
+        name:
+          type: string
+        operationalSpeed:
+          type: string
+        operationalState:
+          type: string
+        portType:
+          type: string
+        receivedBytes:
+          type: string
+        transmittedBytes:
+          type: string
+        type:
+          type: string
+      type: object
+    DeviceAcessPolicy:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    DeviceConversionReadinessData:
+      properties:
+        errorMsgs:
+          items:
+            type: string
+          type: array
+        status:
+          enum:
+          - READY
+          - NOT_READY
+          type: string
+      type: object
+    DeviceConversionReadinessDeviceEntity:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        readinessStatus:
+          $ref: '#/components/schemas/DeviceConversionReadinessData'
+          type: object
+        type:
+          type: string
+      type: object
     ErrorResponse:
       properties:
         category:
@@ -5038,91 +4536,330 @@ components:
           - WARN
           type: string
       type: object
-    FMCManagedChassis:
-      description: Represents the chassis of the FMC Managed Device.
+    ChassisFan:
       properties:
-        chassisHostName:
+        id:
+          format: int32
+          type: integer
+        model:
           type: string
-        chassisMode:
-          description: Describes the mode of the chassis, native/multi-instance
-          enum:
-          - MULTIINSTANCE
-          - NATIVE
-          - MULTIINSTANCE_LEGACY
+        module:
+          format: int32
+          type: integer
+        operability:
           type: string
-        chassisName:
-          description: Describes the name of the chassis.
+        operationalState:
           type: string
+        power:
+          type: string
+        serialNumber:
+          type: string
+        thermalStatus:
+          type: string
+        tray:
+          format: int32
+          type: integer
+        vendor:
+          type: string
+      type: object
+    ChassisStorageLocalDisk:
+      properties:
+        id:
+          format: int32
+          type: integer
+        model:
+          type: string
+        operability:
+          type: string
+        serialNumber:
+          type: string
+        thermalStatus:
+          type: string
+        vendor:
+          type: string
+      type: object
+    ITarget:
+      description: This is the target device.
+      properties:
         description:
           type: string
-        deviceGroup:
-          $ref: '#/components/schemas/DeviceGroup'
-          description: Refers to the device group
-          type: object
         id:
-          description: UUID of the chassis.
+          description: Unique ID of the device.
           type: string
-        isConnected:
-          description: Tells if the device is connected to FMC or not
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the device.
+          type: string
+        type:
+          description: Device
+          type: string
+        version:
+          type: string
+      type: object
+    EvaluateChassisOperationListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/EvaluateChassisOperation'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    MetadataUser:
+      description: This object defines details about the user.
+      properties:
+        id:
+          description: The unique UUID of the user
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Contains the self referencing links to this resource
+          type: object
+        name:
+          description: Name of the user.
+          type: string
+        type:
+          description: The user type (fixed).
+          type: string
+      type: object
+    LogicalDevicePolicy:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ChassisInterfaceSummaryListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ChassisInterfaceSummary'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
           type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    ChassisConversionDeviceModel:
+      description: Represents the payload required for a Device for Chassis Conversion
+      properties:
+        displayName:
+          description: Display name of the device after conversion
+          type: string
+        id:
+          description: UUID of the Device
+          type: string
+        ipv4:
+          $ref: '#/components/schemas/IPV4'
+          description: IPv4 bootstrap details for the device after conversion
+          type: object
+        ipv6:
+          $ref: '#/components/schemas/IPV6'
+          description: IPv6 bootstrap details for the device after conversion
+          type: object
+        natID:
+          type: string
+        regKey:
+          type: string
+      type: object
+    IPolicyModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    HealthThreshold:
+      properties:
+        type:
+          type: string
+        value:
+          format: int32
+          type: integer
+      type: object
+    ChassisSecurityModule:
+      properties:
+        availableCores:
+          format: int32
+          type: integer
+        id:
+          format: int32
+          type: integer
+        model:
+          type: string
+        operability:
+          type: string
+        operationalState:
+          type: string
+        partNumber:
+          type: string
+        serialNumber:
+          type: string
+        totalCores:
+          format: int32
+          type: integer
+        vendor:
+          type: string
+      type: object
+    ChassisProcessor:
+      properties:
+        id:
+          format: int32
+          type: integer
+        model:
+          type: string
+        operability:
+          type: string
+        operationalState:
+          type: string
+        serialNumber:
+          type: string
+        thermalStatus:
+          type: string
+        type:
+          type: string
+        vendor:
+          type: string
+      type: object
+    IHealthPolicy:
+      description: Description of Health Policy.
+      properties:
+        basePolicyID:
+          type: string
+        defaultPolicy:
+          type: boolean
+        description:
+          description: Description of Health Policy.
+          type: string
+        healthModules:
+          items:
+            $ref: '#/components/schemas/HealthModule'
+            type: object
+          type: array
+        id:
+          description: Unique identifier (UUID) representing the Health policy.
+          type: string
         links:
           $ref: '#/components/schemas/ILinks'
           description: Object containing links to this resource.
           type: object
         metadata:
           $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes of the Device.
+          description: Object representing metadata attributes for the Health policy.
           type: object
-        model:
-          description: Describes model type of the chassis.
+        name:
+          description: User-specified name of the Health policy.
           type: string
-        modelNumber:
-          description: Model number of the registered device.
+        policyType:
           type: string
-        natID:
-          description: Unique ID for a Network address translation (NAT)  (optional; used for chassis registration). If the chassis to be registered and the Firepower Management Center are separated by a NAT device, enter a unique NAT ID.
-          type: string
-        regKey:
-          description: Registration Key that you entered while configuring FMC on the device.
-          type: string
-        swBuild:
-          type: string
-        swVersion:
-          description: Chassis version
-          type: string
+        setting:
+          $ref: '#/components/schemas/HealthSetting'
+          type: object
         type:
-          description: Type of the payload. This will always be FMCManagedChassis.
+          description: Type of the Health policy; this value is always HealthPolicy.
           type: string
         version:
+          description: Version number of the response object.
           type: string
-      required:
-      - regKey
       type: object
-    ErrorMessagesContainer:
+    EtherChannelInterface:
       properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
+        adminState:
+          enum:
+          - ENABLED
+          - DISABLED
+          - ONLINE
+          - BUSY
+          - ENABLE_IN_PROGRESS
+          - DISABLE_IN_PROGRESS
           type: string
         description:
-          description: More details about the error.
           type: string
-        details:
-          description: More details about the error.
+        etherChannelId:
+          format: int32
+          type: integer
+        hardware:
+          $ref: '#/components/schemas/IInterfaceHardwareContainer'
+          type: object
+        id:
           type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
+        lacpMode:
           enum:
-          - ERROR
-          - WARN
+          - ACTIVE
+          - 'ON'
+          - PASSIVE
+          type: string
+        lacpRate:
+          enum:
+          - DEFAULT
+          - FAST
+          - NORMAL
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        portType:
+          enum:
+          - DATA
+          - DATA_SHARING
+          type: string
+        selectedInterfaces:
+          items:
+            $ref: '#/components/schemas/IFTDInterface'
+            type: object
+          type: array
+        type:
+          type: string
+        version:
           type: string
       type: object
     ChassisInterface:
@@ -5180,31 +4917,81 @@ components:
           description: Type of the payload. This will always be ChassisInterface.
           type: string
       type: object
-    PagingContainer:
+    PhysicalInterface:
       properties:
-        count:
+        adminState:
+          enum:
+          - ENABLED
+          - DISABLED
+          - ONLINE
+          - BUSY
+          - ENABLE_IN_PROGRESS
+          - DISABLE_IN_PROGRESS
+          type: string
+        channelGroupId:
           format: int32
           type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
+        description:
+          type: string
+        hardware:
+          $ref: '#/components/schemas/IInterfaceHardwareContainer'
+          type: object
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        portType:
+          enum:
+          - DATA
+          - DATA_SHARING
+          type: string
+        type:
+          type: string
+        version:
+          type: string
       type: object
-    ChassisInterfaceSummary:
+    IUsageData:
+      properties:
+        action:
+          type: string
+        cause:
+          type: string
+        conflictType:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        policyGroupInfo:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        severity:
+          type: string
+        type:
+          type: string
+      type: object
+    ChassisInstanceSummary:
+      description: Description of Chassis Instance Summary api
       properties:
         description:
           type: string
         id:
           type: string
-        interfaceList:
-          description: List of all interfaces on the chassis
+        instanceList:
+          description: List of all instances on the chassis
           items:
-            $ref: '#/components/schemas/SummaryInterfaceModel'
+            $ref: '#/components/schemas/SummaryInstanceModel'
             type: object
           type: array
         links:
@@ -5214,149 +5001,102 @@ components:
           $ref: '#/components/schemas/Metadata'
           type: object
         modifiedTime:
-          description: Time (in ISO 8601 format) when this interface data was obtained from chassis
+          description: Time (in ISO 8601 format) when this instance data was obtained from chassis
           type: string
         name:
           type: string
         type:
-          description: Type of the interface summary. This is always InterfaceSummary
+          description: Type of the instance summary. This is always InstanceSummary
           type: string
         version:
           type: string
       type: object
-    ChassisAppInfo:
+    ChassisConversionMetadata:
       properties:
-        appVersion:
-          description: Image version
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
+        domain:
+          $ref: '#/components/schemas/Domain'
           type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        type:
-          description: Type of the data. This will be AppInfo
-          type: string
-        version:
-          type: string
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    FMCManagedChassisListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/FMCManagedChassis'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ChassisInterfaceEventListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/ChassisInterfaceEvent'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ReadOnly:
-      description: Defines the read only conditions if the referenced resource is read only.
-      properties:
-        reason:
-          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          description: True if this resource us read only and false otherwise.
+        isLocked:
           type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          type: object
+        task:
+          $ref: '#/components/schemas/TaskStatus'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
       type: object
-    DeviceAcessPolicy:
+    IPolicyLockMetadata:
+      description: Represents the information of the Metadata for Policy lock
       properties:
-        description:
-          type: string
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        lockedByUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          description: String indicating the user who has locked the policy. This field will be empty if the policy is not locked.
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      required:
+      - lockedByUser
+      type: object
+    NetworkModuleListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/NetworkModule'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    EtherChannelInterfaceListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/EtherChannelInterface'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IMetadataUser:
+      properties:
         id:
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
         name:
           type: string
         type:
-          type: string
-        version:
-          type: string
-      type: object
-    ChassisAllInterfacesModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    ChassisFan:
-      properties:
-        id:
-          format: int32
-          type: integer
-        model:
-          type: string
-        module:
-          format: int32
-          type: integer
-        operability:
-          type: string
-        operationalState:
-          type: string
-        power:
-          type: string
-        serialNumber:
-          type: string
-        thermalStatus:
-          type: string
-        tray:
-          format: int32
-          type: integer
-        vendor:
           type: string
       type: object
     ChassisAllInterfacesModelListContainer:
@@ -5371,31 +5111,158 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    SummaryInterfaceModel:
+    Metadata:
+      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
       properties:
-        adminDuplex:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          description: Defines the domains this instance belongs to (if applicable).
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          description: The last user who modified this instance.
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          description: Details regarding the read only status of this instance
+          type: object
+        timestamp:
+          description: The last updated timestamp.
+          format: int32
+          type: integer
+      type: object
+    BreakoutInterface:
+      properties:
+        breakOutType:
+          enum:
+          - FOUR_X_TEN
+          - FOUR_X_TEN_TWENTYFIVE
+          - FOUR_X_HUNDRED
+          - TWO_X_HUNDRED
+          - TWO_X_TWOHUNDRED
           type: string
-        adminSpeed:
+        description:
           type: string
-        adminState:
+        id:
           type: string
-        autoNegotiation:
+        ignoreWarning:
           type: string
-        mediaType:
-          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/EpmRequestMetadata'
+          type: object
         name:
           type: string
-        operationalSpeed:
+        targetInterfaces:
+          items:
+            $ref: '#/components/schemas/IReference'
+            type: object
+          type: array
+        type:
           type: string
-        operationalState:
+        version:
           type: string
-        portType:
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
           type: string
-        receivedBytes:
+        code:
+          description: More details about the error.
           type: string
-        transmittedBytes:
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    NetworkModule:
+      description: Represents the Network Module of the Chassis.
+      properties:
+        description:
+          description: A one line description of the EPM.
+          type: string
+        id:
+          description: Describes the UUID of the module object.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        model:
+          description: Model of the EPM inserted.
+          type: string
+        moduleState:
+          description: User configurable setting to power On/Off EPM (permissible values enabled/disabled).
+          enum:
+          - ENABLED
+          - DISABLED
+          - ONLINE
+          - BUSY
+          - ENABLE_IN_PROGRESS
+          - DISABLE_IN_PROGRESS
+          type: string
+        name:
+          description: Name of the Network Module.
+          type: string
+        numOfPorts:
+          description: Number of Ports present on EPM, Maryland has 4 ports, Brentwood has 8 ports.
+          format: int32
+          type: integer
+        operationState:
+          description: Operation State returned by FXOS, (sample values operable/inoperable/degraded/powered-off/power-problem/voltage-problem/thermal-problem/performance-problem/accessibility-problem/disabled ).
+          type: string
+        slotId:
+          description: ' Slot ID of the EPM slot.'
           type: string
         type:
+          description: Payload type. This will always be NetworkModule.
+          type: string
+        vendor:
+          description: Describes the vendor name of the module.
+          type: string
+        version:
+          type: string
+      type: object
+    IReference:
+      description: Contains reference information.
+      properties:
+        id:
+          description: Unique identifier representing resource.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        name:
+          description: User chosen resource name.
+          type: string
+        type:
+          description: Response object associated with resource.
           type: string
       type: object
     JoinInterface:
@@ -5424,111 +5291,237 @@ components:
         version:
           type: string
       type: object
-    SubInterfaceListContainer:
+    ChassisAllInterfacesModel:
       properties:
-        items:
-          $ref: '#/components/schemas/SubInterface'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    HealthAlertConfig:
-      properties:
-        enabled:
-          type: boolean
-        name:
-          type: string
-        thresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-      type: object
-    IHealthPolicy:
-      description: Description of Health Policy.
-      properties:
-        basePolicyID:
-          type: string
-        defaultPolicy:
-          type: boolean
         description:
-          description: Description of Health Policy.
           type: string
-        healthModules:
-          items:
-            $ref: '#/components/schemas/HealthModule'
-            type: object
-          type: array
         id:
-          description: Unique identifier (UUID) representing the Health policy.
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
           type: object
         metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the Health policy.
+          $ref: '#/components/schemas/Metadata'
           type: object
         name:
-          description: User-specified name of the Health policy.
           type: string
-        policyType:
-          type: string
-        setting:
-          $ref: '#/components/schemas/HealthSetting'
-          type: object
         type:
-          description: Type of the Health policy; this value is always HealthPolicy.
           type: string
         version:
-          description: Version number of the response object.
           type: string
       type: object
-    ChassisSecurityModule:
+    EvaluateChassisOperation:
       properties:
-        availableCores:
-          format: int32
-          type: integer
-        id:
-          format: int32
-          type: integer
-        model:
+        breakoutType:
           type: string
-        operability:
+        breakoutTypeSelected:
+          type: string
+        description:
+          type: string
+        evaluateAction:
+          type: string
+        id:
+          type: string
+        interfaceUUID:
+          type: string
+        interfaceUsages:
+          items:
+            $ref: '#/components/schemas/IUsageData'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        operationType:
+          type: string
+        readinessState:
+          enum:
+          - READY
+          - NOT_READY
+          - READY_WITH_WARNING
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
+      properties:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
+      type: object
+    LogicalDevice:
+      description: Logical Device Model for Chassis
+      properties:
+        adminState:
+          description: Admin State of the Logical Device. Possible values are 'enabled'/'disabled'
+          type: string
+        description:
+          type: string
+        deviceRegistration:
+          $ref: '#/components/schemas/DeviceRegistration'
+          type: object
+        externalPortLink:
+          description: Interface assignment to the Logical Device. Atleast one interface should be assigned
+          items:
+            $ref: '#/components/schemas/ExternalPortLink'
+            type: object
+          type: array
+        ftdApplicationVersion:
+          description: FTD version. This is applicable only for CREATE request
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        logicalDeviceMode:
+          type: string
+        managementBootstrap:
+          $ref: '#/components/schemas/MgmtBootstrap'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/LogicalDeviceMetadata'
+          type: object
+        name:
+          description: Logical Device name. This is applicable only for CREATE request
           type: string
         operationalState:
           type: string
-        partNumber:
+        resourceProfile:
+          $ref: '#/components/schemas/ReferenceObject'
+          description: Resource Profile assigned to the Logical Device
+          type: object
+        type:
           type: string
-        serialNumber:
+        version:
           type: string
-        totalCores:
+      type: object
+    DeviceConversionReadinessModel:
+      description: Represents the payload required to check readiness of Devices for Conversion
+      properties:
+        conversionType:
+          description: Conversion type
+          enum:
+          - NATIVE_TO_MULTI_INSTANCE
+          type: string
+        description:
+          type: string
+        devices:
+          description: List of devices which user wants to verify for conversion
+          items:
+            $ref: '#/components/schemas/DeviceConversionReadinessDeviceEntity'
+            type: object
+          type: array
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    SummaryFaultModel:
+      properties:
+        cause:
+          type: string
+        code:
+          type: string
+        createdTime:
+          type: string
+        description:
+          type: string
+        highestSeverity:
+          type: string
+        id:
           format: int32
           type: integer
-        vendor:
+        isAcknowledged:
+          type: string
+        lastTransitionTime:
+          type: string
+        occurrence:
+          type: string
+        severity:
+          type: string
+      type: object
+    SummaryInstanceModel:
+      properties:
+        adminState:
+          type: string
+        coresUsed:
+          format: int32
+          type: integer
+        deployType:
+          type: string
+        ipv4:
+          $ref: '#/components/schemas/IPV4'
+          type: object
+        ipv6:
+          $ref: '#/components/schemas/IPV6'
+          type: object
+        managementPort:
+          type: string
+        name:
+          type: string
+        operationalState:
+          type: string
+        slotId:
+          type: string
+        startupVersion:
+          type: string
+      type: object
+    IFTDInterface:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        ifname:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
           type: string
       type: object
   parameters:
-    offset:
-      description: Index of first item to return.
+    limit:
+      description: Number of items to return.
       in: query
-      name: offset
+      name: limit
       required: false
       schema:
         format: int32
         type: integer
-    domainUUID:
-      description: Domain UUID
-      in: path
-      name: domainUUID
-      required: true
-      schema:
-        type: string
     expanded:
       description: If set to true, the GET response displays a list of objects with additional attributes.
       in: query
@@ -5536,10 +5529,17 @@ components:
       required: false
       schema:
         type: boolean
-    limit:
-      description: Number of items to return.
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+    offset:
+      description: Index of first item to return.
       in: query
-      name: limit
+      name: offset
       required: false
       schema:
         format: int32

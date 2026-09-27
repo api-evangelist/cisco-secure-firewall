@@ -149,77 +149,6 @@ paths:
       - Changelogs
 components:
   schemas:
-    ChangelogPage:
-      properties:
-        count:
-          description: The total number of results available.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/Changelog'
-          type: array
-        limit:
-          description: The number of results retrieved.
-          example: 50
-          format: int32
-          type: integer
-        offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
-          format: int32
-          type: integer
-      type: object
-    Event:
-      properties:
-        action:
-          description: The action performed.
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          - ERROR
-          - UNKNOWN
-          type: string
-        changeRequestName:
-          description: The name of the Change Request associated with the Change Log event.
-          example: LH-12345
-          type: string
-        changeRequestUid:
-          description: The unique identifier, represented as a UUID, of the Change Request associated with the Change Log event.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-        commands:
-          description: The commands executed, if any, by the Change Log event.
-          type: string
-        date:
-          description: The time (UTC; represented using the RFC-3339 standard) at which the Change Log Event occurred.
-          format: date-time
-          type: string
-        description:
-          description: A human-readable description of the Change Log event.
-          type: string
-        diff:
-          description: A textual Diff representation of the changes made to the configuration.
-          type: string
-        username:
-          description: The username of the user that triggered the Change Log event.
-          example: myuser@cisco.com
-          type: string
-      type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
     CommonApiError:
       properties:
         details:
@@ -286,13 +215,78 @@ components:
       required:
       - uid
       type: object
+    Event:
+      properties:
+        action:
+          description: The action performed.
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - ERROR
+          - UNKNOWN
+          type: string
+        changeRequestName:
+          description: The name of the Change Request associated with the Change Log event.
+          example: LH-12345
+          type: string
+        changeRequestUid:
+          description: The unique identifier, represented as a UUID, of the Change Request associated with the Change Log event.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        commands:
+          description: The commands executed, if any, by the Change Log event.
+          type: string
+        date:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the Change Log Event occurred.
+          format: date-time
+          type: string
+        description:
+          description: A human-readable description of the Change Log event.
+          type: string
+        diff:
+          description: A textual Diff representation of the changes made to the configuration.
+          type: string
+        username:
+          description: The username of the user that triggered the Change Log event.
+          example: myuser@cisco.com
+          type: string
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    ChangelogPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/Changelog'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
   responses:
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
     http405MethodNotAllowed:
       content:
         application/json:
@@ -305,6 +299,12 @@ components:
           schema:
             $ref: '#/components/schemas/AuthenticationError'
       description: Request not authorized.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
     http400BadRequest:
       content:
         application/json:

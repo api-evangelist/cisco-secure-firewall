@@ -319,25 +319,118 @@ paths:
         default:
           $ref: '#/components/responses/GeneralError'
 components:
+  schemas:
+    RBACGroupAssignmentRole:
+      type: object
+      description: Represent entity of RBAC group role assignment
+      required:
+      - id
+      - groupId
+      - roleId
+      - tenantId
+      properties:
+        id:
+          type: string
+          format: uuid
+        groupId:
+          type: string
+          format: uuid
+        roleId:
+          type: string
+          format: uuid
+        tenantId:
+          type: string
+          format: uuid
+    RBACCustomRole:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        enterpriseId:
+          type: string
+          format: uuid
+        productId:
+          type: integer
+        roleDisplayName:
+          type: string
+        roleDescription:
+          type: string
+        scopes:
+          type: array
+          items:
+            type: string
+    RBACCustomRoleInput:
+      type: object
+      properties:
+        product:
+          type: integer
+        roleDisplayName:
+          type: string
+        roleDescription:
+          type: string
+        scopes:
+          type: array
+          items:
+            type: string
+        applicationScopeIdToScope:
+          type: object
+          properties:
+            applicationScope:
+              type: string
+            scopes:
+              type: array
+              items:
+                type: string
+    RBACUserAssignmentRole:
+      type: object
+      description: Represent entity of RBAC user role assignment
+      required:
+      - id
+      - userId
+      - enterpriseId
+      - tenantId
+      - roleId
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        enterpriseId:
+          type: string
+          format: uuid
+        tenantId:
+          type: string
+          format: uuid
+        roleId:
+          type: string
+          format: uuid
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    RoleAssignmentIdInput:
+      type: object
+      description: role and its tenant id input
+      required:
+      - roleId
+      - tenantId
+      properties:
+        roleId:
+          type: string
+          format: uuid
+        tenantId:
+          type: string
+          format: uuid
   responses:
-    InternalServerError:
-      description: Internal Server Error - The server encountered an unexpected condition which prevented it from fulfilling the request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: The request is not able to be authorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    PredefinedFailed:
-      description: Predefined Failed - if group role exit for user. it will be returned
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     GeneralError:
       description: An unknown error occurred
       headers:
@@ -365,125 +458,32 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Insufficient permissions to complete the request
+    Unauthorized:
+      description: The request is not able to be authorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    PredefinedFailed:
+      description: Predefined Failed - if group role exit for user. it will be returned
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
     NoContent:
       description: No content
-  schemas:
-    RBACCustomRoleInput:
-      type: object
-      properties:
-        product:
-          type: integer
-        roleDisplayName:
-          type: string
-        roleDescription:
-          type: string
-        scopes:
-          type: array
-          items:
-            type: string
-        applicationScopeIdToScope:
-          type: object
-          properties:
-            applicationScope:
-              type: string
-            scopes:
-              type: array
-              items:
-                type: string
-    RBACCustomRole:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        enterpriseId:
-          type: string
-          format: uuid
-        productId:
-          type: integer
-        roleDisplayName:
-          type: string
-        roleDescription:
-          type: string
-        scopes:
-          type: array
-          items:
-            type: string
-    RBACUserAssignmentRole:
-      type: object
-      description: Represent entity of RBAC user role assignment
-      required:
-      - id
-      - userId
-      - enterpriseId
-      - tenantId
-      - roleId
-      properties:
-        id:
-          type: string
-          format: uuid
-        userId:
-          type: string
-        enterpriseId:
-          type: string
-          format: uuid
-        tenantId:
-          type: string
-          format: uuid
-        roleId:
-          type: string
-          format: uuid
-    RoleAssignmentIdInput:
-      type: object
-      description: role and its tenant id input
-      required:
-      - roleId
-      - tenantId
-      properties:
-        roleId:
-          type: string
-          format: uuid
-        tenantId:
-          type: string
-          format: uuid
-    RBACGroupAssignmentRole:
-      type: object
-      description: Represent entity of RBAC group role assignment
-      required:
-      - id
-      - groupId
-      - roleId
-      - tenantId
-      properties:
-        id:
-          type: string
-          format: uuid
-        groupId:
-          type: string
-          format: uuid
-        roleId:
-          type: string
-          format: uuid
-        tenantId:
-          type: string
-          format: uuid
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
+    InternalServerError:
+      description: Internal Server Error - The server encountered an unexpected condition which prevented it from fulfilling the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Insufficient permissions to complete the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   headers:
     Date:
       schema:

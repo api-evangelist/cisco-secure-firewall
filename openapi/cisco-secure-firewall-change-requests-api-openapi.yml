@@ -201,81 +201,7 @@ paths:
       tags:
       - Change Requests
 components:
-  responses:
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http405MethodNotAllowed:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Method not allowed.
-    http401Unauthorised:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
-    http400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
   schemas:
-    ChangeRequest:
-      properties:
-        description:
-          description: The description of the Change Request.
-          example: my change request description
-          type: string
-        name:
-          description: The name of the Change Request.
-          example: my change request
-          type: string
-        uid:
-          description: The unique identifier, represented as a UUID, of the Change Request.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - name
-      - uid
-      type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
-    ChangeRequestCreateInput:
-      properties:
-        description:
-          description: The description of the change request in Security Cloud Control.
-          example: Changes related to securing the new branch.
-          type: string
-        name:
-          description: The name of the change request in Security Cloud Control.
-          example: SecureNewBranchChange
-          minLength: 1
-          type: string
-      required:
-      - name
-      type: object
     CommonApiError:
       properties:
         details:
@@ -329,6 +255,80 @@ components:
           format: int32
           type: integer
       type: object
+    ChangeRequestCreateInput:
+      properties:
+        description:
+          description: The description of the change request in Security Cloud Control.
+          example: Changes related to securing the new branch.
+          type: string
+        name:
+          description: The name of the change request in Security Cloud Control.
+          example: SecureNewBranchChange
+          minLength: 1
+          type: string
+      required:
+      - name
+      type: object
+    ChangeRequest:
+      properties:
+        description:
+          description: The description of the Change Request.
+          example: my change request description
+          type: string
+        name:
+          description: The name of the Change Request.
+          example: my change request
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the Change Request.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - name
+      - uid
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+  responses:
+    http405MethodNotAllowed:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Method not allowed.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

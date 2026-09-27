@@ -3030,97 +3030,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    Object:
-      type: object
-    RESTElement:
-      properties:
-        caCert:
-          type: string
-        capabilities:
-          items:
-            type: string
-          type: array
-        cert:
-          type: string
-        description:
-          type: string
-        host:
-          type: string
-        id:
-          type: string
-        key:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        llelement:
-          $ref: '#/components/schemas/LLElement'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        miscData:
-          $ref: '#/components/schemas/LLMiscData'
-          type: object
-        model:
-          type: string
-        name:
-          type: string
-        registrationDate:
-          format: int32
-          type: integer
-        status:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    RESTElementListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/RESTElement'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
     RESTIndicatorListContainer:
       properties:
         items:
@@ -3132,291 +3041,6 @@ components:
         paging:
           $ref: '#/components/schemas/PagingContainer'
           type: object
-      type: object
-    RESTObservation:
-      properties:
-        count:
-          format: int32
-          type: integer
-        data:
-          $ref: '#/components/schemas/RESTObservationData'
-          type: object
-        elementId:
-          type: string
-        elementName:
-          type: string
-        llobservation:
-          $ref: '#/components/schemas/LLObservation'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-        type:
-          type: string
-      type: object
-    LLObservationData:
-      properties:
-        actionTaken:
-          type: string
-        miscData:
-          $ref: '#/components/schemas/LLMiscData'
-          type: object
-        type:
-          type: string
-        value:
-          type: string
-      type: object
-    LLObservable:
-      properties:
-        customProperty:
-          $ref: '#/components/schemas/LLFeedProperty'
-          type: object
-        dbid:
-          type: string
-        effectiveProperty:
-          $ref: '#/components/schemas/LLFeedProperty'
-          type: object
-        id:
-          type: string
-        indicatorCount:
-          format: int32
-          type: integer
-        inheritedProperty:
-          $ref: '#/components/schemas/LLFeedProperty'
-          type: object
-        miscData:
-          $ref: '#/components/schemas/LLMiscData'
-          type: object
-        observableType:
-          type: string
-        type:
-          type: string
-        unEncryptedDBId:
-          type: string
-        updatedAt:
-          format: int32
-          type: integer
-        value:
-          type: string
-        version:
-          type: string
-      type: object
-    RESTFeedProperty:
-      properties:
-        action:
-          type: string
-        allowlist:
-          type: boolean
-        expirationTime:
-          format: int32
-          type: integer
-        llfeedProperty:
-          $ref: '#/components/schemas/LLFeedProperty'
-          type: object
-        publish:
-          type: boolean
-        tags:
-          $ref: '#/components/schemas/LLTags'
-          type: object
-        ttl:
-          format: int32
-          type: integer
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    LLIncident:
-      properties:
-        actionTaken:
-          type: string
-        description:
-          type: string
-        equation:
-          $ref: '#/components/schemas/LLEquationNode'
-          type: object
-        feedId:
-          type: string
-        id:
-          type: string
-        indicatorId:
-          type: string
-        indicatorName:
-          type: string
-        name:
-          type: string
-        observations:
-          items:
-            $ref: '#/components/schemas/LLObservation'
-            type: object
-          type: array
-        property:
-          $ref: '#/components/schemas/LLFeedProperty'
-          type: object
-        publish:
-          type: boolean
-        realizedAt:
-          format: int32
-          type: integer
-        sourceName:
-          type: string
-        status:
-          type: string
-        type:
-          type: string
-        updatedAt:
-          format: int32
-          type: integer
-        version:
-          type: string
-      type: object
-    LLSettings:
-      additionalProperties:
-        $ref: '#/components/schemas/Object'
-        type: object
-      type: object
-    RESTTidSource:
-      properties:
-        availableCollections:
-          items:
-            $ref: '#/components/schemas/RESTCollectionTopic'
-            type: object
-          type: array
-        caCert:
-          type: string
-        checksum:
-          type: string
-        clientCert:
-          type: string
-        clientPrivateKey:
-          type: string
-        consumedIndicators:
-          format: int32
-          type: integer
-        consumedObservables:
-          format: int32
-          type: integer
-        consumedUnsupportedObservables:
-          format: int32
-          type: integer
-        delivery:
-          type: string
-        description:
-          type: string
-        discardedIndicators:
-          format: int32
-          type: integer
-        discoveryInfo:
-          items:
-            $ref: '#/components/schemas/RESTCollectionTopic'
-            type: object
-          type: array
-        downloadOn:
-          type: boolean
-        feedConfig:
-          $ref: '#/components/schemas/LLFeedConfig'
-          type: object
-        feedContent:
-          type: string
-        feedStatus:
-          type: string
-        feedType:
-          type: string
-        finishTime:
-          format: int32
-          type: integer
-        id:
-          type: string
-        invalidObservables:
-          format: int32
-          type: integer
-        lastRun:
-          format: int32
-          type: integer
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        llfeedConfig:
-          $ref: '#/components/schemas/LLFeedConfig'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        nextRun:
-          format: int32
-          type: integer
-        params:
-          $ref: '#/components/schemas/LLParams'
-          type: object
-        passwd:
-          type: string
-        property:
-          $ref: '#/components/schemas/RESTFeedProperty'
-          type: object
-        refresh:
-          format: int32
-          type: integer
-        runNow:
-          type: boolean
-        startHour:
-          format: int32
-          type: integer
-        statusMsg:
-          $ref: '#/components/schemas/LLStatusMsg'
-          type: object
-        subscribedCollections:
-          items:
-            $ref: '#/components/schemas/RESTCollectionTopic'
-            type: object
-          type: array
-        totalDiscardedIndicators:
-          format: int32
-          type: integer
-        totalIndicators:
-          format: int32
-          type: integer
-        totalInvalidObservables:
-          format: int32
-          type: integer
-        totalObservables:
-          format: int32
-          type: integer
-        totalUnsupportedObservables:
-          format: int32
-          type: integer
-        type:
-          type: string
-        uri:
-          type: string
-        username:
-          type: string
-        version:
-          type: string
       type: object
     LLEquationNode:
       properties:
@@ -3438,59 +3062,15 @@ components:
         value:
           type: string
       type: object
-    RESTIncidentListContainer:
+    ILinks:
+      description: This defines the self referencing links for the given resource.
       properties:
-        items:
-          $ref: '#/components/schemas/RESTIncident'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    LLAdditionalProperties:
-      additionalProperties:
-        type: string
-      type: object
-    RESTIndicatorEquationNode:
-      properties:
-        applyCondition:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
           type: string
-        children:
-          items:
-            $ref: '#/components/schemas/RESTIndicatorEquationNode'
-            type: object
-          type: array
-        condition:
+        self:
+          description: Full resource URL path to reference this particular resource.
           type: string
-        isRealized:
-          type: boolean
-        item:
-          $ref: '#/components/schemas/LLEquationNode'
-          type: object
-        op:
-          type: string
-        type:
-          type: string
-        value:
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
       type: object
     LLCollectionTopic:
       properties:
@@ -3517,47 +3097,130 @@ components:
         type:
           type: string
       type: object
-    LLStatusMsg:
+    LLTags:
       additionalProperties:
-        $ref: '#/components/schemas/LLAdditionalProperties'
-        type: object
+        type: string
       type: object
-    RESTObservableListContainer:
+    RESTObservable:
       properties:
-        items:
-          $ref: '#/components/schemas/RESTObservable'
-          type: array
+        customProperty:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        description:
+          type: string
+        effectiveProperty:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        id:
+          type: string
+        indicatorCount:
+          format: int32
+          type: integer
+        inheritedProperty:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
           type: object
-      type: object
-    RESTObservationData:
-      properties:
-        actionTaken:
+        name:
           type: string
-        llobservationData:
-          $ref: '#/components/schemas/LLObservationData'
+        observable:
+          $ref: '#/components/schemas/LLObservable'
           type: object
-        miscData:
-          $ref: '#/components/schemas/LLMiscData'
-          type: object
+        observableType:
+          type: string
         type:
           type: string
+        updatedAt:
+          format: int32
+          type: integer
         value:
           type: string
+        version:
+          type: string
       type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
+    LLIndicator:
       properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
+        action:
           type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
+        customProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        description:
           type: string
+        effectiveProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        equation:
+          $ref: '#/components/schemas/LLEquationNode'
+          type: object
+        expirationTime:
+          format: int32
+          type: integer
+        feedId:
+          type: string
+        fileId:
+          type: string
+        id:
+          type: string
+        indicatorVersion:
+          type: string
+        inheritedProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        invalid:
+          type: boolean
+        name:
+          type: string
+        noPartialIncidents:
+          format: int32
+          type: integer
+        noRealizedIncidents:
+          format: int32
+          type: integer
+        observables:
+          items:
+            $ref: '#/components/schemas/LLObservable'
+            type: object
+          type: array
+        pending:
+          items:
+            type: string
+          type: array
+        publish:
+          type: boolean
+        rawData:
+          type: string
+        sourceName:
+          type: string
+        stale:
+          type: boolean
+        tags:
+          $ref: '#/components/schemas/LLTags'
+          type: object
+        ttl:
+          format: int32
+          type: integer
+        type:
+          type: string
+        unsupported:
+          type: boolean
+        updatedAt:
+          format: int32
+          type: integer
+        version:
+          type: string
+      type: object
+    LLAdditionalProperties:
+      additionalProperties:
+        type: string
+      type: object
+    LLParams:
+      additionalProperties:
+        type: string
       type: object
     RESTDiscoveryInfo:
       properties:
@@ -3679,69 +3342,179 @@ components:
         version:
           type: string
       type: object
-    LLElement:
+    RESTObservableListContainer:
       properties:
-        action:
-          type: string
-        caCert:
-          type: string
-        capabilities:
-          items:
-            type: string
+        items:
+          $ref: '#/components/schemas/RESTObservable'
           type: array
-        cert:
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        key:
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    LLObservationData:
+      properties:
+        actionTaken:
           type: string
         miscData:
           $ref: '#/components/schemas/LLMiscData'
-          type: object
-        model:
-          type: string
-        name:
-          type: string
-        registrationDate:
-          format: int32
-          type: integer
-        status:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    RESTCollectionTopic:
-      properties:
-        collectionAddress:
-          type: string
-        collectionContentBinding:
-          type: string
-        collectionDescription:
-          type: string
-        collectionMessageBinding:
-          type: string
-        collectionName:
-          type: string
-        collectionPollIntervalInMinutes:
-          format: int32
-          type: integer
-        collectionProtocolBinding:
-          type: string
-        collectionSubType:
-          type: string
-        llcollectionTopic:
-          $ref: '#/components/schemas/LLCollectionTopic'
           type: object
         type:
           type: string
         value:
           type: string
       type: object
-    RESTTaxiiCollection:
+    RESTObservation:
+      properties:
+        count:
+          format: int32
+          type: integer
+        data:
+          $ref: '#/components/schemas/RESTObservationData'
+          type: object
+        elementId:
+          type: string
+        elementName:
+          type: string
+        llobservation:
+          $ref: '#/components/schemas/LLObservation'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+        type:
+          type: string
+      type: object
+    LLObservation:
+      properties:
+        count:
+          format: int32
+          type: integer
+        data:
+          $ref: '#/components/schemas/LLObservationData'
+          type: object
+        elementId:
+          type: string
+        elementName:
+          type: string
+        timestamp:
+          format: int32
+          type: integer
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    LLFeedProperty:
+      properties:
+        action:
+          type: string
+        allowlist:
+          type: boolean
+        expirationTime:
+          format: int32
+          type: integer
+        publish:
+          type: boolean
+        tags:
+          $ref: '#/components/schemas/LLTags'
+          type: object
+        ttl:
+          format: int32
+          type: integer
+      type: object
+    RESTIncidentListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/RESTIncident'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    RESTTidSourceListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/RESTTidSource'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    RESTIncident:
+      properties:
+        actionTaken:
+          type: string
+        description:
+          type: string
+        equation:
+          $ref: '#/components/schemas/RESTIndicatorEquationNode'
+          type: object
+        feedId:
+          type: string
+        id:
+          type: string
+        indicatorId:
+          type: string
+        indicatorName:
+          type: string
+        iteratorId:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        llincident:
+          $ref: '#/components/schemas/LLIncident'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        observations:
+          items:
+            $ref: '#/components/schemas/RESTObservation'
+            type: object
+          type: array
+        property:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        realizedAt:
+          format: int32
+          type: integer
+        sourceName:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        updatedAt:
+          format: int32
+          type: integer
+        version:
+          type: string
+      type: object
+    RESTTidSource:
       properties:
         availableCollections:
           items:
@@ -3861,107 +3634,6 @@ components:
         version:
           type: string
       type: object
-    LLObservation:
-      properties:
-        count:
-          format: int32
-          type: integer
-        data:
-          $ref: '#/components/schemas/LLObservationData'
-          type: object
-        elementId:
-          type: string
-        elementName:
-          type: string
-        timestamp:
-          format: int32
-          type: integer
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    RESTTidSourceListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/RESTTidSource'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    RESTIncident:
-      properties:
-        actionTaken:
-          type: string
-        description:
-          type: string
-        equation:
-          $ref: '#/components/schemas/RESTIndicatorEquationNode'
-          type: object
-        feedId:
-          type: string
-        id:
-          type: string
-        indicatorId:
-          type: string
-        indicatorName:
-          type: string
-        iteratorId:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        llincident:
-          $ref: '#/components/schemas/LLIncident'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        observations:
-          items:
-            $ref: '#/components/schemas/RESTObservation'
-            type: object
-          type: array
-        property:
-          $ref: '#/components/schemas/RESTFeedProperty'
-          type: object
-        realizedAt:
-          format: int32
-          type: integer
-        sourceName:
-          type: string
-        status:
-          type: string
-        type:
-          type: string
-        updatedAt:
-          format: int32
-          type: integer
-        version:
-          type: string
-      type: object
-    LLMiscData:
-      additionalProperties:
-        type: string
-      type: object
     RESTSettings:
       properties:
         description:
@@ -3984,40 +3656,7 @@ components:
         version:
           type: string
       type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    LLFeedProperty:
+    RESTFeedProperty:
       properties:
         action:
           type: string
@@ -4026,6 +3665,9 @@ components:
         expirationTime:
           format: int32
           type: integer
+        llfeedProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
         publish:
           type: boolean
         tags:
@@ -4035,198 +3677,169 @@ components:
           format: int32
           type: integer
       type: object
-    LLParams:
+    LLMiscData:
       additionalProperties:
         type: string
       type: object
-    RESTObservable:
+    LLIncident:
       properties:
-        customProperty:
-          $ref: '#/components/schemas/RESTFeedProperty'
-          type: object
+        actionTaken:
+          type: string
         description:
           type: string
-        effectiveProperty:
-          $ref: '#/components/schemas/RESTFeedProperty'
-          type: object
-        id:
-          type: string
-        indicatorCount:
-          format: int32
-          type: integer
-        inheritedProperty:
-          $ref: '#/components/schemas/RESTFeedProperty'
-          type: object
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        observable:
-          $ref: '#/components/schemas/LLObservable'
-          type: object
-        observableType:
-          type: string
-        type:
-          type: string
-        updatedAt:
-          format: int32
-          type: integer
-        value:
-          type: string
-        version:
-          type: string
-      type: object
-    LLTags:
-      additionalProperties:
-        type: string
-      type: object
-    RESTIndicator:
-      properties:
-        containsInvalid:
-          type: boolean
-        containsUnsupported:
-          type: boolean
-        customProperty:
-          $ref: '#/components/schemas/RESTFeedProperty'
-          type: object
-        description:
-          type: string
-        effectiveProperty:
-          $ref: '#/components/schemas/RESTFeedProperty'
-          type: object
-        equation:
-          $ref: '#/components/schemas/RESTIndicatorEquationNode'
-          type: object
-        feedId:
-          type: string
-        fileId:
-          type: string
-        id:
-          type: string
-        indicator:
-          $ref: '#/components/schemas/LLIndicator'
-          type: object
-        indicatorVersion:
-          type: string
-        inheritedProperty:
-          $ref: '#/components/schemas/RESTFeedProperty'
-          type: object
-        iteratorId:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        noPartialIncidents:
-          format: int32
-          type: integer
-        noRealizedIncidents:
-          format: int32
-          type: integer
-        observables:
-          items:
-            $ref: '#/components/schemas/RESTObservable'
-            type: object
-          type: array
-        pending:
-          items:
-            type: string
-          type: array
-        rawData:
-          type: string
-        sourceName:
-          type: string
-        type:
-          type: string
-        updatedAt:
-          format: int32
-          type: integer
-        version:
-          type: string
-      type: object
-    LLIndicator:
-      properties:
-        action:
-          type: string
-        customProperty:
-          $ref: '#/components/schemas/LLFeedProperty'
-          type: object
-        description:
-          type: string
-        effectiveProperty:
-          $ref: '#/components/schemas/LLFeedProperty'
-          type: object
         equation:
           $ref: '#/components/schemas/LLEquationNode'
           type: object
-        expirationTime:
-          format: int32
-          type: integer
         feedId:
-          type: string
-        fileId:
           type: string
         id:
           type: string
-        indicatorVersion:
+        indicatorId:
           type: string
-        inheritedProperty:
-          $ref: '#/components/schemas/LLFeedProperty'
-          type: object
-        invalid:
-          type: boolean
+        indicatorName:
+          type: string
         name:
           type: string
-        noPartialIncidents:
-          format: int32
-          type: integer
-        noRealizedIncidents:
-          format: int32
-          type: integer
-        observables:
+        observations:
           items:
-            $ref: '#/components/schemas/LLObservable'
+            $ref: '#/components/schemas/LLObservation'
             type: object
           type: array
-        pending:
-          items:
-            type: string
-          type: array
+        property:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
         publish:
           type: boolean
-        rawData:
-          type: string
-        sourceName:
-          type: string
-        stale:
-          type: boolean
-        tags:
-          $ref: '#/components/schemas/LLTags'
-          type: object
-        ttl:
+        realizedAt:
           format: int32
           type: integer
+        sourceName:
+          type: string
+        status:
+          type: string
         type:
           type: string
-        unsupported:
-          type: boolean
         updatedAt:
           format: int32
           type: integer
         version:
           type: string
       type: object
-    LLHashMap:
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    RESTObservationData:
+      properties:
+        actionTaken:
+          type: string
+        llobservationData:
+          $ref: '#/components/schemas/LLObservationData'
+          type: object
+        miscData:
+          $ref: '#/components/schemas/LLMiscData'
+          type: object
+        type:
+          type: string
+        value:
+          type: string
+      type: object
+    LLElement:
+      properties:
+        action:
+          type: string
+        caCert:
+          type: string
+        capabilities:
+          items:
+            type: string
+          type: array
+        cert:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        key:
+          type: string
+        miscData:
+          $ref: '#/components/schemas/LLMiscData'
+          type: object
+        model:
+          type: string
+        name:
+          type: string
+        registrationDate:
+          format: int32
+          type: integer
+        status:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    LLStatusMsg:
       additionalProperties:
-        type: string
+        $ref: '#/components/schemas/LLAdditionalProperties'
+        type: object
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
       type: object
     LLFeedConfig:
       properties:
@@ -4374,14 +3987,394 @@ components:
         version:
           type: string
       type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    RESTCollectionTopic:
+      properties:
+        collectionAddress:
+          type: string
+        collectionContentBinding:
+          type: string
+        collectionDescription:
+          type: string
+        collectionMessageBinding:
+          type: string
+        collectionName:
+          type: string
+        collectionPollIntervalInMinutes:
+          format: int32
+          type: integer
+        collectionProtocolBinding:
+          type: string
+        collectionSubType:
+          type: string
+        llcollectionTopic:
+          $ref: '#/components/schemas/LLCollectionTopic'
+          type: object
+        type:
+          type: string
+        value:
+          type: string
+      type: object
+    RESTIndicator:
+      properties:
+        containsInvalid:
+          type: boolean
+        containsUnsupported:
+          type: boolean
+        customProperty:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        description:
+          type: string
+        effectiveProperty:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        equation:
+          $ref: '#/components/schemas/RESTIndicatorEquationNode'
+          type: object
+        feedId:
+          type: string
+        fileId:
+          type: string
+        id:
+          type: string
+        indicator:
+          $ref: '#/components/schemas/LLIndicator'
+          type: object
+        indicatorVersion:
+          type: string
+        inheritedProperty:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        iteratorId:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        noPartialIncidents:
+          format: int32
+          type: integer
+        noRealizedIncidents:
+          format: int32
+          type: integer
+        observables:
+          items:
+            $ref: '#/components/schemas/RESTObservable'
+            type: object
+          type: array
+        pending:
+          items:
+            type: string
+          type: array
+        rawData:
+          type: string
+        sourceName:
+          type: string
+        type:
+          type: string
+        updatedAt:
+          format: int32
+          type: integer
+        version:
+          type: string
+      type: object
+    LLObservable:
+      properties:
+        customProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        dbid:
+          type: string
+        effectiveProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        id:
+          type: string
+        indicatorCount:
+          format: int32
+          type: integer
+        inheritedProperty:
+          $ref: '#/components/schemas/LLFeedProperty'
+          type: object
+        miscData:
+          $ref: '#/components/schemas/LLMiscData'
+          type: object
+        observableType:
+          type: string
+        type:
+          type: string
+        unEncryptedDBId:
+          type: string
+        updatedAt:
+          format: int32
+          type: integer
+        value:
+          type: string
+        version:
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    RESTIndicatorEquationNode:
+      properties:
+        applyCondition:
+          type: string
+        children:
+          items:
+            $ref: '#/components/schemas/RESTIndicatorEquationNode'
+            type: object
+          type: array
+        condition:
+          type: string
+        isRealized:
+          type: boolean
+        item:
+          $ref: '#/components/schemas/LLEquationNode'
+          type: object
+        op:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+      type: object
+    Object:
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    RESTTaxiiCollection:
+      properties:
+        availableCollections:
+          items:
+            $ref: '#/components/schemas/RESTCollectionTopic'
+            type: object
+          type: array
+        caCert:
+          type: string
+        checksum:
+          type: string
+        clientCert:
+          type: string
+        clientPrivateKey:
+          type: string
+        consumedIndicators:
+          format: int32
+          type: integer
+        consumedObservables:
+          format: int32
+          type: integer
+        consumedUnsupportedObservables:
+          format: int32
+          type: integer
+        delivery:
+          type: string
+        description:
+          type: string
+        discardedIndicators:
+          format: int32
+          type: integer
+        discoveryInfo:
+          items:
+            $ref: '#/components/schemas/RESTCollectionTopic'
+            type: object
+          type: array
+        downloadOn:
+          type: boolean
+        feedConfig:
+          $ref: '#/components/schemas/LLFeedConfig'
+          type: object
+        feedContent:
+          type: string
+        feedStatus:
+          type: string
+        feedType:
+          type: string
+        finishTime:
+          format: int32
+          type: integer
+        id:
+          type: string
+        invalidObservables:
+          format: int32
+          type: integer
+        lastRun:
+          format: int32
+          type: integer
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        llfeedConfig:
+          $ref: '#/components/schemas/LLFeedConfig'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        nextRun:
+          format: int32
+          type: integer
+        params:
+          $ref: '#/components/schemas/LLParams'
+          type: object
+        passwd:
+          type: string
+        property:
+          $ref: '#/components/schemas/RESTFeedProperty'
+          type: object
+        refresh:
+          format: int32
+          type: integer
+        runNow:
+          type: boolean
+        startHour:
+          format: int32
+          type: integer
+        statusMsg:
+          $ref: '#/components/schemas/LLStatusMsg'
+          type: object
+        subscribedCollections:
+          items:
+            $ref: '#/components/schemas/RESTCollectionTopic'
+            type: object
+          type: array
+        totalDiscardedIndicators:
+          format: int32
+          type: integer
+        totalIndicators:
+          format: int32
+          type: integer
+        totalInvalidObservables:
+          format: int32
+          type: integer
+        totalObservables:
+          format: int32
+          type: integer
+        totalUnsupportedObservables:
+          format: int32
+          type: integer
+        type:
+          type: string
+        uri:
+          type: string
+        username:
+          type: string
+        version:
+          type: string
+      type: object
+    LLSettings:
+      additionalProperties:
+        $ref: '#/components/schemas/Object'
+        type: object
+      type: object
+    RESTElementListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/RESTElement'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    RESTElement:
+      properties:
+        caCert:
+          type: string
+        capabilities:
+          items:
+            type: string
+          type: array
+        cert:
+          type: string
+        description:
+          type: string
+        host:
+          type: string
+        id:
+          type: string
+        key:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        llelement:
+          $ref: '#/components/schemas/LLElement'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        miscData:
+          $ref: '#/components/schemas/LLMiscData'
+          type: object
+        model:
+          type: string
+        name:
+          type: string
+        registrationDate:
+          format: int32
+          type: integer
+        status:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    LLHashMap:
+      additionalProperties:
+        type: string
+      type: object
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
     offset:
       description: Index of first item to return.
       in: query
@@ -4405,6 +4398,13 @@ components:
       required: true
       schema:
         type: string
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

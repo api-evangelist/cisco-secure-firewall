@@ -978,26 +978,151 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    IReadonly:
+    IApplicationModel:
+      description: Represents an ApplicationModel containing Application Types, Tags, Productivity, Risk, and Categories.
       properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    IApplicationMonitoring:
-      properties:
-        enable:
-          type: boolean
-        monitoredApplications:
+        appId:
+          description: Application Identifier stored in internal database (VDB).
+          format: int32
+          type: integer
+        applicationTypes:
+          description: List of objects representing application types.
           items:
-            $ref: '#/components/schemas/IApplicationModel'
+            $ref: '#/components/schemas/IApplicationType'
             type: object
           type: array
+        categories:
+          description: List of objects representing application categories.
+          items:
+            $ref: '#/components/schemas/IApplicationCategory'
+            type: object
+          type: array
+        deprecated:
+          description: Boolean representing if the application has been deprecated.
+          type: boolean
+        description:
+          description: Application resource description.
+          type: string
+        id:
+          description: Unique identifier (UUID) for the application.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the application model.
+          type: object
+        name:
+          description: Name of the application.
+          type: string
+        overridable:
+          description: Boolean indicating whether object values can be overridden.
+          type: boolean
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: An object override allows you to define an alternate value for an object on a device or domain.
+          type: object
+        productivity:
+          $ref: '#/components/schemas/IApplicationProductivity'
+          description: The application productivity associated with this application.
+          type: object
+        risk:
+          $ref: '#/components/schemas/IApplicationRisk'
+          description: The application risk associated with this application.
+          type: object
+        tags:
+          description: List of objects representing application tags.
+          items:
+            $ref: '#/components/schemas/IApplicationTag'
+            type: object
+          type: array
+        type:
+          description: Type of the response object. This value is always Application.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    IHealthPolicy:
+      description: Description of Health Policy.
+      properties:
+        basePolicyID:
+          type: string
+        defaultPolicy:
+          type: boolean
+        description:
+          description: Description of Health Policy.
+          type: string
+        healthModules:
+          items:
+            $ref: '#/components/schemas/HealthModule'
+            type: object
+          type: array
+        id:
+          description: Unique identifier (UUID) representing the Health policy.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the Health policy.
+          type: object
+        name:
+          description: User-specified name of the Health policy.
+          type: string
+        policyType:
+          type: string
+        setting:
+          $ref: '#/components/schemas/HealthSetting'
+          type: object
+        type:
+          description: Type of the Health policy; this value is always HealthPolicy.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    IDHCPIPv6OtherServerOptions:
+      properties:
+        address:
+          $ref: '#/components/schemas/IDHCPIPv6DNSServer'
+          type: object
+        domainName:
+          $ref: '#/components/schemas/IDHCPIPv6DomainName'
+          type: object
+        option:
+          enum:
+          - NIS
+          - NISP
+          - SIP
+          - SNTP
+          type: string
+      type: object
+    IOverrideDefaultFragmentSetting:
+      properties:
+        chain:
+          format: int32
+          type: integer
+        size:
+          format: int32
+          type: integer
+        timeout:
+          format: int32
+          type: integer
       type: object
     IFTDInterface:
       properties:
@@ -1018,6 +1143,328 @@ components:
         type:
           type: string
         version:
+          type: string
+      type: object
+    IPathMonitoring:
+      properties:
+        enable:
+          type: boolean
+        monitoredIp:
+          type: string
+        type:
+          enum:
+          - AUTO
+          - PEER_IPV4
+          - PEER_IPV6
+          - AUTO4
+          - AUTO6
+          type: string
+      type: object
+    IFTDDeviceHABootStrap:
+      properties:
+        encKeyGenerationScheme:
+          enum:
+          - AUTO
+          - CUSTOM
+          type: string
+        isEncryptionEnabled:
+          type: boolean
+        lanFailover:
+          $ref: '#/components/schemas/IFTDDeviceHAFailoverLink'
+          type: object
+        sharedKey:
+          type: string
+        statefulFailover:
+          $ref: '#/components/schemas/IFTDDeviceHAFailoverLink'
+          type: object
+        useSameLinkForFailovers:
+          type: boolean
+      required:
+      - lanFailover
+      - statefulFailover
+      - useSameLinkForFailovers
+      type: object
+    IStaticIPContainer:
+      properties:
+        address:
+          type: string
+        addressVariable:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        netmask:
+          type: string
+        pool:
+          $ref: '#/components/schemas/IReference'
+          type: object
+      type: object
+    IARPConfigContainer:
+      properties:
+        enableAlias:
+          type: boolean
+        ipAddress:
+          type: string
+        macAddress:
+          type: string
+      type: object
+    FTDHAMonitoredInterfacesListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/FTDHAMonitoredInterfaces'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IApplicationTag:
+      description: Represents an ApplicationTag.
+      properties:
+        description:
+          description: Application tag resource description.
+          type: string
+        id:
+          description: Unique identifier for the application tag.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the application tag.
+          type: object
+        name:
+          description: Name of the application tag.
+          type: string
+        overridable:
+          description: Boolean indicating whether object values can be overridden.
+          type: boolean
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: An object override allows you to define an alternate value for an object on a device or domain.
+          type: object
+        type:
+          description: Type of the response object. This value is always ApplicationTag.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    IIPv6DHCPContainer:
+      properties:
+        clientPd:
+          $ref: '#/components/schemas/IIPv6ClientPdContainer'
+          type: object
+        enableDHCPClient:
+          type: boolean
+        ipv6DHCPPool:
+          $ref: '#/components/schemas/IDHCPIPv6Pool'
+          type: object
+        ipv6Prefixes:
+          items:
+            $ref: '#/components/schemas/IIPv6PrefixContainer'
+            type: object
+          type: array
+        obtainIPV6DefaultRouteDHCP:
+          type: boolean
+      type: object
+    IAdvanced:
+      properties:
+        enableOGS:
+          type: boolean
+      type: object
+    IApplicationProductivity:
+      description: Represents an ApplicationProductivity.
+      properties:
+        description:
+          description: Application productivity resource description.
+          type: string
+        id:
+          description: Unique identifier for the application productivity.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the application productivity.
+          type: object
+        name:
+          description: Name of the application productivity.
+          type: string
+        overridable:
+          description: Boolean indicating whether object values can be overridden.
+          type: boolean
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: An object override allows you to define an alternate value for an object on a device or domain.
+          type: object
+        type:
+          description: Type of the response object. This value is always ApplicationProductivity.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    FTDHAIPv4Configuration:
+      properties:
+        activeIPv4Address:
+          type: string
+        activeIPv4Mask:
+          type: string
+        standbyIPv4Address:
+          type: string
+      type: object
+    IFMCAccessConfig:
+      properties:
+        allowedNetworks:
+          items:
+            $ref: '#/components/schemas/INetworkAddress'
+            type: object
+          type: array
+        enableAccess:
+          type: boolean
+      type: object
+    IInterfaceDeviceModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        interfaces:
+          items:
+            $ref: '#/components/schemas/IFTDInterface'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IFTDHAFailoverInterfacePolicyTrigger:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        interfaceHoldTime:
+          format: int32
+          type: integer
+        interfacePollTime:
+          format: int32
+          type: integer
+        interfacePollTimeUnit:
+          enum:
+          - SEC
+          - MSEC
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        noOfFailedInterfaceLimit:
+          format: int32
+          type: integer
+        peerHoldTime:
+          format: int32
+          type: integer
+        peerHoldTimeUnit:
+          enum:
+          - SEC
+          - MSEC
+          type: string
+        peerPollTime:
+          format: int32
+          type: integer
+        peerPollTimeUnit:
+          enum:
+          - SEC
+          - MSEC
+          type: string
+        percentFailedInterfaceExceed:
+          format: int32
+          type: integer
+        type:
+          type: string
+        version:
+          type: string
+      required:
+      - interfaceHoldTime
+      - interfacePollTime
+      - interfacePollTimeUnit
+      - peerHoldTime
+      - peerHoldTimeUnit
+      - peerPollTime
+      - peerPollTimeUnit
+      type: object
+    FTDHAInterfaceMACAddresses:
+      description: Input Representation of Firepower Threat Defense high availability failover interface MAC addresses record associated with the specified FTD HA pair
+      properties:
+        description:
+          description: User provided resource description
+          type: string
+        failoverActiveMac:
+          description: Interface MAC address in H.H.H format, where H is a 16-bit hexadecimal digit. For example, the MAC address 00-0C-F1-42-4C-DE would be entered as 000C.F142.4CDE
+          type: string
+        failoverStandbyMac:
+          description: Standby MAC Address
+          type: string
+        id:
+          description: Identifier of a Firepower Threat Defense high availability failover interface MAC address
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing related links
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata properties
+          type: object
+        name:
+          description: System chosen name
+          type: string
+        physicalInterface:
+          $ref: '#/components/schemas/FTDBaseInterface'
+          description: User chosen physical interface
+          type: object
+        type:
+          description: Type of the Firepower Threat Defense high availability failover interface MAC address
+          type: string
+        version:
+          description: version
+          type: string
+      required:
+      - failoverActiveMac
+      - failoverStandbyMac
+      - physicalInterface
+      type: object
+    IFTDHAIPv6ActiveStandbyPair:
+      properties:
+        activeIPv6:
+          type: string
+        standbyIPv6:
+          type: string
+      type: object
+    ExpirationLifeTime:
+      properties:
+        preferDateTime:
+          type: string
+        validDateTime:
           type: string
       type: object
     IApplicationType:
@@ -1054,144 +1501,56 @@ components:
           description: Version number of the response object.
           type: string
       type: object
-    IFTDDeviceHAFailoverLink:
+    FTDHAMonitoredInterfaces:
+      description: Input representation of Firepower Threat Defense high availability monitored interface
       properties:
-        activeIP:
+        description:
+          description: Description of the Firepower Threat Defense high availability monitored interface
           type: string
-        interfaceObject:
-          $ref: '#/components/schemas/IFTDBaseInterface'
+        id:
+          description: Unique identifier (UUID) for the Firepower Threat Defense high availability monitored interface
+          type: string
+        ipv4Configuration:
+          $ref: '#/components/schemas/FTDHAIPv4Configuration'
+          description: Global
           type: object
-        logicalName:
-          type: string
-        standbyIP:
-          type: string
-        subnetMask:
-          type: string
-        useIPv6Address:
+        ipv6Configuration:
+          $ref: '#/components/schemas/FTDHAIPv6Configuration'
+          description: IPv6 Configuration
+          type: object
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: URL of the Firepower Threat Defense high availability monitored interface
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata properties
+          type: object
+        monitorForFailures:
+          description: Flag indicating failure for monitored interfaces
           type: boolean
+        name:
+          description: Name of the Firepower Threat Defense high availability monitored interface
+          type: string
+        type:
+          description: Type of the Firepower Threat Defense high availability monitored interface
+          type: string
+        version:
+          description: Firepower Threat Defense high availability monitored interface model version
+          type: string
       required:
-      - activeIP
-      - interfaceObject
-      - logicalName
-      - standbyIP
+      - monitorForFailures
       type: object
-    ExpirationLifeTime:
+    IDHCPIPv6Pool:
       properties:
-        preferDateTime:
-          type: string
-        validDateTime:
-          type: string
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    FTDHAIPv4Configuration:
-      properties:
-        activeIPv4Address:
-          type: string
-        activeIPv4Mask:
-          type: string
-        standbyIPv4Address:
-          type: string
-      type: object
-    IStaticIPContainer:
-      properties:
-        address:
-          type: string
-        addressVariable:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        netmask:
-          type: string
-        pool:
-          $ref: '#/components/schemas/IReference'
-          type: object
-      type: object
-    IPrefixContainer:
-      properties:
-        address:
-          type: string
-        addressVariable:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        advertisement:
-          $ref: '#/components/schemas/IAdvertisement'
-          type: object
-        default:
-          type: boolean
-      type: object
-    IDHCPIPv6DNSServer:
-      properties:
-        importFromInternalServer:
-          type: boolean
-        ipAddresses:
-          items:
-            type: string
-          type: array
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    IBaseDevice:
-      properties:
-        accessPolicy:
-          $ref: '#/components/schemas/IPolicyModel'
-          type: object
-        advanced:
-          $ref: '#/components/schemas/IAdvanced'
-          type: object
         description:
           type: string
-        healthMessage:
-          type: string
-        healthPolicy:
-          $ref: '#/components/schemas/IHealthPolicy'
+        dnsServer:
+          $ref: '#/components/schemas/IDHCPIPv6DNSServer'
           type: object
-        healthStatus:
-          type: string
+        domainName:
+          $ref: '#/components/schemas/IDHCPIPv6DomainName'
+          type: object
         id:
           type: string
         links:
@@ -1200,42 +1559,81 @@ components:
         metadata:
           $ref: '#/components/schemas/IMetadata'
           type: object
-        model:
-          type: string
-        modelId:
-          type: string
-        modelNumber:
-          type: string
-        modelType:
-          type: string
         name:
           type: string
-        role:
-          type: string
-        status:
-          type: string
-        sw_version:
-          type: string
+        otherServerOptions:
+          items:
+            $ref: '#/components/schemas/IDHCPIPv6OtherServerOptions'
+            type: object
+          type: array
         type:
           type: string
         version:
           type: string
       type: object
-    IDHCPIPv6OtherServerOptions:
+    DialHost:
       properties:
-        address:
-          $ref: '#/components/schemas/IDHCPIPv6DNSServer'
-          type: object
-        domainName:
-          $ref: '#/components/schemas/IDHCPIPv6DomainName'
-          type: object
-        option:
-          enum:
-          - NIS
-          - NISP
-          - SIP
-          - SNTP
+        host:
           type: string
+        port:
+          format: int32
+          type: integer
+      type: object
+    IIPv6PrefixContainer:
+      properties:
+        length:
+          type: string
+        name:
+          type: string
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    HealthSetting:
+      properties:
+        alertEvaluationInterval:
+          format: int32
+          type: integer
+        certFileContent:
+          type: string
+        certFileName:
+          type: string
+        certFileType:
+          type: string
+        certPassphrase:
+          type: string
+        configType:
+          type: string
+        dataCollectionInterval:
+          format: int32
+          type: integer
+        dialInHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        dialOutHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        enabledOpenConfig:
+          type: boolean
+        grpcPassword:
+          type: string
+        grpcUsername:
+          type: string
+        readOnly:
+          type: boolean
       type: object
     FTDBaseInterface:
       properties:
@@ -1324,83 +1722,15 @@ components:
         version:
           type: string
       type: object
-    IApplicationProductivity:
-      description: Represents an ApplicationProductivity.
+    IApplicationMonitoring:
       properties:
-        description:
-          description: Application productivity resource description.
-          type: string
-        id:
-          description: Unique identifier for the application productivity.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the application productivity.
-          type: object
-        name:
-          description: Name of the application productivity.
-          type: string
-        overridable:
-          description: Boolean indicating whether object values can be overridden.
+        enable:
           type: boolean
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: An object override allows you to define an alternate value for an object on a device or domain.
-          type: object
-        type:
-          description: Type of the response object. This value is always ApplicationProductivity.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    IOverride:
-      description: Defines the override details for this object.
-      properties:
-        parent:
-          $ref: '#/components/schemas/IReference'
-          description: Link to the parent/global resource which is overriden.
-          type: object
-        target:
-          $ref: '#/components/schemas/IReference'
-          description: The device or the domain target on which this override is enabled.
-          type: object
-      type: object
-    IReference:
-      description: Contains reference information.
-      properties:
-        id:
-          description: Unique identifier representing resource.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        name:
-          description: User chosen resource name.
-          type: string
-        type:
-          description: Response object associated with resource.
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
+        monitoredApplications:
+          items:
+            $ref: '#/components/schemas/IApplicationModel'
+            type: object
+          type: array
       type: object
     IIPv6Container:
       properties:
@@ -1452,24 +1782,70 @@ components:
           format: int32
           type: integer
       type: object
-    IDHCPIPv6DomainName:
+    HealthModule:
       properties:
-        importFromInternalServer:
-          type: boolean
-        names:
+        alertConfig:
           items:
-            type: string
+            $ref: '#/components/schemas/HealthAlertConfig'
+            type: object
           type: array
+        alertEnabled:
+          type: boolean
+        criticalThreshold:
+          format: int32
+          type: integer
+        customThresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+        enabled:
+          type: boolean
+        moduleId:
+          type: string
+        severity:
+          type: string
+        type:
+          type: string
+        warningThreshold:
+          format: int32
+          type: integer
       type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
+    INetworkAddress:
       properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
+        description:
           type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
+        id:
           type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        overridable:
+          type: boolean
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          type: object
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    HealthAlertConfig:
+      properties:
+        enabled:
+          type: boolean
+        name:
+          type: string
+        thresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
       type: object
     FTDHADeviceContainerListContainer:
       properties:
@@ -1483,190 +1859,254 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    HealthSetting:
+    IFTDBaseInterface:
       properties:
-        alertEvaluationInterval:
+        MTU:
           format: int32
           type: integer
-        certFileContent:
+        activeMACAddress:
           type: string
-        certFileName:
-          type: string
-        certFileType:
-          type: string
-        certPassphrase:
-          type: string
-        configType:
-          type: string
-        dataCollectionInterval:
-          format: int32
-          type: integer
-        dialInHosts:
+        applicationMonitoring:
+          $ref: '#/components/schemas/IApplicationMonitoring'
+          type: object
+        arpConfig:
           items:
-            $ref: '#/components/schemas/DialHost'
+            $ref: '#/components/schemas/IARPConfigContainer'
             type: object
           type: array
-        dialOutHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        enabledOpenConfig:
-          type: boolean
-        grpcPassword:
-          type: string
-        grpcUsername:
-          type: string
-        readOnly:
-          type: boolean
-      type: object
-    FTDHAMonitoredInterfaces:
-      description: Input representation of Firepower Threat Defense high availability monitored interface
-      properties:
-        description:
-          description: Description of the Firepower Threat Defense high availability monitored interface
-          type: string
-        id:
-          description: Unique identifier (UUID) for the Firepower Threat Defense high availability monitored interface
-          type: string
-        ipv4Configuration:
-          $ref: '#/components/schemas/FTDHAIPv4Configuration'
-          description: Global
-          type: object
-        ipv6Configuration:
-          $ref: '#/components/schemas/FTDHAIPv6Configuration'
-          description: IPv6 Configuration
-          type: object
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: URL of the Firepower Threat Defense high availability monitored interface
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata properties
-          type: object
-        monitorForFailures:
-          description: Flag indicating failure for monitored interfaces
-          type: boolean
-        name:
-          description: Name of the Firepower Threat Defense high availability monitored interface
-          type: string
-        type:
-          description: Type of the Firepower Threat Defense high availability monitored interface
-          type: string
-        version:
-          description: Firepower Threat Defense high availability monitored interface model version
-          type: string
-      required:
-      - monitorForFailures
-      type: object
-    FTDHAIPv6Configuration:
-      properties:
-        activeIPv6LinkLocalAddress:
-          type: string
-        ipv6ActiveStandbyPair:
-          items:
-            $ref: '#/components/schemas/IFTDHAIPv6ActiveStandbyPair'
-            type: object
-          type: array
-        standbyIPv6LinkLocalAddress:
-          type: string
-      type: object
-    FTDHAInterfaceMACAddressesListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/FTDHAInterfaceMACAddresses'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IDHCPIPv6Pool:
-      properties:
         description:
           type: string
-        dnsServer:
-          $ref: '#/components/schemas/IDHCPIPv6DNSServer'
+        enableAntiSpoofing:
+          type: boolean
+        enableDNSLookup:
+          type: boolean
+        enableSGTPropagate:
+          type: boolean
+        enabled:
+          type: boolean
+        fmcAccessConfig:
+          $ref: '#/components/schemas/IFMCAccessConfig'
           type: object
-        domainName:
-          $ref: '#/components/schemas/IDHCPIPv6DomainName'
-          type: object
+        fragmentReassembly:
+          type: boolean
         id:
           type: string
+        ifname:
+          type: string
+        ipv4:
+          $ref: '#/components/schemas/IIPv4Container'
+          type: object
+        ipv6:
+          $ref: '#/components/schemas/IIPv6Container'
+          type: object
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
+        macAddressPool:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        macLearn:
+          type: boolean
+        macTable:
+          items:
+            type: string
+          type: array
+        managementOnly:
+          type: boolean
         metadata:
           $ref: '#/components/schemas/IMetadata'
           type: object
+        mode:
+          enum:
+          - INLINE
+          - PASSIVE
+          - TAP
+          - ERSPAN
+          - NONE
+          - SWITCHPORT
+          type: string
         name:
           type: string
-        otherServerOptions:
-          items:
-            $ref: '#/components/schemas/IDHCPIPv6OtherServerOptions'
-            type: object
-          type: array
+        overrideDefaultFragmentSetting:
+          $ref: '#/components/schemas/IOverrideDefaultFragmentSetting'
+          type: object
+        pathMonitoring:
+          $ref: '#/components/schemas/IPathMonitoring'
+          type: object
+        priority:
+          format: int32
+          type: integer
+        securityZone:
+          $ref: '#/components/schemas/ISecurityZoneObjectModel'
+          type: object
+        standbyMACAddress:
+          type: string
         type:
           type: string
         version:
           type: string
       type: object
-    IIPv4Container:
+    IDHCPContainer:
       properties:
-        dhcp:
-          $ref: '#/components/schemas/IDHCPContainer'
-          type: object
-        pppoe:
-          $ref: '#/components/schemas/IPPPoEContianer'
-          type: object
-        static:
-          $ref: '#/components/schemas/IStaticIPContainer'
-          type: object
-      type: object
-    Duration:
-      properties:
-        preferLifeTime:
+        dhcpRouteMetric:
           format: int32
           type: integer
-        validLifeTime:
-          format: int32
-          type: integer
+        enableDefaultRouteDHCP:
+          type: boolean
       type: object
-    IApplicationTag:
-      description: Represents an ApplicationTag.
+    IDHCPIPv6DNSServer:
       properties:
+        importFromInternalServer:
+          type: boolean
+        ipAddresses:
+          items:
+            type: string
+          type: array
+      type: object
+    IOverride:
+      description: Defines the override details for this object.
+      properties:
+        parent:
+          $ref: '#/components/schemas/IReference'
+          description: Link to the parent/global resource which is overriden.
+          type: object
+        target:
+          $ref: '#/components/schemas/IReference'
+          description: The device or the domain target on which this override is enabled.
+          type: object
+      type: object
+    IPrefixContainer:
+      properties:
+        address:
+          type: string
+        addressVariable:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        advertisement:
+          $ref: '#/components/schemas/IAdvertisement'
+          type: object
+        default:
+          type: boolean
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
         description:
-          description: Application tag resource description.
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    PreferLifeTime:
+      properties:
+        duration:
+          $ref: '#/components/schemas/Duration'
+          type: object
+        expirationLifeTime:
+          $ref: '#/components/schemas/ExpirationLifeTime'
+          type: object
+      type: object
+    IBaseDevice:
+      properties:
+        accessPolicy:
+          $ref: '#/components/schemas/IPolicyModel'
+          type: object
+        advanced:
+          $ref: '#/components/schemas/IAdvanced'
+          type: object
+        description:
+          type: string
+        healthMessage:
+          type: string
+        healthPolicy:
+          $ref: '#/components/schemas/IHealthPolicy'
+          type: object
+        healthStatus:
           type: string
         id:
-          description: Unique identifier for the application tag.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        model:
+          type: string
+        modelId:
+          type: string
+        modelNumber:
+          type: string
+        modelType:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        status:
+          type: string
+        sw_version:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IReference:
+      description: Contains reference information.
+      properties:
+        id:
+          description: Unique identifier representing resource.
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
           description: Object containing links to this resource.
           type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the application tag.
-          type: object
         name:
-          description: Name of the application tag.
+          description: User chosen resource name.
           type: string
-        overridable:
-          description: Boolean indicating whether object values can be overridden.
-          type: boolean
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: An object override allows you to define an alternate value for an object on a device or domain.
-          type: object
         type:
-          description: Type of the response object. This value is always ApplicationTag.
-          type: string
-        version:
-          description: Version number of the response object.
+          description: Response object associated with resource.
           type: string
       type: object
     IDomain:
@@ -1681,6 +2121,142 @@ components:
         type:
           type: string
       type: object
+    IApplicationCategory:
+      description: Represents an ApplicationCategory.
+      properties:
+        description:
+          description: Application category resource description.
+          type: string
+        id:
+          description: Unique identifier for the application category.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the application category.
+          type: object
+        name:
+          description: Name of the application category.
+          type: string
+        overridable:
+          description: Boolean indicating whether object values can be overridden.
+          type: boolean
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: An object override allows you to define an alternate value for an object on a device or domain.
+          type: object
+        type:
+          description: Type of the response object. This value is always ApplicationCategory.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    Duration:
+      properties:
+        preferLifeTime:
+          format: int32
+          type: integer
+        validLifeTime:
+          format: int32
+          type: integer
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    FTDHAInterfaceMACAddressesListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/FTDHAInterfaceMACAddresses'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IAdvertisement:
+      properties:
+        autoConfig:
+          type: boolean
+        offlink:
+          type: boolean
+        preferLifeTime:
+          $ref: '#/components/schemas/PreferLifeTime'
+          type: object
+      type: object
+    IPPPoEContianer:
+      properties:
+        enableRouteSettings:
+          type: boolean
+        ipAddress:
+          type: string
+        pppAuth:
+          enum:
+          - PAP
+          - CHAP
+          - MSCHAP
+          type: string
+        pppoePassword:
+          type: string
+        pppoeRouteMetric:
+          format: int32
+          type: integer
+        pppoeUser:
+          type: string
+        storeCredsInFlash:
+          type: boolean
+        vpdnGroupName:
+          type: string
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
     IAddressContainer:
       properties:
         address:
@@ -1692,6 +2268,144 @@ components:
           type: boolean
         prefix:
           type: string
+      type: object
+    IIPv4Container:
+      properties:
+        dhcp:
+          $ref: '#/components/schemas/IDHCPContainer'
+          type: object
+        pppoe:
+          $ref: '#/components/schemas/IPPPoEContianer'
+          type: object
+        static:
+          $ref: '#/components/schemas/IStaticIPContainer'
+          type: object
+      type: object
+    FTDHAIPv6Configuration:
+      properties:
+        activeIPv6LinkLocalAddress:
+          type: string
+        ipv6ActiveStandbyPair:
+          items:
+            $ref: '#/components/schemas/IFTDHAIPv6ActiveStandbyPair'
+            type: object
+          type: array
+        standbyIPv6LinkLocalAddress:
+          type: string
+      type: object
+    IApplicationRisk:
+      description: Represents an ApplicationRisk.
+      properties:
+        description:
+          description: Application risk resource description.
+          type: string
+        id:
+          description: Unique identifier for the application risk.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the application risk.
+          type: object
+        name:
+          description: Name of the application risk.
+          type: string
+        overridable:
+          description: Boolean indicating whether object values can be overridden.
+          type: boolean
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: An object override allows you to define an alternate value for an object on a device or domain.
+          type: object
+        type:
+          description: Type of the response object. This value is always ApplicationRisk.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    IIPv6ClientPdContainer:
+      properties:
+        hintPrefixes:
+          items:
+            type: string
+          type: array
+        prefixName:
+          type: string
+      type: object
+    ISecurityZoneObjectModel:
+      properties:
+        description:
+          type: string
+        devices:
+          items:
+            $ref: '#/components/schemas/IInterfaceDeviceModel'
+            type: object
+          type: array
+        id:
+          type: string
+        interfaceMode:
+          enum:
+          - PASSIVE
+          - INLINE
+          - SWITCHED
+          - ROUTED
+          - ASA
+          type: string
+        interfaces:
+          items:
+            $ref: '#/components/schemas/IFTDInterface'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        overridable:
+          type: boolean
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          type: object
+        subType:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IPolicyModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    HealthThreshold:
+      properties:
+        type:
+          type: string
+        value:
+          format: int32
+          type: integer
       type: object
     FTDHADeviceContainer:
       description: Input representation of FTD HA pair.
@@ -1789,758 +2503,37 @@ components:
       - primary
       - secondary
       type: object
-    FTDHAMonitoredInterfacesListContainer:
+    IDHCPIPv6DomainName:
       properties:
-        items:
-          $ref: '#/components/schemas/FTDHAMonitoredInterfaces'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    PreferLifeTime:
-      properties:
-        duration:
-          $ref: '#/components/schemas/Duration'
-          type: object
-        expirationLifeTime:
-          $ref: '#/components/schemas/ExpirationLifeTime'
-          type: object
-      type: object
-    IPolicyModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    IApplicationRisk:
-      description: Represents an ApplicationRisk.
-      properties:
-        description:
-          description: Application risk resource description.
-          type: string
-        id:
-          description: Unique identifier for the application risk.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the application risk.
-          type: object
-        name:
-          description: Name of the application risk.
-          type: string
-        overridable:
-          description: Boolean indicating whether object values can be overridden.
+        importFromInternalServer:
           type: boolean
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: An object override allows you to define an alternate value for an object on a device or domain.
-          type: object
-        type:
-          description: Type of the response object. This value is always ApplicationRisk.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    IFTDHAIPv6ActiveStandbyPair:
-      properties:
-        activeIPv6:
-          type: string
-        standbyIPv6:
-          type: string
-      type: object
-    ISecurityZoneObjectModel:
-      properties:
-        description:
-          type: string
-        devices:
-          items:
-            $ref: '#/components/schemas/IInterfaceDeviceModel'
-            type: object
-          type: array
-        id:
-          type: string
-        interfaceMode:
-          enum:
-          - PASSIVE
-          - INLINE
-          - SWITCHED
-          - ROUTED
-          - ASA
-          type: string
-        interfaces:
-          items:
-            $ref: '#/components/schemas/IFTDInterface'
-            type: object
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        overridable:
-          type: boolean
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          type: object
-        subType:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IOverrideDefaultFragmentSetting:
-      properties:
-        chain:
-          format: int32
-          type: integer
-        size:
-          format: int32
-          type: integer
-        timeout:
-          format: int32
-          type: integer
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
+        names:
           items:
             type: string
           type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
       type: object
-    IIPv6DHCPContainer:
+    IFTDDeviceHAFailoverLink:
       properties:
-        clientPd:
-          $ref: '#/components/schemas/IIPv6ClientPdContainer'
-          type: object
-        enableDHCPClient:
-          type: boolean
-        ipv6DHCPPool:
-          $ref: '#/components/schemas/IDHCPIPv6Pool'
-          type: object
-        ipv6Prefixes:
-          items:
-            $ref: '#/components/schemas/IIPv6PrefixContainer'
-            type: object
-          type: array
-        obtainIPV6DefaultRouteDHCP:
-          type: boolean
-      type: object
-    IARPConfigContainer:
-      properties:
-        enableAlias:
-          type: boolean
-        ipAddress:
+        activeIP:
           type: string
-        macAddress:
-          type: string
-      type: object
-    IDHCPContainer:
-      properties:
-        dhcpRouteMetric:
-          format: int32
-          type: integer
-        enableDefaultRouteDHCP:
-          type: boolean
-      type: object
-    IIPv6ClientPdContainer:
-      properties:
-        hintPrefixes:
-          items:
-            type: string
-          type: array
-        prefixName:
-          type: string
-      type: object
-    IAdvertisement:
-      properties:
-        autoConfig:
-          type: boolean
-        offlink:
-          type: boolean
-        preferLifeTime:
-          $ref: '#/components/schemas/PreferLifeTime'
+        interfaceObject:
+          $ref: '#/components/schemas/IFTDBaseInterface'
           type: object
-      type: object
-    IFTDDeviceHABootStrap:
-      properties:
-        encKeyGenerationScheme:
-          enum:
-          - AUTO
-          - CUSTOM
+        logicalName:
           type: string
-        isEncryptionEnabled:
-          type: boolean
-        lanFailover:
-          $ref: '#/components/schemas/IFTDDeviceHAFailoverLink'
-          type: object
-        sharedKey:
+        standbyIP:
           type: string
-        statefulFailover:
-          $ref: '#/components/schemas/IFTDDeviceHAFailoverLink'
-          type: object
-        useSameLinkForFailovers:
+        subnetMask:
+          type: string
+        useIPv6Address:
           type: boolean
       required:
-      - lanFailover
-      - statefulFailover
-      - useSameLinkForFailovers
-      type: object
-    INetworkAddress:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        overridable:
-          type: boolean
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          type: object
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    HealthAlertConfig:
-      properties:
-        enabled:
-          type: boolean
-        name:
-          type: string
-        thresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-      type: object
-    IInterfaceDeviceModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        interfaces:
-          items:
-            $ref: '#/components/schemas/IFTDInterface'
-            type: object
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IHealthPolicy:
-      description: Description of Health Policy.
-      properties:
-        basePolicyID:
-          type: string
-        defaultPolicy:
-          type: boolean
-        description:
-          description: Description of Health Policy.
-          type: string
-        healthModules:
-          items:
-            $ref: '#/components/schemas/HealthModule'
-            type: object
-          type: array
-        id:
-          description: Unique identifier (UUID) representing the Health policy.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the Health policy.
-          type: object
-        name:
-          description: User-specified name of the Health policy.
-          type: string
-        policyType:
-          type: string
-        setting:
-          $ref: '#/components/schemas/HealthSetting'
-          type: object
-        type:
-          description: Type of the Health policy; this value is always HealthPolicy.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    FTDHAInterfaceMACAddresses:
-      description: Input Representation of Firepower Threat Defense high availability failover interface MAC addresses record associated with the specified FTD HA pair
-      properties:
-        description:
-          description: User provided resource description
-          type: string
-        failoverActiveMac:
-          description: Interface MAC address in H.H.H format, where H is a 16-bit hexadecimal digit. For example, the MAC address 00-0C-F1-42-4C-DE would be entered as 000C.F142.4CDE
-          type: string
-        failoverStandbyMac:
-          description: Standby MAC Address
-          type: string
-        id:
-          description: Identifier of a Firepower Threat Defense high availability failover interface MAC address
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing related links
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata properties
-          type: object
-        name:
-          description: System chosen name
-          type: string
-        physicalInterface:
-          $ref: '#/components/schemas/FTDBaseInterface'
-          description: User chosen physical interface
-          type: object
-        type:
-          description: Type of the Firepower Threat Defense high availability failover interface MAC address
-          type: string
-        version:
-          description: version
-          type: string
-      required:
-      - failoverActiveMac
-      - failoverStandbyMac
-      - physicalInterface
-      type: object
-    IPathMonitoring:
-      properties:
-        enable:
-          type: boolean
-        monitoredIp:
-          type: string
-        type:
-          enum:
-          - AUTO
-          - PEER_IPV4
-          - PEER_IPV6
-          - AUTO4
-          - AUTO6
-          type: string
-      type: object
-    IFMCAccessConfig:
-      properties:
-        allowedNetworks:
-          items:
-            $ref: '#/components/schemas/INetworkAddress'
-            type: object
-          type: array
-        enableAccess:
-          type: boolean
-      type: object
-    DialHost:
-      properties:
-        host:
-          type: string
-        port:
-          format: int32
-          type: integer
-      type: object
-    IApplicationModel:
-      description: Represents an ApplicationModel containing Application Types, Tags, Productivity, Risk, and Categories.
-      properties:
-        appId:
-          description: Application Identifier stored in internal database (VDB).
-          format: int32
-          type: integer
-        applicationTypes:
-          description: List of objects representing application types.
-          items:
-            $ref: '#/components/schemas/IApplicationType'
-            type: object
-          type: array
-        categories:
-          description: List of objects representing application categories.
-          items:
-            $ref: '#/components/schemas/IApplicationCategory'
-            type: object
-          type: array
-        deprecated:
-          description: Boolean representing if the application has been deprecated.
-          type: boolean
-        description:
-          description: Application resource description.
-          type: string
-        id:
-          description: Unique identifier (UUID) for the application.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the application model.
-          type: object
-        name:
-          description: Name of the application.
-          type: string
-        overridable:
-          description: Boolean indicating whether object values can be overridden.
-          type: boolean
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: An object override allows you to define an alternate value for an object on a device or domain.
-          type: object
-        productivity:
-          $ref: '#/components/schemas/IApplicationProductivity'
-          description: The application productivity associated with this application.
-          type: object
-        risk:
-          $ref: '#/components/schemas/IApplicationRisk'
-          description: The application risk associated with this application.
-          type: object
-        tags:
-          description: List of objects representing application tags.
-          items:
-            $ref: '#/components/schemas/IApplicationTag'
-            type: object
-          type: array
-        type:
-          description: Type of the response object. This value is always Application.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    HealthModule:
-      properties:
-        alertConfig:
-          items:
-            $ref: '#/components/schemas/HealthAlertConfig'
-            type: object
-          type: array
-        alertEnabled:
-          type: boolean
-        criticalThreshold:
-          format: int32
-          type: integer
-        customThresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-        enabled:
-          type: boolean
-        moduleId:
-          type: string
-        severity:
-          type: string
-        type:
-          type: string
-        warningThreshold:
-          format: int32
-          type: integer
-      type: object
-    HealthThreshold:
-      properties:
-        type:
-          type: string
-        value:
-          format: int32
-          type: integer
-      type: object
-    IAdvanced:
-      properties:
-        enableOGS:
-          type: boolean
-      type: object
-    IIPv6PrefixContainer:
-      properties:
-        length:
-          type: string
-        name:
-          type: string
-      type: object
-    IFTDHAFailoverInterfacePolicyTrigger:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        interfaceHoldTime:
-          format: int32
-          type: integer
-        interfacePollTime:
-          format: int32
-          type: integer
-        interfacePollTimeUnit:
-          enum:
-          - SEC
-          - MSEC
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        noOfFailedInterfaceLimit:
-          format: int32
-          type: integer
-        peerHoldTime:
-          format: int32
-          type: integer
-        peerHoldTimeUnit:
-          enum:
-          - SEC
-          - MSEC
-          type: string
-        peerPollTime:
-          format: int32
-          type: integer
-        peerPollTimeUnit:
-          enum:
-          - SEC
-          - MSEC
-          type: string
-        percentFailedInterfaceExceed:
-          format: int32
-          type: integer
-        type:
-          type: string
-        version:
-          type: string
-      required:
-      - interfaceHoldTime
-      - interfacePollTime
-      - interfacePollTimeUnit
-      - peerHoldTime
-      - peerHoldTimeUnit
-      - peerPollTime
-      - peerPollTimeUnit
-      type: object
-    IFTDBaseInterface:
-      properties:
-        MTU:
-          format: int32
-          type: integer
-        activeMACAddress:
-          type: string
-        applicationMonitoring:
-          $ref: '#/components/schemas/IApplicationMonitoring'
-          type: object
-        arpConfig:
-          items:
-            $ref: '#/components/schemas/IARPConfigContainer'
-            type: object
-          type: array
-        description:
-          type: string
-        enableAntiSpoofing:
-          type: boolean
-        enableDNSLookup:
-          type: boolean
-        enableSGTPropagate:
-          type: boolean
-        enabled:
-          type: boolean
-        fmcAccessConfig:
-          $ref: '#/components/schemas/IFMCAccessConfig'
-          type: object
-        fragmentReassembly:
-          type: boolean
-        id:
-          type: string
-        ifname:
-          type: string
-        ipv4:
-          $ref: '#/components/schemas/IIPv4Container'
-          type: object
-        ipv6:
-          $ref: '#/components/schemas/IIPv6Container'
-          type: object
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        macAddressPool:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        macLearn:
-          type: boolean
-        macTable:
-          items:
-            type: string
-          type: array
-        managementOnly:
-          type: boolean
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        mode:
-          enum:
-          - INLINE
-          - PASSIVE
-          - TAP
-          - ERSPAN
-          - NONE
-          - SWITCHPORT
-          type: string
-        name:
-          type: string
-        overrideDefaultFragmentSetting:
-          $ref: '#/components/schemas/IOverrideDefaultFragmentSetting'
-          type: object
-        pathMonitoring:
-          $ref: '#/components/schemas/IPathMonitoring'
-          type: object
-        priority:
-          format: int32
-          type: integer
-        securityZone:
-          $ref: '#/components/schemas/ISecurityZoneObjectModel'
-          type: object
-        standbyMACAddress:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IPPPoEContianer:
-      properties:
-        enableRouteSettings:
-          type: boolean
-        ipAddress:
-          type: string
-        pppAuth:
-          enum:
-          - PAP
-          - CHAP
-          - MSCHAP
-          type: string
-        pppoePassword:
-          type: string
-        pppoeRouteMetric:
-          format: int32
-          type: integer
-        pppoeUser:
-          type: string
-        storeCredsInFlash:
-          type: boolean
-        vpdnGroupName:
-          type: string
-      type: object
-    IApplicationCategory:
-      description: Represents an ApplicationCategory.
-      properties:
-        description:
-          description: Application category resource description.
-          type: string
-        id:
-          description: Unique identifier for the application category.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the application category.
-          type: object
-        name:
-          description: Name of the application category.
-          type: string
-        overridable:
-          description: Boolean indicating whether object values can be overridden.
-          type: boolean
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: An object override allows you to define an alternate value for an object on a device or domain.
-          type: object
-        type:
-          description: Type of the response object. This value is always ApplicationCategory.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
+      - activeIP
+      - interfaceObject
+      - logicalName
+      - standbyIP
       type: object
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
     offset:
       description: Index of first item to return.
       in: query
@@ -2564,6 +2557,13 @@ components:
       required: true
       schema:
         type: string
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

@@ -427,38 +427,65 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    IReadonly:
+    ILinks:
+      description: This defines the self referencing links for the given resource.
       properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
           type: string
-        state:
-          type: boolean
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
       type: object
-    ITarget:
-      description: This is the target device.
+    PolicyAssignment:
       properties:
         description:
           type: string
         id:
-          description: Unique ID of the device.
+          type: string
+        links:
+          $ref: '#/components/schemas/Links'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        policy:
+          $ref: '#/components/schemas/IPolicyModel'
+          type: object
+        targets:
+          items:
+            $ref: '#/components/schemas/ITarget'
+            type: object
+          type: array
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    PolicyAssignmentListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/PolicyAssignment'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IMetadataUser:
+      properties:
+        id:
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
         name:
-          description: Name of the device.
           type: string
         type:
-          description: Device
-          type: string
-        version:
           type: string
       type: object
     Metadata:
@@ -536,6 +563,41 @@ components:
           - WARN
           type: string
       type: object
+    ITarget:
+      description: This is the target device.
+      properties:
+        description:
+          type: string
+        id:
+          description: Unique ID of the device.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the device.
+          type: string
+        type:
+          description: Device
+          type: string
+        version:
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
     PagingContainer:
       properties:
         count:
@@ -551,45 +613,22 @@ components:
           format: int32
           type: integer
       type: object
-    PolicyAssignmentListContainer:
+    IReadonly:
       properties:
-        items:
-          $ref: '#/components/schemas/PolicyAssignment'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
       type: object
-    Domain:
-      description: The details about the domain.
-      properties:
-        id:
-          description: Unique UUID of this domain
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
-          type: object
-        name:
-          description: Name of the domain.
-          type: string
-        type:
-          description: Domain type definition (fixed).
-          type: string
-        uuid:
-          type: string
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
+    Links:
       properties:
         parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
           type: string
         self:
-          description: Full resource URL path to reference this particular resource.
           type: string
       type: object
     ReadOnly:
@@ -606,47 +645,21 @@ components:
           description: True if this resource us read only and false otherwise.
           type: boolean
       type: object
-    IDomain:
+    MetadataUser:
+      description: This object defines details about the user.
       properties:
         id:
+          description: The unique UUID of the user
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
+          description: Contains the self referencing links to this resource
           type: object
         name:
+          description: Name of the user.
           type: string
         type:
-          type: string
-      type: object
-    IPolicyModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
+          description: The user type (fixed).
           type: string
       type: object
     IMetadata:
@@ -670,65 +683,45 @@ components:
           format: int32
           type: integer
       type: object
-    MetadataUser:
-      description: This object defines details about the user.
-      properties:
-        id:
-          description: The unique UUID of the user
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Contains the self referencing links to this resource
-          type: object
-        name:
-          description: Name of the user.
-          type: string
-        type:
-          description: The user type (fixed).
-          type: string
-      type: object
-    Links:
-      properties:
-        parent:
-          type: string
-        self:
-          type: string
-      type: object
-    PolicyAssignment:
+    IPolicyModel:
       properties:
         description:
           type: string
         id:
           type: string
         links:
-          $ref: '#/components/schemas/Links'
+          $ref: '#/components/schemas/ILinks'
           type: object
         metadata:
-          $ref: '#/components/schemas/Metadata'
+          $ref: '#/components/schemas/IMetadata'
           type: object
         name:
           type: string
-        policy:
-          $ref: '#/components/schemas/IPolicyModel'
-          type: object
-        targets:
-          items:
-            $ref: '#/components/schemas/ITarget'
-            type: object
-          type: array
         type:
           type: string
         version:
           type: string
       type: object
+    Domain:
+      description: The details about the domain.
+      properties:
+        id:
+          description: Unique UUID of this domain
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
+          type: object
+        name:
+          description: Name of the domain.
+          type: string
+        type:
+          description: Domain type definition (fixed).
+          type: string
+        uuid:
+          type: string
+      type: object
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
     offset:
       description: Index of first item to return.
       in: query
@@ -752,6 +745,13 @@ components:
       required: true
       schema:
         type: string
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

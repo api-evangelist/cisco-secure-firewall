@@ -176,20 +176,6 @@ paths:
       - Adjacent Zone
 components:
   schemas:
-    AdjacentZonesToGatewaySets:
-      properties:
-        adjacentZonesToGatewaySets:
-          items:
-            $ref: '#/components/schemas/AdjacentZoneToGatewaySet'
-          type: array
-      type: object
-    AdjacentZones:
-      properties:
-        adjacentZones:
-          items:
-            $ref: '#/components/schemas/ZonePair'
-          type: array
-      type: object
     ZonePair:
       properties:
         zoneOneId:
@@ -197,6 +183,26 @@ components:
         zoneTwoId:
           type: string
       required:
+      - zoneOneId
+      - zoneTwoId
+      type: object
+    AdjacentZonesToGatewaySets:
+      properties:
+        adjacentZonesToGatewaySets:
+          items:
+            $ref: '#/components/schemas/AdjacentZoneToGatewaySet'
+          type: array
+      type: object
+    AdjacentZoneToGatewaySet:
+      properties:
+        gatewaySetId:
+          type: string
+        zoneOneId:
+          type: string
+        zoneTwoId:
+          type: string
+      required:
+      - gatewaySetId
       - zoneOneId
       - zoneTwoId
       type: object
@@ -222,6 +228,11 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
+      type: object
     TopologyRequestsResponse:
       properties:
         requests:
@@ -229,23 +240,12 @@ components:
             $ref: '#/components/schemas/ReqIdAndReqSystem'
           type: array
       type: object
-    AdjacentZoneToGatewaySet:
+    AdjacentZones:
       properties:
-        gatewaySetId:
-          type: string
-        zoneOneId:
-          type: string
-        zoneTwoId:
-          type: string
-      required:
-      - gatewaySetId
-      - zoneOneId
-      - zoneTwoId
-      type: object
-    TopologyRequestResponse:
-      properties:
-        request:
-          $ref: '#/components/schemas/ReqIdAndReqSystem'
+        adjacentZones:
+          items:
+            $ref: '#/components/schemas/ZonePair'
+          type: array
       type: object
   securitySchemes:
     BearerJWT:

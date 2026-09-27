@@ -1034,27 +1034,6 @@ components:
         state:
           type: boolean
       type: object
-    IFMCUserRole:
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
     FMCUserListContainer:
       properties:
         items:
@@ -1066,6 +1045,16 @@ components:
         paging:
           $ref: '#/components/schemas/PagingContainer'
           type: object
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
       type: object
     ErrorResponse:
       properties:
@@ -1089,43 +1078,6 @@ components:
           - WARN
           type: string
       type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
     IMetadata:
       properties:
         domain:
@@ -1146,6 +1098,15 @@ components:
         timestamp:
           format: int32
           type: integer
+      type: object
+    IFMCUserRole:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
       type: object
     ErrorMessagesContainer:
       properties:
@@ -1172,6 +1133,18 @@ components:
           enum:
           - ERROR
           - WARN
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
           type: string
       type: object
     FMCUser:
@@ -1210,109 +1183,31 @@ components:
         version:
           type: string
       type: object
-    ApiTokenInfo:
-      properties:
-        apiToken:
-          description: The API Access Token.
-          example: FaKE-toKeN
-          type: string
-      type: object
-    ActiveDirectoryGroupCreateOrUpdateInput:
-      properties:
-        groupIdentifier:
-          description: The unique identifier, represented as a UUID, of the Active Directory Group in your Identity Provider (IdP).
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          minLength: 1
-          type: string
-        issuerUrl:
-          description: The Identity Provider (IdP) URL, which Cisco Defense Orchestrator will use to validate SAML assertions during the sign-in process.
-          example: https://access.example.com/saml2/idp/metadata.php
-          minLength: 1
-          type: string
-        name:
-          description: The name of the Active Directory Group. Security Cloud Control does not support special characters for this field.
-          example: myusername
-          minLength: 1
-          type: string
-        notes:
-          description: Any notes that are applicable to this Active Directory Group.
-          example: This is an example note on the Active Directory Group.
-          type: string
-        role:
-          description: This determines the role for all the users included in this Active Directory Group.
-          example: ROLE_ADMIN
-          type: string
-      required:
-      - groupIdentifier
-      - issuerUrl
-      - name
-      type: object
-    ActiveDirectoryGroup:
-      properties:
-        groupIdentifier:
-          description: The unique identifier of the user group in your Identity Provider (IdP).
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          type: string
-        issuerUrl:
-          description: The Identity Provider (IdP) URL, which Cisco Defense Orchestrator will use to validate SAML assertions during the sign-in process.
-          example: https://access.example.com/saml2/idp/metadata.php
-          type: string
-        name:
-          description: The name of the user group. Security Cloud Control does not support special characters for this field.
-          example: myusername
-          type: string
-        notes:
-          description: Any notes that are applicable to this user group.
-          example: This is an example note on the user group.
-          type: string
-        role:
-          $ref: '#/components/schemas/UserRole'
-          description: This determines the role for all the users included in this Active Directory Group.
-          example: ROLE_ADMIN
-        uid:
-          description: The unique identifier, represented as a UUID, of the Active Directory Group in Security Cloud Control.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
-    ActiveDirectoryGroupPage:
+    PagingContainer:
       properties:
         count:
-          description: The total number of results available.
-          example: 100
           format: int32
           type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/ActiveDirectoryGroup'
-          type: array
         limit:
-          description: The number of results retrieved.
-          example: 50
           format: int32
           type: integer
         offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
+          format: int32
+          type: integer
+        pages:
           format: int32
           type: integer
       type: object
-    StatusInfo:
+    IMetadataUser:
       properties:
-        status:
-          description: The Status of the request.
-          example: OK
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
           type: string
       type: object
     CommonApiError:
@@ -1345,6 +1240,211 @@ components:
           description: A human-readable error description in English.
           example: sample error
           type: string
+    ActiveDirectoryGroupPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/ActiveDirectoryGroup'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    ActiveDirectoryGroupCreateOrUpdateInput:
+      properties:
+        groupIdentifier:
+          description: The unique identifier, represented as a UUID, of the Active Directory Group in your Identity Provider (IdP).
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          minLength: 1
+          type: string
+        issuerUrl:
+          description: The Identity Provider (IdP) URL, which Cisco Defense Orchestrator will use to validate SAML assertions during the sign-in process.
+          example: https://access.example.com/saml2/idp/metadata.php
+          minLength: 1
+          type: string
+        name:
+          description: The name of the Active Directory Group. Security Cloud Control does not support special characters for this field.
+          example: myusername
+          minLength: 1
+          type: string
+        notes:
+          description: Any notes that are applicable to this Active Directory Group.
+          example: This is an example note on the Active Directory Group.
+          type: string
+        role:
+          description: This determines the role for all the users included in this Active Directory Group.
+          example: ROLE_ADMIN
+          type: string
+      required:
+      - groupIdentifier
+      - issuerUrl
+      - name
+      type: object
+    ApiTokenInfo:
+      properties:
+        apiToken:
+          description: The API Access Token.
+          example: FaKE-toKeN
+          type: string
+      type: object
+    UserRole:
+      enum:
+      - ROLE_ADMIN
+      - ROLE_SUPER_ADMIN
+      - ROLE_READ_ONLY
+      - ROLE_DEPLOY_ONLY
+      - ROLE_EDIT_ONLY
+      - ROLE_VPN_SESSIONS_MANAGER
+      - ROLE_FWAAS
+      - ROLE_PASSIVE_IDENTITY_AGENT
+      type: string
+    StatusInfo:
+      properties:
+        status:
+          description: The Status of the request.
+          example: OK
+          type: string
+      type: object
+    UserCreateOrUpdateInput:
+      properties:
+        apiOnlyUser:
+          default: false
+          description: Whether the user is API-only, an API-only user cannot access Security Cloud Control in the UI.
+          example: false
+          type: boolean
+        firstName:
+          description: 'The first name of the user in Security Cloud Control. Note: This field must not be specified for API-only users.'
+          example: Ram
+          type: string
+        lastName:
+          description: 'The last name of the user in Security Cloud Control. Note: This field must not be specified for API-only users.'
+          example: Singh
+          type: string
+        name:
+          description: The name of the user in Security Cloud Control. This has to be a valid email if creating a human user, and must not be an email if creating an API-only user.
+          example: myusername@cisco.com
+          minLength: 1
+          type: string
+        role:
+          description: The user role in Security Cloud Control.
+          example: ROLE_ADMIN
+          type: string
+      required:
+      - name
+      type: object
+    User:
+      properties:
+        apiOnlyUser:
+          description: Whether the user is API-only, an API-only user cannot access Security Cloud Control in the UI.
+          example: false
+          type: boolean
+        emailAddress:
+          description: The e-mail address in Security Cloud Control.
+          example: ram.singh@cisco.com
+          type: string
+        firstName:
+          description: The first name of the user in Security Cloud Control.
+          example: Ram
+          type: string
+        lastName:
+          description: The last name of the user in Security Cloud Control.
+          example: Singh
+          type: string
+        lastSuccessfulLogin:
+          description: The time (UTC; represented using the RFC-3339 standard) that indicate the last time the user successfully logged in to Security Cloud Control.
+          example: 2023-12-13 05:15:44+00:00
+          format: date-time
+          type: string
+        name:
+          deprecated: true
+          description: The username (e-mail address) in Security Cloud Control.
+          example: ram.singh@cisco.com
+          type: string
+        roles:
+          description: Roles associated with this user in Security Cloud Control.
+          example: '[ROLE_ADMIN]'
+          items:
+            $ref: '#/components/schemas/UserRole'
+          type: array
+        uid:
+          description: The unique identifier of the user in Security Cloud Control.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          type: string
+      type: object
+    UserPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    ActiveDirectoryGroup:
+      properties:
+        groupIdentifier:
+          description: The unique identifier of the user group in your Identity Provider (IdP).
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          type: string
+        issuerUrl:
+          description: The Identity Provider (IdP) URL, which Cisco Defense Orchestrator will use to validate SAML assertions during the sign-in process.
+          example: https://access.example.com/saml2/idp/metadata.php
+          type: string
+        name:
+          description: The name of the user group. Security Cloud Control does not support special characters for this field.
+          example: myusername
+          type: string
+        notes:
+          description: Any notes that are applicable to this user group.
+          example: This is an example note on the user group.
+          type: string
+        role:
+          $ref: '#/components/schemas/UserRole'
+          description: This determines the role for all the users included in this Active Directory Group.
+          example: ROLE_ADMIN
+        uid:
+          description: The unique identifier, represented as a UUID, of the Active Directory Group in Security Cloud Control.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
     CdoTransaction:
       properties:
         cdoTransactionStatus:
@@ -1456,56 +1556,6 @@ components:
           format: uuid
           type: string
       type: object
-    UserCreateOrUpdateInput:
-      properties:
-        apiOnlyUser:
-          default: false
-          description: Whether the user is API-only, an API-only user cannot access Security Cloud Control in the UI.
-          example: false
-          type: boolean
-        firstName:
-          description: 'The first name of the user in Security Cloud Control. Note: This field must not be specified for API-only users.'
-          example: Ram
-          type: string
-        lastName:
-          description: 'The last name of the user in Security Cloud Control. Note: This field must not be specified for API-only users.'
-          example: Singh
-          type: string
-        name:
-          description: The name of the user in Security Cloud Control. This has to be a valid email if creating a human user, and must not be an email if creating an API-only user.
-          example: myusername@cisco.com
-          minLength: 1
-          type: string
-        role:
-          description: The user role in Security Cloud Control.
-          example: ROLE_ADMIN
-          type: string
-      required:
-      - name
-      type: object
-    UserPage:
-      properties:
-        count:
-          description: The total number of results available.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/User'
-          type: array
-        limit:
-          description: The number of results retrieved.
-          example: 50
-          format: int32
-          type: integer
-        offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
-          format: int32
-          type: integer
-      type: object
     CdoTokenInfo:
       properties:
         enterpriseId:
@@ -1540,61 +1590,11 @@ components:
           format: uuid
           type: string
       type: object
-    UserRole:
-      enum:
-      - ROLE_ADMIN
-      - ROLE_SUPER_ADMIN
-      - ROLE_READ_ONLY
-      - ROLE_DEPLOY_ONLY
-      - ROLE_EDIT_ONLY
-      - ROLE_VPN_SESSIONS_MANAGER
-      - ROLE_FWAAS
-      - ROLE_PASSIVE_IDENTITY_AGENT
-      type: string
-    User:
-      properties:
-        apiOnlyUser:
-          description: Whether the user is API-only, an API-only user cannot access Security Cloud Control in the UI.
-          example: false
-          type: boolean
-        emailAddress:
-          description: The e-mail address in Security Cloud Control.
-          example: ram.singh@cisco.com
-          type: string
-        firstName:
-          description: The first name of the user in Security Cloud Control.
-          example: Ram
-          type: string
-        lastName:
-          description: The last name of the user in Security Cloud Control.
-          example: Singh
-          type: string
-        lastSuccessfulLogin:
-          description: The time (UTC; represented using the RFC-3339 standard) that indicate the last time the user successfully logged in to Security Cloud Control.
-          example: 2023-12-13 05:15:44+00:00
-          format: date-time
-          type: string
-        name:
-          deprecated: true
-          description: The username (e-mail address) in Security Cloud Control.
-          example: ram.singh@cisco.com
-          type: string
-        roles:
-          description: Roles associated with this user in Security Cloud Control.
-          example: '[ROLE_ADMIN]'
-          items:
-            $ref: '#/components/schemas/UserRole'
-          type: array
-        uid:
-          description: The unique identifier of the user in Security Cloud Control.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          type: string
-      type: object
   parameters:
-    limit:
-      description: Number of items to return.
+    offset:
+      description: Index of first item to return.
       in: query
-      name: limit
+      name: offset
       required: false
       schema:
         format: int32
@@ -1606,14 +1606,6 @@ components:
       required: false
       schema:
         type: boolean
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
     domainUUID:
       description: Domain UUID
       in: path
@@ -1621,19 +1613,27 @@ components:
       required: true
       schema:
         type: string
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
   responses:
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
     http401Unauthorised:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/AuthenticationError'
       description: Request not authorized.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
     http404NotFound:
       content:
         application/json:

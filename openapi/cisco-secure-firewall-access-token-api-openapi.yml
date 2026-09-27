@@ -55,6 +55,24 @@ paths:
       - Access Token
 components:
   schemas:
+    ErrorResponse:
+      properties:
+        message:
+          description: A descriptive error message.
+          type: string
+        timestamp:
+          description: The timestamp of when the error occurred in ISO 8601 format.
+          format: date-time
+          type: string
+        trackingId:
+          description: A unique identifier for tracking the error.
+          format: uuid
+          type: string
+      required:
+      - trackingId
+      - message
+      - timestamp
+      type: object
     RefreshTokenResponse:
       properties:
         accessToken:
@@ -81,24 +99,6 @@ components:
       - grantType
       - refreshToken
       - apiKeyId
-      type: object
-    ErrorResponse:
-      properties:
-        message:
-          description: A descriptive error message.
-          type: string
-        timestamp:
-          description: The timestamp of when the error occurred in ISO 8601 format.
-          format: date-time
-          type: string
-        trackingId:
-          description: A unique identifier for tracking the error.
-          format: uuid
-          type: string
-      required:
-      - trackingId
-      - message
-      - timestamp
       type: object
   securitySchemes:
     bearerAuth:

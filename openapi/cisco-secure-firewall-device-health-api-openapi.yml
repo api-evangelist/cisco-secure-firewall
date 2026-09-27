@@ -310,39 +310,6 @@ paths:
       - Device Health
 components:
   schemas:
-    Metric:
-      properties:
-        series:
-          items:
-            $ref: '#/components/schemas/Series'
-          type: array
-        summary:
-          $ref: '#/components/schemas/Summary'
-      type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
-    MetricsItem:
-      properties:
-        description:
-          type: string
-        metrics:
-          additionalProperties:
-            $ref: '#/components/schemas/Metric'
-          type: object
-        name:
-          type: string
-        uid:
-          format: uuid
-          type: string
-      type: object
     CommonApiError:
       properties:
         details:
@@ -373,6 +340,64 @@ components:
           description: A human-readable error description in English.
           example: sample error
           type: string
+    Metric:
+      properties:
+        series:
+          items:
+            $ref: '#/components/schemas/Series'
+          type: array
+        summary:
+          $ref: '#/components/schemas/Summary'
+      type: object
+    MetricsItem:
+      properties:
+        description:
+          type: string
+        metrics:
+          additionalProperties:
+            $ref: '#/components/schemas/Metric'
+          type: object
+        name:
+          type: string
+        uid:
+          format: uuid
+          type: string
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    Series:
+      properties:
+        timestamp:
+          format: date-time
+          type: string
+        value:
+          format: double
+          type: number
+      type: object
+    MetricsResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/MetricsItem'
+          type: array
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        total:
+          format: int32
+          type: integer
+      type: object
     Summary:
       properties:
         average:
@@ -496,38 +521,7 @@ components:
           format: uuid
           type: string
       type: object
-    MetricsResponse:
-      properties:
-        items:
-          items:
-            $ref: '#/components/schemas/MetricsItem'
-          type: array
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        total:
-          format: int32
-          type: integer
-      type: object
-    Series:
-      properties:
-        timestamp:
-          format: date-time
-          type: string
-        value:
-          format: double
-          type: number
-      type: object
   responses:
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
     http401Unauthorised:
       content:
         application/json:
@@ -540,6 +534,12 @@ components:
           schema:
             $ref: '#/components/schemas/CommonApiError'
       description: Entity not found.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
     http400BadRequest:
       content:
         application/json:

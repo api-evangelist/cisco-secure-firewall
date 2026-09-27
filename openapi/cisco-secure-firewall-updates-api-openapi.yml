@@ -711,103 +711,46 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ITarget:
-      description: This is the target device.
+    IHealthPolicy:
+      description: Description of Health Policy.
       properties:
-        description:
+        basePolicyID:
           type: string
+        defaultPolicy:
+          type: boolean
+        description:
+          description: Description of Health Policy.
+          type: string
+        healthModules:
+          items:
+            $ref: '#/components/schemas/HealthModule'
+            type: object
+          type: array
         id:
-          description: Unique ID of the device.
+          description: Unique identifier (UUID) representing the Health policy.
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
           type: object
         metadata:
           $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the Health policy.
           type: object
         name:
-          description: Name of the device.
+          description: User-specified name of the Health policy.
           type: string
+        policyType:
+          type: string
+        setting:
+          $ref: '#/components/schemas/HealthSetting'
+          type: object
         type:
-          description: Device
+          description: Type of the Health policy; this value is always HealthPolicy.
           type: string
         version:
+          description: Version number of the response object.
           type: string
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
       type: object
     ILinks:
       description: This defines the self referencing links for the given resource.
@@ -817,216 +760,6 @@ components:
           type: string
         self:
           description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    ApplicableDeviceListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/ApplicableDevice'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    Upgrade:
-      description: This API is to trigger an upgrade/readinesscheck on a list of devices or just push an upgrade file to a list of devices.
-      properties:
-        autoUpgradeCancel:
-          description: If set to True, the upgrade will be automatically canceled and go back to the original starting point upon an upgrade failure, otherwise the device will stay at the current state where it failed.
-          type: boolean
-        description:
-          description: More information about the upgrade.
-          type: string
-        enableUpgradeRevert:
-          type: boolean
-        id:
-          description: Unique ID of this operation.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object representing this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the triggered task.
-          type: object
-        name:
-          description: Name of the upgrade.
-          type: string
-        pushUpgradeFileOnly:
-          description: Set to True if pushing the upgrade file to device(s) only, otherwise actual upgrade will also be triggered. When both readinessCheckOnly and pushUpgradeFileOnly are set to true, readinessCheckOnly will take the precedence.
-          type: boolean
-        readinessCheckOnly:
-          description: Set to True if performing readiness check only, otherwise the device will start a real upgrade procedure. When both readinessCheckOnly and pushUpgradeFileOnly are set to true, readinessCheckOnly will take the precedence.
-          type: boolean
-        targets:
-          description: A list of FTD devices.
-          items:
-            $ref: '#/components/schemas/ITarget'
-            type: object
-          type: array
-        troubleshootGeneration:
-          description: Boolean value indicating whether to generate troubleshooting information during the upgrade.
-          type: boolean
-        type:
-          description: Upgrade
-          type: string
-        upgradePackage:
-          $ref: '#/components/schemas/UpgradePackage'
-          description: Object representing the upgrade package.
-          type: object
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    CancelUpgrade:
-      description: This operation is to cancel a failed upgrade.
-      properties:
-        description:
-          description: Cancel a failed upgrade.
-          type: string
-        forceCancel:
-          description: Set to True if cancelling an ongoing upgrade by force, False otherwise.
-          type: boolean
-        id:
-          description: Unique Task ID of this request.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        targets:
-          description: A list of FTD devices
-          items:
-            $ref: '#/components/schemas/ITarget'
-            type: object
-          type: array
-        type:
-          description: CancelUpgrade
-          type: string
-        upgradeId:
-          type: string
-        version:
-          type: string
-      type: object
-    HealthSetting:
-      properties:
-        alertEvaluationInterval:
-          format: int32
-          type: integer
-        certFileContent:
-          type: string
-        certFileName:
-          type: string
-        certFileType:
-          type: string
-        certPassphrase:
-          type: string
-        configType:
-          type: string
-        dataCollectionInterval:
-          format: int32
-          type: integer
-        dialInHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        dialOutHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        enabledOpenConfig:
-          type: boolean
-        grpcPassword:
-          type: string
-        grpcUsername:
-          type: string
-        readOnly:
-          type: boolean
-      type: object
-    RevertUpgrade:
-      description: This operation reverts an upgrade.
-      properties:
-        description:
-          description: More details about the operation.
-          type: string
-        id:
-          description: Unique Task ID of this request.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the triggered task.
-          type: object
-        name:
-          description: The name of the operation.
-          type: string
-        targets:
-          description: A list of FTD devices.
-          items:
-            $ref: '#/components/schemas/ITarget'
-            type: object
-          type: array
-        type:
-          description: RevertUpgrade
-          type: string
-        version:
-          type: string
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    IPolicyModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
           type: string
       type: object
     ApplicableDevice:
@@ -1082,26 +815,10 @@ components:
         version:
           type: string
       type: object
-    IMetadata:
+    IAdvanced:
       properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
+        enableOGS:
           type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
       type: object
     UpgradePackage:
       properties:
@@ -1120,118 +837,11 @@ components:
         type:
           type: string
       type: object
-    HealthAlertConfig:
-      properties:
-        enabled:
-          type: boolean
-        name:
-          type: string
-        thresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-      type: object
-    UpgradePackageListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/UpgradePackage'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IHealthPolicy:
-      description: Description of Health Policy.
-      properties:
-        basePolicyID:
-          type: string
-        defaultPolicy:
-          type: boolean
-        description:
-          description: Description of Health Policy.
-          type: string
-        healthModules:
-          items:
-            $ref: '#/components/schemas/HealthModule'
-            type: object
-          type: array
-        id:
-          description: Unique identifier (UUID) representing the Health policy.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the Health policy.
-          type: object
-        name:
-          description: User-specified name of the Health policy.
-          type: string
-        policyType:
-          type: string
-        setting:
-          $ref: '#/components/schemas/HealthSetting'
-          type: object
-        type:
-          description: Type of the Health policy; this value is always HealthPolicy.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    HealthModule:
-      properties:
-        alertConfig:
-          items:
-            $ref: '#/components/schemas/HealthAlertConfig'
-            type: object
-          type: array
-        alertEnabled:
-          type: boolean
-        criticalThreshold:
-          format: int32
-          type: integer
-        customThresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-        enabled:
-          type: boolean
-        moduleId:
-          type: string
-        severity:
-          type: string
-        type:
-          type: string
-        warningThreshold:
-          format: int32
-          type: integer
-      type: object
-    IAdvanced:
-      properties:
-        enableOGS:
-          type: boolean
-      type: object
     DialHost:
       properties:
         host:
           type: string
         port:
-          format: int32
-          type: integer
-      type: object
-    HealthThreshold:
-      properties:
-        type:
-          type: string
-        value:
           format: int32
           type: integer
       type: object
@@ -1267,14 +877,397 @@ components:
         version:
           type: string
       type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    HealthSetting:
+      properties:
+        alertEvaluationInterval:
+          format: int32
+          type: integer
+        certFileContent:
+          type: string
+        certFileName:
+          type: string
+        certFileType:
+          type: string
+        certPassphrase:
+          type: string
+        configType:
+          type: string
+        dataCollectionInterval:
+          format: int32
+          type: integer
+        dialInHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        dialOutHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        enabledOpenConfig:
+          type: boolean
+        grpcPassword:
+          type: string
+        grpcUsername:
+          type: string
+        readOnly:
+          type: boolean
+      type: object
+    UpgradePackageListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/UpgradePackage'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    HealthModule:
+      properties:
+        alertConfig:
+          items:
+            $ref: '#/components/schemas/HealthAlertConfig'
+            type: object
+          type: array
+        alertEnabled:
+          type: boolean
+        criticalThreshold:
+          format: int32
+          type: integer
+        customThresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+        enabled:
+          type: boolean
+        moduleId:
+          type: string
+        severity:
+          type: string
+        type:
+          type: string
+        warningThreshold:
+          format: int32
+          type: integer
+      type: object
+    HealthAlertConfig:
+      properties:
+        enabled:
+          type: boolean
+        name:
+          type: string
+        thresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    ITarget:
+      description: This is the target device.
+      properties:
+        description:
+          type: string
+        id:
+          description: Unique ID of the device.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the device.
+          type: string
+        type:
+          description: Device
+          type: string
+        version:
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    RevertUpgrade:
+      description: This operation reverts an upgrade.
+      properties:
+        description:
+          description: More details about the operation.
+          type: string
+        id:
+          description: Unique Task ID of this request.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the triggered task.
+          type: object
+        name:
+          description: The name of the operation.
+          type: string
+        targets:
+          description: A list of FTD devices.
+          items:
+            $ref: '#/components/schemas/ITarget'
+            type: object
+          type: array
+        type:
+          description: RevertUpgrade
+          type: string
+        version:
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    IPolicyModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    HealthThreshold:
+      properties:
+        type:
+          type: string
+        value:
+          format: int32
+          type: integer
+      type: object
+    CancelUpgrade:
+      description: This operation is to cancel a failed upgrade.
+      properties:
+        description:
+          description: Cancel a failed upgrade.
+          type: string
+        forceCancel:
+          description: Set to True if cancelling an ongoing upgrade by force, False otherwise.
+          type: boolean
+        id:
+          description: Unique Task ID of this request.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        targets:
+          description: A list of FTD devices
+          items:
+            $ref: '#/components/schemas/ITarget'
+            type: object
+          type: array
+        type:
+          description: CancelUpgrade
+          type: string
+        upgradeId:
+          type: string
+        version:
+          type: string
+      type: object
+    Upgrade:
+      description: This API is to trigger an upgrade/readinesscheck on a list of devices or just push an upgrade file to a list of devices.
+      properties:
+        autoUpgradeCancel:
+          description: If set to True, the upgrade will be automatically canceled and go back to the original starting point upon an upgrade failure, otherwise the device will stay at the current state where it failed.
+          type: boolean
+        description:
+          description: More information about the upgrade.
+          type: string
+        enableUpgradeRevert:
+          type: boolean
+        id:
+          description: Unique ID of this operation.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object representing this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the triggered task.
+          type: object
+        name:
+          description: Name of the upgrade.
+          type: string
+        pushUpgradeFileOnly:
+          description: Set to True if pushing the upgrade file to device(s) only, otherwise actual upgrade will also be triggered. When both readinessCheckOnly and pushUpgradeFileOnly are set to true, readinessCheckOnly will take the precedence.
+          type: boolean
+        readinessCheckOnly:
+          description: Set to True if performing readiness check only, otherwise the device will start a real upgrade procedure. When both readinessCheckOnly and pushUpgradeFileOnly are set to true, readinessCheckOnly will take the precedence.
+          type: boolean
+        targets:
+          description: A list of FTD devices.
+          items:
+            $ref: '#/components/schemas/ITarget'
+            type: object
+          type: array
+        troubleshootGeneration:
+          description: Boolean value indicating whether to generate troubleshooting information during the upgrade.
+          type: boolean
+        type:
+          description: Upgrade
+          type: string
+        upgradePackage:
+          $ref: '#/components/schemas/UpgradePackage'
+          description: Object representing the upgrade package.
+          type: object
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    ApplicableDeviceListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ApplicableDevice'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
     offset:
       description: Index of first item to return.
       in: query
@@ -1291,6 +1284,13 @@ components:
       schema:
         format: int32
         type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

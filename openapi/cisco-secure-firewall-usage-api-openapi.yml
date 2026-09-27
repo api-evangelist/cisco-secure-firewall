@@ -153,6 +153,16 @@ components:
           - UNIFIED
           type: string
       type: object
+    history:
+      description: history object
+      properties:
+        date:
+          description: date time the data was aggregated for
+          format: date-time
+          type: string
+        productUsage:
+          $ref: '#/components/schemas/productUsage'
+      type: object
     usageHistoryResponse:
       description: Response containing the AI Assistant Usage
       properties:
@@ -161,19 +171,6 @@ components:
           items:
             $ref: '#/components/schemas/history'
           type: array
-      type: object
-    errorResponse:
-      description: error response
-      properties:
-        code:
-          description: Error code
-          type: integer
-        details:
-          description: Additional details about the error
-          type: object
-        message:
-          description: Error message
-          type: string
       type: object
     usageResponse:
       description: Response containing the AI Assistant Usage
@@ -193,15 +190,18 @@ components:
           description: total number of units used by the AI assistant
           type: integer
       type: object
-    history:
-      description: history object
+    errorResponse:
+      description: error response
       properties:
-        date:
-          description: date time the data was aggregated for
-          format: date-time
+        code:
+          description: Error code
+          type: integer
+        details:
+          description: Additional details about the error
+          type: object
+        message:
+          description: Error message
           type: string
-        productUsage:
-          $ref: '#/components/schemas/productUsage'
       type: object
   securitySchemes:
     bearerAuth:

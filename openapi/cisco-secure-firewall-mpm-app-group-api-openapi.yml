@@ -264,39 +264,6 @@ paths:
       - MPM App Group
 components:
   schemas:
-    MpmAppGroupObj:
-      properties:
-        aps:
-          items:
-            $ref: '#/components/schemas/MpmAppObj'
-          type: array
-        description:
-          type: string
-        id:
-          format: uuid
-          type: string
-        name:
-          type: string
-      type: object
-    MpmEntityRelations:
-      properties:
-        appGroups:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        endpointGroups:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        policyToRules:
-          items:
-            $ref: '#/components/schemas/MpmPolicyMetadataToRules'
-          type: array
-      type: object
     MpmPolicyMetadataToRules:
       properties:
         description:
@@ -312,15 +279,6 @@ components:
             type: string
           type: array
           uniqueItems: true
-      type: object
-    MpmAppGroupsPage:
-      properties:
-        appGroups:
-          items:
-            $ref: '#/components/schemas/MpmAppGroupObj'
-          type: array
-        cursor:
-          type: string
       type: object
     MpmAppObj:
       properties:
@@ -355,6 +313,48 @@ components:
           type: integer
         value:
           type: string
+      type: object
+    MpmAppGroupObj:
+      properties:
+        aps:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+      type: object
+    MpmAppGroupsPage:
+      properties:
+        appGroups:
+          items:
+            $ref: '#/components/schemas/MpmAppGroupObj'
+          type: array
+        cursor:
+          type: string
+      type: object
+    MpmEntityRelations:
+      properties:
+        appGroups:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        endpointGroups:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        policyToRules:
+          items:
+            $ref: '#/components/schemas/MpmPolicyMetadataToRules'
+          type: array
       type: object
   securitySchemes:
     BearerJWT:

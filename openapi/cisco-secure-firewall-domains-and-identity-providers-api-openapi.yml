@@ -243,6 +243,35 @@ paths:
           $ref: '#/components/responses/GeneralError'
 components:
   schemas:
+    DomainStatus:
+      type: string
+      enum:
+      - pending
+      - verified
+    ExternalIdpGroupMappingListResponse:
+      type: object
+      properties:
+        idpName:
+          type: string
+        idpId:
+          type: string
+          format: uuid
+        enterpriseId:
+          type: string
+          format: uuid
+        groupMappings:
+          type: array
+          items:
+            type: object
+            required:
+            - idpGroupName
+            - rbacGroupId
+            properties:
+              idpGroupName:
+                type: string
+              rbacGroupId:
+                type: string
+                format: uuid
     IDPGroupMappingInput:
       type: object
       description: Represent request body for idp group operation
@@ -268,18 +297,30 @@ components:
               rbacGroupId:
                 type: string
                 format: uuid
-    DomainStatus:
-      type: string
-      enum:
-      - pending
-      - verified
-    ExternalIdpGroupMappingInput:
-      type: object
-      description: Request body for authorizedExternalIdps endpoint
+    PendingDomain:
       properties:
-        idpId:
+        createdAt:
+          format: date-time
           type: string
+        domain:
+          type: string
+        entityID:
+          type: string
+        expiresAt:
+          format: date-time
+          type: string
+        status:
+          $ref: '#/components/schemas/DomainStatus'
+        txtRecord:
+          example: _ciscosxsoverification.acme.com
+          type: string
+        txtRecordValue:
           format: uuid
+          type: string
+      required:
+      - entityID
+      - domain
+      type: object
     ExternalIdpGroupMappingCreateResponse:
       type: object
       properties:
@@ -291,6 +332,10 @@ components:
           format: uuid
         samlIdpIssuer:
           type: string
+    DomainName:
+      type: string
+      pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
+      example: cisco.com
     Domain:
       type: object
       required:
@@ -323,54 +368,6 @@ components:
               rbacGroupId:
                 type: string
                 format: uuid
-    ExternalIdpGroupMappingListResponse:
-      type: object
-      properties:
-        idpName:
-          type: string
-        idpId:
-          type: string
-          format: uuid
-        enterpriseId:
-          type: string
-          format: uuid
-        groupMappings:
-          type: array
-          items:
-            type: object
-            required:
-            - idpGroupName
-            - rbacGroupId
-            properties:
-              idpGroupName:
-                type: string
-              rbacGroupId:
-                type: string
-                format: uuid
-    PendingDomain:
-      properties:
-        createdAt:
-          format: date-time
-          type: string
-        domain:
-          type: string
-        entityID:
-          type: string
-        expiresAt:
-          format: date-time
-          type: string
-        status:
-          $ref: '#/components/schemas/DomainStatus'
-        txtRecord:
-          example: _ciscosxsoverification.acme.com
-          type: string
-        txtRecordValue:
-          format: uuid
-          type: string
-      required:
-      - entityID
-      - domain
-      type: object
     Error:
       type: object
       required:
@@ -382,10 +379,13 @@ components:
           format: int32
         message:
           type: string
-    DomainName:
-      type: string
-      pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
-      example: cisco.com
+    ExternalIdpGroupMappingInput:
+      type: object
+      description: Request body for authorizedExternalIdps endpoint
+      properties:
+        idpId:
+          type: string
+          format: uuid
   headers:
     Date:
       schema:

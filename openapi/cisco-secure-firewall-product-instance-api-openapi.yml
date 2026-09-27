@@ -185,6 +185,11 @@ components:
           type: string
         value:
           type: string
+    model.ProductInstanceApplyLicensesRequest:
+      type: object
+      properties:
+        sourceInstanceId:
+          type: string
     model.ProductInstance:
       type: object
       properties:
@@ -196,10 +201,12 @@ components:
           type: string
         region:
           $ref: '#/components/schemas/model.Region'
-    model.ProductInstanceApplyLicensesRequest:
+    model.Error:
       type: object
       properties:
-        sourceInstanceId:
+        error:
+          type: string
+        message:
           type: string
     model.Region:
       type: object
@@ -220,13 +227,6 @@ components:
         initial_admin:
           type: string
         region:
-          type: string
-    model.Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
           type: string
   securitySchemes:
     EnterpriseAdminBearerAuth:

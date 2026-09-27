@@ -359,89 +359,58 @@ paths:
       - Remote Access Monitoring
 components:
   schemas:
-    Location:
+    CommonApiError:
       properties:
-        city:
-          description: The city where the client device is located.
-          example: San Jose
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
           type: string
-        country:
-          description: The country where the client device is located.
-          example: United States
-          type: string
-        subdivision:
-          description: The subdivision (e.g., state or province) where the client device is located.
-          example: California
-          type: string
-      type: object
-    ClientDevice:
-      properties:
-        browser:
-          $ref: '#/components/schemas/Browser'
-          description: The web browser running on the client device.
-        encrypted:
-          description: Indicates whether encryption is enabled on the client device.
-          example: true
-          type: boolean
-        firewalled:
-          description: Indicates whether a firewall is enabled on the client device.
-          example: true
-          type: boolean
-        ipAddress:
-          description: The IP address of the client device that has triggered this MFA event.
-          example: 106.51.163.157
-          type: string
-        location:
-          $ref: '#/components/schemas/Location'
-          description: The location of the client device.
-        os:
-          $ref: '#/components/schemas/OS'
-          description: The operating system of the client device.
-        passwordSet:
-          description: Indicates whether a password is set on the client device.
-          example: false
-          type: boolean
-        uid:
-          description: The unique identifier, represented as a UUID, of the device.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - uid
-      type: object
-    MfaEventPage:
-      properties:
-        count:
-          description: The total number of results available.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/MfaEvent'
-          type: array
-        limit:
-          description: The number of results retrieved.
-          example: 50
-          format: int32
-          type: integer
-        offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
-          format: int32
-          type: integer
-      type: object
-    AuthenticationError:
-      properties:
-        error:
+        errorMsg:
           description: A human-readable error description in English.
-          example: invalid_token
+          example: sample error
           type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
+    Browser:
+      properties:
+        name:
+          description: The name of the web browser running on the client device.
+          example: Chrome
           type: string
+        version:
+          description: The version of the web browser running on the client device.
+          example: 121.0.6167.160
+          type: string
+      type: object
+    OS:
+      properties:
+        type:
+          description: The type of operating system running on the client device.
+          example: mac-intel
+          type: string
+        version:
+          description: The version of the operating system running on the client device.
+          example: 14.2.1
+          type: string
+      type: object
     RaVpnDeviceInput:
       properties:
         deviceUids:
@@ -452,6 +421,48 @@ components:
           type: array
       required:
       - deviceUids
+      type: object
+    MfaEvent:
+      properties:
+        application:
+          description: The name of the application associated with the MFA event.
+          example: Security Cloud Sign On Preview
+          type: string
+        clientDevice:
+          $ref: '#/components/schemas/ClientDevice'
+          description: The client device that triggered this MFA event.
+        reason:
+          description: The reason for the result of the MFA event. When the `result` is `DENIED`, this field contains information on why the MFA event failed.
+          example: valid_passcode
+          type: string
+        result:
+          description: The result of the MFA event.
+          enum:
+          - DENIED
+          - GRANTED
+          example: GRANTED
+          type: string
+        secondFactor:
+          description: The second factor used for the MFA event.
+          example: sms_passcode
+          type: string
+        timestamp:
+          description: The time (in UTC) at which the user logged in to the MFA event, represented using the RFC-3339 standard.
+          example: 2023-12-13 05:15:44+00:00
+          format: date-time
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the MFA event.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        username:
+          description: The name of the user associated with the MFA event.
+          example: user@example.com
+          type: string
+      required:
+      - uid
+      - username
       type: object
     RaVpnSession:
       properties:
@@ -523,36 +534,89 @@ components:
       - uid
       - username
       type: object
-    CommonApiError:
+    Location:
       properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
+        city:
+          description: The city where the client device is located.
+          example: San Jose
           type: string
-        errorMsg:
+        country:
+          description: The country where the client device is located.
+          example: United States
+          type: string
+        subdivision:
+          description: The subdivision (e.g., state or province) where the client device is located.
+          example: California
+          type: string
+      type: object
+    MfaEventPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/MfaEvent'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    AuthenticationError:
+      properties:
+        error:
           description: A human-readable error description in English.
-          example: sample error
+          example: invalid_token
           type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    ClientDevice:
+      properties:
+        browser:
+          $ref: '#/components/schemas/Browser'
+          description: The web browser running on the client device.
+        encrypted:
+          description: Indicates whether encryption is enabled on the client device.
+          example: true
+          type: boolean
+        firewalled:
+          description: Indicates whether a firewall is enabled on the client device.
+          example: true
+          type: boolean
+        ipAddress:
+          description: The IP address of the client device that has triggered this MFA event.
+          example: 106.51.163.157
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+          description: The location of the client device.
+        os:
+          $ref: '#/components/schemas/OS'
+          description: The operating system of the client device.
+        passwordSet:
+          description: Indicates whether a password is set on the client device.
+          example: false
+          type: boolean
+        uid:
+          description: The unique identifier, represented as a UUID, of the device.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - uid
+      type: object
     CdoTransaction:
       properties:
         cdoTransactionStatus:
@@ -664,48 +728,6 @@ components:
           format: uuid
           type: string
       type: object
-    MfaEvent:
-      properties:
-        application:
-          description: The name of the application associated with the MFA event.
-          example: Security Cloud Sign On Preview
-          type: string
-        clientDevice:
-          $ref: '#/components/schemas/ClientDevice'
-          description: The client device that triggered this MFA event.
-        reason:
-          description: The reason for the result of the MFA event. When the `result` is `DENIED`, this field contains information on why the MFA event failed.
-          example: valid_passcode
-          type: string
-        result:
-          description: The result of the MFA event.
-          enum:
-          - DENIED
-          - GRANTED
-          example: GRANTED
-          type: string
-        secondFactor:
-          description: The second factor used for the MFA event.
-          example: sms_passcode
-          type: string
-        timestamp:
-          description: The time (in UTC) at which the user logged in to the MFA event, represented using the RFC-3339 standard.
-          example: 2023-12-13 05:15:44+00:00
-          format: date-time
-          type: string
-        uid:
-          description: The unique identifier, represented as a UUID, of the MFA event.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-        username:
-          description: The name of the user associated with the MFA event.
-          example: user@example.com
-          type: string
-      required:
-      - uid
-      - username
-      type: object
     RaVpnSessionPage:
       properties:
         count:
@@ -729,35 +751,7 @@ components:
           format: int32
           type: integer
       type: object
-    OS:
-      properties:
-        type:
-          description: The type of operating system running on the client device.
-          example: mac-intel
-          type: string
-        version:
-          description: The version of the operating system running on the client device.
-          example: 14.2.1
-          type: string
-      type: object
-    Browser:
-      properties:
-        name:
-          description: The name of the web browser running on the client device.
-          example: Chrome
-          type: string
-        version:
-          description: The version of the web browser running on the client device.
-          example: 121.0.6167.160
-          type: string
-      type: object
   responses:
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
     http405MethodNotAllowed:
       content:
         application/json:
@@ -770,6 +764,12 @@ components:
           schema:
             $ref: '#/components/schemas/AuthenticationError'
       description: Request not authorized.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
     http404NotFound:
       content:
         application/json:

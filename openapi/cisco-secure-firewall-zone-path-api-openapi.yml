@@ -229,16 +229,12 @@ paths:
       - Zone Path
 components:
   schemas:
-    ZonePathId:
+    ZonePathRequest:
       properties:
-        id:
-          format: uuid
-          type: string
-      type: object
-    ZoneId:
-      properties:
-        zone:
-          type: string
+        zonePath:
+          items:
+            $ref: '#/components/schemas/ZoneId'
+          type: array
       type: object
     ZonePathsApiResponse:
       properties:
@@ -269,6 +265,13 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
+    DeleteZonePathApiResponse:
+      properties:
+        gatewaySetPushRequests:
+          items:
+            $ref: '#/components/schemas/ReqIdAndReqSystem'
+          type: array
+      type: object
     CreateZonePathApiResponse:
       properties:
         gatewaySetPushRequests:
@@ -292,13 +295,6 @@ components:
           - DEVICE
           type: string
       type: object
-    DeleteZonePathApiResponse:
-      properties:
-        gatewaySetPushRequests:
-          items:
-            $ref: '#/components/schemas/ReqIdAndReqSystem'
-          type: array
-      type: object
     ZonePaths:
       properties:
         zonePaths:
@@ -313,12 +309,16 @@ components:
             $ref: '#/components/schemas/ZonePathNode'
           type: array
       type: object
-    ZonePathRequest:
+    ZoneId:
       properties:
-        zonePath:
-          items:
-            $ref: '#/components/schemas/ZoneId'
-          type: array
+        zone:
+          type: string
+      type: object
+    ZonePathId:
+      properties:
+        id:
+          format: uuid
+          type: string
       type: object
   securitySchemes:
     BearerJWT:

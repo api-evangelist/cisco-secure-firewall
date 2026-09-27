@@ -87,7 +87,101 @@ paths:
       - MPM Changeset Validation
 components:
   schemas:
-    AppGroupChange:
+    RuleChangeBody:
+      properties:
+        apgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        aps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstDgs:
+          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChanges'
+        dstEpgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstEps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        info:
+          $ref: '#/components/schemas/RuleInfoChange'
+        srcDgs:
+          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChanges'
+        srcEpgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        srcEps:
+          $ref: '#/components/schemas/RelationshipChanges'
+      type: object
+    MpmChangesetContentError:
+      properties:
+        managerErrs:
+          items:
+            $ref: '#/components/schemas/ManagerChangeError'
+          type: array
+      type: object
+    EndpointChangeBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/EndpointInfoChange'
+      required:
+      - info
+      type: object
+    MpmDynamicGroupRelationshipChangeError:
+      properties:
+        add:
+          items:
+            type: string
+          type: array
+        rem:
+          items:
+            type: string
+          type: array
+        ticketError:
+          $ref: '#/components/schemas/TicketError'
+      type: object
+    ParentRuleRelationship:
+      properties:
+        direction:
+          enum:
+          - DST
+          - SRC
+          type: string
+        id:
+          format: uuid
+          type: string
+        policyId:
+          format: uuid
+          type: string
+      required:
+      - direction
+      - id
+      - policyId
+      type: object
+    NatMatchInfoChange:
+      properties:
+        apgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        aps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstEpgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstEps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        srcEpgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        srcEps:
+          $ref: '#/components/schemas/RelationshipChanges'
+      type: object
+    RelationshipChanges:
+      properties:
+        add:
+          items:
+            format: uuid
+            type: string
+          type: array
+        rem:
+          items:
+            format: uuid
+            type: string
+          type: array
+      type: object
+    RuleChange:
       properties:
         action:
           enum:
@@ -96,7 +190,7 @@ components:
           - DELETE
           type: string
         body:
-          $ref: '#/components/schemas/AppGroupChangeBody'
+          $ref: '#/components/schemas/RuleChangeBody'
         extId:
           type: string
         id:
@@ -106,32 +200,73 @@ components:
       - action
       - id
       type: object
-    MpmChangesetContentError:
+    AppGroupChangeBody:
       properties:
-        managerErrs:
-          items:
-            $ref: '#/components/schemas/ManagerChangeError'
-          type: array
+        apgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        aps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        info:
+          $ref: '#/components/schemas/AppGroupInfoChange'
       type: object
-    RuleInfoChange:
+    AppChange:
       properties:
         action:
           enum:
-          - PERMIT
-          - DENY
+          - CREATE
+          - UPDATE
+          - DELETE
           type: string
-        description:
+        body:
+          $ref: '#/components/schemas/AppChangeBody'
+        extId:
           type: string
-        enabled:
-          type: boolean
-        fullyPinned:
-          type: boolean
-        onClose:
-          type: boolean
-        onInit:
-          type: boolean
-        ruleGroup:
+        id:
+          format: uuid
           type: string
+      required:
+      - action
+      - id
+      type: object
+    ManagerChangeError:
+      properties:
+        apErrs:
+          items:
+            $ref: '#/components/schemas/AppChangeError'
+          type: array
+        apgErrs:
+          items:
+            $ref: '#/components/schemas/AppGroupChangeError'
+          type: array
+        duplicateId:
+          type: boolean
+        duplicateName:
+          type: boolean
+        epErrs:
+          items:
+            $ref: '#/components/schemas/EndpointChangeError'
+          type: array
+        epgErrs:
+          items:
+            $ref: '#/components/schemas/EndpointGroupChangeError'
+          type: array
+        id:
+          format: uuid
+          type: string
+        missing:
+          type: boolean
+        policyErrs:
+          items:
+            $ref: '#/components/schemas/PolicyChangeError'
+          type: array
+        ticketError:
+          $ref: '#/components/schemas/TicketError'
+        undeletedDeviceSetErrs:
+          items:
+            type: string
+          type: array
+      required:
+      - id
       type: object
     PolicyChangeBody:
       properties:
@@ -150,224 +285,14 @@ components:
         targets:
           $ref: '#/components/schemas/TargetRelationshipChanges'
       type: object
-    EndpointChangeError:
+    EndpointGroupChangeBody:
       properties:
-        duplicateId:
-          type: boolean
-        duplicateName:
-          type: boolean
-        id:
-          format: uuid
-          type: string
-        missing:
-          type: boolean
-        ticketError:
-          $ref: '#/components/schemas/TicketError'
-        undeletedRelErrs:
-          $ref: '#/components/schemas/UndeletedEndpointRelationshipErrors'
-      required:
-      - id
-      type: object
-    ParentNatRuleAppRelationship:
-      properties:
-        behaviour:
-          enum:
-          - MATCH
-          - TRANSLATED
-          type: string
-        id:
-          format: uuid
-          type: string
-        policyId:
-          format: uuid
-          type: string
-      required:
-      - behaviour
-      - id
-      - policyId
-      type: object
-    EndpointGroupChangeError:
-      properties:
-        duplicateId:
-          type: boolean
-        duplicateName:
-          type: boolean
-        epErrs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        epgErrs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        id:
-          format: uuid
-          type: string
-        missing:
-          type: boolean
-        ticketError:
-          $ref: '#/components/schemas/TicketError'
-        undeletedRelErrs:
-          $ref: '#/components/schemas/UndeletedEndpointRelationshipErrors'
-      required:
-      - id
-      type: object
-    MpmDynamicGroupRelationshipChanges:
-      properties:
-        add:
-          items:
-            type: string
-          type: array
-        rem:
-          items:
-            type: string
-          type: array
-      type: object
-    RuleId:
-      properties:
-        id:
-          format: uuid
-          type: string
-        policyId:
-          format: uuid
-          type: string
-      required:
-      - id
-      - policyId
-      type: object
-    AppChangeError:
-      properties:
-        duplicateId:
-          type: boolean
-        duplicateName:
-          type: boolean
-        id:
-          format: uuid
-          type: string
-        missing:
-          type: boolean
-        ticketError:
-          $ref: '#/components/schemas/TicketError'
-        undeletedRelErrs:
-          $ref: '#/components/schemas/UndeletedAppRelationshipErrors'
-      required:
-      - id
-      type: object
-    PolicyRuleOrderChange:
-      properties:
-        newOrder:
-          items:
-            format: uuid
-            type: string
-          type: array
-        oldOrder:
-          items:
-            format: uuid
-            type: string
-          type: array
-      type: object
-    PolicyChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/PolicyChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
-      type: object
-    ManagerChangeBody:
-      properties:
-        apgs:
-          items:
-            $ref: '#/components/schemas/AppGroupChange'
-          type: array
-        aps:
-          items:
-            $ref: '#/components/schemas/AppChange'
-          type: array
         epgs:
-          items:
-            $ref: '#/components/schemas/EndpointGroupChange'
-          type: array
+          $ref: '#/components/schemas/RelationshipChanges'
         eps:
-          items:
-            $ref: '#/components/schemas/EndpointChange'
-          type: array
+          $ref: '#/components/schemas/RelationshipChanges'
         info:
-          $ref: '#/components/schemas/ManagerInfoChange'
-        policies:
-          items:
-            $ref: '#/components/schemas/PolicyChange'
-          type: array
-      type: object
-    ManagerChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/ManagerChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
-      type: object
-    ManagerInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-      type: object
-    RelationshipChanges:
-      properties:
-        add:
-          items:
-            format: uuid
-            type: string
-          type: array
-        rem:
-          items:
-            format: uuid
-            type: string
-          type: array
-      type: object
-    AppChangeBody:
-      properties:
-        info:
-          $ref: '#/components/schemas/AppInfoChange'
-      required:
-      - info
-      type: object
-    NatRuleRelationshipChangesError:
-      properties:
-        add:
-          items:
-            format: uuid
-            type: string
-          type: array
-        errorMessage:
-          type: string
-        rem:
-          items:
-            format: uuid
-            type: string
-          type: array
-        ticketError:
-          $ref: '#/components/schemas/TicketError'
+          $ref: '#/components/schemas/EndpointGroupInfoChange'
       type: object
     UndeletedEndpointRelationshipErrors:
       properties:
@@ -417,333 +342,6 @@ components:
       required:
       - id
       type: object
-    EndpointChangeBody:
-      properties:
-        info:
-          $ref: '#/components/schemas/EndpointInfoChange'
-      required:
-      - info
-      type: object
-    AppChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/AppChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
-      type: object
-    RuleChangeError:
-      properties:
-        apErrs:
-          $ref: '#/components/schemas/RelationshipChangeError'
-        apgErrs:
-          $ref: '#/components/schemas/RelationshipChangeError'
-        dgsInUnpinnedRule:
-          type: boolean
-        dstDgErrs:
-          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChangeError'
-        dstEpErrs:
-          $ref: '#/components/schemas/RelationshipChangeError'
-        dstEpgErrs:
-          $ref: '#/components/schemas/RelationshipChangeError'
-        duplicateId:
-          type: boolean
-        id:
-          format: uuid
-          type: string
-        missing:
-          type: boolean
-        srcDgErrs:
-          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChangeError'
-        srcEpErrs:
-          $ref: '#/components/schemas/RelationshipChangeError'
-        srcEpgErrs:
-          $ref: '#/components/schemas/RelationshipChangeError'
-        ticketError:
-          $ref: '#/components/schemas/TicketError'
-      required:
-      - id
-      type: object
-    EndpointGroupInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-      type: object
-    NatMatchInfoChange:
-      properties:
-        apgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        aps:
-          $ref: '#/components/schemas/RelationshipChanges'
-        dstEpgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        dstEps:
-          $ref: '#/components/schemas/RelationshipChanges'
-        srcEpgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        srcEps:
-          $ref: '#/components/schemas/RelationshipChanges'
-      type: object
-    RuleChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/RuleChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
-      type: object
-    AppGroupChangeBody:
-      properties:
-        apgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        aps:
-          $ref: '#/components/schemas/RelationshipChanges'
-        info:
-          $ref: '#/components/schemas/AppGroupInfoChange'
-      type: object
-    ParentRuleRelationship:
-      properties:
-        direction:
-          enum:
-          - DST
-          - SRC
-          type: string
-        id:
-          format: uuid
-          type: string
-        policyId:
-          format: uuid
-          type: string
-      required:
-      - direction
-      - id
-      - policyId
-      type: object
-    AppInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        value:
-          type: string
-      type: object
-    EndpointInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        value:
-          type: string
-      type: object
-    TicketError:
-      properties:
-        invalidTicket:
-          type: boolean
-        invalidTicketErr:
-          type: string
-        ticketRequired:
-          type: boolean
-      type: object
-    UndeletedAppRelationshipErrors:
-      properties:
-        grpRefs:
-          items:
-            format: uuid
-            type: string
-          type: array
-        natRuleRefs:
-          items:
-            $ref: '#/components/schemas/ParentNatRuleAppRelationship'
-          type: array
-        ruleRefs:
-          items:
-            $ref: '#/components/schemas/RuleId'
-          type: array
-      type: object
-    ParentNatRuleEndpointRelationship:
-      properties:
-        behaviour:
-          enum:
-          - MATCH
-          - TRANSLATED
-          type: string
-        direction:
-          enum:
-          - DST
-          - SRC
-          type: string
-        id:
-          format: uuid
-          type: string
-        policyId:
-          format: uuid
-          type: string
-      required:
-      - behaviour
-      - direction
-      - id
-      - policyId
-      type: object
-    NatTranslatedInfoChange:
-      properties:
-        ap:
-          $ref: '#/components/schemas/RelationshipChanges'
-        dstEp:
-          $ref: '#/components/schemas/RelationshipChanges'
-        srcEp:
-          $ref: '#/components/schemas/RelationshipChanges'
-      type: object
-    MpmDynamicGroupRelationshipChangeError:
-      properties:
-        add:
-          items:
-            type: string
-          type: array
-        rem:
-          items:
-            type: string
-          type: array
-        ticketError:
-          $ref: '#/components/schemas/TicketError'
-      type: object
-    EndpointChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/EndpointChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
-      type: object
-    AppGroupChangeError:
-      properties:
-        apErrs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        apgErrs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        duplicateId:
-          type: boolean
-        duplicateName:
-          type: boolean
-        id:
-          format: uuid
-          type: string
-        missing:
-          type: boolean
-        ticketError:
-          $ref: '#/components/schemas/TicketError'
-        undeletedRelErrs:
-          $ref: '#/components/schemas/UndeletedAppRelationshipErrors'
-      required:
-      - id
-      type: object
-    RuleChangeBody:
-      properties:
-        apgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        aps:
-          $ref: '#/components/schemas/RelationshipChanges'
-        dstDgs:
-          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChanges'
-        dstEpgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        dstEps:
-          $ref: '#/components/schemas/RelationshipChanges'
-        info:
-          $ref: '#/components/schemas/RuleInfoChange'
-        srcDgs:
-          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChanges'
-        srcEpgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        srcEps:
-          $ref: '#/components/schemas/RelationshipChanges'
-      type: object
-    RelationshipChangeError:
-      properties:
-        add:
-          items:
-            format: uuid
-            type: string
-          type: array
-        rem:
-          items:
-            format: uuid
-            type: string
-          type: array
-        ticketError:
-          $ref: '#/components/schemas/TicketError'
-      type: object
-    EndpointGroupChangeBody:
-      properties:
-        epgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        eps:
-          $ref: '#/components/schemas/RelationshipChanges'
-        info:
-          $ref: '#/components/schemas/EndpointGroupInfoChange'
-      type: object
-    NatRuleChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/NatRuleChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
-      type: object
-    AppGroupInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-      type: object
     NatRuleChangeError:
       properties:
         apMatchErrs:
@@ -792,6 +390,152 @@ components:
         ticketError:
           $ref: '#/components/schemas/TicketError'
       type: object
+    AppChangeError:
+      properties:
+        duplicateId:
+          type: boolean
+        duplicateName:
+          type: boolean
+        id:
+          format: uuid
+          type: string
+        missing:
+          type: boolean
+        ticketError:
+          $ref: '#/components/schemas/TicketError'
+        undeletedRelErrs:
+          $ref: '#/components/schemas/UndeletedAppRelationshipErrors'
+      required:
+      - id
+      type: object
+    AppGroupInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    ManagerInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    EndpointChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/EndpointChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    PolicyRuleOrderChange:
+      properties:
+        newOrder:
+          items:
+            format: uuid
+            type: string
+          type: array
+        oldOrder:
+          items:
+            format: uuid
+            type: string
+          type: array
+      type: object
+    EndpointInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    EndpointGroupInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    MpmDynamicGroupRelationshipChanges:
+      properties:
+        add:
+          items:
+            type: string
+          type: array
+        rem:
+          items:
+            type: string
+          type: array
+      type: object
+    PolicyInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+      type: object
+    ManagerChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/ManagerChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    EndpointGroupChangeError:
+      properties:
+        duplicateId:
+          type: boolean
+        duplicateName:
+          type: boolean
+        epErrs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        epgErrs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        id:
+          format: uuid
+          type: string
+        missing:
+          type: boolean
+        ticketError:
+          $ref: '#/components/schemas/TicketError'
+        undeletedRelErrs:
+          $ref: '#/components/schemas/UndeletedEndpointRelationshipErrors'
+      required:
+      - id
+      type: object
     MpmChangesetContent:
       properties:
         extIds:
@@ -804,6 +548,379 @@ components:
           type: array
       required:
       - managers
+      type: object
+    NatRuleChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/NatRuleChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    EndpointChangeError:
+      properties:
+        duplicateId:
+          type: boolean
+        duplicateName:
+          type: boolean
+        id:
+          format: uuid
+          type: string
+        missing:
+          type: boolean
+        ticketError:
+          $ref: '#/components/schemas/TicketError'
+        undeletedRelErrs:
+          $ref: '#/components/schemas/UndeletedEndpointRelationshipErrors'
+      required:
+      - id
+      type: object
+    ParentNatRuleAppRelationship:
+      properties:
+        behaviour:
+          enum:
+          - MATCH
+          - TRANSLATED
+          type: string
+        id:
+          format: uuid
+          type: string
+        policyId:
+          format: uuid
+          type: string
+      required:
+      - behaviour
+      - id
+      - policyId
+      type: object
+    TargetRelationshipChangeError:
+      properties:
+        add:
+          items:
+            type: string
+          type: array
+        natErrs:
+          items:
+            type: string
+          type: array
+        rem:
+          items:
+            type: string
+          type: array
+        ticketError:
+          $ref: '#/components/schemas/TicketError'
+      type: object
+    PolicyChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/PolicyChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    RuleId:
+      properties:
+        id:
+          format: uuid
+          type: string
+        policyId:
+          format: uuid
+          type: string
+      required:
+      - id
+      - policyId
+      type: object
+    RuleInfoChange:
+      properties:
+        action:
+          enum:
+          - PERMIT
+          - DENY
+          type: string
+        description:
+          type: string
+        enabled:
+          type: boolean
+        fullyPinned:
+          type: boolean
+        onClose:
+          type: boolean
+        onInit:
+          type: boolean
+        ruleGroup:
+          type: string
+      type: object
+    AppGroupChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/AppGroupChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    MpmChangesetErrorUpdate:
+      properties:
+        content:
+          $ref: '#/components/schemas/MpmChangesetContent'
+        error:
+          $ref: '#/components/schemas/MpmChangesetContentError'
+      type: object
+    ManagerChangeBody:
+      properties:
+        apgs:
+          items:
+            $ref: '#/components/schemas/AppGroupChange'
+          type: array
+        aps:
+          items:
+            $ref: '#/components/schemas/AppChange'
+          type: array
+        epgs:
+          items:
+            $ref: '#/components/schemas/EndpointGroupChange'
+          type: array
+        eps:
+          items:
+            $ref: '#/components/schemas/EndpointChange'
+          type: array
+        info:
+          $ref: '#/components/schemas/ManagerInfoChange'
+        policies:
+          items:
+            $ref: '#/components/schemas/PolicyChange'
+          type: array
+      type: object
+    RuleChangeError:
+      properties:
+        apErrs:
+          $ref: '#/components/schemas/RelationshipChangeError'
+        apgErrs:
+          $ref: '#/components/schemas/RelationshipChangeError'
+        dgsInUnpinnedRule:
+          type: boolean
+        dstDgErrs:
+          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChangeError'
+        dstEpErrs:
+          $ref: '#/components/schemas/RelationshipChangeError'
+        dstEpgErrs:
+          $ref: '#/components/schemas/RelationshipChangeError'
+        duplicateId:
+          type: boolean
+        id:
+          format: uuid
+          type: string
+        missing:
+          type: boolean
+        srcDgErrs:
+          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChangeError'
+        srcEpErrs:
+          $ref: '#/components/schemas/RelationshipChangeError'
+        srcEpgErrs:
+          $ref: '#/components/schemas/RelationshipChangeError'
+        ticketError:
+          $ref: '#/components/schemas/TicketError'
+      required:
+      - id
+      type: object
+    ParentNatRuleEndpointRelationship:
+      properties:
+        behaviour:
+          enum:
+          - MATCH
+          - TRANSLATED
+          type: string
+        direction:
+          enum:
+          - DST
+          - SRC
+          type: string
+        id:
+          format: uuid
+          type: string
+        policyId:
+          format: uuid
+          type: string
+      required:
+      - behaviour
+      - direction
+      - id
+      - policyId
+      type: object
+    TicketError:
+      properties:
+        invalidTicket:
+          type: boolean
+        invalidTicketErr:
+          type: string
+        ticketRequired:
+          type: boolean
+      type: object
+    UndeletedAppRelationshipErrors:
+      properties:
+        grpRefs:
+          items:
+            format: uuid
+            type: string
+          type: array
+        natRuleRefs:
+          items:
+            $ref: '#/components/schemas/ParentNatRuleAppRelationship'
+          type: array
+        ruleRefs:
+          items:
+            $ref: '#/components/schemas/RuleId'
+          type: array
+      type: object
+    TargetRelationshipChanges:
+      properties:
+        add:
+          items:
+            type: string
+          type: array
+        rem:
+          items:
+            type: string
+          type: array
+      type: object
+    AppGroupChangeError:
+      properties:
+        apErrs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        apgErrs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        duplicateId:
+          type: boolean
+        duplicateName:
+          type: boolean
+        id:
+          format: uuid
+          type: string
+        missing:
+          type: boolean
+        ticketError:
+          $ref: '#/components/schemas/TicketError'
+        undeletedRelErrs:
+          $ref: '#/components/schemas/UndeletedAppRelationshipErrors'
+      required:
+      - id
+      type: object
+    NatRuleChangeBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/NatRuleInfoChange'
+        matchInfo:
+          $ref: '#/components/schemas/NatMatchInfoChange'
+        translatedInfo:
+          $ref: '#/components/schemas/NatTranslatedInfoChange'
+      type: object
+    AppInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    AppChangeBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/AppInfoChange'
+      required:
+      - info
+      type: object
+    EndpointGroupChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/EndpointGroupChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    NatTranslatedInfoChange:
+      properties:
+        ap:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstEp:
+          $ref: '#/components/schemas/RelationshipChanges'
+        srcEp:
+          $ref: '#/components/schemas/RelationshipChanges'
+      type: object
+    NatRuleRelationshipChangesError:
+      properties:
+        add:
+          items:
+            format: uuid
+            type: string
+          type: array
+        errorMessage:
+          type: string
+        rem:
+          items:
+            format: uuid
+            type: string
+          type: array
+        ticketError:
+          $ref: '#/components/schemas/TicketError'
+      type: object
+    RelationshipChangeError:
+      properties:
+        add:
+          items:
+            format: uuid
+            type: string
+          type: array
+        rem:
+          items:
+            format: uuid
+            type: string
+          type: array
+        ticketError:
+          $ref: '#/components/schemas/TicketError'
       type: object
     NatRuleInfoChange:
       properties:
@@ -829,123 +946,6 @@ components:
           - STATIC
           - HIDE
           type: string
-      type: object
-    EndpointGroupChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/EndpointGroupChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
-      type: object
-    PolicyInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        policyType:
-          enum:
-          - SECURITY
-          - GOVERNANCE_PREPEND
-          - GOVERNANCE_APPEND
-          - NAT
-          type: string
-      type: object
-    TargetRelationshipChanges:
-      properties:
-        add:
-          items:
-            type: string
-          type: array
-        rem:
-          items:
-            type: string
-          type: array
-      type: object
-    NatRuleChangeBody:
-      properties:
-        info:
-          $ref: '#/components/schemas/NatRuleInfoChange'
-        matchInfo:
-          $ref: '#/components/schemas/NatMatchInfoChange'
-        translatedInfo:
-          $ref: '#/components/schemas/NatTranslatedInfoChange'
-      type: object
-    TargetRelationshipChangeError:
-      properties:
-        add:
-          items:
-            type: string
-          type: array
-        natErrs:
-          items:
-            type: string
-          type: array
-        rem:
-          items:
-            type: string
-          type: array
-        ticketError:
-          $ref: '#/components/schemas/TicketError'
-      type: object
-    MpmChangesetErrorUpdate:
-      properties:
-        content:
-          $ref: '#/components/schemas/MpmChangesetContent'
-        error:
-          $ref: '#/components/schemas/MpmChangesetContentError'
-      type: object
-    ManagerChangeError:
-      properties:
-        apErrs:
-          items:
-            $ref: '#/components/schemas/AppChangeError'
-          type: array
-        apgErrs:
-          items:
-            $ref: '#/components/schemas/AppGroupChangeError'
-          type: array
-        duplicateId:
-          type: boolean
-        duplicateName:
-          type: boolean
-        epErrs:
-          items:
-            $ref: '#/components/schemas/EndpointChangeError'
-          type: array
-        epgErrs:
-          items:
-            $ref: '#/components/schemas/EndpointGroupChangeError'
-          type: array
-        id:
-          format: uuid
-          type: string
-        missing:
-          type: boolean
-        policyErrs:
-          items:
-            $ref: '#/components/schemas/PolicyChangeError'
-          type: array
-        ticketError:
-          $ref: '#/components/schemas/TicketError'
-        undeletedDeviceSetErrs:
-          items:
-            type: string
-          type: array
-      required:
-      - id
       type: object
   securitySchemes:
     BearerJWT:

@@ -162,28 +162,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    model.ProductConf:
-      properties:
-        activationStatus:
-          type: string
-        name:
-          type: string
-        operand:
-          type: integer
-        operator:
-          type: string
-        region:
-          type: string
-      type: object
-    model.ProvisionedSubscription:
-      properties:
-        id:
-          type: string
-        skus:
-          items:
-            $ref: '#/components/schemas/model.ProvisionedSKU'
-          type: array
-      type: object
     model.MspSku:
       properties:
         availableEntitlements:
@@ -210,20 +188,20 @@ components:
         quantity:
           type: integer
       type: object
+    model.PaginationInfo:
+      properties:
+        limit:
+          type: integer
+        offset:
+          type: integer
+        totalRecords:
+          type: integer
+      type: object
     model.UpdateEntitlementsRequest:
       properties:
         subscriptions:
           items:
             $ref: '#/components/schemas/model.UserSubscription'
-          type: array
-      type: object
-    model.ProvisionedSKU:
-      properties:
-        name:
-          type: string
-        productInfo:
-          items:
-            $ref: '#/components/schemas/model.ProductInfo'
           type: array
       type: object
     model.SubscriptionProvisioningError:
@@ -246,6 +224,22 @@ components:
             $ref: '#/components/schemas/model.MspSku'
           type: object
       type: object
+    model.Error:
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      type: object
+    model.UserSubscription:
+      properties:
+        id:
+          type: string
+        skus:
+          items:
+            $ref: '#/components/schemas/model.SKU'
+          type: array
+      type: object
     model.SharedEntitlement:
       properties:
         assignedEntitlements:
@@ -257,14 +251,32 @@ components:
             $ref: '#/components/schemas/model.ProductConf'
           type: array
       type: object
-    model.PaginationInfo:
+    model.ProvisionedSubscription:
       properties:
-        limit:
+        id:
+          type: string
+        skus:
+          items:
+            $ref: '#/components/schemas/model.ProvisionedSKU'
+          type: array
+      type: object
+    model.ProductInfo:
+      properties:
+        assignedEntitlements:
           type: integer
-        offset:
-          type: integer
-        totalRecords:
-          type: integer
+        product:
+          type: string
+        productRegion:
+          type: string
+      type: object
+    model.ProvisionedSKU:
+      properties:
+        name:
+          type: string
+        productInfo:
+          items:
+            $ref: '#/components/schemas/model.ProductInfo'
+          type: array
       type: object
     model.UpdateEntitlementResponse:
       properties:
@@ -283,6 +295,19 @@ components:
             $ref: '#/components/schemas/model.ProvisionedSubscription'
           type: array
       type: object
+    model.ProductConf:
+      properties:
+        activationStatus:
+          type: string
+        name:
+          type: string
+        operand:
+          type: integer
+        operator:
+          type: string
+        region:
+          type: string
+      type: object
     model.OrgEntitlements:
       properties:
         pagination:
@@ -291,31 +316,6 @@ components:
           items:
             $ref: '#/components/schemas/model.SubnSku'
           type: array
-      type: object
-    model.ProductInfo:
-      properties:
-        assignedEntitlements:
-          type: integer
-        product:
-          type: string
-        productRegion:
-          type: string
-      type: object
-    model.UserSubscription:
-      properties:
-        id:
-          type: string
-        skus:
-          items:
-            $ref: '#/components/schemas/model.SKU'
-          type: array
-      type: object
-    model.Error:
-      properties:
-        error:
-          type: string
-        message:
-          type: string
       type: object
   securitySchemes:
     OpenID:

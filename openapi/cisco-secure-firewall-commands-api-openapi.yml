@@ -153,40 +153,6 @@ paths:
       - Commands
 components:
   schemas:
-    Command:
-      properties:
-        body:
-          description: The body of the command (optional).
-          example: {}
-          type: string
-        link:
-          description: The FMC endpoint to invoke for this command.
-          example: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f
-          minLength: 1
-          type: string
-        method:
-          description: The HTTP method for the command.
-          example: GET
-          minLength: 1
-          type: string
-      required:
-      - link
-      - method
-      type: object
-    DeviceGatewayApiRequest:
-      properties:
-        deviceUid:
-          description: The unique identifier, represented as a UUID, of the target device for the command. Currently, only FMC devices are supported.
-          example: 6e3492c6-083a-4ead-9da9-cd2db32a965d
-          minLength: 1
-          type: string
-        request:
-          $ref: '#/components/schemas/FmcRequest'
-          description: The request that the user wants to execute on the device.
-      required:
-      - deviceUid
-      - request
-      type: object
     CommonApiError:
       properties:
         details:
@@ -217,6 +183,26 @@ components:
           description: A human-readable error description in English.
           example: sample error
           type: string
+    Command:
+      properties:
+        body:
+          description: The body of the command (optional).
+          example: {}
+          type: string
+        link:
+          description: The FMC endpoint to invoke for this command.
+          example: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f
+          minLength: 1
+          type: string
+        method:
+          description: The HTTP method for the command.
+          example: GET
+          minLength: 1
+          type: string
+      required:
+      - link
+      - method
+      type: object
     FmcRequest:
       properties:
         commands:
@@ -266,6 +252,20 @@ components:
           - timeout
           example: responded
           type: string
+      type: object
+    DeviceGatewayApiRequest:
+      properties:
+        deviceUid:
+          description: The unique identifier, represented as a UUID, of the target device for the command. Currently, only FMC devices are supported.
+          example: 6e3492c6-083a-4ead-9da9-cd2db32a965d
+          minLength: 1
+          type: string
+        request:
+          $ref: '#/components/schemas/FmcRequest'
+          description: The request that the user wants to execute on the device.
+      required:
+      - deviceUid
+      - request
       type: object
   securitySchemes:
     bearerAuth:

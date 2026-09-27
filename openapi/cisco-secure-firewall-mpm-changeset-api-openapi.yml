@@ -274,7 +274,63 @@ paths:
       - MPM Changeset
 components:
   schemas:
-    AppGroupChange:
+    RuleChangeBody:
+      properties:
+        apgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        aps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstDgs:
+          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChanges'
+        dstEpgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstEps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        info:
+          $ref: '#/components/schemas/RuleInfoChange'
+        srcDgs:
+          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChanges'
+        srcEpgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        srcEps:
+          $ref: '#/components/schemas/RelationshipChanges'
+      type: object
+    EndpointChangeBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/EndpointInfoChange'
+      required:
+      - info
+      type: object
+    NatMatchInfoChange:
+      properties:
+        apgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        aps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstEpgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        dstEps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        srcEpgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        srcEps:
+          $ref: '#/components/schemas/RelationshipChanges'
+      type: object
+    RelationshipChanges:
+      properties:
+        add:
+          items:
+            format: uuid
+            type: string
+          type: array
+        rem:
+          items:
+            format: uuid
+            type: string
+          type: array
+      type: object
+    RuleChange:
       properties:
         action:
           enum:
@@ -283,7 +339,7 @@ components:
           - DELETE
           type: string
         body:
-          $ref: '#/components/schemas/AppGroupChangeBody'
+          $ref: '#/components/schemas/RuleChangeBody'
         extId:
           type: string
         id:
@@ -293,18 +349,281 @@ components:
       - action
       - id
       type: object
-    MpmChangesetsPage:
+    MpmChangesetUserApi:
       properties:
-        changesets:
-          items:
-            $ref: '#/components/schemas/MpmChangesetMeta'
-          type: array
-        lastChangesetId:
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - name
+      type: object
+    AppGroupChangeBody:
+      properties:
+        apgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        aps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        info:
+          $ref: '#/components/schemas/AppGroupInfoChange'
+      type: object
+    AppChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/AppChangeBody'
+        extId:
+          type: string
+        id:
           format: uuid
           type: string
-        lastModifiedTimestamp:
+      required:
+      - action
+      - id
+      type: object
+    PolicyChangeBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/PolicyInfoChange'
+        natRules:
+          items:
+            $ref: '#/components/schemas/NatRuleChange'
+          type: array
+        ruleOrder:
+          $ref: '#/components/schemas/PolicyRuleOrderChange'
+        rules:
+          items:
+            $ref: '#/components/schemas/RuleChange'
+          type: array
+        targets:
+          $ref: '#/components/schemas/TargetRelationshipChanges'
+      type: object
+    EndpointGroupChangeBody:
+      properties:
+        epgs:
+          $ref: '#/components/schemas/RelationshipChanges'
+        eps:
+          $ref: '#/components/schemas/RelationshipChanges'
+        info:
+          $ref: '#/components/schemas/EndpointGroupInfoChange'
+      type: object
+    MpmChangesetMeta:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - REBASE
+          - RESOLVE_CONFLICT
+          - VALIDATE
+          - RESOLVE_ERROR
+          - COMMIT
+          type: string
+        baseRevision:
+          format: int32
+          type: integer
+        changesetId:
+          format: uuid
+          type: string
+        createdBy:
+          type: string
+        createdTime:
           format: date-time
           type: string
+        description:
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        name:
+          type: string
+        newRevision:
+          format: int32
+          type: integer
+        receivedTime:
+          format: date-time
+          type: string
+        status:
+          enum:
+          - DRAFT
+          - SUBMITTED
+          - CONFLICT_DETECTED
+          - ERROR_DETECTED
+          - COMMITTED
+          type: string
+      type: object
+    AppGroupInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    EndpointChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/EndpointChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    MpmCreateChangesetWithContentApi:
+      properties:
+        changesetContent:
+          $ref: '#/components/schemas/MpmChangesetContent'
+        description:
+          type: string
+        name:
+          type: string
+      required:
+      - changesetContent
+      - name
+      type: object
+    ManagerInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    PolicyRuleOrderChange:
+      properties:
+        newOrder:
+          items:
+            format: uuid
+            type: string
+          type: array
+        oldOrder:
+          items:
+            format: uuid
+            type: string
+          type: array
+      type: object
+    EndpointInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    EndpointGroupInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    MpmDynamicGroupRelationshipChanges:
+      properties:
+        add:
+          items:
+            type: string
+          type: array
+        rem:
+          items:
+            type: string
+          type: array
+      type: object
+    PolicyInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+      type: object
+    ManagerChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/ManagerChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    MpmChangesetContent:
+      properties:
+        extIds:
+          items:
+            type: string
+          type: array
+        managers:
+          items:
+            $ref: '#/components/schemas/ManagerChange'
+          type: array
+      required:
+      - managers
+      type: object
+    NatRuleChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/NatRuleChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
+      type: object
+    PolicyChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          type: string
+        body:
+          $ref: '#/components/schemas/PolicyChangeBody'
+        extId:
+          type: string
+        id:
+          format: uuid
+          type: string
+      required:
+      - action
+      - id
       type: object
     MpmChangeset:
       properties:
@@ -352,6 +671,19 @@ components:
           - COMMITTED
           type: string
       type: object
+    MpmChangesetsPage:
+      properties:
+        changesets:
+          items:
+            $ref: '#/components/schemas/MpmChangesetMeta'
+          type: array
+        lastChangesetId:
+          format: uuid
+          type: string
+        lastModifiedTimestamp:
+          format: date-time
+          type: string
+      type: object
     RuleInfoChange:
       properties:
         action:
@@ -372,48 +704,7 @@ components:
         ruleGroup:
           type: string
       type: object
-    PolicyChangeBody:
-      properties:
-        info:
-          $ref: '#/components/schemas/PolicyInfoChange'
-        natRules:
-          items:
-            $ref: '#/components/schemas/NatRuleChange'
-          type: array
-        ruleOrder:
-          $ref: '#/components/schemas/PolicyRuleOrderChange'
-        rules:
-          items:
-            $ref: '#/components/schemas/RuleChange'
-          type: array
-        targets:
-          $ref: '#/components/schemas/TargetRelationshipChanges'
-      type: object
-    MpmDynamicGroupRelationshipChanges:
-      properties:
-        add:
-          items:
-            type: string
-          type: array
-        rem:
-          items:
-            type: string
-          type: array
-      type: object
-    PolicyRuleOrderChange:
-      properties:
-        newOrder:
-          items:
-            format: uuid
-            type: string
-          type: array
-        oldOrder:
-          items:
-            format: uuid
-            type: string
-          type: array
-      type: object
-    PolicyChange:
+    AppGroupChange:
       properties:
         action:
           enum:
@@ -422,7 +713,7 @@ components:
           - DELETE
           type: string
         body:
-          $ref: '#/components/schemas/PolicyChangeBody'
+          $ref: '#/components/schemas/AppGroupChangeBody'
         extId:
           type: string
         id:
@@ -457,161 +748,25 @@ components:
             $ref: '#/components/schemas/PolicyChange'
           type: array
       type: object
-    ManagerInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-      type: object
-    RelationshipChanges:
+    TargetRelationshipChanges:
       properties:
         add:
           items:
-            format: uuid
             type: string
           type: array
         rem:
           items:
-            format: uuid
             type: string
           type: array
       type: object
-    AppChangeBody:
+    NatRuleChangeBody:
       properties:
         info:
-          $ref: '#/components/schemas/AppInfoChange'
-      required:
-      - info
-      type: object
-    MpmChangesetMeta:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - REBASE
-          - RESOLVE_CONFLICT
-          - VALIDATE
-          - RESOLVE_ERROR
-          - COMMIT
-          type: string
-        baseRevision:
-          format: int32
-          type: integer
-        changesetId:
-          format: uuid
-          type: string
-        createdBy:
-          type: string
-        createdTime:
-          format: date-time
-          type: string
-        description:
-          type: string
-        modifiedTime:
-          format: date-time
-          type: string
-        name:
-          type: string
-        newRevision:
-          format: int32
-          type: integer
-        receivedTime:
-          format: date-time
-          type: string
-        status:
-          enum:
-          - DRAFT
-          - SUBMITTED
-          - CONFLICT_DETECTED
-          - ERROR_DETECTED
-          - COMMITTED
-          type: string
-      type: object
-    EndpointChangeBody:
-      properties:
-        info:
-          $ref: '#/components/schemas/EndpointInfoChange'
-      required:
-      - info
-      type: object
-    MpmChangesetUserApi:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-      required:
-      - name
-      type: object
-    AppChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/AppChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
-      type: object
-    EndpointGroupInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-      type: object
-    NatMatchInfoChange:
-      properties:
-        apgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        aps:
-          $ref: '#/components/schemas/RelationshipChanges'
-        dstEpgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        dstEps:
-          $ref: '#/components/schemas/RelationshipChanges'
-        srcEpgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        srcEps:
-          $ref: '#/components/schemas/RelationshipChanges'
-      type: object
-    RuleChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/RuleChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
-      type: object
-    AppGroupChangeBody:
-      properties:
-        apgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        aps:
-          $ref: '#/components/schemas/RelationshipChanges'
-        info:
-          $ref: '#/components/schemas/AppGroupInfoChange'
+          $ref: '#/components/schemas/NatRuleInfoChange'
+        matchInfo:
+          $ref: '#/components/schemas/NatMatchInfoChange'
+        translatedInfo:
+          $ref: '#/components/schemas/NatTranslatedInfoChange'
       type: object
     AppInfoChange:
       properties:
@@ -622,14 +777,31 @@ components:
         value:
           type: string
       type: object
-    EndpointInfoChange:
+    AppChangeBody:
       properties:
-        description:
+        info:
+          $ref: '#/components/schemas/AppInfoChange'
+      required:
+      - info
+      type: object
+    EndpointGroupChange:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
           type: string
-        name:
+        body:
+          $ref: '#/components/schemas/EndpointGroupChangeBody'
+        extId:
           type: string
-        value:
+        id:
+          format: uuid
           type: string
+      required:
+      - action
+      - id
       type: object
     NatTranslatedInfoChange:
       properties:
@@ -639,106 +811,6 @@ components:
           $ref: '#/components/schemas/RelationshipChanges'
         srcEp:
           $ref: '#/components/schemas/RelationshipChanges'
-      type: object
-    EndpointChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/EndpointChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
-      type: object
-    RuleChangeBody:
-      properties:
-        apgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        aps:
-          $ref: '#/components/schemas/RelationshipChanges'
-        dstDgs:
-          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChanges'
-        dstEpgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        dstEps:
-          $ref: '#/components/schemas/RelationshipChanges'
-        info:
-          $ref: '#/components/schemas/RuleInfoChange'
-        srcDgs:
-          $ref: '#/components/schemas/MpmDynamicGroupRelationshipChanges'
-        srcEpgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        srcEps:
-          $ref: '#/components/schemas/RelationshipChanges'
-      type: object
-    MpmCreateChangesetWithContentApi:
-      properties:
-        changesetContent:
-          $ref: '#/components/schemas/MpmChangesetContent'
-        description:
-          type: string
-        name:
-          type: string
-      required:
-      - changesetContent
-      - name
-      type: object
-    EndpointGroupChangeBody:
-      properties:
-        epgs:
-          $ref: '#/components/schemas/RelationshipChanges'
-        eps:
-          $ref: '#/components/schemas/RelationshipChanges'
-        info:
-          $ref: '#/components/schemas/EndpointGroupInfoChange'
-      type: object
-    NatRuleChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/NatRuleChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
-      type: object
-    AppGroupInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-      type: object
-    MpmChangesetContent:
-      properties:
-        extIds:
-          items:
-            type: string
-          type: array
-        managers:
-          items:
-            $ref: '#/components/schemas/ManagerChange'
-          type: array
-      required:
-      - managers
       type: object
     NatRuleInfoChange:
       properties:
@@ -764,78 +836,6 @@ components:
           - STATIC
           - HIDE
           type: string
-      type: object
-    EndpointGroupChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/EndpointGroupChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
-      type: object
-    PolicyInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        policyType:
-          enum:
-          - SECURITY
-          - GOVERNANCE_PREPEND
-          - GOVERNANCE_APPEND
-          - NAT
-          type: string
-      type: object
-    TargetRelationshipChanges:
-      properties:
-        add:
-          items:
-            type: string
-          type: array
-        rem:
-          items:
-            type: string
-          type: array
-      type: object
-    NatRuleChangeBody:
-      properties:
-        info:
-          $ref: '#/components/schemas/NatRuleInfoChange'
-        matchInfo:
-          $ref: '#/components/schemas/NatMatchInfoChange'
-        translatedInfo:
-          $ref: '#/components/schemas/NatTranslatedInfoChange'
-      type: object
-    ManagerChange:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          type: string
-        body:
-          $ref: '#/components/schemas/ManagerChangeBody'
-        extId:
-          type: string
-        id:
-          format: uuid
-          type: string
-      required:
-      - action
-      - id
       type: object
   securitySchemes:
     BearerJWT:

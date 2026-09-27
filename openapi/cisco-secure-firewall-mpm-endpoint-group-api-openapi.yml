@@ -264,34 +264,6 @@ paths:
       - MPM Endpoint Group
 components:
   schemas:
-    MpmEntityRelations:
-      properties:
-        appGroups:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        endpointGroups:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        policyToRules:
-          items:
-            $ref: '#/components/schemas/MpmPolicyMetadataToRules'
-          type: array
-      type: object
-    MpmEndpointGroupsPage:
-      properties:
-        cursor:
-          type: string
-        endpointGroups:
-          items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
-          type: array
-      type: object
     MpmPolicyMetadataToRules:
       properties:
         description:
@@ -343,6 +315,34 @@ components:
           type: string
         name:
           type: string
+      type: object
+    MpmEndpointGroupsPage:
+      properties:
+        cursor:
+          type: string
+        endpointGroups:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+      type: object
+    MpmEntityRelations:
+      properties:
+        appGroups:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        endpointGroups:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        policyToRules:
+          items:
+            $ref: '#/components/schemas/MpmPolicyMetadataToRules'
+          type: array
       type: object
   securitySchemes:
     BearerJWT:
