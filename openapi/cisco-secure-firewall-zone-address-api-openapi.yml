@@ -179,26 +179,9 @@ paths:
       - Zone Address
 components:
   schemas:
-    AddressWithZoneMatch:
+    AddressesWithTags:
       properties:
-        exactMatch:
-          type: boolean
-        value:
-          description: Valid IPV4 address
-          example: 1.1.1.1/32
-          type: string
-      type: object
-    StringValue:
-      properties:
-        value:
-          type: string
-      type: object
-    AddressesApi:
-      properties:
-        addresses:
-          description: List of valid IPV4 addresses
-          example:
-          - value: 1.1.1.1/32
+        addressesWithTags:
           items:
             $ref: '#/components/schemas/StringValue'
           type: array
@@ -225,24 +208,29 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
-    TopologyRequestResponse:
+    AddressWithZoneMatch:
       properties:
-        request:
-          $ref: '#/components/schemas/ReqIdAndReqSystem'
+        exactMatch:
+          type: boolean
+        value:
+          description: Valid IPV4 address
+          example: 1.1.1.1/32
+          type: string
       type: object
-    AddressesWithTags:
+    AddressesApi:
       properties:
-        addressesWithTags:
+        addresses:
+          description: List of valid IPV4 addresses
+          example:
+          - value: 1.1.1.1/32
           items:
             $ref: '#/components/schemas/StringValue'
           type: array
       type: object
-    AddressesWithTagsToZones:
+    StringValue:
       properties:
-        addressesWithTagsToZones:
-          items:
-            $ref: '#/components/schemas/AddressWithTagsToZones'
-          type: array
+        value:
+          type: string
       type: object
     AddressWithTagsToZones:
       properties:
@@ -251,6 +239,18 @@ components:
         zones:
           items:
             type: string
+          type: array
+      type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
+      type: object
+    AddressesWithTagsToZones:
+      properties:
+        addressesWithTagsToZones:
+          items:
+            $ref: '#/components/schemas/AddressWithTagsToZones'
           type: array
       type: object
     AddressWithZoneMatchApi:

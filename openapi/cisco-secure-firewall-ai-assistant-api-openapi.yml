@@ -242,106 +242,32 @@ paths:
       tags:
       - AI Assistant
 components:
+  responses:
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
   schemas:
-    CommonApiError:
-      properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
-          description: A human-readable error description in English.
-          example: sample error
-          type: string
-    AiQuestion:
-      properties:
-        content:
-          description: The content of the message.
-          example: What's the difference between an Admin and a Super Admin?
-          type: string
-      type: object
-    AiAssistantConversationPage:
-      properties:
-        count:
-          description: The total number of results available.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/AiConversation'
-          type: array
-        limit:
-          description: The number of results retrieved.
-          example: 50
-          format: int32
-          type: integer
-        offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
-          format: int32
-          type: integer
-      type: object
-    AiConversation:
-      properties:
-        createdDate:
-          description: The time (UTC; represented using the RFC-3339 standard) at which the conversation was created.
-          example: 2023-12-13 08:15:44+00:00
-          format: date-time
-          type: string
-        lastAnswerDate:
-          description: The time (UTC; represented using the RFC-3339 standard) at which an answer was received.
-          example: 2023-12-13 08:15:44+00:00
-          format: date-time
-          type: string
-        lastInteractionDate:
-          description: The time (UTC; represented using the RFC-3339 standard) at which the user interacted with this conversation.
-          example: 2023-12-13 08:15:44+00:00
-          format: date-time
-          type: string
-        title:
-          description: The title of the conversation. This is set to the first question asked as part of the conversation.
-          example: Is example.com blocked on my FTD?
-          type: string
-        uid:
-          description: The unique identifier, represented as a UUID, of the conversation.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - uid
-      type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
     CdoTransaction:
       properties:
         cdoTransactionStatus:
@@ -453,6 +379,16 @@ components:
           format: uuid
           type: string
       type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
     AiMessage:
       properties:
         content:
@@ -484,31 +420,95 @@ components:
       required:
       - uid
       type: object
-  responses:
-    http401Unauthorised:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
-    http400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
+    AiQuestion:
+      properties:
+        content:
+          description: The content of the message.
+          example: What's the difference between an Admin and a Super Admin?
+          type: string
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
+    AiAssistantConversationPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/AiConversation'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    AiConversation:
+      properties:
+        createdDate:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the conversation was created.
+          example: 2023-12-13 08:15:44+00:00
+          format: date-time
+          type: string
+        lastAnswerDate:
+          description: The time (UTC; represented using the RFC-3339 standard) at which an answer was received.
+          example: 2023-12-13 08:15:44+00:00
+          format: date-time
+          type: string
+        lastInteractionDate:
+          description: The time (UTC; represented using the RFC-3339 standard) at which the user interacted with this conversation.
+          example: 2023-12-13 08:15:44+00:00
+          format: date-time
+          type: string
+        title:
+          description: The title of the conversation. This is set to the first question asked as part of the conversation.
+          example: Is example.com blocked on my FTD?
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the conversation.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - uid
+      type: object
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

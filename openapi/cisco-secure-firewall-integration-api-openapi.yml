@@ -1562,83 +1562,21 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ExternalLookupListContainer:
+    UmbrellaDataCenter:
+      description: Description of Umbrella Data center
       properties:
-        items:
-          $ref: '#/components/schemas/ExternalLookup'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    CloudRegion:
-      description: A model representing a cloud region
-      properties:
-        current:
-          description: Boolean indicating whether this is the region used by the system
-          type: boolean
-        description:
-          description: Region description
+        city:
+          description: City in which Data center is located
           type: string
-        domain:
-          description: The domain used to connect to the region
-          type: string
-        id:
-          description: Unique identifier of the object
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Related links
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: Region name
-          type: string
-        type:
-          description: 'Type of the object: CloudRegion'
-          type: string
-        version:
-          type: string
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    UmbrellaDeploymentData:
-      properties:
-        datacenterIPAddress:
-          type: string
-        deployToFTD:
-          type: boolean
-        deploymentStatus:
-          enum:
-          - PENDING
-          - SUCCESS
-          - FAILURE
-          - PARTIAL
-          - IN_PROGRESS
+        continent:
+          description: Continent in which Data center is located
           type: string
         description:
           type: string
-        endTime:
-          type: string
-        endpoints:
-          items:
-            $ref: '#/components/schemas/IUmbrellaDeployEndpointsInfo'
-            type: object
-          type: array
         id:
+          type: string
+        ipAddress:
+          description: IP Adress of the Data center
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
@@ -1648,19 +1586,30 @@ components:
           type: object
         name:
           type: string
-        startTime:
-          type: string
         type:
-          type: string
-        umbrellaDatacenter:
           type: string
         version:
           type: string
       type: object
-    AiOpsModelListContainer:
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    CloudIntegrationStatusListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/AiOpsModel'
+          $ref: '#/components/schemas/CloudIntegrationStatus'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -1715,112 +1664,23 @@ components:
         version:
           type: string
       type: object
-    FMCHAStatusListContainer:
+    Domain:
+      description: The details about the domain.
       properties:
-        items:
-          $ref: '#/components/schemas/FMCHAStatus'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    SecurexConfigRefresh:
-      description: Refresh SecureX configurations.
-      properties:
-        description:
-          type: string
-        devices:
-          description: List of devices for which configurations has to be refreshed
-          items:
-            $ref: '#/components/schemas/IReference'
-            type: object
-          type: array
         id:
+          description: Unique UUID of this domain
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
+          description: Links to the domain resource URLs.
           type: object
         name:
+          description: Name of the domain.
           type: string
         type:
-          description: Type of the request object. This value is always 'SecurexConfigRefresh'.
+          description: Domain type definition (fixed).
           type: string
-        version:
-          type: string
-      type: object
-    CloudEventsListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/CloudEvents'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    UmbrellaDataCenter:
-      description: Description of Umbrella Data center
-      properties:
-        city:
-          description: City in which Data center is located
-          type: string
-        continent:
-          description: Continent in which Data center is located
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        ipAddress:
-          description: IP Adress of the Data center
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    CloudIntegrationStatus:
-      properties:
-        enabled:
-          type: boolean
-        info:
-          $ref: '#/components/schemas/CloudIntegrationStatusInfo'
-          type: object
-      type: object
-    LLDeviceMap:
-      additionalProperties:
-        type: string
-      type: object
-    IUmbrellaDeployEndpointsInfo:
-      properties:
-        device:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        message:
-          type: string
-        umbrellaDeploymentState:
-          enum:
-          - PENDING
-          - SUCCESS
-          - FAILURE
-          - PARTIAL
-          - IN_PROGRESS
+        uuid:
           type: string
       type: object
     PrometheusTSDBUploadListContainer:
@@ -1834,6 +1694,64 @@ components:
         paging:
           $ref: '#/components/schemas/PagingContainer'
           type: object
+      type: object
+    AiOpsModel:
+      properties:
+        blockDetails:
+          items:
+            $ref: '#/components/schemas/IBlockDetails'
+            type: object
+          type: array
+        deviceUuids:
+          items:
+            type: string
+          type: array
+        enabled:
+          type: boolean
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        status:
+          enum:
+          - STARTED
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          - ALREADY_INITIATED
+          - NOT_INITIATED
+          type: string
+        tenantUuid:
+          type: string
+        type:
+          type: string
+        uploadUrl:
+          type: string
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
       type: object
     FMCHAStatus:
       description: Represents the Firepower Management Center High Availability Status Object.
@@ -1882,117 +1800,6 @@ components:
           description: Type of the Response object. This value is always FMCHAStatus.
           type: string
       type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    TestUmbrellaConnection:
-      description: Represents the request object used to test the umbrella connection.
-      properties:
-        networkDeviceKey:
-          description: Represents the network device key in the umbrella cloud.
-          type: string
-        networkDeviceSecret:
-          description: Represents the network device secret in the umbrella cloud.
-          type: string
-        type:
-          description: Type of the request object. This value is always 'TestUmbrellaConnection'.
-          type: string
-      type: object
-    IPendingDeviceRegInfo:
-      description: Represents the Pending Device Registration info.
-      properties:
-        deviceName:
-          description: String represents the name of the device.
-          type: string
-        deviceUuid:
-          description: String represents the UUID of the device.
-          type: string
-        ipAddress:
-          description: String represents the IP address of the device.
-          type: string
-        regStatus:
-          description: String represents the registration status of the device.
-          enum:
-          - PENDING
-          - FAILED
-          type: string
-      type: object
-    IFMCServerInfo:
-      description: Represents the FMC Server Object.
-      properties:
-        hwRole:
-          description: String represents the hardware role of the FMC.
-          type: string
-        ipAddress:
-          description: String represents the IP address of the FMC.
-          type: string
-        modelId:
-          description: Integer represents the model of the FMC.
-          format: int32
-          type: integer
-        modelName:
-          description: String specifies the model of the FMC.
-          type: string
-        role:
-          description: String represents the role of the FMC.
-          type: string
-        swVersion:
-          description: String represents the software version of the FMC.
-          type: string
-        uuid:
-          description: String represents the UUID of the FMC.
-          type: string
-      type: object
-    CloudIntegrationStatusInfo:
-      properties:
-        cdoUrl:
-          type: string
-        connected:
-          type: boolean
-        deviceId:
-          type: string
-        onboardingStatus:
-          type: string
-        sseTenantName:
-          type: string
-        tenantId:
-          type: string
-      type: object
-    Metadata:
-      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
-      properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          description: Defines the domains this instance belongs to (if applicable).
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          description: The last user who modified this instance.
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          description: Details regarding the read only status of this instance
-          type: object
-        timestamp:
-          description: The last updated timestamp.
-          format: int32
-          type: integer
-      type: object
     ErrorResponse:
       properties:
         category:
@@ -2013,39 +1820,6 @@ components:
           enum:
           - ERROR
           - WARN
-          type: string
-      type: object
-    IOverride:
-      description: Defines the override details for this object.
-      properties:
-        parent:
-          $ref: '#/components/schemas/IReference'
-          description: Link to the parent/global resource which is overriden.
-          type: object
-        target:
-          $ref: '#/components/schemas/IReference'
-          description: The device or the domain target on which this override is enabled.
-          type: object
-      type: object
-    UmbrellaDeploymentTranscript:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        transcript:
-          type: string
-        type:
-          type: string
-        version:
           type: string
       type: object
     ErrorMessagesContainer:
@@ -2075,20 +1849,76 @@ components:
           - WARN
           type: string
       type: object
-    ILogHost:
+    IOverride:
+      description: Defines the override details for this object.
       properties:
-        logHost:
-          type: string
-        logId:
-          type: string
-        logPort:
-          format: int32
-          type: integer
+        parent:
+          $ref: '#/components/schemas/IReference'
+          description: Link to the parent/global resource which is overriden.
+          type: object
+        target:
+          $ref: '#/components/schemas/IReference'
+          description: The device or the domain target on which this override is enabled.
+          type: object
       type: object
-    UmbrellaConnectionListContainer:
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    TestUmbrellaConnection:
+      description: Represents the request object used to test the umbrella connection.
+      properties:
+        networkDeviceKey:
+          description: Represents the network device key in the umbrella cloud.
+          type: string
+        networkDeviceSecret:
+          description: Represents the network device secret in the umbrella cloud.
+          type: string
+        type:
+          description: Type of the request object. This value is always 'TestUmbrellaConnection'.
+          type: string
+      type: object
+    CloudIntegrationStatus:
+      properties:
+        enabled:
+          type: boolean
+        info:
+          $ref: '#/components/schemas/CloudIntegrationStatusInfo'
+          type: object
+      type: object
+    UmbrellaDeploymentTranscript:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        transcript:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    ExternalLookupListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/UmbrellaConnection'
+          $ref: '#/components/schemas/ExternalLookup'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -2114,6 +1944,283 @@ components:
           description: Response object associated with resource.
           type: string
       type: object
+    CloudRegion:
+      description: A model representing a cloud region
+      properties:
+        current:
+          description: Boolean indicating whether this is the region used by the system
+          type: boolean
+        description:
+          description: Region description
+          type: string
+        domain:
+          description: The domain used to connect to the region
+          type: string
+        id:
+          description: Unique identifier of the object
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Related links
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Region name
+          type: string
+        type:
+          description: 'Type of the object: CloudRegion'
+          type: string
+        version:
+          type: string
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    ExternalLookup:
+      properties:
+        description:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        intValue:
+          format: int32
+          type: integer
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        longValue:
+          format: int32
+          type: integer
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        network:
+          $ref: '#/components/schemas/NetworkObject'
+          type: object
+        template:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    UmbrellaDataCenterListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/UmbrellaDataCenter'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    CloudEventsListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/CloudEvents'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    UmbrellaDeploymentData:
+      properties:
+        datacenterIPAddress:
+          type: string
+        deployToFTD:
+          type: boolean
+        deploymentStatus:
+          enum:
+          - PENDING
+          - SUCCESS
+          - FAILURE
+          - PARTIAL
+          - IN_PROGRESS
+          type: string
+        description:
+          type: string
+        endTime:
+          type: string
+        endpoints:
+          items:
+            $ref: '#/components/schemas/IUmbrellaDeployEndpointsInfo'
+            type: object
+          type: array
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        startTime:
+          type: string
+        type:
+          type: string
+        umbrellaDatacenter:
+          type: string
+        version:
+          type: string
+      type: object
+    IPendingDeviceRegInfo:
+      description: Represents the Pending Device Registration info.
+      properties:
+        deviceName:
+          description: String represents the name of the device.
+          type: string
+        deviceUuid:
+          description: String represents the UUID of the device.
+          type: string
+        ipAddress:
+          description: String represents the IP address of the device.
+          type: string
+        regStatus:
+          description: String represents the registration status of the device.
+          enum:
+          - PENDING
+          - FAILED
+          type: string
+      type: object
+    LLDeviceMap:
+      additionalProperties:
+        type: string
+      type: object
+    ExternalStorageListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/ExternalStorage'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    CloudIntegrationStatusInfo:
+      properties:
+        cdoUrl:
+          type: string
+        connected:
+          type: boolean
+        deviceId:
+          type: string
+        onboardingStatus:
+          type: string
+        sseTenantName:
+          type: string
+        tenantId:
+          type: string
+      type: object
+    NetworkObject:
+      description: A model representing Network object definition.
+      properties:
+        description:
+          description: 'User provided resource description. '
+          type: string
+        id:
+          description: Unique identifier representing response object.
+          type: string
+        links:
+          $ref: '#/components/schemas/Links'
+          description: Object containing related links.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          description: Object representing metadata properties of NetworkObject.
+          type: object
+        name:
+          description: User assigned resource name.
+          type: string
+        overridable:
+          description: Boolean indicating whether object values can be overridden.
+          type: boolean
+        overrideTargetId:
+          description: Unique identifier of domain or device when override assigned to child domain. Used as path parameter to GET override details for a specific object on a specific target (device or domain).
+          type: string
+        overrides:
+          $ref: '#/components/schemas/IOverride'
+          description: An object override allows you to define an alternate value for an object on a device or domain.
+          type: object
+        type:
+          description: 'Type associated with resource: NetworkObject.'
+          type: string
+        value:
+          description: Actual value of the network.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    PrometheusTSDBUpload:
+      properties:
+        blockDetails:
+          items:
+            $ref: '#/components/schemas/IBlockDetails'
+            type: object
+          type: array
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        status:
+          enum:
+          - STARTED
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          - ALREADY_INITIATED
+          - NOT_INITIATED
+          type: string
+        type:
+          type: string
+        uploadUrl:
+          type: string
+        version:
+          type: string
+      type: object
     IDomain:
       properties:
         id:
@@ -2126,18 +2233,53 @@ components:
         type:
           type: string
       type: object
-    PagingContainer:
+    AiOpsModelListContainer:
       properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
+        items:
+          $ref: '#/components/schemas/AiOpsModel'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    FMCHAStatusListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/FMCHAStatus'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    Metadata:
+      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          description: Defines the domains this instance belongs to (if applicable).
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          description: The last user who modified this instance.
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          description: Details regarding the read only status of this instance
+          type: object
+        timestamp:
+          description: The last updated timestamp.
           format: int32
           type: integer
       type: object
@@ -2146,6 +2288,44 @@ components:
         blockName:
           type: string
         checksum:
+          type: string
+      type: object
+    CloudRegionListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/CloudRegion'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ILogHost:
+      properties:
+        logHost:
+          type: string
+        logId:
+          type: string
+        logPort:
+          format: int32
+          type: integer
+      type: object
+    IUmbrellaDeployEndpointsInfo:
+      properties:
+        device:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        message:
+          type: string
+        umbrellaDeploymentState:
+          enum:
+          - PENDING
+          - SUCCESS
+          - FAILURE
+          - PARTIAL
+          - IN_PROGRESS
           type: string
       type: object
     ExternalStorage:
@@ -2249,38 +2429,6 @@ components:
           description: Value is 'UmbrellaConnection'. Read only fixed value.
           type: string
       type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    Links:
-      properties:
-        parent:
-          type: string
-        self:
-          type: string
-      type: object
-    ReadOnly:
-      description: Defines the read only conditions if the referenced resource is read only.
-      properties:
-        reason:
-          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          description: True if this resource us read only and false otherwise.
-          type: boolean
-      type: object
     MetadataUser:
       description: This object defines details about the user.
       properties:
@@ -2298,249 +2446,107 @@ components:
           description: The user type (fixed).
           type: string
       type: object
-    CloudRegionListContainer:
+    SecurexConfigRefresh:
+      description: Refresh SecureX configurations.
       properties:
-        items:
-          $ref: '#/components/schemas/CloudRegion'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    UmbrellaDataCenterListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/UmbrellaDataCenter'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    CloudIntegrationStatusListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/CloudIntegrationStatus'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
+        description:
+          type: string
+        devices:
+          description: List of devices for which configurations has to be refreshed
           items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    AiOpsModel:
-      properties:
-        blockDetails:
-          items:
-            $ref: '#/components/schemas/IBlockDetails'
+            $ref: '#/components/schemas/IReference'
             type: object
           type: array
-        deviceUuids:
-          items:
-            type: string
-          type: array
-        enabled:
-          type: boolean
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        status:
-          enum:
-          - STARTED
-          - IN_PROGRESS
-          - COMPLETED
-          - FAILED
-          - ALREADY_INITIATED
-          - NOT_INITIATED
-          type: string
-        tenantUuid:
-          type: string
-        type:
-          type: string
-        uploadUrl:
-          type: string
-      type: object
-    ExternalLookup:
-      properties:
-        description:
-          type: string
-        enabled:
-          type: boolean
         id:
           type: string
-        intValue:
-          format: int32
-          type: integer
         links:
           $ref: '#/components/schemas/ILinks'
-          type: object
-        longValue:
-          format: int32
-          type: integer
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        network:
-          $ref: '#/components/schemas/NetworkObject'
-          type: object
-        template:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    Domain:
-      description: The details about the domain.
-      properties:
-        id:
-          description: Unique UUID of this domain
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
-          type: object
-        name:
-          description: Name of the domain.
-          type: string
-        type:
-          description: Domain type definition (fixed).
-          type: string
-        uuid:
-          type: string
-      type: object
-    ExternalStorageListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/ExternalStorage'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    NetworkObject:
-      description: A model representing Network object definition.
-      properties:
-        description:
-          description: 'User provided resource description. '
-          type: string
-        id:
-          description: Unique identifier representing response object.
-          type: string
-        links:
-          $ref: '#/components/schemas/Links'
-          description: Object containing related links.
           type: object
         metadata:
           $ref: '#/components/schemas/Metadata'
-          description: Object representing metadata properties of NetworkObject.
           type: object
         name:
-          description: User assigned resource name.
           type: string
-        overridable:
-          description: Boolean indicating whether object values can be overridden.
-          type: boolean
-        overrideTargetId:
-          description: Unique identifier of domain or device when override assigned to child domain. Used as path parameter to GET override details for a specific object on a specific target (device or domain).
-          type: string
-        overrides:
-          $ref: '#/components/schemas/IOverride'
-          description: An object override allows you to define an alternate value for an object on a device or domain.
-          type: object
         type:
-          description: 'Type associated with resource: NetworkObject.'
-          type: string
-        value:
-          description: Actual value of the network.
+          description: Type of the request object. This value is always 'SecurexConfigRefresh'.
           type: string
         version:
-          description: Version number of the response object.
           type: string
       type: object
-    PrometheusTSDBUpload:
+    UmbrellaConnectionListContainer:
       properties:
-        blockDetails:
-          items:
-            $ref: '#/components/schemas/IBlockDetails'
-            type: object
+        items:
+          $ref: '#/components/schemas/UmbrellaConnection'
           type: array
-        description:
-          type: string
-        id:
-          type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
           type: object
-        name:
+      type: object
+    Links:
+      properties:
+        parent:
           type: string
-        status:
-          enum:
-          - STARTED
-          - IN_PROGRESS
-          - COMPLETED
-          - FAILED
-          - ALREADY_INITIATED
-          - NOT_INITIATED
-          type: string
-        type:
-          type: string
-        uploadUrl:
-          type: string
-        version:
+        self:
           type: string
       type: object
+    IFMCServerInfo:
+      description: Represents the FMC Server Object.
+      properties:
+        hwRole:
+          description: String represents the hardware role of the FMC.
+          type: string
+        ipAddress:
+          description: String represents the IP address of the FMC.
+          type: string
+        modelId:
+          description: Integer represents the model of the FMC.
+          format: int32
+          type: integer
+        modelName:
+          description: String specifies the model of the FMC.
+          type: string
+        role:
+          description: String represents the role of the FMC.
+          type: string
+        swVersion:
+          description: String represents the software version of the FMC.
+          type: string
+        uuid:
+          description: String represents the UUID of the FMC.
+          type: string
+      type: object
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
+      properties:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
+      type: object
   parameters:
-    offset:
-      description: Index of first item to return.
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
       in: query
-      name: offset
+      name: expanded
       required: false
       schema:
-        format: int32
-        type: integer
+        type: boolean
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
     limit:
       description: Number of items to return.
       in: query
@@ -2549,20 +2555,14 @@ components:
       schema:
         format: int32
         type: integer
-    domainUUID:
-      description: Domain UUID
-      in: path
-      name: domainUUID
-      required: true
-      schema:
-        type: string
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
+    offset:
+      description: Index of first item to return.
       in: query
-      name: expanded
+      name: offset
       required: false
       schema:
-        type: boolean
+        format: int32
+        type: integer
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

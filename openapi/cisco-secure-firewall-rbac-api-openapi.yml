@@ -320,6 +320,17 @@ paths:
           $ref: '#/components/responses/GeneralError'
 components:
   schemas:
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
     RBACGroupAssignmentRole:
       type: object
       description: Represent entity of RBAC group role assignment
@@ -339,6 +350,30 @@ components:
           type: string
           format: uuid
         tenantId:
+          type: string
+          format: uuid
+    RBACUserAssignmentRole:
+      type: object
+      description: Represent entity of RBAC user role assignment
+      required:
+      - id
+      - userId
+      - enterpriseId
+      - tenantId
+      - roleId
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        enterpriseId:
+          type: string
+          format: uuid
+        tenantId:
+          type: string
+          format: uuid
+        roleId:
           type: string
           format: uuid
     RBACCustomRole:
@@ -382,41 +417,6 @@ components:
               type: array
               items:
                 type: string
-    RBACUserAssignmentRole:
-      type: object
-      description: Represent entity of RBAC user role assignment
-      required:
-      - id
-      - userId
-      - enterpriseId
-      - tenantId
-      - roleId
-      properties:
-        id:
-          type: string
-          format: uuid
-        userId:
-          type: string
-        enterpriseId:
-          type: string
-          format: uuid
-        tenantId:
-          type: string
-          format: uuid
-        roleId:
-          type: string
-          format: uuid
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
     RoleAssignmentIdInput:
       type: object
       description: role and its tenant id input
@@ -431,24 +431,6 @@ components:
           type: string
           format: uuid
   responses:
-    GeneralError:
-      description: An unknown error occurred
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFoundError:
-      description: Not Found
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     ValidationError:
       description: The request was invalid
       headers:
@@ -458,14 +440,23 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: The request is not able to be authorized
+    PredefinedFailed:
+      description: Predefined Failed - if group role exit for user. it will be returned
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    PredefinedFailed:
-      description: Predefined Failed - if group role exit for user. it will be returned
+    GeneralError:
+      description: An unknown error occurred
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Insufficient permissions to complete the request
       content:
         application/json:
           schema:
@@ -478,8 +469,17 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Insufficient permissions to complete the request
+    Unauthorized:
+      description: The request is not able to be authorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFoundError:
+      description: Not Found
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
       content:
         application/json:
           schema:

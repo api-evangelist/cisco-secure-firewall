@@ -229,19 +229,25 @@ paths:
       - Zone Path
 components:
   schemas:
-    ZonePathRequest:
-      properties:
-        zonePath:
-          items:
-            $ref: '#/components/schemas/ZoneId'
-          type: array
-      type: object
     ZonePathsApiResponse:
       properties:
         zonePaths:
           items:
             $ref: '#/components/schemas/ZonePathId'
           type: array
+      type: object
+    ZonePathNode:
+      properties:
+        ids:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        type:
+          enum:
+          - ZONE
+          - DEVICE
+          type: string
       type: object
     ReqIdAndReqSystem:
       properties:
@@ -272,6 +278,26 @@ components:
             $ref: '#/components/schemas/ReqIdAndReqSystem'
           type: array
       type: object
+    ZonePath:
+      properties:
+        nodes:
+          items:
+            $ref: '#/components/schemas/ZonePathNode'
+          type: array
+      type: object
+    ZonePathRequest:
+      properties:
+        zonePath:
+          items:
+            $ref: '#/components/schemas/ZoneId'
+          type: array
+      type: object
+    ZonePathId:
+      properties:
+        id:
+          format: uuid
+          type: string
+      type: object
     CreateZonePathApiResponse:
       properties:
         gatewaySetPushRequests:
@@ -282,17 +308,9 @@ components:
           format: uuid
           type: string
       type: object
-    ZonePathNode:
+    ZoneId:
       properties:
-        ids:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        type:
-          enum:
-          - ZONE
-          - DEVICE
+        zone:
           type: string
       type: object
     ZonePaths:
@@ -301,24 +319,6 @@ components:
           items:
             $ref: '#/components/schemas/ZonePath'
           type: array
-      type: object
-    ZonePath:
-      properties:
-        nodes:
-          items:
-            $ref: '#/components/schemas/ZonePathNode'
-          type: array
-      type: object
-    ZoneId:
-      properties:
-        zone:
-          type: string
-      type: object
-    ZonePathId:
-      properties:
-        id:
-          format: uuid
-          type: string
       type: object
   securitySchemes:
     BearerJWT:

@@ -916,30 +916,86 @@ paths:
     - url: https://api.int.security.cisco.com/provisioning
 components:
   schemas:
-    MemoryHealthMetrics:
-      description: Represents device memory metrics in percentage values.
+    IDeviceChassisData:
       properties:
-        linaUsageAvg:
-          type: number
-        snortUsageAvg:
-          type: number
-        systemUsageAvg:
-          type: number
-      type: object
-    CertificateInfo:
-      properties:
-        expiry:
+        chassisSerialNo:
           type: string
-        isCA:
-          type: boolean
-        issuer:
-          $ref: '#/components/schemas/CertificateInfo'
-          type: object
+        chassisUrl:
+          type: string
+        securityModuleNo:
+          format: int32
+          type: integer
+        securityModuleSN:
+          type: string
       type: object
-    HealthAlertModelListContainer:
+    TunnelSummary:
+      description: Represents an aggregated summary of the status of all S2S VPN tunnels.
+      properties:
+        description:
+          type: string
+        group:
+          $ref: '#/components/schemas/IModel'
+          description: Represents the group over which the tunnel statuses are summarized. Can be a Device or a S2S VPN Topology.
+          type: object
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        tunnelCount:
+          description: The total number of S2S VPN Tunnels in the group.
+          format: int32
+          type: integer
+        tunnelDownCount:
+          description: The number of S2S VPN Tunnels that are down.
+          format: int32
+          type: integer
+        tunnelUnknownCount:
+          description: The number of S2S VPN Tunnels whose status is unknown. These may be tunnels just deployed but never came up.
+          format: int32
+          type: integer
+        tunnelUpCount:
+          description: The number of S2S VPN Tunnels that are up.
+          format: int32
+          type: integer
+        type:
+          description: Type of the Response object. This value is always TunnelSummary.
+          type: string
+        version:
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    TunnelStatusListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/HealthAlertModel'
+          $ref: '#/components/schemas/TunnelStatus'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -948,100 +1004,231 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    IFTDS2SVpnModel:
+    IPreDeployAction:
       properties:
-        advancedSettings:
-          $ref: '#/components/schemas/IReference'
+        actionInfo:
+          $ref: '#/components/schemas/IActionInfo'
           type: object
-        autoVpnSettings:
-          $ref: '#/components/schemas/IAutoVpnSettings'
-          type: object
-        description:
-          type: string
-        endpoints:
-          type: object
-        id:
-          type: string
-        ikeSettings:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        ikeV1Enabled:
-          type: boolean
-        ikeV2Enabled:
-          type: boolean
-        ipsecSettings:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        routeBased:
-          type: boolean
-        topologyType:
-          type: string
-        type:
-          type: string
-        version:
+        actionType:
+          enum:
+          - APPLY_TEMPLATE
           type: string
       type: object
-    AggregateMetrics:
-      description: Represents various device health metrics in an aggregated format.
+    IReference:
+      description: Contains reference information.
       properties:
-        chassisStatsHealthMetrics:
-          $ref: '#/components/schemas/ChassisStatsHealthMetrics'
+        id:
+          description: Unique identifier representing resource.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
           type: object
-        cpuHealthMetrics:
-          $ref: '#/components/schemas/CPUHealthMetrics'
+        name:
+          description: User chosen resource name.
+          type: string
+        type:
+          description: Response object associated with resource.
+          type: string
+      type: object
+    ISPI:
+      properties:
+        bytesRemaining:
+          format: int32
+          type: integer
+        id:
+          type: string
+        secondsRemaining:
+          format: int32
+          type: integer
+      type: object
+    IVpnPeer:
+      properties:
+        device:
+          $ref: '#/components/schemas/IDevice'
           type: object
+        ipAddresses:
+          $ref: '#/components/schemas/IVpnAddresses'
+          type: object
+        peerType:
+          enum:
+          - FTD
+          - EXTRANET
+          - UMBRELLA
+          - SECURE_ACCESS
+          type: string
+        role:
+          enum:
+          - PEER
+          - HUB
+          - SPOKE
+          type: string
+        trafficSelector:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        vpnInterface:
+          $ref: '#/components/schemas/IVpnInterface'
+          type: object
+        vtiInterface:
+          $ref: '#/components/schemas/IVpnInterface'
+          type: object
+      type: object
+    IRouteDistributeConnectedNetwork:
+      properties:
+        connectedInterface:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        enableDistribution:
+          type: boolean
+        interfaceSelection:
+          enum:
+          - INSIDE_INTERFACE
+          - USER_SELECTED_INTERFACE
+          type: string
+      type: object
+    CPUHealthMetrics:
+      description: Represents device CPU metrics in percentage values.
+      properties:
+        linaUsageAvg:
+          type: number
+        snortUsageAvg:
+          type: number
+        systemUsageAvg:
+          type: number
+      type: object
+    PathMonitoredInterface:
+      properties:
         description:
           type: string
-        diskHealthMetrics:
-          $ref: '#/components/schemas/DiskHealthMetrics'
-          type: object
-        endTime:
-          description: End time of the metrics.
-          type: string
-        haInfo:
-          $ref: '#/components/schemas/HAInfo'
+        device:
+          $ref: '#/components/schemas/IReference'
           type: object
         id:
-          description: Unique identifier of the device.
           type: string
-        interfaceHealthMetricsList:
+        interfaces:
           items:
-            $ref: '#/components/schemas/InterfaceHealthMetrics'
+            $ref: '#/components/schemas/IPathMonitoredInterfaceDetails'
             type: object
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        memoryHealthMetrics:
-          $ref: '#/components/schemas/MemoryHealthMetrics'
-          type: object
         metadata:
-          $ref: '#/components/schemas/Metadata'
+          $ref: '#/components/schemas/IMetadata'
           type: object
         name:
-          description: Name of the device.
-          type: string
-        startTime:
-          description: Start time for the metrics.
           type: string
         type:
           type: string
         version:
           type: string
       type: object
-    TerminateRAVPNSession:
+    IActionInfo:
+      type: object
+    HealthAlertConfig:
+      properties:
+        enabled:
+          type: boolean
+        name:
+          type: string
+        thresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+      type: object
+    DeviceMetadata:
+      properties:
+        chassisData:
+          $ref: '#/components/schemas/DeviceChassisData'
+          description: This field holds information related to chassis.
+          type: object
+        chassisDetails:
+          $ref: '#/components/schemas/IDeviceChassisData'
+          type: object
+        clusterBootstrapSupported:
+          type: boolean
+        containerDetails:
+          $ref: '#/components/schemas/IBaseDevice'
+          description: If 'isPartOfContainer' field is true then this field will hold the information of container.
+          type: object
+        deviceSerialNumber:
+          type: string
+        domain:
+          $ref: '#/components/schemas/Domain'
+          description: Lists the domains to which this instance belongs if applicable.
+          type: object
+        dummyDevice:
+          type: boolean
+        inventoryData:
+          $ref: '#/components/schemas/DeviceInventoryData'
+          description: Inventory details of the device.
+          type: object
+        inventoryDetails:
+          $ref: '#/components/schemas/IDeviceInventoryData'
+          type: object
+        isDummyDevice:
+          type: boolean
+        isLocked:
+          type: boolean
+        isMultiInstance:
+          description: Indicated if the device is in multiinstance or native mode.
+          type: boolean
+        isPartOfContainer:
+          description: This field indicates whether it is part of any cluster. This will be true for a device which is part of NGFWHA, NGFW cluster and firepower devices which is part of Stack.
+          type: boolean
+        isSnort3:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          description: The last user who modified this instance.
+          type: object
+        lspVersion:
+          type: string
+        matches:
+          items:
+            type: string
+          type: array
+        otherAssociatedPolicies:
+          description: assigned policies to device other than Access Policy
+          items:
+            $ref: '#/components/schemas/IReference'
+            type: object
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          description: Details regarding the read only status of this instance.
+          type: object
+        snortVersion:
+          description: Snort version of a particular device.
+          type: string
+        sruVersion:
+          description: SRU version of a particular device.
+          type: string
+        task:
+          $ref: '#/components/schemas/ITaskStatus'
+          type: object
+        timestamp:
+          description: The last updated timestamp.
+          format: int32
+          type: integer
+        universalZeroTrustSetting:
+          $ref: '#/components/schemas/LLUniversalZeroTrustSetting'
+          type: object
+        universalZeroTrustSupported:
+          type: boolean
+        vdbVersion:
+          description: VDB version of a particular device.
+          type: string
+      required:
+      - otherAssociatedPolicies
+      type: object
+    HealthMetric:
       properties:
         description:
           type: string
-        deviceId:
+        deviceUUID:
+          description: UUID of the device associated with this metric.
           type: string
         id:
           type: string
@@ -1049,26 +1236,22 @@ components:
           $ref: '#/components/schemas/ILinks'
           type: object
         metadata:
-          $ref: '#/components/schemas/IMetadata'
+          $ref: '#/components/schemas/Metadata'
           type: object
+        metric:
+          description: Name of the metric.
+          type: string
         name:
           type: string
-        sessionIds:
-          items:
-            type: string
-          type: array
-        terminateBy:
-          enum:
-          - SESSION
-          - USER
-          - DEVICE
+        regexFilter:
+          description: 'Regular expression as filter to be applied on the metric. Supports RE2 Syntax documented here : https://github.com/google/re2/wiki/Syntax. Example regexFilter for fetching metrics for cpu for only CPU01 would be cpu=~"CPU01" '
+          type: string
+        response:
+          description: Response containing the values for the metric specified meeting the criteria for the regular expression between the start time and end time at every step interval specified.
           type: string
         type:
+          description: Type of the health metric; this value is always Metric.
           type: string
-        usernames:
-          items:
-            type: string
-          type: array
         version:
           type: string
       type: object
@@ -1094,315 +1277,51 @@ components:
           format: int32
           type: integer
       type: object
-    IDeviceInventoryData:
+    IBaseDevice:
       properties:
-        cpuCores:
-          type: string
-        cpuType:
-          type: string
-        memoryInMB:
-          type: string
-        storageInGB:
-          type: string
-      type: object
-    HealthAlertConfig:
-      properties:
-        enabled:
-          type: boolean
-        name:
-          type: string
-        thresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-      type: object
-    ITaskStatus:
-      properties:
+        accessPolicy:
+          $ref: '#/components/schemas/IPolicyModel'
+          type: object
+        advanced:
+          $ref: '#/components/schemas/IAdvanced'
+          type: object
         description:
+          type: string
+        healthMessage:
+          type: string
+        healthPolicy:
+          $ref: '#/components/schemas/IHealthPolicy'
+          type: object
+        healthStatus:
           type: string
         id:
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        message:
-          type: string
         metadata:
           $ref: '#/components/schemas/IMetadata'
           type: object
+        model:
+          type: string
+        modelId:
+          type: string
+        modelNumber:
+          type: string
+        modelType:
+          type: string
         name:
+          type: string
+        role:
           type: string
         status:
           type: string
-        subTasks:
-          items:
-            $ref: '#/components/schemas/ISubTask'
-            type: object
-          type: array
-        taskType:
-          enum:
-          - DEVICE_REGISTRATION
-          - SMART_LICENSE
-          - DEVICE_DEPLOYMENT
-          - DEVICE_ROLLBACK
-          - NGFWHA_OPERATIONS
-          - COPY_CONFIG_REQUEST
-          - HIT_COUNT_REFRESH
-          - FTD_CLUSTER_BOOTSTRAP
-          - FTD_CLUSTER_CREATE
-          - FTD_CLUSTER_BREAK
-          - FTD_CLUSTER_ADD_NODES
-          - FTD_CLUSTER_REMOVE_NODES
-          - DEVICE_BACKUP
-          - FTD_CLUSTER_UPDATE_BOOTSTRAP
-          - FTD_CLUSTER_COMMAND
-          - SSP_EPM_OIR
-          - SSP_EPM_BREAKOUT_DEPLOY
-          - DEVICE_EXPORT
-          - DEVICE_IMPORT
-          - POLICY_EXPORT
-          - CHASSIS_REGISTRATION
-          - CHANGE_MANAGER
-          - CONFIGURE_DEVICE_VALIDATE
-          - CONFIGURE_DEVICE
-          - CONFIGURE_MANAGER
-          - CONFIGURE_MANAGER_ADD
-          - CONFIGURE_MANAGER_DELETE
-          - INITIATE_MIGRATION
-          - DISCARD_MIGRATION
-          - SWITCH_TO_ANALYTICS
-          - DELETE_DEVICE
-          - GENERATE_REPORTS
-          - FLEXCONFIG_MIGRATION
-          - DEVICE_UNREGISTRATION
-          - PENDING_CHANGES_REQUEST
-          - DEVICE_TROUBLESHOOT
-          - DEVICE_MODEL_MIGRATION
-          - DEVICE_TEMPLATE_CREATION
-          - CHASSIS_CONVERSION_REQUEST
-          - SNORT_PROFILER
-          - CPU_PROFILER
-          - POLICY_REPORT_GENERATION
-          - DEVICE_TEMPLATE_APPLY
-          - LTP_ONBOARDING
-          - POLICY_CLONE_OPERATION
-          - DEVICE_CERTIFICATE_MANAGEMENT
-          - OOB_CHANGES_REQUEST
-          - UPLOAD_TROUBLESHOOT
+        sw_version:
           type: string
         type:
-          type: string
-      type: object
-    FanRpmAvg:
-      properties:
-        name:
-          type: string
-        rpm:
-          type: number
-      type: object
-    TunnelStatus:
-      description: Represents status of all S2S VPN tunnels.
-      properties:
-        description:
-          type: string
-        id:
-          description: The identifier of the Tunnel Status.
-          type: string
-        lastChange:
-          description: The time the status last changed
-          format: int32
-          type: integer
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        peerA:
-          $ref: '#/components/schemas/IVpnPeer'
-          description: This represents one of the peers of the VPN Tunnel.
-          type: object
-        peerB:
-          $ref: '#/components/schemas/IVpnPeer'
-          description: This represents the other peer of the VPN Tunnel.
-          type: object
-        state:
-          enum:
-          - UNKNOWN
-          - TUNNEL_DOWN
-          - TUNNEL_UP
-          type: string
-        type:
-          description: Type of the Response object. This value is always TunnelStatus.
           type: string
         version:
           type: string
-        vpnTopology:
-          $ref: '#/components/schemas/IFTDS2SVpnModel'
-          type: object
-      type: object
-    HealthEventModelListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/HealthEventModel'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    InterfaceHealthMetrics:
-      description: Represents various interface metrics. Average counter values are displayed for metrics such as buffer runs and packet drops.
-      properties:
-        bufferOverrunsAvg:
-          type: number
-        bufferUnderrunsAvg:
-          type: number
-        currentLinkStatus:
-          enum:
-          - UP
-          - DOWN
-          type: string
-        currentOperationalStatus:
-          enum:
-          - UP
-          - DOWN
-          type: string
-        dropPacketsAvg:
-          type: number
-        duplexMode:
-          type: string
-        inputBytesAvg:
-          type: number
-        inputErrorsAvg:
-          type: number
-        inputPacketSizeAvg:
-          type: number
-        interface:
-          type: string
-        interfaceName:
-          type: string
-        interfaceType:
-          type: string
-        l2DecodeDropsAvg:
-          type: number
-        outputBytesAvg:
-          type: number
-        outputErrorsAvg:
-          type: number
-        outputPacketSizeAvg:
-          type: number
-      type: object
-    IVpnAddresses:
-      properties:
-        dto:
-          $ref: '#/components/schemas/IpAddresses'
-          type: object
-        v4:
-          items:
-            type: string
-          type: array
-        v6:
-          items:
-            type: string
-          type: array
-      type: object
-    Domain:
-      description: The details about the domain.
-      properties:
-        id:
-          description: Unique UUID of this domain
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
-          type: object
-        name:
-          description: Name of the domain.
-          type: string
-        type:
-          description: Domain type definition (fixed).
-          type: string
-        uuid:
-          type: string
-      type: object
-    IPathMonitoredInterfaceDetails:
-      properties:
-        interface:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        status:
-          enum:
-          - ONLINE
-          - IDLE
-          - OFFLINE
-          type: string
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    ISecurityAssociation:
-      properties:
-        inUseSettings:
-          type: string
-        inboundSpi:
-          $ref: '#/components/schemas/ISPI'
-          type: object
-        outboundSpi:
-          $ref: '#/components/schemas/ISPI'
-          type: object
-        packetDcaps:
-          format: int32
-          type: integer
-        packetDecrypt:
-          format: int32
-          type: integer
-        packetEncaps:
-          format: int32
-          type: integer
-        packetEncrypt:
-          format: int32
-          type: integer
-        protectedNetwork:
-          type: string
-      type: object
-    RaVpnGatewayListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/RaVpnGateway'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
       type: object
     IDevice:
       properties:
@@ -1521,12 +1440,7 @@ components:
       - license_caps
       - regKey
       type: object
-    IAdvanced:
-      properties:
-        enableOGS:
-          type: boolean
-      type: object
-    IModel:
+    IDeviceGroup:
       properties:
         description:
           type: string
@@ -1535,6 +1449,11 @@ components:
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
+        members:
+          items:
+            $ref: '#/components/schemas/IBaseDevice'
+            type: object
+          type: array
         metadata:
           $ref: '#/components/schemas/IMetadata'
           type: object
@@ -1545,38 +1464,273 @@ components:
         version:
           type: string
       type: object
-    IVpnPeerDetail:
+    AggregateMetricsListContainer:
       properties:
-        authMode:
-          enum:
-          - PRESHARED_KEY
-          - CERTIFICATE
-          type: string
-        bytesRx:
-          format: int32
-          type: integer
-        bytesTx:
-          format: int32
-          type: integer
-        device:
-          $ref: '#/components/schemas/IReference_1'
+        items:
+          $ref: '#/components/schemas/AggregateMetrics'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
           type: object
-        port:
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
+      properties:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
+      type: object
+    TunnelStatus:
+      description: Represents status of all S2S VPN tunnels.
+      properties:
+        description:
+          type: string
+        id:
+          description: The identifier of the Tunnel Status.
+          type: string
+        lastChange:
+          description: The time the status last changed
           format: int32
           type: integer
-        securityAssociations:
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        peerA:
+          $ref: '#/components/schemas/IVpnPeer'
+          description: This represents one of the peers of the VPN Tunnel.
+          type: object
+        peerB:
+          $ref: '#/components/schemas/IVpnPeer'
+          description: This represents the other peer of the VPN Tunnel.
+          type: object
+        state:
+          enum:
+          - UNKNOWN
+          - TUNNEL_DOWN
+          - TUNNEL_UP
+          type: string
+        type:
+          description: Type of the Response object. This value is always TunnelStatus.
+          type: string
+        version:
+          type: string
+        vpnTopology:
+          $ref: '#/components/schemas/IFTDS2SVpnModel'
+          type: object
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    ILinks:
+      description: This defines the self referencing links for the given resource.
+      properties:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    IDeviceInventoryData:
+      properties:
+        cpuCores:
+          type: string
+        cpuType:
+          type: string
+        memoryInMB:
+          type: string
+        storageInGB:
+          type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    HealthAlertModelListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/HealthAlertModel'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ITaskStatus:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        status:
+          type: string
+        subTasks:
           items:
-            $ref: '#/components/schemas/ISecurityAssociation'
+            $ref: '#/components/schemas/ISubTask'
             type: object
           type: array
-        showCryptoIpsecSaOutput:
-          $ref: '#/components/schemas/IVpnCliOutput'
-          type: object
-        vpnInterfaceIp:
+        taskType:
+          enum:
+          - DEVICE_REGISTRATION
+          - SMART_LICENSE
+          - DEVICE_DEPLOYMENT
+          - DEVICE_ROLLBACK
+          - NGFWHA_OPERATIONS
+          - COPY_CONFIG_REQUEST
+          - HIT_COUNT_REFRESH
+          - FTD_CLUSTER_BOOTSTRAP
+          - FTD_CLUSTER_CREATE
+          - FTD_CLUSTER_BREAK
+          - FTD_CLUSTER_ADD_NODES
+          - FTD_CLUSTER_REMOVE_NODES
+          - DEVICE_BACKUP
+          - FTD_CLUSTER_UPDATE_BOOTSTRAP
+          - FTD_CLUSTER_COMMAND
+          - SSP_EPM_OIR
+          - SSP_EPM_BREAKOUT_DEPLOY
+          - DEVICE_EXPORT
+          - DEVICE_IMPORT
+          - POLICY_EXPORT
+          - CHASSIS_REGISTRATION
+          - CHANGE_MANAGER
+          - CONFIGURE_DEVICE_VALIDATE
+          - CONFIGURE_DEVICE
+          - CONFIGURE_MANAGER
+          - CONFIGURE_MANAGER_ADD
+          - CONFIGURE_MANAGER_DELETE
+          - INITIATE_MIGRATION
+          - DISCARD_MIGRATION
+          - SWITCH_TO_ANALYTICS
+          - DELETE_DEVICE
+          - GENERATE_REPORTS
+          - FLEXCONFIG_MIGRATION
+          - DEVICE_UNREGISTRATION
+          - PENDING_CHANGES_REQUEST
+          - DEVICE_TROUBLESHOOT
+          - DEVICE_MODEL_MIGRATION
+          - DEVICE_TEMPLATE_CREATION
+          - CHASSIS_CONVERSION_REQUEST
+          - SNORT_PROFILER
+          - CPU_PROFILER
+          - POLICY_REPORT_GENERATION
+          - DEVICE_TEMPLATE_APPLY
+          - LTP_ONBOARDING
+          - POLICY_CLONE_OPERATION
+          - DEVICE_CERTIFICATE_MANAGEMENT
+          - OOB_CHANGES_REQUEST
+          - UPLOAD_TROUBLESHOOT
           type: string
-        vpnSessionDbOutput:
-          $ref: '#/components/schemas/IVpnCliOutput'
+        type:
+          type: string
+      type: object
+    RaVpnGateway:
+      properties:
+        certEnrollments:
+          items:
+            $ref: '#/components/schemas/CertEnrollmentStatus'
+            type: object
+          type: array
+        description:
+          type: string
+        device:
+          $ref: '#/components/schemas/IReference'
           type: object
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        maxSessions:
+          format: int32
+          type: integer
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        policy:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        type:
+          type: string
+        version:
+          type: string
       type: object
     DiskHealthMetrics:
       description: Represents device disk metrics in percentage values.
@@ -1584,7 +1738,109 @@ components:
         totalDiskUsageAvg:
           type: number
       type: object
-    IReference_2:
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    HealthSetting:
+      properties:
+        alertEvaluationInterval:
+          format: int32
+          type: integer
+        certFileContent:
+          type: string
+        certFileName:
+          type: string
+        certFileType:
+          type: string
+        certPassphrase:
+          type: string
+        configType:
+          type: string
+        dataCollectionInterval:
+          format: int32
+          type: integer
+        dialInHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        dialOutHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        enabledOpenConfig:
+          type: boolean
+        grpcPassword:
+          type: string
+        grpcUsername:
+          type: string
+        readOnly:
+          type: boolean
+      type: object
+    IVpnCliOutput:
+      properties:
+        command:
+          type: string
+        output:
+          type: string
+      type: object
+    TunnelDetail:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          type: string
+        peerA:
+          $ref: '#/components/schemas/IVpnPeerDetail_1'
+          type: object
+        peerB:
+          $ref: '#/components/schemas/IVpnPeerDetail'
+          type: object
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    IReference_1:
       properties:
         accessPolicy:
           $ref: '#/components/schemas/IPolicyModel'
@@ -1701,7 +1957,153 @@ components:
       - license_caps
       - regKey
       type: object
-    IVpnPeerDetail_1:
+    AggregateMetrics:
+      description: Represents various device health metrics in an aggregated format.
+      properties:
+        chassisStatsHealthMetrics:
+          $ref: '#/components/schemas/ChassisStatsHealthMetrics'
+          type: object
+        cpuHealthMetrics:
+          $ref: '#/components/schemas/CPUHealthMetrics'
+          type: object
+        description:
+          type: string
+        diskHealthMetrics:
+          $ref: '#/components/schemas/DiskHealthMetrics'
+          type: object
+        endTime:
+          description: End time of the metrics.
+          type: string
+        haInfo:
+          $ref: '#/components/schemas/HAInfo'
+          type: object
+        id:
+          description: Unique identifier of the device.
+          type: string
+        interfaceHealthMetricsList:
+          items:
+            $ref: '#/components/schemas/InterfaceHealthMetrics'
+            type: object
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        memoryHealthMetrics:
+          $ref: '#/components/schemas/MemoryHealthMetrics'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          type: object
+        name:
+          description: Name of the device.
+          type: string
+        startTime:
+          description: Start time for the metrics.
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    Metadata:
+      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          description: Defines the domains this instance belongs to (if applicable).
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          description: The last user who modified this instance.
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          description: Details regarding the read only status of this instance
+          type: object
+        timestamp:
+          description: The last updated timestamp.
+          format: int32
+          type: integer
+      type: object
+    RaVpnGatewayListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/RaVpnGateway'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ITarget:
+      description: This is the target device.
+      properties:
+        description:
+          type: string
+        id:
+          description: Unique ID of the device.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the device.
+          type: string
+        type:
+          description: Device
+          type: string
+        version:
+          type: string
+      type: object
+    HealthThreshold:
+      properties:
+        type:
+          type: string
+        value:
+          format: int32
+          type: integer
+      type: object
+    IHybridZeroTrustDeviceSetting:
+      properties:
+        autoDeployEnabled:
+          type: boolean
+        domainSettings:
+          items:
+            $ref: '#/components/schemas/IHybridZeroTrustFQDNConfig'
+            type: object
+          type: array
+        universalZeroTrustEnabled:
+          type: boolean
+      type: object
+    MetadataUser:
+      description: This object defines details about the user.
+      properties:
+        id:
+          description: The unique UUID of the user
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Contains the self referencing links to this resource
+          type: object
+        name:
+          description: Name of the user.
+          type: string
+        type:
+          description: The user type (fixed).
+          type: string
+      type: object
+    IVpnPeerDetail:
       properties:
         authMode:
           enum:
@@ -1715,7 +2117,7 @@ components:
           format: int32
           type: integer
         device:
-          $ref: '#/components/schemas/IReference_2'
+          $ref: '#/components/schemas/IReference_1'
           type: object
         port:
           format: int32
@@ -1734,81 +2136,161 @@ components:
           $ref: '#/components/schemas/IVpnCliOutput'
           type: object
       type: object
-    DialHost:
+    FanRpmAvg:
       properties:
-        host:
+        name:
           type: string
-        port:
-          format: int32
-          type: integer
+        rpm:
+          type: number
       type: object
-    IActionInfo:
-      type: object
-    HealthSetting:
+    IFTDS2SVpnModel:
       properties:
-        alertEvaluationInterval:
-          format: int32
-          type: integer
-        certFileContent:
+        advancedSettings:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        autoVpnSettings:
+          $ref: '#/components/schemas/IAutoVpnSettings'
+          type: object
+        description:
           type: string
-        certFileName:
+        endpoints:
+          type: object
+        id:
           type: string
-        certFileType:
-          type: string
-        certPassphrase:
-          type: string
-        configType:
-          type: string
-        dataCollectionInterval:
-          format: int32
-          type: integer
-        dialInHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        dialOutHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        enabledOpenConfig:
+        ikeSettings:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        ikeV1Enabled:
           type: boolean
-        grpcPassword:
-          type: string
-        grpcUsername:
-          type: string
-        readOnly:
+        ikeV2Enabled:
           type: boolean
-      type: object
-    HealthModule:
-      properties:
-        alertConfig:
-          items:
-            $ref: '#/components/schemas/HealthAlertConfig'
-            type: object
-          type: array
-        alertEnabled:
-          type: boolean
-        criticalThreshold:
-          format: int32
-          type: integer
-        customThresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-        enabled:
-          type: boolean
-        moduleId:
+        ipsecSettings:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
           type: string
-        severity:
+        routeBased:
+          type: boolean
+        topologyType:
           type: string
         type:
           type: string
-        warningThreshold:
+        version:
+          type: string
+      type: object
+    IVpnAddresses:
+      properties:
+        dto:
+          $ref: '#/components/schemas/IpAddresses'
+          type: object
+        v4:
+          items:
+            type: string
+          type: array
+        v6:
+          items:
+            type: string
+          type: array
+      type: object
+    IAutoVpnSettings:
+      properties:
+        routeSettings:
+          $ref: '#/components/schemas/IAutoVpnRouteSettings'
+          type: object
+        spokeSvtiSecurityZone:
+          $ref: '#/components/schemas/IReference'
+          type: object
+      type: object
+    IHealthPolicy:
+      description: Description of Health Policy.
+      properties:
+        basePolicyID:
+          type: string
+        defaultPolicy:
+          type: boolean
+        description:
+          description: Description of Health Policy.
+          type: string
+        healthModules:
+          items:
+            $ref: '#/components/schemas/HealthModule'
+            type: object
+          type: array
+        id:
+          description: Unique identifier (UUID) representing the Health policy.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the Health policy.
+          type: object
+        name:
+          description: User-specified name of the Health policy.
+          type: string
+        policyType:
+          type: string
+        setting:
+          $ref: '#/components/schemas/HealthSetting'
+          type: object
+        type:
+          description: Type of the Health policy; this value is always HealthPolicy.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    CertEnrollmentStatus:
+      properties:
+        certEnrollment:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        certificateInfo:
+          $ref: '#/components/schemas/CertificateInfo'
+          type: object
+      type: object
+    HAInfo:
+      description: Represents the role and status of a high availability device.
+      properties:
+        role:
+          description: Role of the device. Possible values are PRIMARY or SECONDARY.
+          type: string
+        status:
+          description: Current status of the device. Possible values are Active, Standby, Failed, Disabled, Synchronizing, or Unknown.
+          type: string
+      type: object
+    ISecurityAssociation:
+      properties:
+        inUseSettings:
+          type: string
+        inboundSpi:
+          $ref: '#/components/schemas/ISPI'
+          type: object
+        outboundSpi:
+          $ref: '#/components/schemas/ISPI'
+          type: object
+        packetDcaps:
           format: int32
           type: integer
+        packetDecrypt:
+          format: int32
+          type: integer
+        packetEncaps:
+          format: int32
+          type: integer
+        packetEncrypt:
+          format: int32
+          type: integer
+        protectedNetwork:
+          type: string
       type: object
     HealthEventModel:
       description: An object representing the health event.
@@ -1935,98 +2417,7 @@ components:
         version:
           type: string
       type: object
-    HealthMetric:
-      properties:
-        description:
-          type: string
-        deviceUUID:
-          description: UUID of the device associated with this metric.
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        metric:
-          description: Name of the metric.
-          type: string
-        name:
-          type: string
-        regexFilter:
-          description: 'Regular expression as filter to be applied on the metric. Supports RE2 Syntax documented here : https://github.com/google/re2/wiki/Syntax. Example regexFilter for fetching metrics for cpu for only CPU01 would be cpu=~"CPU01" '
-          type: string
-        response:
-          description: Response containing the values for the metric specified meeting the criteria for the regular expression between the start time and end time at every step interval specified.
-          type: string
-        type:
-          description: Type of the health metric; this value is always Metric.
-          type: string
-        version:
-          type: string
-      type: object
-    IBaseDevice:
-      properties:
-        accessPolicy:
-          $ref: '#/components/schemas/IPolicyModel'
-          type: object
-        advanced:
-          $ref: '#/components/schemas/IAdvanced'
-          type: object
-        description:
-          type: string
-        healthMessage:
-          type: string
-        healthPolicy:
-          $ref: '#/components/schemas/IHealthPolicy'
-          type: object
-        healthStatus:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        model:
-          type: string
-        modelId:
-          type: string
-        modelNumber:
-          type: string
-        modelType:
-          type: string
-        name:
-          type: string
-        role:
-          type: string
-        status:
-          type: string
-        sw_version:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IHybridZeroTrustFQDNConfig:
-      properties:
-        FQDN:
-          type: string
-        certificate:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        interfaces:
-          items:
-            $ref: '#/components/schemas/IReference'
-            type: object
-          type: array
-      type: object
-    IDomain:
+    IMetadataUser:
       properties:
         id:
           type: string
@@ -2037,500 +2428,6 @@ components:
           type: string
         type:
           type: string
-      type: object
-    TunnelSummaryListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/TunnelSummary'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    DeviceMetadata:
-      properties:
-        chassisData:
-          $ref: '#/components/schemas/DeviceChassisData'
-          description: This field holds information related to chassis.
-          type: object
-        chassisDetails:
-          $ref: '#/components/schemas/IDeviceChassisData'
-          type: object
-        clusterBootstrapSupported:
-          type: boolean
-        containerDetails:
-          $ref: '#/components/schemas/IBaseDevice'
-          description: If 'isPartOfContainer' field is true then this field will hold the information of container.
-          type: object
-        deviceSerialNumber:
-          type: string
-        domain:
-          $ref: '#/components/schemas/Domain'
-          description: Lists the domains to which this instance belongs if applicable.
-          type: object
-        dummyDevice:
-          type: boolean
-        inventoryData:
-          $ref: '#/components/schemas/DeviceInventoryData'
-          description: Inventory details of the device.
-          type: object
-        inventoryDetails:
-          $ref: '#/components/schemas/IDeviceInventoryData'
-          type: object
-        isDummyDevice:
-          type: boolean
-        isLocked:
-          type: boolean
-        isMultiInstance:
-          description: Indicated if the device is in multiinstance or native mode.
-          type: boolean
-        isPartOfContainer:
-          description: This field indicates whether it is part of any cluster. This will be true for a device which is part of NGFWHA, NGFW cluster and firepower devices which is part of Stack.
-          type: boolean
-        isSnort3:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          description: The last user who modified this instance.
-          type: object
-        lspVersion:
-          type: string
-        matches:
-          items:
-            type: string
-          type: array
-        otherAssociatedPolicies:
-          description: assigned policies to device other than Access Policy
-          items:
-            $ref: '#/components/schemas/IReference'
-            type: object
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          description: Details regarding the read only status of this instance.
-          type: object
-        snortVersion:
-          description: Snort version of a particular device.
-          type: string
-        sruVersion:
-          description: SRU version of a particular device.
-          type: string
-        task:
-          $ref: '#/components/schemas/ITaskStatus'
-          type: object
-        timestamp:
-          description: The last updated timestamp.
-          format: int32
-          type: integer
-        universalZeroTrustSetting:
-          $ref: '#/components/schemas/LLUniversalZeroTrustSetting'
-          type: object
-        universalZeroTrustSupported:
-          type: boolean
-        vdbVersion:
-          description: VDB version of a particular device.
-          type: string
-      required:
-      - otherAssociatedPolicies
-      type: object
-    ISubTask:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        status:
-          type: string
-        target:
-          $ref: '#/components/schemas/ITarget'
-          type: object
-      type: object
-    CertEnrollmentStatus:
-      properties:
-        certEnrollment:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        certificateInfo:
-          $ref: '#/components/schemas/CertificateInfo'
-          type: object
-      type: object
-    TunnelStatusListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/TunnelStatus'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IDeviceChassisData:
-      properties:
-        chassisSerialNo:
-          type: string
-        chassisUrl:
-          type: string
-        securityModuleNo:
-          format: int32
-          type: integer
-        securityModuleSN:
-          type: string
-      type: object
-    IHybridZeroTrustDeviceSetting:
-      properties:
-        autoDeployEnabled:
-          type: boolean
-        domainSettings:
-          items:
-            $ref: '#/components/schemas/IHybridZeroTrustFQDNConfig'
-            type: object
-          type: array
-        universalZeroTrustEnabled:
-          type: boolean
-      type: object
-    HealthMetricListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/HealthMetric'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IVpnPeer:
-      properties:
-        device:
-          $ref: '#/components/schemas/IDevice'
-          type: object
-        ipAddresses:
-          $ref: '#/components/schemas/IVpnAddresses'
-          type: object
-        peerType:
-          enum:
-          - FTD
-          - EXTRANET
-          - UMBRELLA
-          - SECURE_ACCESS
-          type: string
-        role:
-          enum:
-          - PEER
-          - HUB
-          - SPOKE
-          type: string
-        trafficSelector:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        vpnInterface:
-          $ref: '#/components/schemas/IVpnInterface'
-          type: object
-        vtiInterface:
-          $ref: '#/components/schemas/IVpnInterface'
-          type: object
-      type: object
-    HAInfo:
-      description: Represents the role and status of a high availability device.
-      properties:
-        role:
-          description: Role of the device. Possible values are PRIMARY or SECONDARY.
-          type: string
-        status:
-          description: Current status of the device. Possible values are Active, Standby, Failed, Disabled, Synchronizing, or Unknown.
-          type: string
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    PathMonitoredInterfaceListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/PathMonitoredInterface'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    PathMonitoredInterface:
-      properties:
-        description:
-          type: string
-        device:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        id:
-          type: string
-        interfaces:
-          items:
-            $ref: '#/components/schemas/IPathMonitoredInterfaceDetails'
-            type: object
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    ITarget:
-      description: This is the target device.
-      properties:
-        description:
-          type: string
-        id:
-          description: Unique ID of the device.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: Name of the device.
-          type: string
-        type:
-          description: Device
-          type: string
-        version:
-          type: string
-      type: object
-    IRouteDistributeConnectedNetwork:
-      properties:
-        connectedInterface:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        enableDistribution:
-          type: boolean
-        interfaceSelection:
-          enum:
-          - INSIDE_INTERFACE
-          - USER_SELECTED_INTERFACE
-          type: string
-      type: object
-    IReference_1:
-      properties:
-        accessPolicy:
-          $ref: '#/components/schemas/IPolicyModel'
-          type: object
-        actions:
-          items:
-            $ref: '#/components/schemas/IPreDeployAction'
-            type: object
-          type: array
-        advanced:
-          $ref: '#/components/schemas/IAdvanced'
-          type: object
-        analyticsOnly:
-          type: boolean
-        changeManager:
-          type: boolean
-        cloudDeviceId:
-          type: string
-        deploymentStatus:
-          type: string
-        description:
-          type: string
-        deviceGroup:
-          $ref: '#/components/schemas/IDeviceGroup'
-          type: object
-        ftdMode:
-          enum:
-          - ROUTED
-          - TRANSPARENT
-          type: string
-        healthMessage:
-          type: string
-        healthPolicy:
-          $ref: '#/components/schemas/IHealthPolicy'
-          type: object
-        healthStatus:
-          type: string
-        hostName:
-          type: string
-        id:
-          type: string
-        isAWSDevice:
-          type: boolean
-        isAzureDevice:
-          type: boolean
-        isConnected:
-          type: boolean
-        isMCDManaged:
-          type: boolean
-        keepLocalEvents:
-          type: boolean
-        license_caps:
-          items:
-            type: string
-          type: array
-        licenseType:
-          enum:
-          - BYOL
-          - SAAS
-          - PAYG
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        managementState:
-          enum:
-          - MANAGED
-          - UNMANAGED
-          type: string
-        metadata:
-          $ref: '#/components/schemas/DeviceMetadata'
-          type: object
-        model:
-          type: string
-        modelId:
-          type: string
-        modelNumber:
-          type: string
-        modelType:
-          type: string
-        name:
-          type: string
-        natID:
-          type: string
-        performanceTier:
-          type: string
-        prohibitPacketTransfer:
-          type: boolean
-        regKey:
-          type: string
-        role:
-          type: string
-        secondaryHostname:
-          type: string
-        serialNumber:
-          type: string
-        skipDeployment:
-          type: boolean
-        snortEngine:
-          enum:
-          - SNORT2
-          - SNORT3
-          type: string
-        status:
-          type: string
-        sw_version:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      required:
-      - hostName
-      - license_caps
-      - regKey
-      type: object
-    MetadataUser:
-      description: This object defines details about the user.
-      properties:
-        id:
-          description: The unique UUID of the user
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Contains the self referencing links to this resource
-          type: object
-        name:
-          description: Name of the user.
-          type: string
-        type:
-          description: The user type (fixed).
-          type: string
-      type: object
-    ChassisStatsHealthMetrics:
-      description: Represents chassis status health metrics such as fan speed in RPM values.
-      properties:
-        fanRpmAvgList:
-          items:
-            $ref: '#/components/schemas/FanRpmAvg'
-            type: object
-          type: array
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    LLUniversalZeroTrustSetting:
-      additionalProperties:
-        $ref: '#/components/schemas/IHybridZeroTrustDeviceSetting'
-        type: object
       type: object
     IPolicyModel:
       properties:
@@ -2551,143 +2448,10 @@ components:
         version:
           type: string
       type: object
-    HealthThreshold:
-      properties:
-        type:
-          type: string
-        value:
-          format: int32
-          type: integer
-      type: object
-    TunnelDetail:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        peerA:
-          $ref: '#/components/schemas/IVpnPeerDetail_1'
-          type: object
-        peerB:
-          $ref: '#/components/schemas/IVpnPeerDetail'
-          type: object
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IHealthPolicy:
-      description: Description of Health Policy.
-      properties:
-        basePolicyID:
-          type: string
-        defaultPolicy:
-          type: boolean
-        description:
-          description: Description of Health Policy.
-          type: string
-        healthModules:
-          items:
-            $ref: '#/components/schemas/HealthModule'
-            type: object
-          type: array
-        id:
-          description: Unique identifier (UUID) representing the Health policy.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the Health policy.
-          type: object
-        name:
-          description: User-specified name of the Health policy.
-          type: string
-        policyType:
-          type: string
-        setting:
-          $ref: '#/components/schemas/HealthSetting'
-          type: object
-        type:
-          description: Type of the Health policy; this value is always HealthPolicy.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    ISPI:
-      properties:
-        bytesRemaining:
-          format: int32
-          type: integer
-        id:
-          type: string
-        secondsRemaining:
-          format: int32
-          type: integer
-      type: object
-    IAutoVpnSettings:
-      properties:
-        routeSettings:
-          $ref: '#/components/schemas/IAutoVpnRouteSettings'
-          type: object
-        spokeSvtiSecurityZone:
-          $ref: '#/components/schemas/IReference'
-          type: object
-      type: object
-    IpAddresses:
-      properties:
-        ipv4:
-          items:
-            type: string
-          type: array
-        ipv6:
-          items:
-            type: string
-          type: array
-      type: object
-    IVpnCliOutput:
-      properties:
-        command:
-          type: string
-        output:
-          type: string
-      type: object
-    DeviceInventoryData:
-      properties:
-        cpuCores:
-          type: string
-        cpuType:
-          type: string
-        memoryInMB:
-          type: string
-        storageInGB:
-          type: string
-      type: object
-    IPreDeployAction:
-      properties:
-        actionInfo:
-          $ref: '#/components/schemas/IActionInfo'
-          type: object
-        actionType:
-          enum:
-          - APPLY_TEMPLATE
-          type: string
-      type: object
-    TunnelDetailListContainer:
+    HealthMetricListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/TunnelDetail'
+          $ref: '#/components/schemas/HealthMetric'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -2696,157 +2460,198 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    IMetadataUser:
+    IHybridZeroTrustFQDNConfig:
       properties:
-        id:
+        FQDN:
           type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
+        certificate:
+          $ref: '#/components/schemas/IReference'
           type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    Metadata:
-      description: Defines read only details about the object - whether it is system defined, last user who modified the object etc.
-      properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          description: Defines the domains this instance belongs to (if applicable).
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          description: The last user who modified this instance.
-          type: object
-        matches:
+        interfaces:
           items:
-            type: string
+            $ref: '#/components/schemas/IReference'
+            type: object
           type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          description: Details regarding the read only status of this instance
-          type: object
-        timestamp:
-          description: The last updated timestamp.
+      type: object
+    ChassisStatsHealthMetrics:
+      description: Represents chassis status health metrics such as fan speed in RPM values.
+      properties:
+        fanRpmAvgList:
+          items:
+            $ref: '#/components/schemas/FanRpmAvg'
+            type: object
+          type: array
+      type: object
+    DialHost:
+      properties:
+        host:
+          type: string
+        port:
           format: int32
           type: integer
       type: object
-    ErrorMessagesContainer:
+    MemoryHealthMetrics:
+      description: Represents device memory metrics in percentage values.
       properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
+        linaUsageAvg:
+          type: number
+        snortUsageAvg:
+          type: number
+        systemUsageAvg:
+          type: number
       type: object
-    IReference:
-      description: Contains reference information.
+    TunnelSummaryListContainer:
       properties:
-        id:
-          description: Unique identifier representing resource.
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        name:
-          description: User chosen resource name.
-          type: string
-        type:
-          description: Response object associated with resource.
-          type: string
-      type: object
-    IVpnInterface:
-      properties:
-        interfaceType:
-          enum:
-          - DYNAMIC
-          - STATIC
-          type: string
-        ipAddress:
-          type: string
-        name:
-          type: string
-        publicIp:
-          type: string
-      type: object
-    IDeviceGroup:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        members:
-          items:
-            $ref: '#/components/schemas/IBaseDevice'
-            type: object
+        items:
+          $ref: '#/components/schemas/TunnelSummary'
           type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IAdvanced:
+      properties:
+        enableOGS:
+          type: boolean
+      type: object
+    InterfaceHealthMetrics:
+      description: Represents various interface metrics. Average counter values are displayed for metrics such as buffer runs and packet drops.
+      properties:
+        bufferOverrunsAvg:
+          type: number
+        bufferUnderrunsAvg:
+          type: number
+        currentLinkStatus:
+          enum:
+          - UP
+          - DOWN
+          type: string
+        currentOperationalStatus:
+          enum:
+          - UP
+          - DOWN
+          type: string
+        dropPacketsAvg:
+          type: number
+        duplexMode:
+          type: string
+        inputBytesAvg:
+          type: number
+        inputErrorsAvg:
+          type: number
+        inputPacketSizeAvg:
+          type: number
+        interface:
+          type: string
+        interfaceName:
+          type: string
+        interfaceType:
+          type: string
+        l2DecodeDropsAvg:
+          type: number
+        outputBytesAvg:
+          type: number
+        outputErrorsAvg:
+          type: number
+        outputPacketSizeAvg:
+          type: number
+      type: object
+    ISubTask:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        status:
+          type: string
+        target:
+          $ref: '#/components/schemas/ITarget'
+          type: object
+      type: object
+    TerminateRAVPNSession:
+      properties:
+        description:
+          type: string
+        deviceId:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
         metadata:
           $ref: '#/components/schemas/IMetadata'
           type: object
         name:
           type: string
+        sessionIds:
+          items:
+            type: string
+          type: array
+        terminateBy:
+          enum:
+          - SESSION
+          - USER
+          - DEVICE
+          type: string
         type:
           type: string
+        usernames:
+          items:
+            type: string
+          type: array
         version:
           type: string
       type: object
-    RaVpnGateway:
+    PathMonitoredInterfaceListContainer:
       properties:
-        certEnrollments:
-          items:
-            $ref: '#/components/schemas/CertEnrollmentStatus'
-            type: object
+        items:
+          $ref: '#/components/schemas/PathMonitoredInterface'
           type: array
-        description:
-          type: string
-        device:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        id:
-          type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        maxSessions:
-          format: int32
-          type: integer
-        metadata:
-          $ref: '#/components/schemas/Metadata'
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    Domain:
+      description: The details about the domain.
+      properties:
+        id:
+          description: Unique UUID of this domain
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
           type: object
         name:
+          description: Name of the domain.
           type: string
-        policy:
+        type:
+          description: Domain type definition (fixed).
+          type: string
+        uuid:
+          type: string
+      type: object
+    IPathMonitoredInterfaceDetails:
+      properties:
+        interface:
           $ref: '#/components/schemas/IReference'
           type: object
-        type:
-          type: string
-        version:
+        status:
+          enum:
+          - ONLINE
+          - IDLE
+          - OFFLINE
           type: string
       type: object
     HealthAlertModel:
@@ -2980,66 +2785,10 @@ components:
         version:
           type: string
       type: object
-    ReadOnly:
-      description: Defines the read only conditions if the referenced resource is read only.
-      properties:
-        reason:
-          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          description: True if this resource us read only and false otherwise.
-          type: boolean
-      type: object
-    TunnelSummary:
-      description: Represents an aggregated summary of the status of all S2S VPN tunnels.
-      properties:
-        description:
-          type: string
-        group:
-          $ref: '#/components/schemas/IModel'
-          description: Represents the group over which the tunnel statuses are summarized. Can be a Device or a S2S VPN Topology.
-          type: object
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          type: object
-        name:
-          type: string
-        tunnelCount:
-          description: The total number of S2S VPN Tunnels in the group.
-          format: int32
-          type: integer
-        tunnelDownCount:
-          description: The number of S2S VPN Tunnels that are down.
-          format: int32
-          type: integer
-        tunnelUnknownCount:
-          description: The number of S2S VPN Tunnels whose status is unknown. These may be tunnels just deployed but never came up.
-          format: int32
-          type: integer
-        tunnelUpCount:
-          description: The number of S2S VPN Tunnels that are up.
-          format: int32
-          type: integer
-        type:
-          description: Type of the Response object. This value is always TunnelSummary.
-          type: string
-        version:
-          type: string
-      type: object
-    AggregateMetricsListContainer:
+    TunnelDetailListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/AggregateMetrics'
+          $ref: '#/components/schemas/TunnelDetail'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -3047,6 +2796,226 @@ components:
         paging:
           $ref: '#/components/schemas/PagingContainer'
           type: object
+      type: object
+    IModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IVpnInterface:
+      properties:
+        interfaceType:
+          enum:
+          - DYNAMIC
+          - STATIC
+          type: string
+        ipAddress:
+          type: string
+        name:
+          type: string
+        publicIp:
+          type: string
+      type: object
+    IpAddresses:
+      properties:
+        ipv4:
+          items:
+            type: string
+          type: array
+        ipv6:
+          items:
+            type: string
+          type: array
+      type: object
+    LLUniversalZeroTrustSetting:
+      additionalProperties:
+        $ref: '#/components/schemas/IHybridZeroTrustDeviceSetting'
+        type: object
+      type: object
+    DeviceInventoryData:
+      properties:
+        cpuCores:
+          type: string
+        cpuType:
+          type: string
+        memoryInMB:
+          type: string
+        storageInGB:
+          type: string
+      type: object
+    IVpnPeerDetail_1:
+      properties:
+        authMode:
+          enum:
+          - PRESHARED_KEY
+          - CERTIFICATE
+          type: string
+        bytesRx:
+          format: int32
+          type: integer
+        bytesTx:
+          format: int32
+          type: integer
+        device:
+          $ref: '#/components/schemas/IReference_2'
+          type: object
+        port:
+          format: int32
+          type: integer
+        securityAssociations:
+          items:
+            $ref: '#/components/schemas/ISecurityAssociation'
+            type: object
+          type: array
+        showCryptoIpsecSaOutput:
+          $ref: '#/components/schemas/IVpnCliOutput'
+          type: object
+        vpnInterfaceIp:
+          type: string
+        vpnSessionDbOutput:
+          $ref: '#/components/schemas/IVpnCliOutput'
+          type: object
+      type: object
+    CertificateInfo:
+      properties:
+        expiry:
+          type: string
+        isCA:
+          type: boolean
+        issuer:
+          $ref: '#/components/schemas/CertificateInfo'
+          type: object
+      type: object
+    IReference_2:
+      properties:
+        accessPolicy:
+          $ref: '#/components/schemas/IPolicyModel'
+          type: object
+        actions:
+          items:
+            $ref: '#/components/schemas/IPreDeployAction'
+            type: object
+          type: array
+        advanced:
+          $ref: '#/components/schemas/IAdvanced'
+          type: object
+        analyticsOnly:
+          type: boolean
+        changeManager:
+          type: boolean
+        cloudDeviceId:
+          type: string
+        deploymentStatus:
+          type: string
+        description:
+          type: string
+        deviceGroup:
+          $ref: '#/components/schemas/IDeviceGroup'
+          type: object
+        ftdMode:
+          enum:
+          - ROUTED
+          - TRANSPARENT
+          type: string
+        healthMessage:
+          type: string
+        healthPolicy:
+          $ref: '#/components/schemas/IHealthPolicy'
+          type: object
+        healthStatus:
+          type: string
+        hostName:
+          type: string
+        id:
+          type: string
+        isAWSDevice:
+          type: boolean
+        isAzureDevice:
+          type: boolean
+        isConnected:
+          type: boolean
+        isMCDManaged:
+          type: boolean
+        keepLocalEvents:
+          type: boolean
+        license_caps:
+          items:
+            type: string
+          type: array
+        licenseType:
+          enum:
+          - BYOL
+          - SAAS
+          - PAYG
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        managementState:
+          enum:
+          - MANAGED
+          - UNMANAGED
+          type: string
+        metadata:
+          $ref: '#/components/schemas/DeviceMetadata'
+          type: object
+        model:
+          type: string
+        modelId:
+          type: string
+        modelNumber:
+          type: string
+        modelType:
+          type: string
+        name:
+          type: string
+        natID:
+          type: string
+        performanceTier:
+          type: string
+        prohibitPacketTransfer:
+          type: boolean
+        regKey:
+          type: string
+        role:
+          type: string
+        secondaryHostname:
+          type: string
+        serialNumber:
+          type: string
+        skipDeployment:
+          type: boolean
+        snortEngine:
+          enum:
+          - SNORT2
+          - SNORT3
+          type: string
+        status:
+          type: string
+        sw_version:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      required:
+      - hostName
+      - license_caps
+      - regKey
       type: object
     DeviceChassisData:
       properties:
@@ -3060,15 +3029,46 @@ components:
         securityModuleSN:
           type: string
       type: object
-    CPUHealthMetrics:
-      description: Represents device CPU metrics in percentage values.
+    HealthModule:
       properties:
-        linaUsageAvg:
-          type: number
-        snortUsageAvg:
-          type: number
-        systemUsageAvg:
-          type: number
+        alertConfig:
+          items:
+            $ref: '#/components/schemas/HealthAlertConfig'
+            type: object
+          type: array
+        alertEnabled:
+          type: boolean
+        criticalThreshold:
+          format: int32
+          type: integer
+        customThresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+        enabled:
+          type: boolean
+        moduleId:
+          type: string
+        severity:
+          type: string
+        type:
+          type: string
+        warningThreshold:
+          format: int32
+          type: integer
+      type: object
+    HealthEventModelListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/HealthEventModel'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
       type: object
     model.Health:
       type: object
@@ -3089,14 +3089,6 @@ components:
         message:
           type: string
   parameters:
-    limit:
-      description: Number of items to return.
-      in: query
-      name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
     expanded:
       description: If set to true, the GET response displays a list of objects with additional attributes.
       in: query
@@ -3111,6 +3103,14 @@ components:
       required: true
       schema:
         type: string
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
     offset:
       description: Index of first item to return.
       in: query

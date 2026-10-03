@@ -1012,25 +1012,100 @@ paths:
       - Conversation
 components:
   schemas:
-    conversationGetResponse:
-      description: get conversation response body
+    messageListResponse:
+      description: list messages response body
       properties:
-        conversation:
-          $ref: '#/components/schemas/conversation'
         messages:
-          description: conversation messages
+          description: list of messages
           items:
             $ref: '#/components/schemas/message'
           type: array
       type: object
-    updateConversationRequest:
-      description: update conversation request body
+    messageGetResponse:
+      description: get message response body
       properties:
+        message:
+          $ref: '#/components/schemas/message'
+      type: object
+    label:
+      description: label object
+      properties:
+        name:
+          description: label name
+          type: string
+        value:
+          description: label value
+          type: string
+      type: object
+    postFeedbackResponse:
+      description: create feedback response body
+      properties:
+        feedbackId:
+          description: feedback ID
+          format: uuid
+          type: string
+      required:
+      - feedbackId
+      type: object
+    pageContext:
+      description: page context
+      properties:
+        product:
+          description: product name
+          type: string
+        uri:
+          description: page URI
+          type: string
+      type: object
+    conversation:
+      description: Conversation object
+      properties:
+        conversationId:
+          description: conversation ID
+          format: uuid
+          type: string
         description:
           description: conversation description
           type: string
+        hasUnreadMessages:
+          description: indicates whether the conversation has unread messages
+          type: boolean
+        labels:
+          description: conversation labels
+          items:
+            $ref: '#/components/schemas/label'
+          type: array
+        lastInteractionDate:
+          description: date time at which the last interaction happened
+          format: date-time
+          type: string
+        severityType:
+          description: conversation severity level
+          enum:
+          - NONE_SEVERITY
+          - LOW
+          - MEDIUM
+          - HIGH
+          type: string
+      type: object
+    postMessageRequest:
+      description: create message request body
+      properties:
+        content:
+          description: message content
+          type: string
+        content_type:
+          description: message content type
+          enum:
+          - TEXT
+          type: string
+        pagecontext:
+          $ref: '#/components/schemas/pageContext'
+        task_type:
+          $ref: '#/components/schemas/taskType'
       required:
-      - description
+      - content
+      - content_type
       type: object
     messageWithDetails:
       description: message object with additional details
@@ -1071,102 +1146,6 @@ components:
         response:
           $ref: '#/components/schemas/messageFragment'
       type: object
-    conversation:
-      description: Conversation object
-      properties:
-        conversationId:
-          description: conversation ID
-          format: uuid
-          type: string
-        description:
-          description: conversation description
-          type: string
-        hasUnreadMessages:
-          description: indicates whether the conversation has unread messages
-          type: boolean
-        labels:
-          description: conversation labels
-          items:
-            $ref: '#/components/schemas/label'
-          type: array
-        lastInteractionDate:
-          description: date time at which the last interaction happened
-          format: date-time
-          type: string
-        severityType:
-          description: conversation severity level
-          enum:
-          - NONE_SEVERITY
-          - LOW
-          - MEDIUM
-          - HIGH
-          type: string
-      type: object
-    historyListResponse:
-      description: list history response body
-      properties:
-        messages:
-          description: message history list
-          items:
-            $ref: '#/components/schemas/messageWithDetails'
-          type: array
-      type: object
-    removeLabelRequest:
-      description: remove label request body
-      properties:
-        labels:
-          description: labels list
-          items:
-            $ref: '#/components/schemas/label'
-          type: array
-      type: object
-    patchFeedbackRequest:
-      description: update feedback request body
-      properties:
-        extendedFeedback:
-          $ref: '#/components/schemas/extendedFeedback'
-      type: object
-    postMessageSseResponse:
-      description: create message SSE response body
-      properties:
-        Data:
-          description: event data
-          oneOf:
-          - description: For TEXT event, Data is a simple string.
-            type: string
-          - description: For OBJECT event, Data is a JSON object.
-            type: object
-        Event:
-          description: event type
-          enum:
-          - TEXT
-          - OBJECT
-          type: string
-        Id:
-          description: event ID
-          format: uuid
-          type: string
-      required:
-      - Id
-      - Data
-      - Event
-      type: object
-    postFeedbackResponse:
-      description: create feedback response body
-      properties:
-        feedbackId:
-          description: feedback ID
-          format: uuid
-          type: string
-      required:
-      - feedbackId
-      type: object
-    messageGetResponse:
-      description: get message response body
-      properties:
-        message:
-          $ref: '#/components/schemas/message'
-      type: object
     postMessageResponse:
       description: create message response body
       properties:
@@ -1185,42 +1164,6 @@ components:
       - conversation_id
       - message_id
       type: object
-    createConversationRequest:
-      description: create conversation request body
-      properties:
-        description:
-          description: conversation description
-          type: string
-        headers:
-          description: conversation headers
-          items:
-            type: string
-          type: array
-        labels:
-          description: conversation labels
-          items:
-            $ref: '#/components/schemas/label'
-          type: array
-      type: object
-    pageContext:
-      description: page context
-      properties:
-        product:
-          description: product name
-          type: string
-        uri:
-          description: page URI
-          type: string
-      type: object
-    taskType:
-      description: task type
-      enum:
-      - NONE
-      - POLICY_LLM
-      - DOC_LLM
-      - TASK_LLM
-      - OTHER_LLM
-      type: string
     messageResponseGet:
       description: get message response body
       properties:
@@ -1238,170 +1181,6 @@ components:
             type: object
           description: message response object
       type: object
-    label:
-      description: label object
-      properties:
-        name:
-          description: label name
-          type: string
-        value:
-          description: label value
-          type: string
-      type: object
-    extendedFeedback:
-      description: Extended feedback object
-      properties:
-        freeFormResponse:
-          description: Free form response
-          type: string
-        quickPickResponses:
-          description: List of quick pick responses
-          items:
-            description: Quick pick response
-            enum:
-            - NONE
-            - FACTUAL_INACCURACY
-            - INCORRECT_CLASSIFICATION
-            - UNHELPFUL_FORMATTING
-            - INAPPROPRIATE_LENGTH
-            - IRRELEVANT_CONTENT
-            - CITATION_ISSUE
-            - CORRECT
-            - HELPFUL
-            - OTHER
-            type: string
-          type: array
-      type: object
-    messageFragment:
-      description: message fragment
-      properties:
-        content:
-          description: message content
-          type: string
-        contentType:
-          description: message content type
-          enum:
-          - TEXT
-          type: string
-        createdAt:
-          description: date time at which the message was created
-          format: date-time
-          type: string
-        metadata:
-          description: message metadata
-          type:
-          - object
-          - 'null'
-        taskType:
-          $ref: '#/components/schemas/taskType'
-      required:
-      - content
-      - contentType
-      type: object
-    messageListResponse:
-      description: list messages response body
-      properties:
-        messages:
-          description: list of messages
-          items:
-            $ref: '#/components/schemas/message'
-          type: array
-      type: object
-    postMessageRequest:
-      description: create message request body
-      properties:
-        content:
-          description: message content
-          type: string
-        content_type:
-          description: message content type
-          enum:
-          - TEXT
-          type: string
-        pagecontext:
-          $ref: '#/components/schemas/pageContext'
-        task_type:
-          $ref: '#/components/schemas/taskType'
-      required:
-      - content
-      - content_type
-      type: object
-    addLabelRequest:
-      description: Request to add labels to a conversation
-      properties:
-        labels:
-          description: List of labels to add to the conversation
-          items:
-            $ref: '#/components/schemas/label'
-          type: array
-      type: object
-    conversationListResponse:
-      description: list conversations response body
-      properties:
-        conversations:
-          description: list of conversations
-          items:
-            $ref: '#/components/schemas/conversation'
-          type: array
-        nextOffset:
-          description: next pagination offset
-          type: integer
-      type: object
-    errorResponse:
-      description: error response
-      properties:
-        code:
-          description: Error code
-          type: integer
-        details:
-          description: Additional details about the error
-          type: object
-        message:
-          description: Error message
-          type: string
-      type: object
-    postFeedbackRequest:
-      description: create feedback request body
-      properties:
-        extended_feedback:
-          $ref: '#/components/schemas/extendedFeedback'
-        rating:
-          description: rating
-          enum:
-          - THUMBS_UP
-          - THUMBS_DOWN
-          - NONE
-          type: string
-      required:
-      - rating
-      type: object
-    messageFeedback:
-      description: Feedback object
-      properties:
-        extendedFeedback:
-          $ref: '#/components/schemas/extendedFeedback'
-        feedbackId:
-          description: Feedback ID
-          format: uuid
-          type: string
-        rating:
-          description: Rating
-          enum:
-          - THUMBS_UP
-          - THUMBS_DOWN
-          - NONE
-          type: string
-      type: object
-    messageStatus:
-      description: message status
-      enum:
-      - PROCESSING
-      - DONE
-      - ERROR
-      - ERR_TIMED_OUT
-      - UNKNOWN
-      - STALE
-      type: string
     message:
       description: message object
       properties:
@@ -1440,6 +1219,139 @@ components:
       required:
       - request
       type: object
+    conversationListResponse:
+      description: list conversations response body
+      properties:
+        conversations:
+          description: list of conversations
+          items:
+            $ref: '#/components/schemas/conversation'
+          type: array
+        nextOffset:
+          description: next pagination offset
+          type: integer
+      type: object
+    conversationGetResponse:
+      description: get conversation response body
+      properties:
+        conversation:
+          $ref: '#/components/schemas/conversation'
+        messages:
+          description: conversation messages
+          items:
+            $ref: '#/components/schemas/message'
+          type: array
+      type: object
+    postFeedbackRequest:
+      description: create feedback request body
+      properties:
+        extended_feedback:
+          $ref: '#/components/schemas/extendedFeedback'
+        rating:
+          description: rating
+          enum:
+          - THUMBS_UP
+          - THUMBS_DOWN
+          - NONE
+          type: string
+      required:
+      - rating
+      type: object
+    updateConversationRequest:
+      description: update conversation request body
+      properties:
+        description:
+          description: conversation description
+          type: string
+      required:
+      - description
+      type: object
+    messageFragment:
+      description: message fragment
+      properties:
+        content:
+          description: message content
+          type: string
+        contentType:
+          description: message content type
+          enum:
+          - TEXT
+          type: string
+        createdAt:
+          description: date time at which the message was created
+          format: date-time
+          type: string
+        metadata:
+          description: message metadata
+          type:
+          - object
+          - 'null'
+        taskType:
+          $ref: '#/components/schemas/taskType'
+      required:
+      - content
+      - contentType
+      type: object
+    taskType:
+      description: task type
+      enum:
+      - NONE
+      - POLICY_LLM
+      - DOC_LLM
+      - TASK_LLM
+      - OTHER_LLM
+      type: string
+    messageStatus:
+      description: message status
+      enum:
+      - PROCESSING
+      - DONE
+      - ERROR
+      - ERR_TIMED_OUT
+      - UNKNOWN
+      - STALE
+      type: string
+    patchFeedbackRequest:
+      description: update feedback request body
+      properties:
+        extendedFeedback:
+          $ref: '#/components/schemas/extendedFeedback'
+      type: object
+    historyListResponse:
+      description: list history response body
+      properties:
+        messages:
+          description: message history list
+          items:
+            $ref: '#/components/schemas/messageWithDetails'
+          type: array
+      type: object
+    createConversationRequest:
+      description: create conversation request body
+      properties:
+        description:
+          description: conversation description
+          type: string
+        headers:
+          description: conversation headers
+          items:
+            type: string
+          type: array
+        labels:
+          description: conversation labels
+          items:
+            $ref: '#/components/schemas/label'
+          type: array
+      type: object
+    addLabelRequest:
+      description: Request to add labels to a conversation
+      properties:
+        labels:
+          description: List of labels to add to the conversation
+          items:
+            $ref: '#/components/schemas/label'
+          type: array
+      type: object
     listFeedbackResponse:
       description: List feedback response
       properties:
@@ -1448,6 +1360,85 @@ components:
           items:
             $ref: '#/components/schemas/messageFeedback'
           type: array
+      type: object
+    errorResponse:
+      description: error response
+      properties:
+        code:
+          description: Error code
+          type: integer
+        details:
+          description: Additional details about the error
+          type: object
+        message:
+          description: Error message
+          type: string
+      type: object
+    postMessageSseResponse:
+      description: create message SSE response body
+      properties:
+        Data:
+          description: event data
+          oneOf:
+          - description: For TEXT event, Data is a simple string.
+            type: string
+          - description: For OBJECT event, Data is a JSON object.
+            type: object
+        Event:
+          description: event type
+          enum:
+          - TEXT
+          - OBJECT
+          type: string
+        Id:
+          description: event ID
+          format: uuid
+          type: string
+      required:
+      - Id
+      - Data
+      - Event
+      type: object
+    extendedFeedback:
+      description: Extended feedback object
+      properties:
+        freeFormResponse:
+          description: Free form response
+          type: string
+        quickPickResponses:
+          description: List of quick pick responses
+          items:
+            description: Quick pick response
+            enum:
+            - NONE
+            - FACTUAL_INACCURACY
+            - INCORRECT_CLASSIFICATION
+            - UNHELPFUL_FORMATTING
+            - INAPPROPRIATE_LENGTH
+            - IRRELEVANT_CONTENT
+            - CITATION_ISSUE
+            - CORRECT
+            - HELPFUL
+            - OTHER
+            type: string
+          type: array
+      type: object
+    messageFeedback:
+      description: Feedback object
+      properties:
+        extendedFeedback:
+          $ref: '#/components/schemas/extendedFeedback'
+        feedbackId:
+          description: Feedback ID
+          format: uuid
+          type: string
+        rating:
+          description: Rating
+          enum:
+          - THUMBS_UP
+          - THUMBS_DOWN
+          - NONE
+          type: string
       type: object
     createConversationResponse:
       description: create conversation response body
@@ -1458,6 +1449,15 @@ components:
           type: string
       required:
       - conversationId
+      type: object
+    removeLabelRequest:
+      description: remove label request body
+      properties:
+        labels:
+          description: labels list
+          items:
+            $ref: '#/components/schemas/label'
+          type: array
       type: object
   securitySchemes:
     bearerAuth:

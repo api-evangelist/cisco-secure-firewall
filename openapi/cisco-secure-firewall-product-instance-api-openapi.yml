@@ -176,6 +176,17 @@ paths:
                 $ref: '#/components/schemas/model.Error'
 components:
   schemas:
+    model.ProductInstance:
+      type: object
+      properties:
+        id:
+          type: string
+        external_tenant_id:
+          type: string
+        provisioning_status:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
     model.ProvisioningQuestionAnswer:
       type: object
       properties:
@@ -190,30 +201,19 @@ components:
       properties:
         sourceInstanceId:
           type: string
-    model.ProductInstance:
-      type: object
-      properties:
-        id:
-          type: string
-        external_tenant_id:
-          type: string
-        provisioning_status:
-          type: string
-        region:
-          $ref: '#/components/schemas/model.Region'
-    model.Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     model.Region:
       type: object
       properties:
         description:
           type: string
         name:
+          type: string
+    model.Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
           type: string
     model.ProductInstanceProvisionRequest:
       type: object

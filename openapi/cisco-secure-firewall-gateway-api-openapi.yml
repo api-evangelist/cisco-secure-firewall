@@ -253,22 +253,46 @@ paths:
       - Gateway
 components:
   schemas:
-    NetworkDevice:
+    GatewaySetApi:
       properties:
-        hostname:
+        credentialName:
+          type: string
+        deviceType:
+          enum:
+          - PALO_ALTO
+          - JUNIPER
+          - PENSANDO_DSC
+          - PENSANDO_DSS
+          - FORTI_GATE
+          - PENSANDO_DSC_PDT
+          - CMCD
+          - ASA_INTERFACE
+          - ASA_GLOBAL
           type: string
         id:
           type: string
-        ipAddress:
+        networkDevices:
+          items:
+            $ref: '#/components/schemas/NetworkDevice'
+          type: array
+        status:
+          enum:
+          - ACTIVE
+          - HELD
+          - SKIPPED
+          - UNMANAGED
           type: string
-        osVersion:
-          type: string
-        port:
-          format: int32
-          type: integer
+        useBuckets:
+          type: boolean
       required:
-      - id
-      - port
+      - deviceType
+      - networkDevices
+      - status
+      type: object
+    CredentialNameRequest:
+      properties:
+        credentialName:
+          type: string
       type: object
     GatewaySetResp:
       properties:
@@ -310,6 +334,23 @@ components:
       - networkDevices
       - status
       type: object
+    NetworkDevice:
+      properties:
+        hostname:
+          type: string
+        id:
+          type: string
+        ipAddress:
+          type: string
+        osVersion:
+          type: string
+        port:
+          format: int32
+          type: integer
+      required:
+      - id
+      - port
+      type: object
     GatewaySetRespPage:
       properties:
         cursor:
@@ -318,47 +359,6 @@ components:
           items:
             $ref: '#/components/schemas/GatewaySetResp'
           type: array
-      type: object
-    CredentialNameRequest:
-      properties:
-        credentialName:
-          type: string
-      type: object
-    GatewaySetApi:
-      properties:
-        credentialName:
-          type: string
-        deviceType:
-          enum:
-          - PALO_ALTO
-          - JUNIPER
-          - PENSANDO_DSC
-          - PENSANDO_DSS
-          - FORTI_GATE
-          - PENSANDO_DSC_PDT
-          - CMCD
-          - ASA_INTERFACE
-          - ASA_GLOBAL
-          type: string
-        id:
-          type: string
-        networkDevices:
-          items:
-            $ref: '#/components/schemas/NetworkDevice'
-          type: array
-        status:
-          enum:
-          - ACTIVE
-          - HELD
-          - SKIPPED
-          - UNMANAGED
-          type: string
-        useBuckets:
-          type: boolean
-      required:
-      - deviceType
-      - networkDevices
-      - status
       type: object
   securitySchemes:
     BearerJWT:

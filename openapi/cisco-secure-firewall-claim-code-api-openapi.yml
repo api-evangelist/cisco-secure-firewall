@@ -198,58 +198,6 @@ paths:
                 $ref: '#/components/schemas/model.Error'
 components:
   schemas:
-    model.Services:
-      type: object
-      properties:
-        ID:
-          type: string
-        Name:
-          type: string
-        is_unified_onboarding_supported:
-          type: boolean
-        product_allowed_regions:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.Region'
-    model.ClaimCodeProduct:
-      type: object
-      required:
-      - id
-      - region
-      properties:
-        id:
-          type: string
-        is_use_existing_tenant_set:
-          type: boolean
-        name:
-          type: string
-        region:
-          $ref: '#/components/schemas/model.Region'
-    model.ProductInstance:
-      type: object
-      properties:
-        id:
-          type: string
-        external_tenant_id:
-          type: string
-        provisioning_status:
-          type: string
-        region:
-          $ref: '#/components/schemas/model.Region'
-    model.Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-    model.Region:
-      type: object
-      properties:
-        description:
-          type: string
-        name:
-          type: string
     model.RegionalHierarchy:
       type: object
       properties:
@@ -267,19 +215,6 @@ components:
           type: integer
         tier:
           type: integer
-    model.ProductInstancesAndRegionsAndServices:
-      type: object
-      properties:
-        all_regions:
-          $ref: '#/components/schemas/model.RegionalHierarchy'
-        productInstances:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.ProductInstance'
-        services:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.Services'
     model.ClaimSubscription:
       type: object
       properties:
@@ -299,6 +234,78 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/model.ClaimCodeServices'
+    model.ProductInstance:
+      type: object
+      properties:
+        id:
+          type: string
+        external_tenant_id:
+          type: string
+        provisioning_status:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
+    model.ProductInstancesAndRegionsAndServices:
+      type: object
+      properties:
+        all_regions:
+          $ref: '#/components/schemas/model.RegionalHierarchy'
+        productInstances:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProductInstance'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.Services'
+    model.Region:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+    model.Services:
+      type: object
+      properties:
+        ID:
+          type: string
+        Name:
+          type: string
+        is_unified_onboarding_supported:
+          type: boolean
+        product_allowed_regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.Region'
+    model.Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    model.ClaimCodeReadRequest:
+      type: object
+      properties:
+        claim_code:
+          type: string
+        enterprise_id:
+          type: string
+    model.ClaimCodeProduct:
+      type: object
+      required:
+      - id
+      - region
+      properties:
+        id:
+          type: string
+        is_use_existing_tenant_set:
+          type: boolean
+        name:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
     model.ClaimCodeServices:
       type: object
       required:
@@ -309,13 +316,6 @@ components:
         is_use_existing_tenant_set:
           type: boolean
         name:
-          type: string
-    model.ClaimCodeReadRequest:
-      type: object
-      properties:
-        claim_code:
-          type: string
-        enterprise_id:
           type: string
   securitySchemes:
     EnterpriseAdminBearerAuth:

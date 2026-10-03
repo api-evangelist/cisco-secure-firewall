@@ -332,6 +332,19 @@ components:
           type: array
           uniqueItems: true
       type: object
+    SearchCriteriaValue:
+      properties:
+        searchCriteria:
+          type: string
+      type: object
+    ProtocolEnumObj:
+      properties:
+        name:
+          type: string
+        number:
+          format: int32
+          type: integer
+      type: object
     MpmAppsPage:
       properties:
         apps:
@@ -340,6 +353,41 @@ components:
           type: array
         cursor:
           type: string
+      type: object
+    MpmSearchCriteriaResp:
+      properties:
+        searchCriteriaResp:
+          items:
+            $ref: '#/components/schemas/SearchCriteriaValue'
+          type: array
+      type: object
+    MpmEntityRelations:
+      properties:
+        appGroups:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        endpointGroups:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        policyToRules:
+          items:
+            $ref: '#/components/schemas/MpmPolicyMetadataToRules'
+          type: array
+      type: object
+    ApplicationProtocolEnumObj:
+      properties:
+        applicationProtocolName:
+          type: string
+        validProtocols:
+          items:
+            $ref: '#/components/schemas/ProtocolEnumObj'
+          type: array
       type: object
     MpmAppObj:
       properties:
@@ -374,54 +422,6 @@ components:
           type: integer
         value:
           type: string
-      type: object
-    ApplicationProtocolEnumObj:
-      properties:
-        applicationProtocolName:
-          type: string
-        validProtocols:
-          items:
-            $ref: '#/components/schemas/ProtocolEnumObj'
-          type: array
-      type: object
-    MpmSearchCriteriaResp:
-      properties:
-        searchCriteriaResp:
-          items:
-            $ref: '#/components/schemas/SearchCriteriaValue'
-          type: array
-      type: object
-    ProtocolEnumObj:
-      properties:
-        name:
-          type: string
-        number:
-          format: int32
-          type: integer
-      type: object
-    SearchCriteriaValue:
-      properties:
-        searchCriteria:
-          type: string
-      type: object
-    MpmEntityRelations:
-      properties:
-        appGroups:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        endpointGroups:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        policyToRules:
-          items:
-            $ref: '#/components/schemas/MpmPolicyMetadataToRules'
-          type: array
       type: object
   securitySchemes:
     BearerJWT:

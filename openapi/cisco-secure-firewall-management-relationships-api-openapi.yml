@@ -367,80 +367,18 @@ paths:
       - Management Relationships
       x-publicly-available: true
 components:
-  responses:
-    GeneralError:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: An unknown error occurred
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
-    NotFoundError:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Not Found
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
   schemas:
-    AssignedGroups:
+    Error:
       properties:
-        id:
-          description: id of the group
-          example: 6280494d-dd0f-4655-b558-d36ce9a10655
+        code:
+          format: int32
+          type: integer
+        message:
           type: string
-        name:
-          description: name of the assigned group
-          example: Group A
-          type: string
-    AssignedSubscriptions:
-      properties:
-        id:
-          description: id of the subscription
-          example: subs20251011
-          type: string
-        skus:
-          items:
-            properties:
-              key:
-                example: XDR-ESS
-                type: string
-              productsInfo:
-                description: products on the subscription
-                items:
-                  properties:
-                    assignedEntitlements:
-                      description: entitlement quantity shared with the managed org
-                      example: 200
-                      type: integer
-                    product:
-                      example: Secure Access
-                      type: string
-                    productRegion:
-                      example: US WEST 2
-                      type: string
-                  type: object
-                type: array
-            type: object
-          type: array
-    PostManagedRelationshipResponse:
-      properties:
-        id:
-          description: id of the org
-          example: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
-          type: string
-        name:
-          description: name of the org
-          example: Test Enterprise
-          type: string
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/AssignedSubscriptions'
-          type: array
+      required:
+      - code
+      - message
+      type: object
     EntitlementShareRequest:
       properties:
         managed_orgs:
@@ -503,42 +441,6 @@ components:
           description: name of the assigned admin
           example: John Doe
           type: string
-    EntitlementManagedOrg:
-      example:
-        id: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
-        subscriptions:
-        - id: subs20250110
-          skus:
-          - key: BPT-SEC
-            quantity: 200
-          - key: XDR-ESS
-            quantity: 100
-        - id: subs20250111
-          skus:
-          - key: UPT-SEC-ESS
-            quantity: 200
-      properties:
-        id:
-          description: id of the managed org
-          example: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
-          type: string
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/EntitlementSubscription'
-          type: array
-      required:
-      - id
-    Error:
-      properties:
-        code:
-          format: int32
-          type: integer
-        message:
-          type: string
-      required:
-      - code
-      - message
-      type: object
     organizationsRelationship:
       properties:
         assigned_admins:
@@ -587,11 +489,109 @@ components:
           items:
             $ref: '#/components/schemas/AssignedSubscriptions'
           type: array
+    PostManagedRelationshipResponse:
+      properties:
+        id:
+          description: id of the org
+          example: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
+          type: string
+        name:
+          description: name of the org
+          example: Test Enterprise
+          type: string
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/AssignedSubscriptions'
+          type: array
+    AssignedGroups:
+      properties:
+        id:
+          description: id of the group
+          example: 6280494d-dd0f-4655-b558-d36ce9a10655
+          type: string
+        name:
+          description: name of the assigned group
+          example: Group A
+          type: string
+    AssignedSubscriptions:
+      properties:
+        id:
+          description: id of the subscription
+          example: subs20251011
+          type: string
+        skus:
+          items:
+            properties:
+              key:
+                example: XDR-ESS
+                type: string
+              productsInfo:
+                description: products on the subscription
+                items:
+                  properties:
+                    assignedEntitlements:
+                      description: entitlement quantity shared with the managed org
+                      example: 200
+                      type: integer
+                    product:
+                      example: Secure Access
+                      type: string
+                    productRegion:
+                      example: US WEST 2
+                      type: string
+                  type: object
+                type: array
+            type: object
+          type: array
+    EntitlementManagedOrg:
+      example:
+        id: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
+        subscriptions:
+        - id: subs20250110
+          skus:
+          - key: BPT-SEC
+            quantity: 200
+          - key: XDR-ESS
+            quantity: 100
+        - id: subs20250111
+          skus:
+          - key: UPT-SEC-ESS
+            quantity: 200
+      properties:
+        id:
+          description: id of the managed org
+          example: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
+          type: string
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/EntitlementSubscription'
+          type: array
+      required:
+      - id
   headers:
     Date:
       schema:
         pattern: ^.*$
         type: string
+  responses:
+    GeneralError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: An unknown error occurred
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+    NotFoundError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not Found
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
   securitySchemes:
     OpenID:
       openIdConnectUrl: https://auth.example.com/.well-known/openid-configuration

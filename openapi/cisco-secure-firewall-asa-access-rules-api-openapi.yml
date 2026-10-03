@@ -235,135 +235,48 @@ paths:
       tags:
       - ASA Access Rules
 components:
+  responses:
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
   schemas:
-    RuleTimeRangeContent:
-      description: The optional time range for which the access rule is active.
+    AccessRuleIssue:
+      description: Represents an access rule issue, including issue type and causes.
       properties:
-        elements:
-          description: The list of elements.
+        causes:
+          description: A list of the causes for the rule being marked with an issue.
+          example:
+          - causeTypes:
+            - SHADOWED_BY_NETWORK_ADDRESS
+            - SHADOWED_BY_ICMP
+            causingRule: Rule_1
+            causingRuleIdx: 5
           items:
-            type: string
+            $ref: '#/components/schemas/Cause'
           type: array
-        name:
-          description: The name
-          example: any
-          type: string
-        type:
-          description: The type of the policy object.
+        issueType:
+          description: Indicates if the rule has any known issue. For unknown issues, UNKNOWN value will be used.
           enum:
-          - NETWORK_OBJECT
-          - IPV4_ADDRESS_POOL
-          - IPV6_ADDRESS_POOL
-          - NETWORK_GROUP
-          - SERVICE_OBJECT
-          - SERVICE_TCP_OBJECT
-          - SERVICE_UDP_OBJECT
-          - SERVICE_ICMPV4_OBJECT
-          - SERVICE_ICMPV6_OBJECT
-          - SERVICE_PROTOCOL_OBJECT
-          - SERVICE_GROUP
-          - SERVICE_FTD_GROUP
-          - PROTOCOL_GROUP
-          - ICMP_GROUP
-          - URL_OBJECT
-          - URL_GROUP
-          - APPLICATION_FILTER_OBJECT
-          - TIME_RANGE
-          example: NETWORK_OBJECT
+          - SHADOWED
+          - SHARED
+          - DUPLICATE
+          - UNKNOWN
           type: string
-        uid:
-          description: The unique identifier.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - name
-      type: object
-    ProtocolContent:
-      description: The protocol. Defaults to IP.
-      properties:
-        elements:
-          description: The list of elements.
-          items:
-            type: string
-          type: array
-        name:
-          description: The name
-          example: any
-          type: string
-        type:
-          description: The type of the policy object.
-          enum:
-          - NETWORK_OBJECT
-          - IPV4_ADDRESS_POOL
-          - IPV6_ADDRESS_POOL
-          - NETWORK_GROUP
-          - SERVICE_OBJECT
-          - SERVICE_TCP_OBJECT
-          - SERVICE_UDP_OBJECT
-          - SERVICE_ICMPV4_OBJECT
-          - SERVICE_ICMPV6_OBJECT
-          - SERVICE_PROTOCOL_OBJECT
-          - SERVICE_GROUP
-          - SERVICE_FTD_GROUP
-          - PROTOCOL_GROUP
-          - ICMP_GROUP
-          - URL_OBJECT
-          - URL_GROUP
-          - APPLICATION_FILTER_OBJECT
-          - TIME_RANGE
-          example: NETWORK_OBJECT
-          type: string
-        uid:
-          description: The unique identifier.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - name
-      type: object
-    SourceNetworkContent:
-      description: The source network.
-      properties:
-        elements:
-          description: The list of elements.
-          items:
-            type: string
-          type: array
-        name:
-          description: The name
-          example: any
-          type: string
-        type:
-          description: The type of the policy object.
-          enum:
-          - NETWORK_OBJECT
-          - IPV4_ADDRESS_POOL
-          - IPV6_ADDRESS_POOL
-          - NETWORK_GROUP
-          - SERVICE_OBJECT
-          - SERVICE_TCP_OBJECT
-          - SERVICE_UDP_OBJECT
-          - SERVICE_ICMPV4_OBJECT
-          - SERVICE_ICMPV6_OBJECT
-          - SERVICE_PROTOCOL_OBJECT
-          - SERVICE_GROUP
-          - SERVICE_FTD_GROUP
-          - PROTOCOL_GROUP
-          - ICMP_GROUP
-          - URL_OBJECT
-          - URL_GROUP
-          - APPLICATION_FILTER_OBJECT
-          - TIME_RANGE
-          example: NETWORK_OBJECT
-          type: string
-        uid:
-          description: The unique identifier.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - name
       type: object
     SourcePortContent:
       description: The source port.
@@ -408,84 +321,8 @@ components:
       required:
       - name
       type: object
-    AccessRuleUpdateInput:
-      properties:
-        destinationDynamicObject:
-          $ref: '#/components/schemas/DestinationDynamicObjectContent'
-        destinationNetwork:
-          $ref: '#/components/schemas/DestinationNetworkContent'
-        destinationPort:
-          $ref: '#/components/schemas/DestinationPortContent'
-        index:
-          description: Access rule index position in Access Group ordered rule list.
-          example: 1
-          format: int32
-          type: integer
-        isActiveRule:
-          description: Is active. True by default
-          example: false
-          type: boolean
-        logSettings:
-          $ref: '#/components/schemas/LogSettings'
-          description: The set of of interface and direction pairs or global resource.
-        protocol:
-          $ref: '#/components/schemas/ProtocolContent'
-          example:
-            elements:
-            - ip
-            name: ip
-            type: SERVICE_PROTOCOL_OBJECT
-            uid: null
-        remark:
-          description: A remark.
-          type: string
-        ruleAction:
-          description: 'The rule''s action: PERMIT or DENY.'
-          enum:
-          - PERMIT
-          - DENY
-          example: PERMIT
-          type: string
-        ruleTimeRange:
-          $ref: '#/components/schemas/AccessRuleDetailsContent'
-        sourceDynamicObject:
-          $ref: '#/components/schemas/SourceDynamicObjectContent'
-        sourceNetwork:
-          $ref: '#/components/schemas/SourceNetworkContent'
-        sourcePort:
-          $ref: '#/components/schemas/SourcePortContent'
-        uid:
-          description: The unique identifier, represented as a UUID, of the Access Rule.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - uid
-      type: object
-    AccessRuleIssue:
-      description: Represents an access rule issue, including issue type and causes.
-      properties:
-        causes:
-          description: A list of the causes for the rule being marked with an issue.
-          example:
-          - causeTypes:
-            - SHADOWED_BY_NETWORK_ADDRESS
-            - SHADOWED_BY_ICMP
-            causingRule: Rule_1
-            causingRuleIdx: 5
-          items:
-            $ref: '#/components/schemas/Cause'
-          type: array
-        issueType:
-          description: Indicates if the rule has any known issue. For unknown issues, UNKNOWN value will be used.
-          enum:
-          - SHADOWED
-          - SHARED
-          - DUPLICATE
-          - UNKNOWN
-          type: string
-      type: object
-    AccessRuleDetailsContent:
+    DestinationDynamicObjectContent:
+      description: The destination dynamic object.
       properties:
         elements:
           description: The list of elements.
@@ -526,34 +363,6 @@ components:
           type: string
       required:
       - name
-      type: object
-    Cause:
-      description: Represents a specific cause for an access rule issue.
-      properties:
-        causeTypes:
-          description: A set of cause types for the issue.
-          example:
-          - SHADOWED_BY_NETWORK_ADDRESS
-          - SHADOWED_BY_ICMP
-          - DUPLICATE_REMARK
-          items:
-            enum:
-            - SHADOWED_BY_NETWORK_ADDRESS
-            - SHADOWED_BY_PORT
-            - SHADOWED_BY_ICMP
-            - SHADOWED_BY_ACTION
-            - DUPLICATE_REMARK
-            - UNKNOWN
-            type: string
-          type: array
-          uniqueItems: true
-        causingRule:
-          description: The rule that is causing the issue.
-          type: string
-        causingRuleIdx:
-          description: The index of the causing rule.
-          format: int32
-          type: integer
       type: object
     AccessRuleCreateInput:
       properties:
@@ -608,22 +417,94 @@ components:
       - entityUid
       - index
       type: object
-    LogSettings:
+    RuleTimeRangeContent:
+      description: The optional time range for which the access rule is active.
       properties:
-        interval:
-          description: The interval
-          example: 1
-          format: int32
-          type: integer
-        level:
-          description: The level
-          example: 3
+        elements:
+          description: The list of elements.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name
+          example: any
+          type: string
+        type:
+          description: The type of the policy object.
+          enum:
+          - NETWORK_OBJECT
+          - IPV4_ADDRESS_POOL
+          - IPV6_ADDRESS_POOL
+          - NETWORK_GROUP
+          - SERVICE_OBJECT
+          - SERVICE_TCP_OBJECT
+          - SERVICE_UDP_OBJECT
+          - SERVICE_ICMPV4_OBJECT
+          - SERVICE_ICMPV6_OBJECT
+          - SERVICE_PROTOCOL_OBJECT
+          - SERVICE_GROUP
+          - SERVICE_FTD_GROUP
+          - PROTOCOL_GROUP
+          - ICMP_GROUP
+          - URL_OBJECT
+          - URL_GROUP
+          - APPLICATION_FILTER_OBJECT
+          - TIME_RANGE
+          example: NETWORK_OBJECT
+          type: string
+        uid:
+          description: The unique identifier.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
           type: string
       required:
-      - level
+      - name
       type: object
     DestinationPortContent:
       description: The destination port.
+      properties:
+        elements:
+          description: The list of elements.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name
+          example: any
+          type: string
+        type:
+          description: The type of the policy object.
+          enum:
+          - NETWORK_OBJECT
+          - IPV4_ADDRESS_POOL
+          - IPV6_ADDRESS_POOL
+          - NETWORK_GROUP
+          - SERVICE_OBJECT
+          - SERVICE_TCP_OBJECT
+          - SERVICE_UDP_OBJECT
+          - SERVICE_ICMPV4_OBJECT
+          - SERVICE_ICMPV6_OBJECT
+          - SERVICE_PROTOCOL_OBJECT
+          - SERVICE_GROUP
+          - SERVICE_FTD_GROUP
+          - PROTOCOL_GROUP
+          - ICMP_GROUP
+          - URL_OBJECT
+          - URL_GROUP
+          - APPLICATION_FILTER_OBJECT
+          - TIME_RANGE
+          example: NETWORK_OBJECT
+          type: string
+        uid:
+          description: The unique identifier.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - name
+      type: object
+    DestinationNetworkContent:
+      description: The destination network.
       properties:
         elements:
           description: The list of elements.
@@ -770,8 +651,89 @@ components:
       - index
       - uid
       type: object
-    DestinationDynamicObjectContent:
-      description: The destination dynamic object.
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
+    Cause:
+      description: Represents a specific cause for an access rule issue.
+      properties:
+        causeTypes:
+          description: A set of cause types for the issue.
+          example:
+          - SHADOWED_BY_NETWORK_ADDRESS
+          - SHADOWED_BY_ICMP
+          - DUPLICATE_REMARK
+          items:
+            enum:
+            - SHADOWED_BY_NETWORK_ADDRESS
+            - SHADOWED_BY_PORT
+            - SHADOWED_BY_ICMP
+            - SHADOWED_BY_ACTION
+            - DUPLICATE_REMARK
+            - UNKNOWN
+            type: string
+          type: array
+          uniqueItems: true
+        causingRule:
+          description: The rule that is causing the issue.
+          type: string
+        causingRuleIdx:
+          description: The index of the causing rule.
+          format: int32
+          type: integer
+      type: object
+    AccessRulePage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/AccessRule'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    SourceNetworkContent:
+      description: The source network.
       properties:
         elements:
           description: The list of elements.
@@ -813,59 +775,74 @@ components:
       required:
       - name
       type: object
-    AccessRulePage:
+    LogSettings:
       properties:
-        count:
-          description: The total number of results available.
-          example: 100
+        interval:
+          description: The interval
+          example: 1
           format: int32
           type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/AccessRule'
-          type: array
-        limit:
-          description: The number of results retrieved.
-          example: 50
-          format: int32
-          type: integer
-        offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
-          format: int32
-          type: integer
+        level:
+          description: The level
+          example: 3
+          type: string
+      required:
+      - level
       type: object
-    CommonApiError:
+    AccessRuleUpdateInput:
       properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
+        destinationDynamicObject:
+          $ref: '#/components/schemas/DestinationDynamicObjectContent'
+        destinationNetwork:
+          $ref: '#/components/schemas/DestinationNetworkContent'
+        destinationPort:
+          $ref: '#/components/schemas/DestinationPortContent'
+        index:
+          description: Access rule index position in Access Group ordered rule list.
+          example: 1
+          format: int32
+          type: integer
+        isActiveRule:
+          description: Is active. True by default
+          example: false
+          type: boolean
+        logSettings:
+          $ref: '#/components/schemas/LogSettings'
+          description: The set of of interface and direction pairs or global resource.
+        protocol:
+          $ref: '#/components/schemas/ProtocolContent'
+          example:
+            elements:
+            - ip
+            name: ip
+            type: SERVICE_PROTOCOL_OBJECT
+            uid: null
+        remark:
+          description: A remark.
+          type: string
+        ruleAction:
+          description: 'The rule''s action: PERMIT or DENY.'
           enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
+          - PERMIT
+          - DENY
+          example: PERMIT
           type: string
-        errorMsg:
-          description: A human-readable error description in English.
-          example: sample error
+        ruleTimeRange:
+          $ref: '#/components/schemas/AccessRuleDetailsContent'
+        sourceDynamicObject:
+          $ref: '#/components/schemas/SourceDynamicObjectContent'
+        sourceNetwork:
+          $ref: '#/components/schemas/SourceNetworkContent'
+        sourcePort:
+          $ref: '#/components/schemas/SourcePortContent'
+        uid:
+          description: The unique identifier, represented as a UUID, of the Access Rule.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
           type: string
+      required:
+      - uid
+      type: object
     SourceDynamicObjectContent:
       description: The source dynamic object.
       properties:
@@ -909,8 +886,7 @@ components:
       required:
       - name
       type: object
-    DestinationNetworkContent:
-      description: The destination network.
+    AccessRuleDetailsContent:
       properties:
         elements:
           description: The list of elements.
@@ -952,25 +928,49 @@ components:
       required:
       - name
       type: object
-  responses:
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
+    ProtocolContent:
+      description: The protocol. Defaults to IP.
+      properties:
+        elements:
+          description: The list of elements.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name
+          example: any
+          type: string
+        type:
+          description: The type of the policy object.
+          enum:
+          - NETWORK_OBJECT
+          - IPV4_ADDRESS_POOL
+          - IPV6_ADDRESS_POOL
+          - NETWORK_GROUP
+          - SERVICE_OBJECT
+          - SERVICE_TCP_OBJECT
+          - SERVICE_UDP_OBJECT
+          - SERVICE_ICMPV4_OBJECT
+          - SERVICE_ICMPV6_OBJECT
+          - SERVICE_PROTOCOL_OBJECT
+          - SERVICE_GROUP
+          - SERVICE_FTD_GROUP
+          - PROTOCOL_GROUP
+          - ICMP_GROUP
+          - URL_OBJECT
+          - URL_GROUP
+          - APPLICATION_FILTER_OBJECT
+          - TIME_RANGE
+          example: NETWORK_OBJECT
+          type: string
+        uid:
+          description: The unique identifier.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - name
+      type: object
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

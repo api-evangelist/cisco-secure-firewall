@@ -423,84 +423,38 @@ paths:
       tags:
       - Command Line Interface
 components:
+  responses:
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
+    http405MethodNotAllowed:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Method not allowed.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
   schemas:
-    CommonApiError:
-      properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
-          description: A human-readable error description in English.
-          example: sample error
-          type: string
-    EntityType:
-      enum:
-      - ASA
-      - CDFMC_MANAGED_FTD
-      - ONPREM_FMC_MANAGED_FTD
-      - ONPREM_FMC_MANAGED_FIREPOWER
-      - ONPREM_FMC_NGIPS
-      - FDM_MANAGED_FTD
-      - IOS
-      - ISR
-      - SSH_DEVICE
-      - GENERIC_DEVICE
-      - MERAKI_MX
-      - CLOUD_DNG
-      - SFCN
-      - SFCN_DNG
-      - SFCN_STS
-      - ONPREM_FMC
-      - CDFMC
-      - AWS_VPC
-      - AZURE_VNET
-      - DUO_ADMIN_PANEL
-      - UMBRELLA_ORGANIZATION
-      type: string
-    CdoCliMacroPage:
-      properties:
-        count:
-          description: The total number of results available.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/CdoCliMacro'
-          type: array
-        limit:
-          description: The number of results retrieved.
-          example: 50
-          format: int32
-          type: integer
-        offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
-          format: int32
-          type: integer
-      type: object
     CliMacroExecuteInput:
       properties:
         deviceUids:
@@ -526,144 +480,6 @@ components:
       required:
       - deviceUids
       type: object
-    CliMacroPatchInput:
-      properties:
-        description:
-          description: A detailed description of what the CLI Macro does.
-          example: This macro defines a network object in a firewall configuration.
-          type: string
-        name:
-          description: A human-readable name for the CLI Macro.
-          example: My Network Object
-          type: string
-        script:
-          description: The script content of the CLI Macro that will be executed on the device.
-          example: object network obj-192.168.1.0
-          type: string
-      type: object
-    CliMacroCreateInput:
-      properties:
-        description:
-          description: A detailed description of what the CLI Macro does.
-          example: This macro defines a network object in a firewall configuration.
-          type: string
-        deviceType:
-          description: The type of device the CLI Macro is intended for.
-          enum:
-          - ASA
-          - IOS
-          example: IOS
-          type: string
-        name:
-          description: A human-readable name for the CLI Macro.
-          example: My Network Object
-          type: string
-        script:
-          description: The script content of the CLI Macro that will be executed on the device.
-          example: object network obj-192.168.1.0
-          type: string
-      type: object
-    CdoCliResult:
-      properties:
-        deviceUid:
-          description: The unique identifier, represented as a UUID, of the device.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-        errorMsg:
-          description: The error message, if any.
-          example: 'Error: Connection timed out'
-          type: string
-        result:
-          description: The result of the CLI execution.
-          example: 5
-          type: string
-        script:
-          description: The script executed to generate the CLI result.
-          example: show xlate detail
-          type: string
-        startTime:
-          description: The time (in UTC) at which the user run the CLI execution, represented using the RFC-3339 standard.
-          example: 2023-12-13 05:15:44+00:00
-          format: date-time
-          type: string
-        uid:
-          description: The unique identifier, represented as a UUID, of the CLI execution result.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - deviceUid
-      - uid
-      type: object
-    CdoCliResultPage:
-      properties:
-        count:
-          description: The total number of results available.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/CdoCliResult'
-          type: array
-        limit:
-          description: The number of results retrieved.
-          example: 50
-          format: int32
-          type: integer
-        offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
-          format: int32
-          type: integer
-      type: object
-    CdoCliMacro:
-      properties:
-        deviceType:
-          $ref: '#/components/schemas/EntityType'
-          description: The type of the device.
-          example: ASA
-        name:
-          description: The name of the CLI macro.
-          example: Disconnect VPN User
-          type: string
-        parameters:
-          description: A set of parameters provided in the script
-          example:
-          - USER
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        script:
-          description: The script executed to generate the CLI result.
-          example: vpn-sessiondb logoff name {{USER}} noconfirm
-          type: string
-        systemDefined:
-          description: Indicating whether this CLI macro is system-defined.
-          example: true
-          type: boolean
-        uid:
-          description: The unique identifier, represented as a UUID, of the CLI macro.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - deviceType
-      - uid
-      type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
     CdoTransaction:
       properties:
         cdoTransactionStatus:
@@ -775,6 +591,121 @@ components:
           format: uuid
           type: string
       type: object
+    CdoCliMacroPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/CdoCliMacro'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    CdoCliMacro:
+      properties:
+        deviceType:
+          $ref: '#/components/schemas/EntityType'
+          description: The type of the device.
+          example: ASA
+        name:
+          description: The name of the CLI macro.
+          example: Disconnect VPN User
+          type: string
+        parameters:
+          description: A set of parameters provided in the script
+          example:
+          - USER
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        script:
+          description: The script executed to generate the CLI result.
+          example: vpn-sessiondb logoff name {{USER}} noconfirm
+          type: string
+        systemDefined:
+          description: Indicating whether this CLI macro is system-defined.
+          example: true
+          type: boolean
+        uid:
+          description: The unique identifier, represented as a UUID, of the CLI macro.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - deviceType
+      - uid
+      type: object
+    CdoCliResultPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/CdoCliResult'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    EntityType:
+      enum:
+      - ASA
+      - CDFMC_MANAGED_FTD
+      - ONPREM_FMC_MANAGED_FTD
+      - ONPREM_FMC_MANAGED_FIREPOWER
+      - ONPREM_FMC_NGIPS
+      - FDM_MANAGED_FTD
+      - IOS
+      - ISR
+      - SSH_DEVICE
+      - GENERIC_DEVICE
+      - MERAKI_MX
+      - CLOUD_DNG
+      - SFCN
+      - SFCN_DNG
+      - SFCN_STS
+      - ONPREM_FMC
+      - CDFMC
+      - AWS_VPC
+      - AZURE_VNET
+      - DUO_ADMIN_PANEL
+      - UMBRELLA_ORGANIZATION
+      type: string
     CliCommandInput:
       properties:
         deviceUids:
@@ -794,37 +725,106 @@ components:
       - deviceUids
       - script
       type: object
-  responses:
-    http405MethodNotAllowed:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Method not allowed.
-    http401Unauthorised:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
-    http400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
+    CliMacroCreateInput:
+      properties:
+        description:
+          description: A detailed description of what the CLI Macro does.
+          example: This macro defines a network object in a firewall configuration.
+          type: string
+        deviceType:
+          description: The type of device the CLI Macro is intended for.
+          enum:
+          - ASA
+          - IOS
+          example: IOS
+          type: string
+        name:
+          description: A human-readable name for the CLI Macro.
+          example: My Network Object
+          type: string
+        script:
+          description: The script content of the CLI Macro that will be executed on the device.
+          example: object network obj-192.168.1.0
+          type: string
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
+    CdoCliResult:
+      properties:
+        deviceUid:
+          description: The unique identifier, represented as a UUID, of the device.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        errorMsg:
+          description: The error message, if any.
+          example: 'Error: Connection timed out'
+          type: string
+        result:
+          description: The result of the CLI execution.
+          example: 5
+          type: string
+        script:
+          description: The script executed to generate the CLI result.
+          example: show xlate detail
+          type: string
+        startTime:
+          description: The time (in UTC) at which the user run the CLI execution, represented using the RFC-3339 standard.
+          example: 2023-12-13 05:15:44+00:00
+          format: date-time
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the CLI execution result.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - deviceUid
+      - uid
+      type: object
+    CliMacroPatchInput:
+      properties:
+        description:
+          description: A detailed description of what the CLI Macro does.
+          example: This macro defines a network object in a firewall configuration.
+          type: string
+        name:
+          description: A human-readable name for the CLI Macro.
+          example: My Network Object
+          type: string
+        script:
+          description: The script content of the CLI Macro that will be executed on the device.
+          example: object network obj-192.168.1.0
+          type: string
+      type: object
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

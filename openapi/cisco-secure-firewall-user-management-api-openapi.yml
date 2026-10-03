@@ -236,43 +236,16 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ResponsibleActor:
+    Error:
       type: object
       required:
-      - id
-      - disabledAt
-      - firstName
-      - lastName
+      - code
+      - message
       properties:
-        id:
-          type: string
-          format: uuid
-        disabledAt:
-          type: string
-          format: date-time
-        firstName:
-          type: string
-        lastName:
-          type: string
-    EnterpriseUserProfile:
-      type: object
-      required:
-      - firstName
-      - lastName
-      - login
-      - email
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        login:
-          type: string
-        email:
-          type: string
-        mobilePhone:
-          type: string
-        secondEmail:
+        code:
+          type: integer
+          format: int32
+        message:
           type: string
     EnterpriseUser:
       type: object
@@ -332,27 +305,50 @@ components:
           description: it is referencing same type as [provider object's type](https://developer.okta.com/docs/reference/api/users/#provider-object)
         profile:
           $ref: '#/components/schemas/EnterpriseUserProfile'
-    Error:
+    ResponsibleActor:
       type: object
       required:
-      - code
-      - message
+      - id
+      - disabledAt
+      - firstName
+      - lastName
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
+        id:
           type: string
+          format: uuid
+        disabledAt:
+          type: string
+          format: date-time
+        firstName:
+          type: string
+        lastName:
+          type: string
+    EnterpriseUserProfile:
+      type: object
+      required:
+      - firstName
+      - lastName
+      - login
+      - email
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        login:
+          type: string
+        email:
+          type: string
+        mobilePhone:
+          type: string
+        secondEmail:
+          type: string
+  headers:
+    Date:
+      schema:
+        type: string
+        pattern: ^.*$
   responses:
-    NotFoundError:
-      description: Not Found
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     GeneralError:
       description: An unknown error occurred
       headers:
@@ -364,11 +360,15 @@ components:
             $ref: '#/components/schemas/Error'
     NoContent:
       description: No content
-  headers:
-    Date:
-      schema:
-        type: string
-        pattern: ^.*$
+    NotFoundError:
+      description: Not Found
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     OpenID:
       type: openIdConnect

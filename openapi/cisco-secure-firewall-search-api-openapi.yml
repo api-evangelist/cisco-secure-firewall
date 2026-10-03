@@ -544,51 +544,57 @@ paths:
     - url: https://manage.stg.secure.cisco/api/rest
       description: Stgf9
 components:
+  parameters:
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
   schemas:
-    ILinks:
-      description: This defines the self referencing links for the given resource.
+    PagingContainer:
       properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
       type: object
-    ISearchResult:
-      properties:
-        category:
-          enum:
-          - GLOBALSEARCH
-          - GLOBAL
-          - OBJECT
-          - POLICY
-          - DEVICE
-          - DEVICE_TEMPLATE
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        subType:
-          type: string
-        type:
-          type: string
-        value:
-          type: string
-      type: object
-    GlobalPolicySearchListContainer:
+    GlobalObjectSearchListContainer:
       properties:
         items:
-          $ref: '#/components/schemas/GlobalPolicySearch'
+          $ref: '#/components/schemas/GlobalObjectSearch'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
@@ -597,7 +603,7 @@ components:
           $ref: '#/components/schemas/PagingContainer'
           type: object
       type: object
-    GlobalObjectSearch:
+    GlobalSearch:
       description: A model representing global object search response.
       properties:
         description:
@@ -629,79 +635,26 @@ components:
         version:
           type: string
       type: object
-    GlobalObjectSearchListContainer:
+    ILinks:
+      description: This defines the self referencing links for the given resource.
       properties:
-        items:
-          $ref: '#/components/schemas/GlobalObjectSearch'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IMetadataUser:
-      properties:
-        id:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
           type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
+        self:
+          description: Full resource URL path to reference this particular resource.
           type: string
       type: object
-    GlobalSearchListContainer:
+    IReadonly:
       properties:
-        items:
-          $ref: '#/components/schemas/GlobalSearch'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    GlobalDeviceSearch:
-      properties:
-        description:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
           type: string
-        id:
-          type: string
-        items:
-          items:
-            $ref: '#/components/schemas/ISearchResult'
-            type: object
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        searchCriteria:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    GlobalDeviceSearchListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/GlobalDeviceSearch'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
+        state:
+          type: boolean
       type: object
     ErrorResponse:
       properties:
@@ -752,7 +705,19 @@ components:
           - WARN
           type: string
       type: object
-    IDomain:
+    GlobalDeviceSearchListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/GlobalDeviceSearch'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IMetadataUser:
       properties:
         id:
           type: string
@@ -764,33 +729,7 @@ components:
         type:
           type: string
       type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    GlobalSearch:
+    GlobalObjectSearch:
       description: A model representing global object search response.
       properties:
         description:
@@ -875,77 +814,97 @@ components:
         version:
           type: string
       type: object
-    CommonApiError:
+    GlobalSearchListContainer:
       properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
+        items:
+          $ref: '#/components/schemas/GlobalSearch'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
           type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
-          description: A human-readable error description in English.
-          example: sample error
-          type: string
-    EntityType:
-      enum:
-      - ASA
-      - CDFMC_MANAGED_FTD
-      - ONPREM_FMC_MANAGED_FTD
-      - ONPREM_FMC_MANAGED_FIREPOWER
-      - ONPREM_FMC_NGIPS
-      - FDM_MANAGED_FTD
-      - IOS
-      - ISR
-      - SSH_DEVICE
-      - GENERIC_DEVICE
-      - MERAKI_MX
-      - CLOUD_DNG
-      - SFCN
-      - SFCN_DNG
-      - SFCN_STS
-      - ONPREM_FMC
-      - CDFMC
-      - AWS_VPC
-      - AZURE_VNET
-      - DUO_ADMIN_PANEL
-      - UMBRELLA_ORGANIZATION
-      type: string
-    CdFmcResult:
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    GlobalPolicySearchListContainer:
       properties:
-        devices:
-          description: Devices that match the search term.
-          items:
-            $ref: '#/components/schemas/CdFmcObject'
+        items:
+          $ref: '#/components/schemas/GlobalPolicySearch'
           type: array
-        objects:
-          description: Objects that match the search term.
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ISearchResult:
+      properties:
+        category:
+          enum:
+          - GLOBALSEARCH
+          - GLOBAL
+          - OBJECT
+          - POLICY
+          - DEVICE
+          - DEVICE_TEMPLATE
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        subType:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+      type: object
+    GlobalDeviceSearch:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        items:
           items:
-            $ref: '#/components/schemas/CdFmcObject'
+            $ref: '#/components/schemas/ISearchResult'
+            type: object
           type: array
-        policies:
-          description: Policies that match the search term.
-          items:
-            $ref: '#/components/schemas/CdFmcObject'
-          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        searchCriteria:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
       type: object
     CdFmcObject:
       properties:
@@ -963,87 +922,22 @@ components:
           format: uuid
           type: string
       type: object
-    Policy:
-      properties:
-        name:
-          description: The name of the policy in Security Cloud Control.
-          example: my-example-policy
-          type: string
-        uid:
-          description: The unique identifier, represented as a UUID, of the policy in Security Cloud Control.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      type: object
-    GlobalSearchResult:
-      properties:
-        cdFmcResult:
-          $ref: '#/components/schemas/CdFmcResult'
-          description: Results from the Cloud-delivered FMC devices, objects or policies that match the search term.
-        inventory:
-          $ref: '#/components/schemas/Inventory'
-          description: Results from the Security Cloud Control inventory that match the search term.
-        objects:
-          description: Results from the Security Cloud Control objects that match the search term.
-          items: {}
-          type: array
-        policies:
-          description: Results from the Security Cloud Control policies that match the search term.
-          items:
-            $ref: '#/components/schemas/Policy'
-          type: array
-      type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
-    Entity:
-      properties:
-        address:
-          description: The address of the entity.
-          example: my-example-device.example.com:443
-          type: string
-        matchingConfigurations:
-          description: (ASAs only) Parts of the ASA device configuration that match the search term.
-          items:
-            type: string
-          type: array
-        name:
-          description: The name of the entity. Device names are unique in Security Cloud Control.
-          example: my-example-entity
-          type: string
-        type:
-          $ref: '#/components/schemas/EntityType'
-          description: The type of the entity.
-          example: ASA
-        uid:
-          description: The unique identifier, represented as a UUID, of the entity in Security Cloud Control.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      type: object
-    Inventory:
+    CdFmcResult:
       properties:
         devices:
           description: Devices that match the search term.
           items:
-            $ref: '#/components/schemas/Entity'
+            $ref: '#/components/schemas/CdFmcObject'
           type: array
-        managers:
-          description: Device Managers that match the search term.
+        objects:
+          description: Objects that match the search term.
           items:
-            $ref: '#/components/schemas/Entity'
+            $ref: '#/components/schemas/CdFmcObject'
           type: array
-        services:
-          description: Cloud Services that match the search term.
+        policies:
+          description: Policies that match the search term.
           items:
-            $ref: '#/components/schemas/Entity'
+            $ref: '#/components/schemas/CdFmcObject'
           type: array
       type: object
     CdoTransaction:
@@ -1157,44 +1051,150 @@ components:
           format: uuid
           type: string
       type: object
-  parameters:
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
-    limit:
-      description: Number of items to return.
-      in: query
-      name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
-    domainUUID:
-      description: Domain UUID
-      in: path
-      name: domainUUID
-      required: true
-      schema:
-        type: string
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
+    Inventory:
+      properties:
+        devices:
+          description: Devices that match the search term.
+          items:
+            $ref: '#/components/schemas/Entity'
+          type: array
+        managers:
+          description: Device Managers that match the search term.
+          items:
+            $ref: '#/components/schemas/Entity'
+          type: array
+        services:
+          description: Cloud Services that match the search term.
+          items:
+            $ref: '#/components/schemas/Entity'
+          type: array
+      type: object
+    Entity:
+      properties:
+        address:
+          description: The address of the entity.
+          example: my-example-device.example.com:443
+          type: string
+        matchingConfigurations:
+          description: (ASAs only) Parts of the ASA device configuration that match the search term.
+          items:
+            type: string
+          type: array
+        name:
+          description: The name of the entity. Device names are unique in Security Cloud Control.
+          example: my-example-entity
+          type: string
+        type:
+          $ref: '#/components/schemas/EntityType'
+          description: The type of the entity.
+          example: ASA
+        uid:
+          description: The unique identifier, represented as a UUID, of the entity in Security Cloud Control.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    GlobalSearchResult:
+      properties:
+        cdFmcResult:
+          $ref: '#/components/schemas/CdFmcResult'
+          description: Results from the Cloud-delivered FMC devices, objects or policies that match the search term.
+        inventory:
+          $ref: '#/components/schemas/Inventory'
+          description: Results from the Security Cloud Control inventory that match the search term.
+        objects:
+          description: Results from the Security Cloud Control objects that match the search term.
+          items: {}
+          type: array
+        policies:
+          description: Results from the Security Cloud Control policies that match the search term.
+          items:
+            $ref: '#/components/schemas/Policy'
+          type: array
+      type: object
+    Policy:
+      properties:
+        name:
+          description: The name of the policy in Security Cloud Control.
+          example: my-example-policy
+          type: string
+        uid:
+          description: The unique identifier, represented as a UUID, of the policy in Security Cloud Control.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    EntityType:
+      enum:
+      - ASA
+      - CDFMC_MANAGED_FTD
+      - ONPREM_FMC_MANAGED_FTD
+      - ONPREM_FMC_MANAGED_FIREPOWER
+      - ONPREM_FMC_NGIPS
+      - FDM_MANAGED_FTD
+      - IOS
+      - ISR
+      - SSH_DEVICE
+      - GENERIC_DEVICE
+      - MERAKI_MX
+      - CLOUD_DNG
+      - SFCN
+      - SFCN_DNG
+      - SFCN_STS
+      - ONPREM_FMC
+      - CDFMC
+      - AWS_VPC
+      - AZURE_VNET
+      - DUO_ADMIN_PANEL
+      - UMBRELLA_ORGANIZATION
+      type: string
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
   responses:
-    http401Unauthorised:
+    http400BadRequest:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
     http405MethodNotAllowed:
       content:
         application/json:
@@ -1207,12 +1207,12 @@ components:
           schema:
             $ref: '#/components/schemas/CommonApiError'
       description: User does not have sufficient privileges to perform this operation.
-    http400BadRequest:
+    http401Unauthorised:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

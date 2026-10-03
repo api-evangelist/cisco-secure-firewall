@@ -343,73 +343,6 @@ paths:
       - Device Upgrades
 components:
   schemas:
-    CommonApiError:
-      properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
-          description: A human-readable error description in English.
-          example: sample error
-          type: string
-    FtdVersionsResponse:
-      properties:
-        count:
-          description: The item count.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/FtdVersion'
-          type: array
-      type: object
-    UpgradeFtdDeviceInput:
-      properties:
-        upgradePackageUid:
-          description: The unique identifier, represented as a UUID, of the upgrade package to be applied to the device.
-          example: 256461f6-bd60-11ef-8beb-6cf1610cf55d
-          format: uuid
-          type: string
-      required:
-      - upgradePackageUid
-      type: object
-    FtdCompatibilityVersion:
-      properties:
-        compatibleFtdVersions:
-          items:
-            $ref: '#/components/schemas/FtdVersion'
-          type: array
-        deviceUids:
-          items:
-            format: uuid
-            type: string
-          type: array
-        hardwareModel:
-          type: string
-      type: object
     FtdVersion:
       properties:
         filename:
@@ -437,41 +370,6 @@ components:
           example: UPGRADE
           type: string
       type: object
-    UpgradeFtdDevicesInput:
-      properties:
-        deviceUids:
-          description: The set of unique identifiers, represented as UUIDs, of the devices to upgrade in Security Cloud Control. All of the devices in the list have to be compatible with the upgrade package.
-          example:
-          - 256461f6-bd60-11ef-8beb-6cf1610cf55d
-          items:
-            format: uuid
-            type: string
-          maxItems: 50
-          minItems: 1
-          type: array
-          uniqueItems: true
-        upgradePackageUid:
-          description: The unique identifier, represented as a UUID, of the upgrade package to be applied to the device.
-          example: 256461f6-bd60-11ef-8beb-6cf1610cf55d
-          format: uuid
-          type: string
-      required:
-      - deviceUids
-      - upgradePackageUid
-      type: object
-    AsaCompatibleVersionsResponse:
-      properties:
-        count:
-          description: The item count.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/AsaCompatibleVersion'
-          type: array
-      type: object
     AsaCompatibleVersion:
       properties:
         asdmImageUrl:
@@ -483,16 +381,6 @@ components:
         softwareVersion:
           type: string
       type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
     CdoTransaction:
       properties:
         cdoTransactionStatus:
@@ -615,19 +503,119 @@ components:
           example: 9.4(1)
           type: string
       type: object
+    UpgradeFtdDeviceInput:
+      properties:
+        upgradePackageUid:
+          description: The unique identifier, represented as a UUID, of the upgrade package to be applied to the device.
+          example: 256461f6-bd60-11ef-8beb-6cf1610cf55d
+          format: uuid
+          type: string
+      required:
+      - upgradePackageUid
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    FtdVersionsResponse:
+      properties:
+        count:
+          description: The item count.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/FtdVersion'
+          type: array
+      type: object
+    AsaCompatibleVersionsResponse:
+      properties:
+        count:
+          description: The item count.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/AsaCompatibleVersion'
+          type: array
+      type: object
+    UpgradeFtdDevicesInput:
+      properties:
+        deviceUids:
+          description: The set of unique identifiers, represented as UUIDs, of the devices to upgrade in Security Cloud Control. All of the devices in the list have to be compatible with the upgrade package.
+          example:
+          - 256461f6-bd60-11ef-8beb-6cf1610cf55d
+          items:
+            format: uuid
+            type: string
+          maxItems: 50
+          minItems: 1
+          type: array
+          uniqueItems: true
+        upgradePackageUid:
+          description: The unique identifier, represented as a UUID, of the upgrade package to be applied to the device.
+          example: 256461f6-bd60-11ef-8beb-6cf1610cf55d
+          format: uuid
+          type: string
+      required:
+      - deviceUids
+      - upgradePackageUid
+      type: object
+    FtdCompatibilityVersion:
+      properties:
+        compatibleFtdVersions:
+          items:
+            $ref: '#/components/schemas/FtdVersion'
+          type: array
+        deviceUids:
+          items:
+            format: uuid
+            type: string
+          type: array
+        hardwareModel:
+          type: string
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
   responses:
-    http401Unauthorised:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
     http404NotFound:
       content:
         application/json:
@@ -646,6 +634,18 @@ components:
           schema:
             $ref: '#/components/schemas/CommonApiError'
       description: Unprocessable entity.
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

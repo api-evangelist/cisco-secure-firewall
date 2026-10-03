@@ -217,22 +217,6 @@ paths:
       - Zone
 components:
   schemas:
-    ZoneIdPage:
-      properties:
-        cursor:
-          type: string
-        zoneIds:
-          items:
-            type: string
-          type: array
-      type: object
-    ZoneResp:
-      properties:
-        id:
-          type: string
-      required:
-      - id
-      type: object
     IdValue:
       properties:
         id:
@@ -262,18 +246,34 @@ components:
       required:
       - id
       type: object
-    Zones:
+    ZoneIdPage:
       properties:
-        zones:
+        cursor:
+          type: string
+        zoneIds:
           items:
-            $ref: '#/components/schemas/Zone'
+            type: string
           type: array
+      type: object
+    ZoneResp:
+      properties:
+        id:
+          type: string
+      required:
+      - id
       type: object
     ZoneIds:
       properties:
         zones:
           items:
             $ref: '#/components/schemas/IdValue'
+          type: array
+      type: object
+    Zones:
+      properties:
+        zones:
+          items:
+            $ref: '#/components/schemas/Zone'
           type: array
       type: object
   securitySchemes:

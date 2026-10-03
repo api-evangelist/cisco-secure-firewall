@@ -153,66 +153,19 @@ paths:
       - Commands
 components:
   schemas:
-    CommonApiError:
+    DeviceGatewayApiRequest:
       properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
-          description: A human-readable error description in English.
-          example: sample error
-          type: string
-    Command:
-      properties:
-        body:
-          description: The body of the command (optional).
-          example: {}
-          type: string
-        link:
-          description: The FMC endpoint to invoke for this command.
-          example: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f
+        deviceUid:
+          description: The unique identifier, represented as a UUID, of the target device for the command. Currently, only FMC devices are supported.
+          example: 6e3492c6-083a-4ead-9da9-cd2db32a965d
           minLength: 1
           type: string
-        method:
-          description: The HTTP method for the command.
-          example: GET
-          minLength: 1
-          type: string
+        request:
+          $ref: '#/components/schemas/FmcRequest'
+          description: The request that the user wants to execute on the device.
       required:
-      - link
-      - method
-      type: object
-    FmcRequest:
-      properties:
-        commands:
-          description: A list of commands to be executed on the device.
-          items:
-            $ref: '#/components/schemas/Command'
-          minItems: 1
-          type: array
-      required:
-      - commands
+      - deviceUid
+      - request
       type: object
     CommandResponse:
       properties:
@@ -253,19 +206,66 @@ components:
           example: responded
           type: string
       type: object
-    DeviceGatewayApiRequest:
+    Command:
       properties:
-        deviceUid:
-          description: The unique identifier, represented as a UUID, of the target device for the command. Currently, only FMC devices are supported.
-          example: 6e3492c6-083a-4ead-9da9-cd2db32a965d
+        body:
+          description: The body of the command (optional).
+          example: {}
+          type: string
+        link:
+          description: The FMC endpoint to invoke for this command.
+          example: /api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f
           minLength: 1
           type: string
-        request:
-          $ref: '#/components/schemas/FmcRequest'
-          description: The request that the user wants to execute on the device.
+        method:
+          description: The HTTP method for the command.
+          example: GET
+          minLength: 1
+          type: string
       required:
-      - deviceUid
-      - request
+      - link
+      - method
+      type: object
+    CommonApiError:
+      properties:
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
+          type: string
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
+    FmcRequest:
+      properties:
+        commands:
+          description: A list of commands to be executed on the device.
+          items:
+            $ref: '#/components/schemas/Command'
+          minItems: 1
+          type: array
+      required:
+      - commands
       type: object
   securitySchemes:
     bearerAuth:

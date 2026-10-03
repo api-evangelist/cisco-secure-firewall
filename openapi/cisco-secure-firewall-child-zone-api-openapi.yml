@@ -80,18 +80,6 @@ paths:
       - Child Zone
 components:
   schemas:
-    ChildZoneIds:
-      properties:
-        childZoneIds:
-          items:
-            type: string
-          type: array
-      type: object
-    IdValue:
-      properties:
-        id:
-          type: string
-      type: object
     ParentChildZonePairs:
       properties:
         parentChildZonePairs:
@@ -99,11 +87,23 @@ components:
             $ref: '#/components/schemas/ParentChildZonePair'
           type: array
       type: object
+    IdValue:
+      properties:
+        id:
+          type: string
+      type: object
     GatewaySets:
       properties:
         gatewaySets:
           items:
             $ref: '#/components/schemas/IdValue'
+          type: array
+      type: object
+    ChildZoneIds:
+      properties:
+        childZoneIds:
+          items:
+            type: string
           type: array
       type: object
     ParentChildZonePair:

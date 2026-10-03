@@ -259,34 +259,6 @@ paths:
       - MPM Entities Revision Diff
 components:
   schemas:
-    MpmRuleRevisionDiffBody:
-      properties:
-        apgs:
-          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
-        aps:
-          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
-        dstDgs:
-          $ref: '#/components/schemas/MpmDynamicGroupRelationshipRevisionDiff'
-        dstEpgs:
-          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
-        dstEps:
-          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
-        info:
-          $ref: '#/components/schemas/RuleInfoChange'
-        srcDgs:
-          $ref: '#/components/schemas/MpmDynamicGroupRelationshipRevisionDiff'
-        srcEpgs:
-          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
-        srcEps:
-          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
-      type: object
-    EndpointChangeBody:
-      properties:
-        info:
-          $ref: '#/components/schemas/EndpointInfoChange'
-      required:
-      - info
-      type: object
     MpmAppGroupRevisionDiffBody:
       properties:
         apgs:
@@ -295,112 +267,6 @@ components:
           $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
         info:
           $ref: '#/components/schemas/AppGroupInfoChange'
-      type: object
-    MpmTargetRelationshipDiff:
-      properties:
-        added:
-          items:
-            type: string
-          type: array
-        removed:
-          items:
-            type: string
-          type: array
-      type: object
-    MpmRelationshipRevisionDiff:
-      properties:
-        added:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        removed:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        updated:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
-    AppGroupInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-      type: object
-    MpmPolicyRevisionDiff:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          - NO_DIFF
-          type: string
-        body:
-          $ref: '#/components/schemas/MpmPolicyRevisionDiffBody'
-        id:
-          format: uuid
-          type: string
-      type: object
-    MpmRuleRevisionDiff:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          - NO_DIFF
-          type: string
-        body:
-          $ref: '#/components/schemas/MpmRuleRevisionDiffBody'
-        id:
-          format: uuid
-          type: string
-      type: object
-    MpmDynamicGroupRelationshipRevisionDiff:
-      properties:
-        added:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        removed:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
-    MpmEndpointGroupRevisionDiffBody:
-      properties:
-        epgs:
-          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
-        eps:
-          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
-        info:
-          $ref: '#/components/schemas/EndpointGroupInfoChange'
-      type: object
-    MpmNatRuleRevisionDiff:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          - NO_DIFF
-          type: string
-        body:
-          $ref: '#/components/schemas/MpmNatRuleRevisionDiffBody'
-        id:
-          format: uuid
-          type: string
       type: object
     MpmAppRevisionDiff:
       properties:
@@ -417,18 +283,20 @@ components:
           format: uuid
           type: string
       type: object
-    PolicyRuleOrderChange:
+    MpmEndpointGroupRevisionDiff:
       properties:
-        newOrder:
-          items:
-            format: uuid
-            type: string
-          type: array
-        oldOrder:
-          items:
-            format: uuid
-            type: string
-          type: array
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - NO_DIFF
+          type: string
+        body:
+          $ref: '#/components/schemas/MpmEndpointGroupRevisionDiffBody'
+        id:
+          format: uuid
+          type: string
       type: object
     MpmEndpointRevisionDiff:
       properties:
@@ -445,34 +313,13 @@ components:
           format: uuid
           type: string
       type: object
-    EndpointInfoChange:
+    AppInfoChange:
       properties:
         description:
           type: string
         name:
           type: string
         value:
-          type: string
-      type: object
-    EndpointGroupInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-      type: object
-    PolicyInfoChange:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        policyType:
-          enum:
-          - SECURITY
-          - GOVERNANCE_PREPEND
-          - GOVERNANCE_APPEND
-          - NAT
           type: string
       type: object
     RuleInfoChange:
@@ -494,6 +341,42 @@ components:
           type: boolean
         ruleGroup:
           type: string
+      type: object
+    MpmNatRuleRevisionDiff:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - NO_DIFF
+          type: string
+        body:
+          $ref: '#/components/schemas/MpmNatRuleRevisionDiffBody'
+        id:
+          format: uuid
+          type: string
+      type: object
+    MpmRelationshipRevisionDiff:
+      properties:
+        added:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        removed:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        updated:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
       type: object
     MpmNatRuleRevisionDiffBody:
       properties:
@@ -518,37 +401,7 @@ components:
         srcEpgMatch:
           $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
       type: object
-    MpmEndpointGroupRevisionDiff:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          - NO_DIFF
-          type: string
-        body:
-          $ref: '#/components/schemas/MpmEndpointGroupRevisionDiffBody'
-        id:
-          format: uuid
-          type: string
-      type: object
-    MpmAppGroupRevisionDiff:
-      properties:
-        action:
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          - NO_DIFF
-          type: string
-        body:
-          $ref: '#/components/schemas/MpmAppGroupRevisionDiffBody'
-        id:
-          format: uuid
-          type: string
-      type: object
-    AppInfoChange:
+    EndpointInfoChange:
       properties:
         description:
           type: string
@@ -557,6 +410,13 @@ components:
         value:
           type: string
       type: object
+    EndpointChangeBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/EndpointInfoChange'
+      required:
+      - info
+      type: object
     AppChangeBody:
       properties:
         info:
@@ -564,22 +424,20 @@ components:
       required:
       - info
       type: object
-    MpmPolicyRevisionDiffBody:
+    MpmPolicyRevisionDiff:
       properties:
-        info:
-          $ref: '#/components/schemas/PolicyInfoChange'
-        natRules:
-          items:
-            $ref: '#/components/schemas/MpmNatRuleRevisionDiff'
-          type: array
-        ruleOrder:
-          $ref: '#/components/schemas/PolicyRuleOrderChange'
-        rules:
-          items:
-            $ref: '#/components/schemas/MpmRuleRevisionDiff'
-          type: array
-        targets:
-          $ref: '#/components/schemas/MpmTargetRelationshipDiff'
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - NO_DIFF
+          type: string
+        body:
+          $ref: '#/components/schemas/MpmPolicyRevisionDiffBody'
+        id:
+          format: uuid
+          type: string
       type: object
     NatRuleInfoChange:
       properties:
@@ -604,6 +462,148 @@ components:
           - MATCH
           - STATIC
           - HIDE
+          type: string
+      type: object
+    MpmAppGroupRevisionDiff:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - NO_DIFF
+          type: string
+        body:
+          $ref: '#/components/schemas/MpmAppGroupRevisionDiffBody'
+        id:
+          format: uuid
+          type: string
+      type: object
+    MpmPolicyRevisionDiffBody:
+      properties:
+        info:
+          $ref: '#/components/schemas/PolicyInfoChange'
+        natRules:
+          items:
+            $ref: '#/components/schemas/MpmNatRuleRevisionDiff'
+          type: array
+        ruleOrder:
+          $ref: '#/components/schemas/PolicyRuleOrderChange'
+        rules:
+          items:
+            $ref: '#/components/schemas/MpmRuleRevisionDiff'
+          type: array
+        targets:
+          $ref: '#/components/schemas/MpmTargetRelationshipDiff'
+      type: object
+    EndpointGroupInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    PolicyRuleOrderChange:
+      properties:
+        newOrder:
+          items:
+            format: uuid
+            type: string
+          type: array
+        oldOrder:
+          items:
+            format: uuid
+            type: string
+          type: array
+      type: object
+    MpmEndpointGroupRevisionDiffBody:
+      properties:
+        epgs:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        eps:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        info:
+          $ref: '#/components/schemas/EndpointGroupInfoChange'
+      type: object
+    MpmDynamicGroupRelationshipRevisionDiff:
+      properties:
+        added:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        removed:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    MpmRuleRevisionDiffBody:
+      properties:
+        apgs:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        aps:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        dstDgs:
+          $ref: '#/components/schemas/MpmDynamicGroupRelationshipRevisionDiff'
+        dstEpgs:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        dstEps:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        info:
+          $ref: '#/components/schemas/RuleInfoChange'
+        srcDgs:
+          $ref: '#/components/schemas/MpmDynamicGroupRelationshipRevisionDiff'
+        srcEpgs:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+        srcEps:
+          $ref: '#/components/schemas/MpmRelationshipRevisionDiff'
+      type: object
+    AppGroupInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+      type: object
+    MpmTargetRelationshipDiff:
+      properties:
+        added:
+          items:
+            type: string
+          type: array
+        removed:
+          items:
+            type: string
+          type: array
+      type: object
+    MpmRuleRevisionDiff:
+      properties:
+        action:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          - NO_DIFF
+          type: string
+        body:
+          $ref: '#/components/schemas/MpmRuleRevisionDiffBody'
+        id:
+          format: uuid
+          type: string
+      type: object
+    PolicyInfoChange:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
           type: string
       type: object
   securitySchemes:

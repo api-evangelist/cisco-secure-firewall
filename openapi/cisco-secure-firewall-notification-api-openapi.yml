@@ -283,6 +283,19 @@ components:
           - FAILED
           type: string
       type: object
+    notificationCountResponse:
+      description: get notification count API response body
+      properties:
+        error:
+          description: error encountered while fetching counts
+          type: string
+        notificationCount:
+          description: count of notifications
+          type: integer
+        unreadNotificationCount:
+          description: count of unread notifications
+          type: integer
+      type: object
     markNotificationStatusRequest:
       description: update notification status API request body
       properties:
@@ -308,41 +321,6 @@ components:
       required:
       - notifications
       - is_read
-      type: object
-    deleteBulkNotificationResponse:
-      description: bulk delete notifications response body
-      properties:
-        error:
-          description: deletion error
-          type: string
-        status:
-          description: deletion status
-          enum:
-          - SUCCESS
-          - FAILED
-          type: string
-      type: object
-    notificationListResponse:
-      description: list notifications API response body
-      properties:
-        notifications:
-          description: notification object list
-          items:
-            $ref: '#/components/schemas/notification'
-          type: array
-      type: object
-    notificationCountResponse:
-      description: get notification count API response body
-      properties:
-        error:
-          description: error encountered while fetching counts
-          type: string
-        notificationCount:
-          description: count of notifications
-          type: integer
-        unreadNotificationCount:
-          description: count of unread notifications
-          type: integer
       type: object
     deleteNotificationResponse:
       description: delete notification API response body
@@ -378,6 +356,28 @@ components:
           type: array
       required:
       - notifications
+      type: object
+    deleteBulkNotificationResponse:
+      description: bulk delete notifications response body
+      properties:
+        error:
+          description: deletion error
+          type: string
+        status:
+          description: deletion status
+          enum:
+          - SUCCESS
+          - FAILED
+          type: string
+      type: object
+    notificationListResponse:
+      description: list notifications API response body
+      properties:
+        notifications:
+          description: notification object list
+          items:
+            $ref: '#/components/schemas/notification'
+          type: array
       type: object
     notification:
       description: notification object

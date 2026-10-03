@@ -243,60 +243,28 @@ paths:
           $ref: '#/components/responses/GeneralError'
 components:
   schemas:
-    DomainStatus:
-      type: string
-      enum:
-      - pending
-      - verified
-    ExternalIdpGroupMappingListResponse:
+    ExternalIdpGroupMappingCreateResponse:
       type: object
       properties:
-        idpName:
-          type: string
         idpId:
           type: string
           format: uuid
         enterpriseId:
           type: string
           format: uuid
-        groupMappings:
-          type: array
-          items:
-            type: object
-            required:
-            - idpGroupName
-            - rbacGroupId
-            properties:
-              idpGroupName:
-                type: string
-              rbacGroupId:
-                type: string
-                format: uuid
-    IDPGroupMappingInput:
+        samlIdpIssuer:
+          type: string
+    Error:
       type: object
-      description: Represent request body for idp group operation
       required:
-      - groupMappings
+      - code
+      - message
       properties:
-        groupMappings:
-          type: array
-          items:
-            type: object
-            required:
-            - idpGroupName
-            - rbacGroupId
-            properties:
-              isExternalIdp:
-                type: boolean
-                default: false
-              idpGroupName:
-                type: string
-              idpId:
-                type: string
-                format: uuid
-              rbacGroupId:
-                type: string
-                format: uuid
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
     PendingDomain:
       properties:
         createdAt:
@@ -321,21 +289,6 @@ components:
       - entityID
       - domain
       type: object
-    ExternalIdpGroupMappingCreateResponse:
-      type: object
-      properties:
-        idpId:
-          type: string
-          format: uuid
-        enterpriseId:
-          type: string
-          format: uuid
-        samlIdpIssuer:
-          type: string
-    DomainName:
-      type: string
-      pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
-      example: cisco.com
     Domain:
       type: object
       required:
@@ -368,17 +321,64 @@ components:
               rbacGroupId:
                 type: string
                 format: uuid
-    Error:
+    DomainStatus:
+      type: string
+      enum:
+      - pending
+      - verified
+    IDPGroupMappingInput:
       type: object
+      description: Represent request body for idp group operation
       required:
-      - code
-      - message
+      - groupMappings
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
+        groupMappings:
+          type: array
+          items:
+            type: object
+            required:
+            - idpGroupName
+            - rbacGroupId
+            properties:
+              isExternalIdp:
+                type: boolean
+                default: false
+              idpGroupName:
+                type: string
+              idpId:
+                type: string
+                format: uuid
+              rbacGroupId:
+                type: string
+                format: uuid
+    DomainName:
+      type: string
+      pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
+      example: cisco.com
+    ExternalIdpGroupMappingListResponse:
+      type: object
+      properties:
+        idpName:
           type: string
+        idpId:
+          type: string
+          format: uuid
+        enterpriseId:
+          type: string
+          format: uuid
+        groupMappings:
+          type: array
+          items:
+            type: object
+            required:
+            - idpGroupName
+            - rbacGroupId
+            properties:
+              idpGroupName:
+                type: string
+              rbacGroupId:
+                type: string
+                format: uuid
     ExternalIdpGroupMappingInput:
       type: object
       description: Request body for authorizedExternalIdps endpoint
@@ -386,18 +386,9 @@ components:
         idpId:
           type: string
           format: uuid
-  headers:
-    Date:
-      schema:
-        type: string
-        pattern: ^.*$
-    Location:
-      schema:
-        type: string
-        format: uri
   responses:
-    NotFoundError:
-      description: Not Found
+    ValidationError:
+      description: The request was invalid
       headers:
         Date:
           $ref: '#/components/headers/Date'
@@ -414,8 +405,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request was invalid
+    NotFoundError:
+      description: Not Found
       headers:
         Date:
           $ref: '#/components/headers/Date'
@@ -423,6 +414,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  headers:
+    Date:
+      schema:
+        type: string
+        pattern: ^.*$
+    Location:
+      schema:
+        type: string
+        format: uri
   securitySchemes:
     OpenID:
       type: openIdConnect

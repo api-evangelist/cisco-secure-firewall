@@ -199,27 +199,16 @@ paths:
       - App Group
 components:
   schemas:
-    AppGroupUserApi:
+    GroupReferences:
       properties:
-        description:
-          type: string
-        memberApps:
-          example:
-          - 6_ignore_80_80_null
-          format: MemberApps should be a valid list of service strings
+        groupIds:
           items:
-            example: '["6_ignore_80_80_null"]'
-            format: MemberApps should be a valid list of service strings
             type: string
           type: array
-        memberGroups:
-          example:
-          - memberGroup1
-          format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+          uniqueItems: true
+        policies:
           items:
-            example: '["memberGroup1"]'
-            format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
-            type: string
+            $ref: '#/components/schemas/PolicyReference'
           type: array
       type: object
     AppGroupApi:
@@ -252,6 +241,16 @@ components:
           format: int32
           type: integer
       type: object
+    PolicyReference:
+      properties:
+        id:
+          type: string
+        ruleIds:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
     ReqIdAndReqSystem:
       properties:
         id:
@@ -279,26 +278,27 @@ components:
         request:
           $ref: '#/components/schemas/ReqIdAndReqSystem'
       type: object
-    PolicyReference:
+    AppGroupUserApi:
       properties:
-        id:
+        description:
           type: string
-        ruleIds:
+        memberApps:
+          example:
+          - 6_ignore_80_80_null
+          format: MemberApps should be a valid list of service strings
           items:
+            example: '["6_ignore_80_80_null"]'
+            format: MemberApps should be a valid list of service strings
             type: string
           type: array
-          uniqueItems: true
-      type: object
-    GroupReferences:
-      properties:
-        groupIds:
+        memberGroups:
+          example:
+          - memberGroup1
+          format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
           items:
+            example: '["memberGroup1"]'
+            format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
             type: string
-          type: array
-          uniqueItems: true
-        policies:
-          items:
-            $ref: '#/components/schemas/PolicyReference'
           type: array
       type: object
   securitySchemes:

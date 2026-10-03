@@ -123,6 +123,17 @@ paths:
       - Config
 components:
   schemas:
+    patchConfigUserState:
+      description: update user state config request body
+      properties:
+        unified:
+          description: unified assistant user state config
+          properties:
+            onboarded:
+              description: indicates if the user has completed onboarding
+              type: boolean
+          type: object
+      type: object
     configUserResponse:
       description: Response containing the user configuration for the AI Assistant
       properties:
@@ -175,17 +186,6 @@ components:
         user_id:
           description: The user's email or unique identifier.
           type: string
-      type: object
-    patchConfigUserState:
-      description: update user state config request body
-      properties:
-        unified:
-          description: unified assistant user state config
-          properties:
-            onboarded:
-              description: indicates if the user has completed onboarding
-              type: boolean
-          type: object
       type: object
     errorResponse:
       description: error response

@@ -86,6 +86,24 @@ paths:
       - Policy Import Service
 components:
   schemas:
+    AsaImportTypeDetails:
+      format: Payload in ASA/CSM format
+      properties:
+        credentialName:
+          type: string
+        deviceName:
+          type: string
+        hostname:
+          type: string
+        port:
+          format: int32
+          type: integer
+        uriScheme:
+          enum:
+          - http
+          - https
+          type: string
+      type: object
     MpmGroupEntityImport:
       properties:
         description:
@@ -100,132 +118,6 @@ components:
           type: array
         name:
           type: string
-      type: object
-    MpmPolicyImportBase:
-      properties:
-        appGroups:
-          items:
-            $ref: '#/components/schemas/MpmGroupEntityImport'
-          type: array
-        apps:
-          items:
-            $ref: '#/components/schemas/MpmEntityImport'
-          type: array
-        endpointGroups:
-          items:
-            $ref: '#/components/schemas/MpmGroupEntityImport'
-          type: array
-        endpoints:
-          items:
-            $ref: '#/components/schemas/MpmEntityImport'
-          type: array
-        installTargets:
-          items:
-            type: string
-          type: array
-        natRules:
-          items:
-            $ref: '#/components/schemas/MpmNatRuleImport'
-          type: array
-        rules:
-          items:
-            $ref: '#/components/schemas/MpmRuleImport'
-          type: array
-      type: object
-    MpmRuleImport:
-      properties:
-        action:
-          enum:
-          - PERMIT
-          - DENY
-          type: string
-        appGroups:
-          items:
-            type: string
-          type: array
-        apps:
-          items:
-            type: string
-          type: array
-        description:
-          type: string
-        destinationGroups:
-          items:
-            type: string
-          type: array
-        destinations:
-          items:
-            type: string
-          type: array
-        enabled:
-          type: boolean
-        fullyPinned:
-          type: boolean
-        onClose:
-          type: boolean
-        onInit:
-          type: boolean
-        ruleGroup:
-          type: string
-        ruleNumber:
-          format: int32
-          type: integer
-        sourceGroups:
-          items:
-            type: string
-          type: array
-        sources:
-          items:
-            type: string
-          type: array
-      type: object
-    FortiManagerImportTypeDetails:
-      format: Payload in Fortinet format
-      properties:
-        credentialName:
-          type: string
-        hostname:
-          type: string
-        port:
-          format: int32
-          type: integer
-        uriScheme:
-          enum:
-          - http
-          - https
-          type: string
-      type: object
-    IdValue:
-      properties:
-        id:
-          type: string
-      type: object
-    ReqIdAndReqSystem:
-      properties:
-        id:
-          example: 03502bc3-c140-4951-b467-bd17312a9b0b
-          type: string
-        requestingSystem:
-          enum:
-          - PCM
-          - SDI
-          - MPM
-          - RED
-          - SEEDING
-          - TOPOLOGY
-          - PCM_TOPOLOGY_CHANGE
-          - SDI_TOPOLOGY_CHANGE
-          - MPM_SECURITY_TOPOLOGY_CHANGE
-          - MPM_POLICY_IMPORT
-          - ZONE_PATH_TOPOLOGY_CHANGE
-          - MPM_MULTI_POLICY_PUSH
-          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
-          type: string
-      type: object
-    TopologyRequestResponse:
-      properties:
-        request:
-          $ref: '#/components/schemas/ReqIdAndReqSystem'
       type: object
     MpmNatRuleImport:
       properties:
@@ -281,22 +173,18 @@ components:
         sourceTranslated:
           type: string
       type: object
-    ImportDetails:
-      format: Import details containing payload in one of the supported format and import type
+    MpmEntityImport:
       properties:
-        asaImportTypeDetails:
-          $ref: '#/components/schemas/AsaImportTypeDetails'
-        fortiManagerImportTypeDetails:
-          $ref: '#/components/schemas/FortiManagerImportTypeDetails'
-        payloadImportTypeDetails:
-          $ref: '#/components/schemas/PayloadImportTypeDetails'
-        type:
-          enum:
-          - PAYLOAD
-          - FORTINET
-          - ASA
-          example: FORTINET
-          format: 'Type should reflect the vendor  '
+        description:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    IdValue:
+      properties:
+        id:
           type: string
       type: object
     PayloadImportTypeDetails:
@@ -312,58 +200,74 @@ components:
           - NAT
           type: string
       type: object
-    MpmEntityImport:
+    ReqIdAndReqSystem:
       properties:
+        id:
+          example: 03502bc3-c140-4951-b467-bd17312a9b0b
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    MpmRuleImport:
+      properties:
+        action:
+          enum:
+          - PERMIT
+          - DENY
+          type: string
+        appGroups:
+          items:
+            type: string
+          type: array
+        apps:
+          items:
+            type: string
+          type: array
         description:
           type: string
-        name:
-          type: string
-        value:
-          type: string
-      type: object
-    MpmPolicyImportRequestResp:
-      properties:
-        childChangeSetIds:
+        destinationGroups:
           items:
-            $ref: '#/components/schemas/IdValue'
+            type: string
           type: array
-        createdTime:
-          format: date-time
+        destinations:
+          items:
+            type: string
+          type: array
+        enabled:
+          type: boolean
+        fullyPinned:
+          type: boolean
+        onClose:
+          type: boolean
+        onInit:
+          type: boolean
+        ruleGroup:
           type: string
-        details:
-          type: string
-        id:
-          format: uuid
-          type: string
-        managerName:
-          type: string
-        modifiedTime:
-          format: date-time
-          type: string
-        policyName:
-          type: string
-        targetManagerName:
-          type: string
-        targetPolicyName:
-          type: string
-      type: object
-    AsaImportTypeDetails:
-      format: Payload in ASA/CSM format
-      properties:
-        credentialName:
-          type: string
-        deviceName:
-          type: string
-        hostname:
-          type: string
-        port:
+        ruleNumber:
           format: int32
           type: integer
-        uriScheme:
-          enum:
-          - http
-          - https
-          type: string
+        sourceGroups:
+          items:
+            type: string
+          type: array
+        sources:
+          items:
+            type: string
+          type: array
       type: object
     MpmPolicyImportApi:
       properties:
@@ -431,6 +335,102 @@ components:
           - REJECTED
           - NOT_APPLICABLE
           type: string
+      type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
+      type: object
+    ImportDetails:
+      format: Import details containing payload in one of the supported format and import type
+      properties:
+        asaImportTypeDetails:
+          $ref: '#/components/schemas/AsaImportTypeDetails'
+        fortiManagerImportTypeDetails:
+          $ref: '#/components/schemas/FortiManagerImportTypeDetails'
+        payloadImportTypeDetails:
+          $ref: '#/components/schemas/PayloadImportTypeDetails'
+        type:
+          enum:
+          - PAYLOAD
+          - FORTINET
+          - ASA
+          example: FORTINET
+          format: 'Type should reflect the vendor  '
+          type: string
+      type: object
+    FortiManagerImportTypeDetails:
+      format: Payload in Fortinet format
+      properties:
+        credentialName:
+          type: string
+        hostname:
+          type: string
+        port:
+          format: int32
+          type: integer
+        uriScheme:
+          enum:
+          - http
+          - https
+          type: string
+      type: object
+    MpmPolicyImportRequestResp:
+      properties:
+        childChangeSetIds:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
+        createdTime:
+          format: date-time
+          type: string
+        details:
+          type: string
+        id:
+          format: uuid
+          type: string
+        managerName:
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        policyName:
+          type: string
+        targetManagerName:
+          type: string
+        targetPolicyName:
+          type: string
+      type: object
+    MpmPolicyImportBase:
+      properties:
+        appGroups:
+          items:
+            $ref: '#/components/schemas/MpmGroupEntityImport'
+          type: array
+        apps:
+          items:
+            $ref: '#/components/schemas/MpmEntityImport'
+          type: array
+        endpointGroups:
+          items:
+            $ref: '#/components/schemas/MpmGroupEntityImport'
+          type: array
+        endpoints:
+          items:
+            $ref: '#/components/schemas/MpmEntityImport'
+          type: array
+        installTargets:
+          items:
+            type: string
+          type: array
+        natRules:
+          items:
+            $ref: '#/components/schemas/MpmNatRuleImport'
+          type: array
+        rules:
+          items:
+            $ref: '#/components/schemas/MpmRuleImport'
+          type: array
       type: object
   securitySchemes:
     BearerJWT:
