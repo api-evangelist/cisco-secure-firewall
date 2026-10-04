@@ -284,18 +284,37 @@ paths:
       summary: Delete RBAC user group assignment
       x-summary-source: derived
 components:
+  responses:
+    NoContent:
+      description: No content
+    ValidationError:
+      description: The request was invalid
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFoundError:
+      description: Not Found
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    GeneralError:
+      description: An unknown error occurred
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
     RBACGroupInputRequestBody:
       type: object
       description: Represent request body for RBAC user group
@@ -312,29 +331,6 @@ components:
           - Local
           - Federated
           description: Specifies whether the group is local or federated. Defaults to Local
-    GroupAssignmentIdInput:
-      type: string
-      format: uuid
-    RBACUserAssignmentGroup:
-      type: object
-      description: Represent entity of RBAC user group assignment
-      required:
-      - id
-      - userId
-      - enterpriseId
-      - groupId
-      properties:
-        id:
-          type: string
-          format: uuid
-        userId:
-          type: string
-        enterpriseId:
-          type: string
-          format: uuid
-        groupId:
-          type: string
-          format: uuid
     RBACGroup:
       type: object
       description: RBAC user group
@@ -360,36 +356,40 @@ components:
           - Local
           - Federated
           description: Specifies whether the group is local or federated
-  responses:
-    ValidationError:
-      description: The request was invalid
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    GeneralError:
-      description: An unknown error occurred
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NoContent:
-      description: No content
-    NotFoundError:
-      description: Not Found
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    RBACUserAssignmentGroup:
+      type: object
+      description: Represent entity of RBAC user group assignment
+      required:
+      - id
+      - userId
+      - enterpriseId
+      - groupId
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        enterpriseId:
+          type: string
+          format: uuid
+        groupId:
+          type: string
+          format: uuid
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    GroupAssignmentIdInput:
+      type: string
+      format: uuid
   headers:
     Date:
       schema:

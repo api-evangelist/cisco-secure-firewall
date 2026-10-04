@@ -342,44 +342,69 @@ paths:
       tags:
       - Device Upgrades
 components:
+  responses:
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
+    http422UnprocessableEntity:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Unprocessable entity.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
   schemas:
-    FtdVersion:
+    UpgradeFtdDevicesInput:
       properties:
-        filename:
-          description: The name of the file
-          example: Cisco_FTD_SSP_FP2K_Upgrade-7.4.2-172.sh.REL.tar
-          type: string
-        isSuggestedVersion:
-          description: A boolean value, indicating whether this version is a suggested version to upgrade to.
-          type: boolean
-        softwareVersion:
-          description: The version to which this package will upgrade the FTD.
-          example: 7.4.2-172 IMS 172
-          type: string
+        deviceUids:
+          description: The set of unique identifiers, represented as UUIDs, of the devices to upgrade in Security Cloud Control. All of the devices in the list have to be compatible with the upgrade package.
+          example:
+          - 256461f6-bd60-11ef-8beb-6cf1610cf55d
+          items:
+            format: uuid
+            type: string
+          maxItems: 50
+          minItems: 1
+          type: array
+          uniqueItems: true
         upgradePackageUid:
-          description: The unique identifier, represented as a UUID, of the version in Security Cloud Control
-          example: 25608540-bd60-11ef-8beb-6cf1610cf55d
+          description: The unique identifier, represented as a UUID, of the upgrade package to be applied to the device.
+          example: 256461f6-bd60-11ef-8beb-6cf1610cf55d
           format: uuid
           type: string
-        upgradeType:
-          description: The type of the upgrade
-          enum:
-          - UPGRADE
-          - PATCH
-          - HOTFIX
-          example: UPGRADE
-          type: string
+      required:
+      - deviceUids
+      - upgradePackageUid
       type: object
-    AsaCompatibleVersion:
+    UpgradeFtdDeviceInput:
       properties:
-        asdmImageUrl:
+        upgradePackageUid:
+          description: The unique identifier, represented as a UUID, of the upgrade package to be applied to the device.
+          example: 256461f6-bd60-11ef-8beb-6cf1610cf55d
+          format: uuid
           type: string
-        asdmVersion:
-          type: string
-        softwareImageUrl:
-          type: string
-        softwareVersion:
-          type: string
+      required:
+      - upgradePackageUid
       type: object
     CdoTransaction:
       properties:
@@ -492,99 +517,6 @@ components:
           format: uuid
           type: string
       type: object
-    UpgradeAsaDeviceInput:
-      properties:
-        asdmVersion:
-          description: The target ASDM software version to upgrade the device to.
-          example: '''7.6(2)'' or ''7.6(2).openjre'''
-          type: string
-        softwareVersion:
-          description: The target ASA firmware version to upgrade the device to.
-          example: 9.4(1)
-          type: string
-      type: object
-    UpgradeFtdDeviceInput:
-      properties:
-        upgradePackageUid:
-          description: The unique identifier, represented as a UUID, of the upgrade package to be applied to the device.
-          example: 256461f6-bd60-11ef-8beb-6cf1610cf55d
-          format: uuid
-          type: string
-      required:
-      - upgradePackageUid
-      type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
-    FtdVersionsResponse:
-      properties:
-        count:
-          description: The item count.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/FtdVersion'
-          type: array
-      type: object
-    AsaCompatibleVersionsResponse:
-      properties:
-        count:
-          description: The item count.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/AsaCompatibleVersion'
-          type: array
-      type: object
-    UpgradeFtdDevicesInput:
-      properties:
-        deviceUids:
-          description: The set of unique identifiers, represented as UUIDs, of the devices to upgrade in Security Cloud Control. All of the devices in the list have to be compatible with the upgrade package.
-          example:
-          - 256461f6-bd60-11ef-8beb-6cf1610cf55d
-          items:
-            format: uuid
-            type: string
-          maxItems: 50
-          minItems: 1
-          type: array
-          uniqueItems: true
-        upgradePackageUid:
-          description: The unique identifier, represented as a UUID, of the upgrade package to be applied to the device.
-          example: 256461f6-bd60-11ef-8beb-6cf1610cf55d
-          format: uuid
-          type: string
-      required:
-      - deviceUids
-      - upgradePackageUid
-      type: object
-    FtdCompatibilityVersion:
-      properties:
-        compatibleFtdVersions:
-          items:
-            $ref: '#/components/schemas/FtdVersion'
-          type: array
-        deviceUids:
-          items:
-            format: uuid
-            type: string
-          type: array
-        hardwareModel:
-          type: string
-      type: object
     CommonApiError:
       properties:
         details:
@@ -615,37 +547,105 @@ components:
           description: A human-readable error description in English.
           example: sample error
           type: string
-  responses:
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
-    http400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
-    http422UnprocessableEntity:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Unprocessable entity.
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http401Unauthorised:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
+    AsaCompatibleVersion:
+      properties:
+        asdmImageUrl:
+          type: string
+        asdmVersion:
+          type: string
+        softwareImageUrl:
+          type: string
+        softwareVersion:
+          type: string
+      type: object
+    AuthenticationError:
+      properties:
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
+          type: string
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
+    AsaCompatibleVersionsResponse:
+      properties:
+        count:
+          description: The item count.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/AsaCompatibleVersion'
+          type: array
+      type: object
+    FtdVersionsResponse:
+      properties:
+        count:
+          description: The item count.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/FtdVersion'
+          type: array
+      type: object
+    UpgradeAsaDeviceInput:
+      properties:
+        asdmVersion:
+          description: The target ASDM software version to upgrade the device to.
+          example: '''7.6(2)'' or ''7.6(2).openjre'''
+          type: string
+        softwareVersion:
+          description: The target ASA firmware version to upgrade the device to.
+          example: 9.4(1)
+          type: string
+      type: object
+    FtdVersion:
+      properties:
+        filename:
+          description: The name of the file
+          example: Cisco_FTD_SSP_FP2K_Upgrade-7.4.2-172.sh.REL.tar
+          type: string
+        isSuggestedVersion:
+          description: A boolean value, indicating whether this version is a suggested version to upgrade to.
+          type: boolean
+        softwareVersion:
+          description: The version to which this package will upgrade the FTD.
+          example: 7.4.2-172 IMS 172
+          type: string
+        upgradePackageUid:
+          description: The unique identifier, represented as a UUID, of the version in Security Cloud Control
+          example: 25608540-bd60-11ef-8beb-6cf1610cf55d
+          format: uuid
+          type: string
+        upgradeType:
+          description: The type of the upgrade
+          enum:
+          - UPGRADE
+          - PATCH
+          - HOTFIX
+          example: UPGRADE
+          type: string
+      type: object
+    FtdCompatibilityVersion:
+      properties:
+        compatibleFtdVersions:
+          items:
+            $ref: '#/components/schemas/FtdVersion'
+          type: array
+        deviceUids:
+          items:
+            format: uuid
+            type: string
+          type: array
+        hardwareModel:
+          type: string
+      type: object
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

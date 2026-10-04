@@ -191,31 +191,23 @@ paths:
       - MPM Rule
 components:
   schemas:
-    MpmEndpointObj:
+    MpmEndpointGroupObj:
       properties:
-        addressEnd:
-          format: int64
-          type: integer
-        addressStart:
-          format: int64
-          type: integer
         description:
           type: string
+        epgs:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        eps:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
         id:
           format: uuid
           type: string
         name:
           type: string
-        value:
-          type: string
-      type: object
-    MpmRulesPage:
-      properties:
-        cursor:
-          format: uuid
-          type: string
-        mpmRuleResponse:
-          $ref: '#/components/schemas/MpmRuleResp'
       type: object
     MpmRuleObj:
       properties:
@@ -271,25 +263,6 @@ components:
           items:
             $ref: '#/components/schemas/MpmEndpointObj'
           type: array
-      type: object
-    IdValue:
-      properties:
-        id:
-          type: string
-      type: object
-    MpmAppGroupObj:
-      properties:
-        aps:
-          items:
-            $ref: '#/components/schemas/MpmAppObj'
-          type: array
-        description:
-          type: string
-        id:
-          format: uuid
-          type: string
-        name:
-          type: string
       type: object
     MpmNatRuleObj:
       properties:
@@ -347,18 +320,45 @@ components:
           - HIDE
           type: string
       type: object
-    MpmEndpointGroupObj:
+    MpmRulesPage:
       properties:
+        cursor:
+          format: uuid
+          type: string
+        mpmRuleResponse:
+          $ref: '#/components/schemas/MpmRuleResp'
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
+      type: object
+    MpmEndpointObj:
+      properties:
+        addressEnd:
+          format: int64
+          type: integer
+        addressStart:
+          format: int64
+          type: integer
         description:
           type: string
-        epgs:
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    MpmAppGroupObj:
+      properties:
+        aps:
           items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
+            $ref: '#/components/schemas/MpmAppObj'
           type: array
-        eps:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
+        description:
+          type: string
         id:
           format: uuid
           type: string

@@ -263,19 +263,6 @@ paths:
                 $ref: '#/components/schemas/model.Error'
 components:
   schemas:
-    model.UpdateEntitlementResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        provisioningErrors:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.SubscriptionProvisioningError'
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.ProvisionedSubscription'
     model.ProductConf:
       type: object
       properties:
@@ -289,40 +276,6 @@ components:
           type: string
         region:
           type: string
-    model.RevokeAPIResponse:
-      type: object
-      properties:
-        revokedSubscriptions:
-          type: array
-          items:
-            type: string
-    model.UserSubscription:
-      type: object
-      properties:
-        id:
-          type: string
-        skus:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.SKU'
-    model.SubscriptionProvisioningError:
-      type: object
-      properties:
-        error:
-          type: string
-        subscriptionId:
-          type: string
-    model.SharedEntitlement:
-      type: object
-      properties:
-        assignedEntitlements:
-          type: integer
-        managedOrgId:
-          type: string
-        productsList:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.ProductConf'
     model.SubnSku:
       type: object
       properties:
@@ -336,6 +289,13 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/model.MspSku'
+    model.RevokeAPIResponse:
+      type: object
+      properties:
+        revokedSubscriptions:
+          type: array
+          items:
+            type: string
     model.PaginationInfo:
       type: object
       properties:
@@ -345,6 +305,17 @@ components:
           type: integer
         totalRecords:
           type: integer
+    model.SharedEntitlement:
+      type: object
+      properties:
+        assignedEntitlements:
+          type: integer
+        managedOrgId:
+          type: string
+        productsList:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProductConf'
     model.Error:
       type: object
       properties:
@@ -352,22 +323,15 @@ components:
           type: string
         message:
           type: string
-    model.UpdateEntitlementsRequest:
+    model.ProductInfo:
       type: object
       properties:
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.UserSubscription'
-    model.OrgEntitlements:
-      type: object
-      properties:
-        pagination:
-          $ref: '#/components/schemas/model.PaginationInfo'
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.SubnSku'
+        assignedEntitlements:
+          type: integer
+        product:
+          type: string
+        productRegion:
+          type: string
     model.ProvisionedSubscription:
       type: object
       properties:
@@ -381,6 +345,35 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/model.ProvisionedSKU'
+    model.UpdateEntitlementResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        provisioningErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.SubscriptionProvisioningError'
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProvisionedSubscription'
+    model.OrgEntitlements:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/model.PaginationInfo'
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.SubnSku'
+    model.UpdateEntitlementsRequest:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.UserSubscription'
     model.ProvisionedSKU:
       type: object
       properties:
@@ -397,15 +390,22 @@ components:
           type: string
         quantity:
           type: integer
-    model.ProductInfo:
+    model.SubscriptionProvisioningError:
       type: object
       properties:
-        assignedEntitlements:
-          type: integer
-        product:
+        error:
           type: string
-        productRegion:
+        subscriptionId:
           type: string
+    model.UserSubscription:
+      type: object
+      properties:
+        id:
+          type: string
+        skus:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.SKU'
     model.MspSku:
       type: object
       properties:

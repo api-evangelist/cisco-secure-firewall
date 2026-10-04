@@ -243,28 +243,6 @@ paths:
           $ref: '#/components/responses/GeneralError'
 components:
   schemas:
-    ExternalIdpGroupMappingCreateResponse:
-      type: object
-      properties:
-        idpId:
-          type: string
-          format: uuid
-        enterpriseId:
-          type: string
-          format: uuid
-        samlIdpIssuer:
-          type: string
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
     PendingDomain:
       properties:
         createdAt:
@@ -289,43 +267,22 @@ components:
       - entityID
       - domain
       type: object
-    Domain:
-      type: object
-      required:
-      - domain
-      - status
-      properties:
-        domain:
-          $ref: '#/components/schemas/DomainName'
-        status:
-          $ref: '#/components/schemas/DomainStatus'
-    UpdatedIDPGroupMapping:
-      type: object
-      properties:
-        enterpriseId:
-          type: string
-          format: uuid
-        groupMappings:
-          type: array
-          items:
-            type: object
-            required:
-            - idpGroupName
-            - rbacGroupId
-            properties:
-              idpGroupName:
-                type: string
-              idpId:
-                type: string
-                format: uuid
-              rbacGroupId:
-                type: string
-                format: uuid
     DomainStatus:
       type: string
       enum:
       - pending
       - verified
+    ExternalIdpGroupMappingCreateResponse:
+      type: object
+      properties:
+        idpId:
+          type: string
+          format: uuid
+        enterpriseId:
+          type: string
+          format: uuid
+        samlIdpIssuer:
+          type: string
     IDPGroupMappingInput:
       type: object
       description: Represent request body for idp group operation
@@ -351,10 +308,50 @@ components:
               rbacGroupId:
                 type: string
                 format: uuid
+    UpdatedIDPGroupMapping:
+      type: object
+      properties:
+        enterpriseId:
+          type: string
+          format: uuid
+        groupMappings:
+          type: array
+          items:
+            type: object
+            required:
+            - idpGroupName
+            - rbacGroupId
+            properties:
+              idpGroupName:
+                type: string
+              idpId:
+                type: string
+                format: uuid
+              rbacGroupId:
+                type: string
+                format: uuid
+    ExternalIdpGroupMappingInput:
+      type: object
+      description: Request body for authorizedExternalIdps endpoint
+      properties:
+        idpId:
+          type: string
+          format: uuid
     DomainName:
       type: string
       pattern: ^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$
       example: cisco.com
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
     ExternalIdpGroupMappingListResponse:
       type: object
       properties:
@@ -379,25 +376,19 @@ components:
               rbacGroupId:
                 type: string
                 format: uuid
-    ExternalIdpGroupMappingInput:
+    Domain:
       type: object
-      description: Request body for authorizedExternalIdps endpoint
+      required:
+      - domain
+      - status
       properties:
-        idpId:
-          type: string
-          format: uuid
+        domain:
+          $ref: '#/components/schemas/DomainName'
+        status:
+          $ref: '#/components/schemas/DomainStatus'
   responses:
     ValidationError:
       description: The request was invalid
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    GeneralError:
-      description: An unknown error occurred
       headers:
         Date:
           $ref: '#/components/headers/Date'
@@ -414,15 +405,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    GeneralError:
+      description: An unknown error occurred
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   headers:
-    Date:
-      schema:
-        type: string
-        pattern: ^.*$
     Location:
       schema:
         type: string
         format: uri
+    Date:
+      schema:
+        type: string
+        pattern: ^.*$
   securitySchemes:
     OpenID:
       type: openIdConnect

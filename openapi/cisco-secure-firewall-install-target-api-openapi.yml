@@ -109,6 +109,31 @@ paths:
       - Install Target
 components:
   schemas:
+    MpmPolicy:
+      properties:
+        deleted:
+          type: boolean
+        description:
+          type: string
+        managerId:
+          format: uuid
+          type: string
+        name:
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+        revisionId:
+          format: int32
+          type: integer
+      type: object
     MpmGatewaySetsPage:
       properties:
         cursor:
@@ -117,15 +142,6 @@ components:
           items:
             $ref: '#/components/schemas/MpmGatewaySetResp'
           type: array
-      type: object
-    MpmGatewayResp:
-      properties:
-        hostname:
-          type: string
-        managementIp:
-          type: string
-        name:
-          type: string
       type: object
     MpmGatewaySetResp:
       properties:
@@ -165,30 +181,14 @@ components:
           - UNMANAGED
           type: string
       type: object
-    MpmPolicy:
+    MpmGatewayResp:
       properties:
-        deleted:
-          type: boolean
-        description:
+        hostname:
           type: string
-        managerId:
-          format: uuid
+        managementIp:
           type: string
         name:
           type: string
-        policyId:
-          format: uuid
-          type: string
-        policyType:
-          enum:
-          - SECURITY
-          - GOVERNANCE_PREPEND
-          - GOVERNANCE_APPEND
-          - NAT
-          type: string
-        revisionId:
-          format: int32
-          type: integer
       type: object
   securitySchemes:
     BearerJWT:

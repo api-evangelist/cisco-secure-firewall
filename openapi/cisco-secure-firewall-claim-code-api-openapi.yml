@@ -198,66 +198,6 @@ paths:
                 $ref: '#/components/schemas/model.Error'
 components:
   schemas:
-    model.RegionalHierarchy:
-      type: object
-      properties:
-        children:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.RegionalHierarchy'
-        description:
-          type: string
-        flat_priority:
-          type: integer
-        name:
-          type: string
-        priority:
-          type: integer
-        tier:
-          type: integer
-    model.ClaimSubscription:
-      type: object
-      properties:
-        claim_code:
-          type: string
-        enterprise_id:
-          type: string
-        enterprise_name:
-          type: string
-        enterprise_type:
-          type: string
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.ClaimCodeProduct'
-        services:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.ClaimCodeServices'
-    model.ProductInstance:
-      type: object
-      properties:
-        id:
-          type: string
-        external_tenant_id:
-          type: string
-        provisioning_status:
-          type: string
-        region:
-          $ref: '#/components/schemas/model.Region'
-    model.ProductInstancesAndRegionsAndServices:
-      type: object
-      properties:
-        all_regions:
-          $ref: '#/components/schemas/model.RegionalHierarchy'
-        productInstances:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.ProductInstance'
-        services:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.Services'
     model.Region:
       type: object
       properties:
@@ -285,6 +225,19 @@ components:
           type: string
         message:
           type: string
+    model.ProductInstancesAndRegionsAndServices:
+      type: object
+      properties:
+        all_regions:
+          $ref: '#/components/schemas/model.RegionalHierarchy'
+        productInstances:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ProductInstance'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.Services'
     model.ClaimCodeReadRequest:
       type: object
       properties:
@@ -292,6 +245,45 @@ components:
           type: string
         enterprise_id:
           type: string
+    model.ClaimCodeServices:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+        is_use_existing_tenant_set:
+          type: boolean
+        name:
+          type: string
+    model.RegionalHierarchy:
+      type: object
+      properties:
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.RegionalHierarchy'
+        description:
+          type: string
+        flat_priority:
+          type: integer
+        name:
+          type: string
+        priority:
+          type: integer
+        tier:
+          type: integer
+    model.ProductInstance:
+      type: object
+      properties:
+        id:
+          type: string
+        external_tenant_id:
+          type: string
+        provisioning_status:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
     model.ClaimCodeProduct:
       type: object
       required:
@@ -306,17 +298,25 @@ components:
           type: string
         region:
           $ref: '#/components/schemas/model.Region'
-    model.ClaimCodeServices:
+    model.ClaimSubscription:
       type: object
-      required:
-      - id
       properties:
-        id:
+        claim_code:
           type: string
-        is_use_existing_tenant_set:
-          type: boolean
-        name:
+        enterprise_id:
           type: string
+        enterprise_name:
+          type: string
+        enterprise_type:
+          type: string
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ClaimCodeProduct'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.ClaimCodeServices'
   securitySchemes:
     EnterpriseAdminBearerAuth:
       type: oauth2

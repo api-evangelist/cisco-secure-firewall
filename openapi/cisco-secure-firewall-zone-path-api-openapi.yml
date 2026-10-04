@@ -229,13 +229,6 @@ paths:
       - Zone Path
 components:
   schemas:
-    ZonePathsApiResponse:
-      properties:
-        zonePaths:
-          items:
-            $ref: '#/components/schemas/ZonePathId'
-          type: array
-      type: object
     ZonePathNode:
       properties:
         ids:
@@ -247,6 +240,12 @@ components:
           enum:
           - ZONE
           - DEVICE
+          type: string
+      type: object
+    ZonePathId:
+      properties:
+        id:
+          format: uuid
           type: string
       type: object
     ReqIdAndReqSystem:
@@ -271,13 +270,6 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
-    DeleteZonePathApiResponse:
-      properties:
-        gatewaySetPushRequests:
-          items:
-            $ref: '#/components/schemas/ReqIdAndReqSystem'
-          type: array
-      type: object
     ZonePath:
       properties:
         nodes:
@@ -285,17 +277,16 @@ components:
             $ref: '#/components/schemas/ZonePathNode'
           type: array
       type: object
-    ZonePathRequest:
+    ZonePathsApiResponse:
       properties:
-        zonePath:
+        zonePaths:
           items:
-            $ref: '#/components/schemas/ZoneId'
+            $ref: '#/components/schemas/ZonePathId'
           type: array
       type: object
-    ZonePathId:
+    ZoneId:
       properties:
-        id:
-          format: uuid
+        zone:
           type: string
       type: object
     CreateZonePathApiResponse:
@@ -308,10 +299,19 @@ components:
           format: uuid
           type: string
       type: object
-    ZoneId:
+    DeleteZonePathApiResponse:
       properties:
-        zone:
-          type: string
+        gatewaySetPushRequests:
+          items:
+            $ref: '#/components/schemas/ReqIdAndReqSystem'
+          type: array
+      type: object
+    ZonePathRequest:
+      properties:
+        zonePath:
+          items:
+            $ref: '#/components/schemas/ZoneId'
+          type: array
       type: object
     ZonePaths:
       properties:

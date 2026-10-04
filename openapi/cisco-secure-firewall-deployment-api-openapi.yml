@@ -1232,178 +1232,157 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    FailedDevices:
-      description: Represents the devices which got failed during the deployment of a devices.
+    LLUniversalZeroTrustSetting:
+      additionalProperties:
+        $ref: '#/components/schemas/IHybridZeroTrustDeviceSetting'
+        type: object
+      type: object
+    DeviceInventoryData:
       properties:
-        deviceUUID:
-          description: UUID of device.
+        cpuCores:
           type: string
-        failureReason:
-          description: The reason for which device got failed.
+        cpuType:
+          type: string
+        memoryInMB:
+          type: string
+        storageInGB:
           type: string
       type: object
-    ISelectedPoliciesforDevices:
-      description: Represents the object which is responsible for enabling the Selective Policy Deployment
+    IActionInfo:
+      type: object
+    DeployableDevice:
+      description: Represents the Deployable Device Object.
       properties:
-        deviceUUID:
-          description: Corresponding device UUID for which the selection is mentioned.
-          type: string
-        selectedPolicies:
-          description: 'List of Policy Types which have to be selectively deployed. Note: mandatoryDeployablePolicies should not be included in this list.'
+        canBeDeployed:
+          description: Boolean indicating whether the device can be deployed.
+          type: boolean
+        device:
+          $ref: '#/components/schemas/IDevice_2'
+          description: Object indicating the device object.
+          type: object
+        deviceMembers:
+          description: Describes the member information of the Device.
           items:
-            type: string
-          type: array
-      type: object
-    IDeviceChassisData:
-      properties:
-        chassisSerialNo:
-          type: string
-        chassisUrl:
-          type: string
-        securityModuleNo:
-          format: int32
-          type: integer
-        securityModuleSN:
-          type: string
-      type: object
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    IReferenceUpdate:
-      properties:
-        entityName:
-          type: string
-        entityType:
-          type: string
-        fieldName:
-          type: string
-      type: object
-    IDependentPolicy:
-      description: Represents the inter-dependent out-of-date policies with the reason.
-      properties:
-        dependencyReason:
-          description: Describes the reason for the inter-dependency between the out-of-date policies.
-          type: string
-        dependentTypeList:
-          description: List of out-of-date policies which are inter-dependent.
-          items:
-            type: string
-          type: array
-      type: object
-    IValueAdd:
-      properties:
-        fieldName:
-          type: string
-        newValue:
-          type: string
-      type: object
-    DeploymentRequest:
-      description: Represents the deployment request object which will be used for policy deployment of a device.
-      properties:
-        deploymentNote:
-          description: User provided job note with max of 512 characters
-          type: string
-        description:
-          description: User provided description of the object.
-          type: string
-        deviceList:
-          description: List of device UUIDs for which the deployment has to triggered.
-          items:
-            type: string
-          type: array
-        failedDevicesList:
-          items:
-            $ref: '#/components/schemas/FailedDevices'
+            $ref: '#/components/schemas/IDevice'
             type: object
           type: array
-        forceDeploy:
-          description: Boolean indicating the deployment is force deploy or not. Value set to `true` only if device is not out-of-date and user wants to force a deployment. This should not be used unless needed. Default is `false`.
-          type: boolean
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          description: Object indicating the domain information of the device.
+          type: object
+        groupDependencyDetails:
+          $ref: '#/components/schemas/IGroupDependencyDetailEntry'
+          type: object
         id:
-          description: Id created as part of the deployment.
+          description: String indicating the id of the device.
           type: string
-        ignoreWarning:
-          description: Boolean indicating whether the warnings needs to be ignored during the prevalidation of deployment job. Default is `false`.
+        isDeploying:
+          description: Boolean indicating whether the deployment operation for the device is in progress.
           type: boolean
         links:
           $ref: '#/components/schemas/ILinks'
-          description: Link to the deployment request with the job id.
+          description: Object containing links to this resource.
+          type: object
+        message:
+          description: Describes the reason for not allowing the deployment for a device.
+          type: string
+        name:
+          description: String indicating the device name.
+          type: string
+        policyStatusList:
+          description: List of policy objects which are part of the device.
+          items:
+            $ref: '#/components/schemas/IPolicyStatus'
+            type: object
+          type: array
+        trafficInterruption:
+          description: Boolean indicating a deployment can cause traffic interruption.
+          enum:
+          - 'YES'
+          - 'NO'
+          - UNDETERMINED
+          - ERROR
+          type: string
+        type:
+          description: Type of the Response object. This value is always DeployableDevice.
+          type: string
+        upToDate:
+          description: Boolean indicating whether the device has any out-of-date policies.
+          type: boolean
+        version:
+          description: Integer, indicating the latest deployed version of the device.
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
+          type: string
+        messages:
+          description: List of error messages which the response has.
+          items:
+            $ref: '#/components/schemas/ErrorMessagesContainer'
+            type: object
+          type: array
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IPolicyModel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
           type: object
         metadata:
-          $ref: '#/components/schemas/DeploymentRequestMetadata'
+          $ref: '#/components/schemas/IMetadata'
           type: object
         name:
-          description: String represents the name to the device.
           type: string
-        recipients:
+        type:
           type: string
-        selectedPoliciesforDevices:
-          description: List of devices for Selective Policy Deployment. </br> The devices mentioned here should be part of the 'devicelist' attribute.
+        version:
+          type: string
+      type: object
+    IHybridZeroTrustFQDNConfig:
+      properties:
+        FQDN:
+          type: string
+        certificate:
+          $ref: '#/components/schemas/IReference'
+          type: object
+        interfaces:
           items:
-            $ref: '#/components/schemas/ISelectedPoliciesforDevices'
+            $ref: '#/components/schemas/IReference'
+            type: object
+          type: array
+      type: object
+    RollbackRequest:
+      description: Represents the rollback request object which will be used for config rollback of a device.
+      properties:
+        metadata:
+          $ref: '#/components/schemas/RollbackRequestMetadata'
+          description: Object representing metadata attributes for the rollback request entry.
+          type: object
+        rollbackDeviceList:
+          description: A list containing job UUID and device UUIDs combination for the rollback.
+          items:
+            $ref: '#/components/schemas/IRollbackDeviceListEntry'
             type: object
           type: array
         type:
-          description: Type of the Request object. This value is always DeploymentRequest.
+          description: Type must be RollbackRequest.
           type: string
-        version:
-          description: Integer indicating the version to which the deployment should be done.
-          type: string
-      type: object
-    Domain:
-      description: The details about the domain.
-      properties:
-        id:
-          description: Unique UUID of this domain
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Links to the domain resource URLs.
-          type: object
-        name:
-          description: Name of the domain.
-          type: string
-        type:
-          description: Domain type definition (fixed).
-          type: string
-        uuid:
-          type: string
-      type: object
-    RollbackRequestMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          type: object
-        task:
-          $ref: '#/components/schemas/TaskStatus'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
       type: object
     PendingChangesRequestMetadata:
       properties:
@@ -1443,141 +1422,15 @@ components:
           format: int32
           type: integer
       type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
+    FailedDevices:
+      description: Represents the devices which got failed during the deployment of a devices.
       properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
+        deviceUUID:
+          description: UUID of device.
           type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
+        failureReason:
+          description: The reason for which device got failed.
           type: string
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    IDeviceInventoryData:
-      properties:
-        cpuCores:
-          type: string
-        cpuType:
-          type: string
-        memoryInMB:
-          type: string
-        storageInGB:
-          type: string
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    JobHistoryListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/JobHistory'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    IPreDeployAction:
-      properties:
-        actionInfo:
-          $ref: '#/components/schemas/IActionInfo'
-          type: object
-        actionType:
-          enum:
-          - APPLY_TEMPLATE
-          type: string
-      type: object
-    EmailReport:
-      description: Email Job Report. Configure and test System->Configuration->Email Notification prior using this request
-      properties:
-        recipientList:
-          description: string array of recipient mailers
-          items:
-            type: string
-          type: array
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    DeployableDeviceListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/DeployableDevice'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
       type: object
     ITaskStatus:
       properties:
@@ -1656,55 +1509,6 @@ components:
         type:
           type: string
       type: object
-    IDeviceListEntry:
-      properties:
-        canRollback:
-          description: Indicates whether the deployed version to device in the deployment job is rollback capable. This field is available only if context filter parameter has value as RollbackApplicable.
-          type: boolean
-        containerName:
-          description: Name of the container. This will still be displayed after deletion.
-          type: string
-        containerUUID:
-          description: UUID of the container
-          type: string
-        deployedVersion:
-          description: Config version of the device in the deployment job
-          format: int32
-          type: integer
-        deploymentStatus:
-          description: Deployment status of the device in the deployment job
-          enum:
-          - DEPLOYING
-          - SUCCEEDED
-          - PARTIALLY_SUCCEEDED
-          - FAILED
-          - SSP_SUCCEEDED
-          - SSP_FAILED
-          - SSP_PRIMARY_BOOTSTRAP_SUCCEEDED
-          - SSP_PRIMARY_BOOTSTRAP_FAILED
-          - SSP_SECONDARY_BOOTSTRAP_SUCCEEDED
-          - SSP_SECONDARY_BOOTSTRAP_FAILED
-          - PRIMARY_BOOTSTRAP_SUCCEEDED
-          - PRIMARY_BOOTSTRAP_FAILED
-          - SECONDARY_BOOTSTRAP_SUCCEEDED
-          - SECONDARY_BOOTSTRAP_FAILED
-          - BREAK_SUCCEEDED
-          - BREAK_FAILED
-          - PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - SSP_PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - SSP_SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - BREAK_PARTIALLY_SUCCEEDED
-          - CANCELLED
-          - NONE
-          type: string
-        deviceName:
-          description: Name of the device
-          type: string
-        deviceUUID:
-          description: UUID of the device
-          type: string
-      type: object
     IReference:
       description: Contains reference information.
       properties:
@@ -1721,311 +1525,6 @@ components:
         type:
           description: Response object associated with resource.
           type: string
-      type: object
-    IPolicyModel:
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    PendingChangesRequest:
-      description: Represents the pending changes request object which will be used to generate the delta of the changes pending on the device.
-      properties:
-        description:
-          type: string
-        deviceList:
-          description: List of device UUIDs for which the pending changes request has to triggered.
-          items:
-            type: string
-          type: array
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/PendingChangesRequestMetadata'
-          type: object
-        name:
-          type: string
-        requestType:
-          description: 'Specifies whether cli diff or policy diff or both need to be generated. One of: CLI_DIFF | POLICY_DIFF | CLI_AND_POLICY_DIFF.'
-          enum:
-          - CLI_DIFF
-          - POLICY_DIFF
-          - CLI_AND_POLICY_DIFF
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    HealthSetting:
-      properties:
-        alertEvaluationInterval:
-          format: int32
-          type: integer
-        certFileContent:
-          type: string
-        certFileName:
-          type: string
-        certFileType:
-          type: string
-        certPassphrase:
-          type: string
-        configType:
-          type: string
-        dataCollectionInterval:
-          format: int32
-          type: integer
-        dialInHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        dialOutHosts:
-          items:
-            $ref: '#/components/schemas/DialHost'
-            type: object
-          type: array
-        enabledOpenConfig:
-          type: boolean
-        grpcPassword:
-          type: string
-        grpcUsername:
-          type: string
-        readOnly:
-          type: boolean
-      type: object
-    DownloadReportListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/DownloadReport'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IRollbackDeviceListEntry:
-      description: Part of request body which contains deployment job ids and list of devices for config rollback.
-      properties:
-        deploymentJobId:
-          description: Deployment job UUID.
-          type: string
-        deviceList:
-          description: List of device UUIDs which are part of deployment job id.
-          items:
-            type: string
-          type: array
-      type: object
-    LLUniversalZeroTrustSetting:
-      additionalProperties:
-        $ref: '#/components/schemas/IHybridZeroTrustDeviceSetting'
-        type: object
-      type: object
-    IHybridZeroTrustFQDNConfig:
-      properties:
-        FQDN:
-          type: string
-        certificate:
-          $ref: '#/components/schemas/IReference'
-          type: object
-        interfaces:
-          items:
-            $ref: '#/components/schemas/IReference'
-            type: object
-          type: array
-      type: object
-    DeviceInventoryData:
-      properties:
-        cpuCores:
-          type: string
-        cpuType:
-          type: string
-        memoryInMB:
-          type: string
-        storageInGB:
-          type: string
-      type: object
-    DeploymentRequestMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/Domain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/MetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/ReadOnly'
-          type: object
-        task:
-          $ref: '#/components/schemas/TaskStatus'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    DeploymentDetailListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/DeploymentDetail'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    IModifiedUserInfo:
-      description: Modified User Information
-      properties:
-        lastModifiedTime:
-          description: Timestamp indicating the time when user has last modified the policy.
-          format: int32
-          type: integer
-        userName:
-          description: Name of the user.
-          type: string
-      type: object
-    RollbackRequest:
-      description: Represents the rollback request object which will be used for config rollback of a device.
-      properties:
-        metadata:
-          $ref: '#/components/schemas/RollbackRequestMetadata'
-          description: Object representing metadata attributes for the rollback request entry.
-          type: object
-        rollbackDeviceList:
-          description: A list containing job UUID and device UUIDs combination for the rollback.
-          items:
-            $ref: '#/components/schemas/IRollbackDeviceListEntry'
-            type: object
-          type: array
-        type:
-          description: Type must be RollbackRequest.
-          type: string
-      type: object
-    IGroupDependencyDetailEntry:
-      description: Represents the dependency information between out-of-date policies
-      properties:
-        dependentPolicyList:
-          description: Describes the dependency between the out-of-date policies with the reason
-          items:
-            $ref: '#/components/schemas/IDependentPolicy'
-            type: object
-          type: array
-        mandatoryDeployablePolicies:
-          description: List of out-of-date policies which must get deployed always in the upcoming deployment. These policies will get added into the deployment by default.
-          items:
-            type: string
-          type: array
-        selectivelyDeployablePolicies:
-          description: List of out-of-date policies which can be selectively deployed.
-          items:
-            type: string
-          type: array
-      type: object
-    IValueUpdate:
-      properties:
-        fieldName:
-          type: string
-        newValue:
-          type: string
-        oldValue:
-          type: string
-      type: object
-    IActionInfo:
-      type: object
-    DownloadReport:
-      description: Download Job report
-      properties: {}
-      type: object
-    DialHost:
-      properties:
-        host:
-          type: string
-        port:
-          format: int32
-          type: integer
-      type: object
-    IDomain:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
-          type: string
-      type: object
-    PendingChangesListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/PendingChanges'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    HealthAlertConfig:
-      properties:
-        enabled:
-          type: boolean
-        name:
-          type: string
-        thresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
       type: object
     DeviceMetadata:
       properties:
@@ -2112,6 +1611,207 @@ components:
           type: string
       required:
       - otherAssociatedPolicies
+      type: object
+    ISubTask:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        status:
+          type: string
+        target:
+          $ref: '#/components/schemas/ITarget'
+          type: object
+      type: object
+    IHealthPolicy:
+      description: Description of Health Policy.
+      properties:
+        basePolicyID:
+          type: string
+        defaultPolicy:
+          type: boolean
+        description:
+          description: Description of Health Policy.
+          type: string
+        healthModules:
+          items:
+            $ref: '#/components/schemas/HealthModule'
+            type: object
+          type: array
+        id:
+          description: Unique identifier (UUID) representing the Health policy.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object containing links to this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          description: Object representing metadata attributes for the Health policy.
+          type: object
+        name:
+          description: User-specified name of the Health policy.
+          type: string
+        policyType:
+          type: string
+        setting:
+          $ref: '#/components/schemas/HealthSetting'
+          type: object
+        type:
+          description: Type of the Health policy; this value is always HealthPolicy.
+          type: string
+        version:
+          description: Version number of the response object.
+          type: string
+      type: object
+    ITarget:
+      description: This is the target device.
+      properties:
+        description:
+          type: string
+        id:
+          description: Unique ID of the device.
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: Name of the device.
+          type: string
+        type:
+          description: Device
+          type: string
+        version:
+          type: string
+      type: object
+    IMetadataUser:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    DeploymentDetail:
+      description: An object representing the deployment details on a device
+      properties:
+        description:
+          type: string
+        endTime:
+          description: Time in seconds at which the deployment ended, timestamp is in unix format
+          format: int32
+          type: integer
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          description: 'Name of the deployment job '
+          type: string
+        policyList:
+          description: Details of policies which were deployed to the device.
+          items:
+            $ref: '#/components/schemas/IPolicyModel'
+            type: object
+          type: array
+        startTime:
+          description: Time in seconds at which the deployment was started, timestamp is in unix format
+          format: int32
+          type: integer
+        status:
+          description: 'Status of the deployment, can be one of DEPLOYING, SUCCEEDED, PARTIALLY_SUCCEEDED, FAILED, SSP_SUCCEEDED, SSP_FAILED, SSP_PRIMARY_BOOTSTRAP_SUCCEEDED, SSP_PRIMARY_BOOTSTRAP_FAILED, SSP_SECONDARY_BOOTSTRAP_SUCCEEDED, SSP_SECONDARY_BOOTSTRAP_FAILED, PRIMARY_BOOTSTRAP_SUCCEEDED, PRIMARY_BOOTSTRAP_FAILED, SECONDARY_BOOTSTRAP_SUCCEEDED, SECONDARY_BOOTSTRAP_FAILED, BREAK_SUCCEEDED, BREAK_FAILED, PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, SSP_PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, SSP_SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, BREAK_PARTIALLY_SUCCEEDED, CANCELLED and NONE '
+          enum:
+          - DEPLOYING
+          - SUCCEEDED
+          - PARTIALLY_SUCCEEDED
+          - FAILED
+          - SSP_SUCCEEDED
+          - SSP_FAILED
+          - SSP_PRIMARY_BOOTSTRAP_SUCCEEDED
+          - SSP_PRIMARY_BOOTSTRAP_FAILED
+          - SSP_SECONDARY_BOOTSTRAP_SUCCEEDED
+          - SSP_SECONDARY_BOOTSTRAP_FAILED
+          - PRIMARY_BOOTSTRAP_SUCCEEDED
+          - PRIMARY_BOOTSTRAP_FAILED
+          - SECONDARY_BOOTSTRAP_SUCCEEDED
+          - SECONDARY_BOOTSTRAP_FAILED
+          - BREAK_SUCCEEDED
+          - BREAK_FAILED
+          - PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - SSP_PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - SSP_SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - BREAK_PARTIALLY_SUCCEEDED
+          - CANCELLED
+          - NONE
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    IBaseDevice:
+      properties:
+        accessPolicy:
+          $ref: '#/components/schemas/IPolicyModel'
+          type: object
+        advanced:
+          $ref: '#/components/schemas/IAdvanced'
+          type: object
+        description:
+          type: string
+        healthMessage:
+          type: string
+        healthPolicy:
+          $ref: '#/components/schemas/IHealthPolicy'
+          type: object
+        healthStatus:
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        model:
+          type: string
+        modelId:
+          type: string
+        modelNumber:
+          type: string
+        modelType:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        status:
+          type: string
+        sw_version:
+          type: string
+        type:
+          type: string
+        version:
+          type: string
       type: object
     IDevice_2:
       properties:
@@ -2226,149 +1926,289 @@ components:
       - license_caps
       - regKey
       type: object
-    IAdvanced:
+    PendingChangesListContainer:
       properties:
-        enableOGS:
-          type: boolean
-      type: object
-    IBaseDevice:
-      properties:
-        accessPolicy:
-          $ref: '#/components/schemas/IPolicyModel'
-          type: object
-        advanced:
-          $ref: '#/components/schemas/IAdvanced'
-          type: object
-        description:
-          type: string
-        healthMessage:
-          type: string
-        healthPolicy:
-          $ref: '#/components/schemas/IHealthPolicy'
-          type: object
-        healthStatus:
-          type: string
-        id:
-          type: string
+        items:
+          $ref: '#/components/schemas/PendingChanges'
+          type: array
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
           type: object
-        model:
-          type: string
-        modelId:
-          type: string
-        modelNumber:
-          type: string
-        modelType:
-          type: string
-        name:
-          type: string
-        role:
-          type: string
-        status:
-          type: string
-        sw_version:
-          type: string
-        type:
-          type: string
-        version:
-          type: string
       type: object
-    DeploymentDetail:
-      description: An object representing the deployment details on a device
+    PendingChanges:
+      description: Retrieves list changes between the last successful deployment and current saved configuration for the device,.
       properties:
-        description:
+        action:
+          description: Action done on the entity
+          enum:
+          - ADD
+          - DELETE
+          - UPDATE
+          - NOCHANGE
           type: string
-        endTime:
-          description: Time in seconds at which the deployment ended, timestamp is in unix format
-          format: int32
-          type: integer
-        id:
+        entityName:
+          description: 'A name field value of modified Entity. '
           type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          description: 'Name of the deployment job '
+        entityType:
+          description: An Entity type type that has been modified.
           type: string
-        policyList:
-          description: Details of policies which were deployed to the device.
+        entityUUID:
+          description: ' An identifier of entity which does not change with time.'
+          type: string
+        lastUpdatedByUsers:
+          description: List of users who have modified the entity after last successful deployment.
           items:
-            $ref: '#/components/schemas/IPolicyModel'
+            type: string
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        message:
+          description: In case for an entity there is no diff, due to no modification or some error during generation proper message will be given for that entity.
+          type: string
+        parentUUID:
+          description: UUID of the entity to which this entity is grouped to. If it's empty, it means the entity is the parent entity.
+          type: string
+        referencesAdded:
+          description: References that were added compared to its other state.
+          items:
+            $ref: '#/components/schemas/IReferenceUpdate'
             type: object
           type: array
-        startTime:
-          description: Time in seconds at which the deployment was started, timestamp is in unix format
-          format: int32
-          type: integer
-        status:
-          description: 'Status of the deployment, can be one of DEPLOYING, SUCCEEDED, PARTIALLY_SUCCEEDED, FAILED, SSP_SUCCEEDED, SSP_FAILED, SSP_PRIMARY_BOOTSTRAP_SUCCEEDED, SSP_PRIMARY_BOOTSTRAP_FAILED, SSP_SECONDARY_BOOTSTRAP_SUCCEEDED, SSP_SECONDARY_BOOTSTRAP_FAILED, PRIMARY_BOOTSTRAP_SUCCEEDED, PRIMARY_BOOTSTRAP_FAILED, SECONDARY_BOOTSTRAP_SUCCEEDED, SECONDARY_BOOTSTRAP_FAILED, BREAK_SUCCEEDED, BREAK_FAILED, PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, SSP_PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, SSP_SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED, BREAK_PARTIALLY_SUCCEEDED, CANCELLED and NONE '
-          enum:
-          - DEPLOYING
-          - SUCCEEDED
-          - PARTIALLY_SUCCEEDED
-          - FAILED
-          - SSP_SUCCEEDED
-          - SSP_FAILED
-          - SSP_PRIMARY_BOOTSTRAP_SUCCEEDED
-          - SSP_PRIMARY_BOOTSTRAP_FAILED
-          - SSP_SECONDARY_BOOTSTRAP_SUCCEEDED
-          - SSP_SECONDARY_BOOTSTRAP_FAILED
-          - PRIMARY_BOOTSTRAP_SUCCEEDED
-          - PRIMARY_BOOTSTRAP_FAILED
-          - SECONDARY_BOOTSTRAP_SUCCEEDED
-          - SECONDARY_BOOTSTRAP_FAILED
-          - BREAK_SUCCEEDED
-          - BREAK_FAILED
-          - PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - SSP_PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - SSP_SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
-          - BREAK_PARTIALLY_SUCCEEDED
-          - CANCELLED
-          - NONE
-          type: string
-        type:
-          type: string
+        referencesDeleted:
+          description: References that were deleted compared to its other state.
+          items:
+            $ref: '#/components/schemas/IReferenceUpdate'
+            type: object
+          type: array
+        valueAdded:
+          description: 'Values that were added compared to its other state. '
+          items:
+            $ref: '#/components/schemas/IValueAdd'
+            type: object
+          type: array
+        valueDeleted:
+          description: Values that were deleted compared to its other state.
+          items:
+            $ref: '#/components/schemas/IValueDelete'
+            type: object
+          type: array
+        valueUpdated:
+          description: 'Values that were specified compared to its other state. '
+          items:
+            $ref: '#/components/schemas/IValueUpdate'
+            type: object
+          type: array
         version:
           type: string
       type: object
-    ITarget:
-      description: This is the target device.
+    ReadOnly:
+      description: Defines the read only conditions if the referenced resource is read only.
       properties:
-        description:
+        reason:
+          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
           type: string
+        state:
+          description: True if this resource us read only and false otherwise.
+          type: boolean
+      type: object
+    IValueUpdate:
+      properties:
+        fieldName:
+          type: string
+        newValue:
+          type: string
+        oldValue:
+          type: string
+      type: object
+    DialHost:
+      properties:
+        host:
+          type: string
+        port:
+          format: int32
+          type: integer
+      type: object
+    RollbackRequestMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          type: object
+        task:
+          $ref: '#/components/schemas/TaskStatus'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    EmailReport:
+      description: Email Job Report. Configure and test System->Configuration->Email Notification prior using this request
+      properties:
+        recipientList:
+          description: string array of recipient mailers
+          items:
+            type: string
+          type: array
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    MetadataUser:
+      description: This object defines details about the user.
+      properties:
         id:
-          description: Unique ID of the device.
+          description: The unique UUID of the user
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
+          description: Contains the self referencing links to this resource
           type: object
         name:
-          description: Name of the device.
+          description: Name of the user.
           type: string
         type:
-          description: Device
-          type: string
-        version:
+          description: The user type (fixed).
           type: string
       type: object
-    HealthThreshold:
+    IReadonly:
       properties:
-        type:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
           type: string
-        value:
+        state:
+          type: boolean
+      type: object
+    HealthModule:
+      properties:
+        alertConfig:
+          items:
+            $ref: '#/components/schemas/HealthAlertConfig'
+            type: object
+          type: array
+        alertEnabled:
+          type: boolean
+        criticalThreshold:
           format: int32
           type: integer
+        customThresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
+        enabled:
+          type: boolean
+        moduleId:
+          type: string
+        severity:
+          type: string
+        type:
+          type: string
+        warningThreshold:
+          format: int32
+          type: integer
+      type: object
+    Domain:
+      description: The details about the domain.
+      properties:
+        id:
+          description: Unique UUID of this domain
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Links to the domain resource URLs.
+          type: object
+        name:
+          description: Name of the domain.
+          type: string
+        type:
+          description: Domain type definition (fixed).
+          type: string
+        uuid:
+          type: string
+      type: object
+    IReferenceUpdate:
+      properties:
+        entityName:
+          type: string
+        entityType:
+          type: string
+        fieldName:
+          type: string
+      type: object
+    JobHistoryListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/JobHistory'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IDeviceInventoryData:
+      properties:
+        cpuCores:
+          type: string
+        cpuType:
+          type: string
+        memoryInMB:
+          type: string
+        storageInGB:
+          type: string
+      type: object
+    HealthAlertConfig:
+      properties:
+        enabled:
+          type: boolean
+        name:
+          type: string
+        thresholds:
+          items:
+            $ref: '#/components/schemas/HealthThreshold'
+            type: object
+          type: array
       type: object
     IDevice:
       properties:
@@ -2487,6 +2327,67 @@ components:
       - license_caps
       - regKey
       type: object
+    DeploymentRequestMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/MetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/ReadOnly'
+          type: object
+        task:
+          $ref: '#/components/schemas/TaskStatus'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    HealthThreshold:
+      properties:
+        type:
+          type: string
+        value:
+          format: int32
+          type: integer
+      type: object
+    IPolicyStatus:
+      properties:
+        modifiedUserInfoList:
+          description: List of ModifiedUserInfo objects containing LastModifiedTime and UserName.
+          items:
+            $ref: '#/components/schemas/IModifiedUserInfo'
+            type: object
+          type: array
+        policy:
+          $ref: '#/components/schemas/IPolicyModel'
+          description: Object which contains Policy Information such as id, name and policy type.
+          type: object
+        referredPolicyList:
+          description: List of PolicyStatus objects which are referred by the policy.
+          items:
+            $ref: '#/components/schemas/IPolicyStatus'
+            type: object
+          type: array
+        trafficInterrupting:
+          description: Boolean indicating a deployment can cause traffic interruption.
+          type: boolean
+        upToDate:
+          description: Boolean indicating whether the policy is out-of-date.
+          type: boolean
+        versionTimeStamp:
+          description: Epoch time, indicating last modified time of the policy.
+          format: int32
+          type: integer
+      type: object
     IHybridZeroTrustDeviceSetting:
       properties:
         autoDeployEnabled:
@@ -2499,24 +2400,186 @@ components:
         universalZeroTrustEnabled:
           type: boolean
       type: object
-    MetadataUser:
-      description: This object defines details about the user.
+    DeploymentRequest:
+      description: Represents the deployment request object which will be used for policy deployment of a device.
       properties:
+        deploymentNote:
+          description: User provided job note with max of 512 characters
+          type: string
+        description:
+          description: User provided description of the object.
+          type: string
+        deviceList:
+          description: List of device UUIDs for which the deployment has to triggered.
+          items:
+            type: string
+          type: array
+        failedDevicesList:
+          items:
+            $ref: '#/components/schemas/FailedDevices'
+            type: object
+          type: array
+        forceDeploy:
+          description: Boolean indicating the deployment is force deploy or not. Value set to `true` only if device is not out-of-date and user wants to force a deployment. This should not be used unless needed. Default is `false`.
+          type: boolean
         id:
-          description: The unique UUID of the user
+          description: Id created as part of the deployment.
+          type: string
+        ignoreWarning:
+          description: Boolean indicating whether the warnings needs to be ignored during the prevalidation of deployment job. Default is `false`.
+          type: boolean
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Link to the deployment request with the job id.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/DeploymentRequestMetadata'
+          type: object
+        name:
+          description: String represents the name to the device.
+          type: string
+        recipients:
+          type: string
+        selectedPoliciesforDevices:
+          description: List of devices for Selective Policy Deployment. </br> The devices mentioned here should be part of the 'devicelist' attribute.
+          items:
+            $ref: '#/components/schemas/ISelectedPoliciesforDevices'
+            type: object
+          type: array
+        type:
+          description: Type of the Request object. This value is always DeploymentRequest.
+          type: string
+        version:
+          description: Integer indicating the version to which the deployment should be done.
+          type: string
+      type: object
+    HealthSetting:
+      properties:
+        alertEvaluationInterval:
+          format: int32
+          type: integer
+        certFileContent:
+          type: string
+        certFileName:
+          type: string
+        certFileType:
+          type: string
+        certPassphrase:
+          type: string
+        configType:
+          type: string
+        dataCollectionInterval:
+          format: int32
+          type: integer
+        dialInHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        dialOutHosts:
+          items:
+            $ref: '#/components/schemas/DialHost'
+            type: object
+          type: array
+        enabledOpenConfig:
+          type: boolean
+        grpcPassword:
+          type: string
+        grpcUsername:
+          type: string
+        readOnly:
+          type: boolean
+      type: object
+    DeployableDeviceListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/DeployableDevice'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IValueAdd:
+      properties:
+        fieldName:
+          type: string
+        newValue:
+          type: string
+      type: object
+    IDependentPolicy:
+      description: Represents the inter-dependent out-of-date policies with the reason.
+      properties:
+        dependencyReason:
+          description: Describes the reason for the inter-dependency between the out-of-date policies.
+          type: string
+        dependentTypeList:
+          description: List of out-of-date policies which are inter-dependent.
+          items:
+            type: string
+          type: array
+      type: object
+    DeploymentDetailListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/DeploymentDetail'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IDeviceGroup:
+      properties:
+        description:
+          type: string
+        id:
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
-          description: Contains the self referencing links to this resource
+          type: object
+        members:
+          items:
+            $ref: '#/components/schemas/IBaseDevice'
+            type: object
+          type: array
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
           type: object
         name:
-          description: Name of the user.
           type: string
         type:
-          description: The user type (fixed).
+          type: string
+        version:
           type: string
       type: object
-    DeviceChassisData:
+    ISelectedPoliciesforDevices:
+      description: Represents the object which is responsible for enabling the Selective Policy Deployment
+      properties:
+        deviceUUID:
+          description: Corresponding device UUID for which the selection is mentioned.
+          type: string
+        selectedPolicies:
+          description: 'List of Policy Types which have to be selectively deployed. Note: mandatoryDeployablePolicies should not be included in this list.'
+          items:
+            type: string
+          type: array
+      type: object
+    IPreDeployAction:
+      properties:
+        actionInfo:
+          $ref: '#/components/schemas/IActionInfo'
+          type: object
+        actionType:
+          enum:
+          - APPLY_TEMPLATE
+          type: string
+      type: object
+    IDeviceChassisData:
       properties:
         chassisSerialNo:
           type: string
@@ -2527,6 +2590,79 @@ components:
           type: integer
         securityModuleSN:
           type: string
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IValueDelete:
+      properties:
+        fieldName:
+          type: string
+        oldValue:
+          type: string
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+    IRollbackDeviceListEntry:
+      description: Part of request body which contains deployment job ids and list of devices for config rollback.
+      properties:
+        deploymentJobId:
+          description: Deployment job UUID.
+          type: string
+        deviceList:
+          description: List of device UUIDs which are part of deployment job id.
+          items:
+            type: string
+          type: array
       type: object
     TaskStatus:
       properties:
@@ -2607,94 +2743,71 @@ components:
         type:
           type: string
       type: object
-    HealthModule:
-      properties:
-        alertConfig:
-          items:
-            $ref: '#/components/schemas/HealthAlertConfig'
-            type: object
-          type: array
-        alertEnabled:
-          type: boolean
-        criticalThreshold:
-          format: int32
-          type: integer
-        customThresholds:
-          items:
-            $ref: '#/components/schemas/HealthThreshold'
-            type: object
-          type: array
-        enabled:
-          type: boolean
-        moduleId:
-          type: string
-        severity:
-          type: string
-        type:
-          type: string
-        warningThreshold:
-          format: int32
-          type: integer
+    DownloadReport:
+      description: Download Job report
+      properties: {}
       type: object
-    IDeviceGroup:
+    PendingChangesRequest:
+      description: Represents the pending changes request object which will be used to generate the delta of the changes pending on the device.
       properties:
         description:
           type: string
+        deviceList:
+          description: List of device UUIDs for which the pending changes request has to triggered.
+          items:
+            type: string
+          type: array
         id:
           type: string
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        members:
-          items:
-            $ref: '#/components/schemas/IBaseDevice'
-            type: object
-          type: array
         metadata:
-          $ref: '#/components/schemas/IMetadata'
+          $ref: '#/components/schemas/PendingChangesRequestMetadata'
           type: object
         name:
+          type: string
+        requestType:
+          description: 'Specifies whether cli diff or policy diff or both need to be generated. One of: CLI_DIFF | POLICY_DIFF | CLI_AND_POLICY_DIFF.'
+          enum:
+          - CLI_DIFF
+          - POLICY_DIFF
+          - CLI_AND_POLICY_DIFF
           type: string
         type:
           type: string
         version:
           type: string
       type: object
-    IValueDelete:
+    ILinks:
+      description: This defines the self referencing links for the given resource.
       properties:
-        fieldName:
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
           type: string
-        oldValue:
+        self:
+          description: Full resource URL path to reference this particular resource.
           type: string
       type: object
-    IPolicyStatus:
+    IGroupDependencyDetailEntry:
+      description: Represents the dependency information between out-of-date policies
       properties:
-        modifiedUserInfoList:
-          description: List of ModifiedUserInfo objects containing LastModifiedTime and UserName.
+        dependentPolicyList:
+          description: Describes the dependency between the out-of-date policies with the reason
           items:
-            $ref: '#/components/schemas/IModifiedUserInfo'
+            $ref: '#/components/schemas/IDependentPolicy'
             type: object
           type: array
-        policy:
-          $ref: '#/components/schemas/IPolicyModel'
-          description: Object which contains Policy Information such as id, name and policy type.
-          type: object
-        referredPolicyList:
-          description: List of PolicyStatus objects which are referred by the policy.
+        mandatoryDeployablePolicies:
+          description: List of out-of-date policies which must get deployed always in the upcoming deployment. These policies will get added into the deployment by default.
           items:
-            $ref: '#/components/schemas/IPolicyStatus'
-            type: object
+            type: string
           type: array
-        trafficInterrupting:
-          description: Boolean indicating a deployment can cause traffic interruption.
-          type: boolean
-        upToDate:
-          description: Boolean indicating whether the policy is out-of-date.
-          type: boolean
-        versionTimeStamp:
-          description: Epoch time, indicating last modified time of the policy.
-          format: int32
-          type: integer
+        selectivelyDeployablePolicies:
+          description: List of out-of-date policies which can be selectively deployed.
+          items:
+            type: string
+          type: array
       type: object
     JobHistory:
       properties:
@@ -2742,223 +2855,96 @@ components:
           description: Creator of the deployment task.
           type: string
       type: object
-    PendingChanges:
-      description: Retrieves list changes between the last successful deployment and current saved configuration for the device,.
+    DownloadReportListContainer:
       properties:
-        action:
-          description: Action done on the entity
-          enum:
-          - ADD
-          - DELETE
-          - UPDATE
-          - NOCHANGE
-          type: string
-        entityName:
-          description: 'A name field value of modified Entity. '
-          type: string
-        entityType:
-          description: An Entity type type that has been modified.
-          type: string
-        entityUUID:
-          description: ' An identifier of entity which does not change with time.'
-          type: string
-        lastUpdatedByUsers:
-          description: List of users who have modified the entity after last successful deployment.
-          items:
-            type: string
+        items:
+          $ref: '#/components/schemas/DownloadReport'
           type: array
         links:
           $ref: '#/components/schemas/ILinks'
           type: object
-        message:
-          description: In case for an entity there is no diff, due to no modification or some error during generation proper message will be given for that entity.
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    DeviceChassisData:
+      properties:
+        chassisSerialNo:
           type: string
-        parentUUID:
-          description: UUID of the entity to which this entity is grouped to. If it's empty, it means the entity is the parent entity.
+        chassisUrl:
           type: string
-        referencesAdded:
-          description: References that were added compared to its other state.
-          items:
-            $ref: '#/components/schemas/IReferenceUpdate'
-            type: object
-          type: array
-        referencesDeleted:
-          description: References that were deleted compared to its other state.
-          items:
-            $ref: '#/components/schemas/IReferenceUpdate'
-            type: object
-          type: array
-        valueAdded:
-          description: 'Values that were added compared to its other state. '
-          items:
-            $ref: '#/components/schemas/IValueAdd'
-            type: object
-          type: array
-        valueDeleted:
-          description: Values that were deleted compared to its other state.
-          items:
-            $ref: '#/components/schemas/IValueDelete'
-            type: object
-          type: array
-        valueUpdated:
-          description: 'Values that were specified compared to its other state. '
-          items:
-            $ref: '#/components/schemas/IValueUpdate'
-            type: object
-          type: array
-        version:
+        securityModuleNo:
+          format: int32
+          type: integer
+        securityModuleSN:
           type: string
       type: object
-    IHealthPolicy:
-      description: Description of Health Policy.
+    IModifiedUserInfo:
+      description: Modified User Information
       properties:
-        basePolicyID:
+        lastModifiedTime:
+          description: Timestamp indicating the time when user has last modified the policy.
+          format: int32
+          type: integer
+        userName:
+          description: Name of the user.
           type: string
-        defaultPolicy:
+      type: object
+    IDeviceListEntry:
+      properties:
+        canRollback:
+          description: Indicates whether the deployed version to device in the deployment job is rollback capable. This field is available only if context filter parameter has value as RollbackApplicable.
           type: boolean
-        description:
-          description: Description of Health Policy.
+        containerName:
+          description: Name of the container. This will still be displayed after deletion.
           type: string
-        healthModules:
-          items:
-            $ref: '#/components/schemas/HealthModule'
-            type: object
-          type: array
-        id:
-          description: Unique identifier (UUID) representing the Health policy.
+        containerUUID:
+          description: UUID of the container
           type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          description: Object representing metadata attributes for the Health policy.
-          type: object
-        name:
-          description: User-specified name of the Health policy.
-          type: string
-        policyType:
-          type: string
-        setting:
-          $ref: '#/components/schemas/HealthSetting'
-          type: object
-        type:
-          description: Type of the Health policy; this value is always HealthPolicy.
-          type: string
-        version:
-          description: Version number of the response object.
-          type: string
-      type: object
-    ReadOnly:
-      description: Defines the read only conditions if the referenced resource is read only.
-      properties:
-        reason:
-          description: Reason the resource is read only - SYSTEM (if it is system defined), RBAC (if user RBAC permissions make it read only) or DOMAIN (if resource is read only in current domain).
+        deployedVersion:
+          description: Config version of the device in the deployment job
+          format: int32
+          type: integer
+        deploymentStatus:
+          description: Deployment status of the device in the deployment job
           enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
+          - DEPLOYING
+          - SUCCEEDED
+          - PARTIALLY_SUCCEEDED
+          - FAILED
+          - SSP_SUCCEEDED
+          - SSP_FAILED
+          - SSP_PRIMARY_BOOTSTRAP_SUCCEEDED
+          - SSP_PRIMARY_BOOTSTRAP_FAILED
+          - SSP_SECONDARY_BOOTSTRAP_SUCCEEDED
+          - SSP_SECONDARY_BOOTSTRAP_FAILED
+          - PRIMARY_BOOTSTRAP_SUCCEEDED
+          - PRIMARY_BOOTSTRAP_FAILED
+          - SECONDARY_BOOTSTRAP_SUCCEEDED
+          - SECONDARY_BOOTSTRAP_FAILED
+          - BREAK_SUCCEEDED
+          - BREAK_FAILED
+          - PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - SSP_PRIMARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - SSP_SECONDARY_BOOTSTRAP_PARTIALLY_SUCCEEDED
+          - BREAK_PARTIALLY_SUCCEEDED
+          - CANCELLED
+          - NONE
           type: string
-        state:
-          description: True if this resource us read only and false otherwise.
-          type: boolean
+        deviceName:
+          description: Name of the device
+          type: string
+        deviceUUID:
+          description: UUID of the device
+          type: string
       type: object
-    ISubTask:
+    IAdvanced:
       properties:
-        description:
-          type: string
-        id:
-          type: string
-        message:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        status:
-          type: string
-        target:
-          $ref: '#/components/schemas/ITarget'
-          type: object
-      type: object
-    DeployableDevice:
-      description: Represents the Deployable Device Object.
-      properties:
-        canBeDeployed:
-          description: Boolean indicating whether the device can be deployed.
+        enableOGS:
           type: boolean
-        device:
-          $ref: '#/components/schemas/IDevice_2'
-          description: Object indicating the device object.
-          type: object
-        deviceMembers:
-          description: Describes the member information of the Device.
-          items:
-            $ref: '#/components/schemas/IDevice'
-            type: object
-          type: array
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          description: Object indicating the domain information of the device.
-          type: object
-        groupDependencyDetails:
-          $ref: '#/components/schemas/IGroupDependencyDetailEntry'
-          type: object
-        id:
-          description: String indicating the id of the device.
-          type: string
-        isDeploying:
-          description: Boolean indicating whether the deployment operation for the device is in progress.
-          type: boolean
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object containing links to this resource.
-          type: object
-        message:
-          description: Describes the reason for not allowing the deployment for a device.
-          type: string
-        name:
-          description: String indicating the device name.
-          type: string
-        policyStatusList:
-          description: List of policy objects which are part of the device.
-          items:
-            $ref: '#/components/schemas/IPolicyStatus'
-            type: object
-          type: array
-        trafficInterruption:
-          description: Boolean indicating a deployment can cause traffic interruption.
-          enum:
-          - 'YES'
-          - 'NO'
-          - UNDETERMINED
-          - ERROR
-          type: string
-        type:
-          description: Type of the Response object. This value is always DeployableDevice.
-          type: string
-        upToDate:
-          description: Boolean indicating whether the device has any out-of-date policies.
-          type: boolean
-        version:
-          description: Integer, indicating the latest deployed version of the device.
-          type: string
       type: object
   parameters:
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
-    domainUUID:
-      description: Domain UUID
-      in: path
-      name: domainUUID
-      required: true
-      schema:
-        type: string
     limit:
       description: Number of items to return.
       in: query
@@ -2967,6 +2953,13 @@ components:
       schema:
         format: int32
         type: integer
+    domainUUID:
+      description: Domain UUID
+      in: path
+      name: domainUUID
+      required: true
+      schema:
+        type: string
     offset:
       description: Index of first item to return.
       in: query
@@ -2975,6 +2968,13 @@ components:
       schema:
         format: int32
         type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

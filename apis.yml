@@ -3654,8 +3654,6 @@ apis:
     https://developer.cisco.com/docs/cisco-security-cloud-control-firewall-manager/cdfmc-api-overview/
   baseURL: https://api.us.security.cisco.com/firewall
   tags:
-  - APIKeys
-  tags_raw:
   - API Keys
   properties:
   - type: OpenAPI

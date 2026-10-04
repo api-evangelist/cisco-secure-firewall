@@ -98,6 +98,13 @@ components:
       - required
       - strict
       type: object
+    TopologyTagKeysApi:
+      properties:
+        tagKeys:
+          items:
+            $ref: '#/components/schemas/TopologyTagKey'
+          type: array
+      type: object
     TagKeyPage:
       properties:
         cursor:
@@ -105,13 +112,6 @@ components:
         tagKeys:
           items:
             type: string
-          type: array
-      type: object
-    TopologyTagKeysApi:
-      properties:
-        tagKeys:
-          items:
-            $ref: '#/components/schemas/TopologyTagKey'
           type: array
       type: object
   securitySchemes:

@@ -236,15 +236,6 @@ paths:
       - MPM Manager
 components:
   schemas:
-    MpmManagersPage:
-      properties:
-        cursor:
-          type: string
-        managers:
-          items:
-            $ref: '#/components/schemas/MpmManagerObj'
-          type: array
-      type: object
     MpmManagerObj:
       properties:
         description:
@@ -254,6 +245,15 @@ components:
           type: string
         name:
           type: string
+      type: object
+    MpmManagersPage:
+      properties:
+        cursor:
+          type: string
+        managers:
+          items:
+            $ref: '#/components/schemas/MpmManagerObj'
+          type: array
       type: object
   securitySchemes:
     BearerJWT:

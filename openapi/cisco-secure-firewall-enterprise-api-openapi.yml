@@ -211,6 +211,29 @@ paths:
                 $ref: '#/components/schemas/model.Error'
 components:
   schemas:
+    model.Region:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+    routes.PlatformBootstrapRequest:
+      type: object
+      required:
+      - enterprise_name
+      properties:
+        enterprise_name:
+          type: string
+        initial_admin:
+          type: string
+    model.Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
     model.RegionalHierarchy:
       type: object
       properties:
@@ -228,31 +251,17 @@ components:
           type: integer
         tier:
           type: integer
-    model.ProductInstanceWithMetadata:
+    model.EnterpriseProductInstances:
       type: object
       properties:
-        id:
+        enterpriseName:
           type: string
-        external_tenant_id:
-          type: string
-        provisioning_status:
-          type: string
-        region:
-          $ref: '#/components/schemas/model.Region'
-    model.Region:
-      type: object
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-    model.Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
+        isLicensed:
+          type: boolean
+        productInstancesInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/model.MergedProductInstancesInfo'
     model.MergedProductInstancesInfo:
       type: object
       properties:
@@ -270,26 +279,17 @@ components:
           type: string
         isPlatformProduct:
           type: boolean
-    routes.PlatformBootstrapRequest:
-      type: object
-      required:
-      - enterprise_name
-      properties:
-        enterprise_name:
-          type: string
-        initial_admin:
-          type: string
-    model.EnterpriseProductInstances:
+    model.ProductInstanceWithMetadata:
       type: object
       properties:
-        enterpriseName:
+        id:
           type: string
-        isLicensed:
-          type: boolean
-        productInstancesInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.MergedProductInstancesInfo'
+        external_tenant_id:
+          type: string
+        provisioning_status:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
   securitySchemes:
     EnterpriseAdminBearerAuth:
       type: oauth2

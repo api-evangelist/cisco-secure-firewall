@@ -101,16 +101,9 @@ paths:
       - Dynamic Group
 components:
   schemas:
-    MpmDynamicGroupRelation:
+    IdValue:
       properties:
-        managerId:
-          format: uuid
-          type: string
-        policyId:
-          format: uuid
-          type: string
-        ruleId:
-          format: uuid
+        id:
           type: string
       type: object
     MpmDynamicGroupRelations:
@@ -123,11 +116,6 @@ components:
           format: int32
           type: integer
       type: object
-    IdValue:
-      properties:
-        id:
-          type: string
-      type: object
     MpmDynamicGroupMpmRulesPage:
       properties:
         cursor:
@@ -136,6 +124,18 @@ components:
           items:
             $ref: '#/components/schemas/IdValue'
           type: array
+      type: object
+    MpmDynamicGroupRelation:
+      properties:
+        managerId:
+          format: uuid
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        ruleId:
+          format: uuid
+          type: string
       type: object
   securitySchemes:
     BearerJWT:

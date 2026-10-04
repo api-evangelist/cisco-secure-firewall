@@ -359,37 +359,60 @@ paths:
       - Remote Access Monitoring
 components:
   responses:
-    http400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
-    http404NotFound:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Entity not found.
-    http405MethodNotAllowed:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Method not allowed.
     http403Forbidden:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CommonApiError'
       description: User does not have sufficient privileges to perform this operation.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
+    http405MethodNotAllowed:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Method not allowed.
     http401Unauthorised:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/AuthenticationError'
       description: Request not authorized.
+    http404NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Entity not found.
   schemas:
+    RaVpnSessionPage:
+      properties:
+        count:
+          description: The total number of results available.
+          example: 100
+          format: int32
+          type: integer
+        items:
+          description: The list of items retrieved.
+          items:
+            $ref: '#/components/schemas/RaVpnSession'
+          type: array
+        limit:
+          description: The number of results retrieved.
+          example: 50
+          format: int32
+          type: integer
+        offset:
+          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
+          example: 0
+          format: int32
+          type: integer
+      type: object
     CdoTransaction:
       properties:
         cdoTransactionStatus:
@@ -501,84 +524,46 @@ components:
           format: uuid
           type: string
       type: object
-    OS:
+    Browser:
       properties:
-        type:
-          description: The type of operating system running on the client device.
-          example: mac-intel
+        name:
+          description: The name of the web browser running on the client device.
+          example: Chrome
           type: string
         version:
-          description: The version of the operating system running on the client device.
-          example: 14.2.1
+          description: The version of the web browser running on the client device.
+          example: 121.0.6167.160
           type: string
       type: object
-    ClientDevice:
+    CommonApiError:
       properties:
-        browser:
-          $ref: '#/components/schemas/Browser'
-          description: The web browser running on the client device.
-        encrypted:
-          description: Indicates whether encryption is enabled on the client device.
-          example: true
-          type: boolean
-        firewalled:
-          description: Indicates whether a firewall is enabled on the client device.
-          example: true
-          type: boolean
-        ipAddress:
-          description: The IP address of the client device that has triggered this MFA event.
-          example: 106.51.163.157
+        details:
+          additionalProperties:
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
+          type: object
+        errorCode:
+          description: A unique code that describes the error.
+          enum:
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
           type: string
-        location:
-          $ref: '#/components/schemas/Location'
-          description: The location of the client device.
-        os:
-          $ref: '#/components/schemas/OS'
-          description: The operating system of the client device.
-        passwordSet:
-          description: Indicates whether a password is set on the client device.
-          example: false
-          type: boolean
-        uid:
-          description: The unique identifier, represented as a UUID, of the device.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-      required:
-      - uid
-      type: object
-    RaVpnSessionPage:
-      properties:
-        count:
-          description: The total number of results available.
-          example: 100
-          format: int32
-          type: integer
-        items:
-          description: The list of items retrieved.
-          items:
-            $ref: '#/components/schemas/RaVpnSession'
-          type: array
-        limit:
-          description: The number of results retrieved.
-          example: 50
-          format: int32
-          type: integer
-        offset:
-          description: The offset of the results retrieved. The Security Cloud Control API uses the offset field to determine the index of the first result retrieved, and will retrieve `limit` results from the offset specified.
-          example: 0
-          format: int32
-          type: integer
-      type: object
-    AuthenticationError:
-      properties:
-        error:
+        errorMsg:
           description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
+          example: sample error
           type: string
     MfaEvent:
       properties:
@@ -622,32 +607,16 @@ components:
       - uid
       - username
       type: object
-    Location:
+    AuthenticationError:
       properties:
-        city:
-          description: The city where the client device is located.
-          example: San Jose
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
           type: string
-        country:
-          description: The country where the client device is located.
-          example: United States
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
           type: string
-        subdivision:
-          description: The subdivision (e.g., state or province) where the client device is located.
-          example: California
-          type: string
-      type: object
-    RaVpnDeviceInput:
-      properties:
-        deviceUids:
-          description: List of UIDs of the devices to refresh RA VPN sessions for. Each of these devices has to be an RA VPN headend (this is indicated by the `deviceRole` field in the device object being set to `RA_VPN_HEADEND`).
-          items:
-            type: string
-          minItems: 1
-          type: array
-      required:
-      - deviceUids
-      type: object
     MfaEventPage:
       properties:
         count:
@@ -670,6 +639,21 @@ components:
           example: 0
           format: int32
           type: integer
+      type: object
+    Location:
+      properties:
+        city:
+          description: The city where the client device is located.
+          example: San Jose
+          type: string
+        country:
+          description: The country where the client device is located.
+          example: United States
+          type: string
+        subdivision:
+          description: The subdivision (e.g., state or province) where the client device is located.
+          example: California
+          type: string
       type: object
     RaVpnSession:
       properties:
@@ -741,45 +725,61 @@ components:
       - uid
       - username
       type: object
-    CommonApiError:
+    RaVpnDeviceInput:
       properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
-          description: A human-readable error description in English.
-          example: sample error
-          type: string
-    Browser:
+        deviceUids:
+          description: List of UIDs of the devices to refresh RA VPN sessions for. Each of these devices has to be an RA VPN headend (this is indicated by the `deviceRole` field in the device object being set to `RA_VPN_HEADEND`).
+          items:
+            type: string
+          minItems: 1
+          type: array
+      required:
+      - deviceUids
+      type: object
+    ClientDevice:
       properties:
-        name:
-          description: The name of the web browser running on the client device.
-          example: Chrome
+        browser:
+          $ref: '#/components/schemas/Browser'
+          description: The web browser running on the client device.
+        encrypted:
+          description: Indicates whether encryption is enabled on the client device.
+          example: true
+          type: boolean
+        firewalled:
+          description: Indicates whether a firewall is enabled on the client device.
+          example: true
+          type: boolean
+        ipAddress:
+          description: The IP address of the client device that has triggered this MFA event.
+          example: 106.51.163.157
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+          description: The location of the client device.
+        os:
+          $ref: '#/components/schemas/OS'
+          description: The operating system of the client device.
+        passwordSet:
+          description: Indicates whether a password is set on the client device.
+          example: false
+          type: boolean
+        uid:
+          description: The unique identifier, represented as a UUID, of the device.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+      required:
+      - uid
+      type: object
+    OS:
+      properties:
+        type:
+          description: The type of operating system running on the client device.
+          example: mac-intel
           type: string
         version:
-          description: The version of the web browser running on the client device.
-          example: 121.0.6167.160
+          description: The version of the operating system running on the client device.
+          example: 14.2.1
           type: string
       type: object
   securitySchemes:

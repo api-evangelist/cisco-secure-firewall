@@ -235,18 +235,28 @@ paths:
       summary: Enable enterprise user
       x-summary-source: derived
 components:
+  responses:
+    NoContent:
+      description: No content
+    NotFoundError:
+      description: Not Found
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    GeneralError:
+      description: An unknown error occurred
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
     EnterpriseUser:
       type: object
       required:
@@ -305,24 +315,6 @@ components:
           description: it is referencing same type as [provider object's type](https://developer.okta.com/docs/reference/api/users/#provider-object)
         profile:
           $ref: '#/components/schemas/EnterpriseUserProfile'
-    ResponsibleActor:
-      type: object
-      required:
-      - id
-      - disabledAt
-      - firstName
-      - lastName
-      properties:
-        id:
-          type: string
-          format: uuid
-        disabledAt:
-          type: string
-          format: date-time
-        firstName:
-          type: string
-        lastName:
-          type: string
     EnterpriseUserProfile:
       type: object
       required:
@@ -343,32 +335,40 @@ components:
           type: string
         secondEmail:
           type: string
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    ResponsibleActor:
+      type: object
+      required:
+      - id
+      - disabledAt
+      - firstName
+      - lastName
+      properties:
+        id:
+          type: string
+          format: uuid
+        disabledAt:
+          type: string
+          format: date-time
+        firstName:
+          type: string
+        lastName:
+          type: string
   headers:
     Date:
       schema:
         type: string
         pattern: ^.*$
-  responses:
-    GeneralError:
-      description: An unknown error occurred
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NoContent:
-      description: No content
-    NotFoundError:
-      description: Not Found
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     OpenID:
       type: openIdConnect

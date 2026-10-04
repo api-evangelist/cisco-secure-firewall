@@ -264,6 +264,15 @@ paths:
       - MPM Endpoint
 components:
   schemas:
+    MpmEndpointsPage:
+      properties:
+        cursor:
+          type: string
+        endpoints:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+      type: object
     MpmEndpointObj:
       properties:
         addressEnd:
@@ -282,6 +291,22 @@ components:
         value:
           type: string
       type: object
+    MpmPolicyMetadataToRules:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        ruleIds:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
     MpmEntityRelations:
       properties:
         appGroups:
@@ -299,31 +324,6 @@ components:
         policyToRules:
           items:
             $ref: '#/components/schemas/MpmPolicyMetadataToRules'
-          type: array
-      type: object
-    MpmPolicyMetadataToRules:
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        policyId:
-          format: uuid
-          type: string
-        ruleIds:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
-    MpmEndpointsPage:
-      properties:
-        cursor:
-          type: string
-        endpoints:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
           type: array
       type: object
   securitySchemes:

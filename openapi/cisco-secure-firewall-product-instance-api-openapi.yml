@@ -176,31 +176,6 @@ paths:
                 $ref: '#/components/schemas/model.Error'
 components:
   schemas:
-    model.ProductInstance:
-      type: object
-      properties:
-        id:
-          type: string
-        external_tenant_id:
-          type: string
-        provisioning_status:
-          type: string
-        region:
-          $ref: '#/components/schemas/model.Region'
-    model.ProvisioningQuestionAnswer:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        value:
-          type: string
-    model.ProductInstanceApplyLicensesRequest:
-      type: object
-      properties:
-        sourceInstanceId:
-          type: string
     model.Region:
       type: object
       properties:
@@ -215,6 +190,20 @@ components:
           type: string
         message:
           type: string
+    model.ProvisioningQuestionAnswer:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+    model.ProductInstanceApplyLicensesRequest:
+      type: object
+      properties:
+        sourceInstanceId:
+          type: string
     model.ProductInstanceProvisionRequest:
       type: object
       properties:
@@ -228,6 +217,17 @@ components:
           type: string
         region:
           type: string
+    model.ProductInstance:
+      type: object
+      properties:
+        id:
+          type: string
+        external_tenant_id:
+          type: string
+        provisioning_status:
+          type: string
+        region:
+          $ref: '#/components/schemas/model.Region'
   securitySchemes:
     EnterpriseAdminBearerAuth:
       type: oauth2

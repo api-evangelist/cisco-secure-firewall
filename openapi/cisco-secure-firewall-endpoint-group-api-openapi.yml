@@ -333,15 +333,6 @@ paths:
       - Endpoint Group
 components:
   schemas:
-    EndpointGroupPageApi:
-      properties:
-        cursor:
-          type: string
-        epgs:
-          items:
-            $ref: '#/components/schemas/EndpointGroupApi'
-          type: array
-      type: object
     GroupReferences:
       properties:
         groupIds:
@@ -354,10 +345,34 @@ components:
             $ref: '#/components/schemas/PolicyReference'
           type: array
       type: object
-    IdValue:
+    EndpointGroupUserApi:
       properties:
-        id:
+        description:
           type: string
+        memberEndpoints:
+          items:
+            $ref: '#/components/schemas/EndpointWithTagApi'
+          type: array
+        memberGroups:
+          example:
+          - memberGroup1
+          format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+          items:
+            example: '["memberGroup1"]'
+            format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
+            type: string
+          type: array
+      type: object
+    ExistingAndMissingEndpointGroupsApi:
+      properties:
+        existingEpgs:
+          items:
+            $ref: '#/components/schemas/EndpointGroupApi'
+          type: array
+        missingEpgs:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
       type: object
     EndpointWithTagApi:
       properties:
@@ -376,6 +391,43 @@ components:
           type: array
       required:
       - ip
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
+      type: object
+    EndpointGroupListApi:
+      properties:
+        epgs:
+          items:
+            $ref: '#/components/schemas/EndpointGroupApi'
+          type: array
+      type: object
+    EndpointGroupIdPageApi:
+      properties:
+        cursor:
+          type: string
+        epgs:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
+      type: object
+    EndpointGroupPageApi:
+      properties:
+        cursor:
+          type: string
+        epgs:
+          items:
+            $ref: '#/components/schemas/EndpointGroupApi'
+          type: array
+      type: object
+    EndpointGroupIdListUserApi:
+      properties:
+        endpointGroupIds:
+          items:
+            type: string
+          type: array
       type: object
     ReqIdAndReqSystem:
       properties:
@@ -398,6 +450,11 @@ components:
           - MPM_MULTI_POLICY_PUSH
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
+      type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
       type: object
     PolicyReference:
       properties:
@@ -433,63 +490,6 @@ components:
         revision:
           format: int32
           type: integer
-      type: object
-    EndpointGroupIdListUserApi:
-      properties:
-        endpointGroupIds:
-          items:
-            type: string
-          type: array
-      type: object
-    ExistingAndMissingEndpointGroupsApi:
-      properties:
-        existingEpgs:
-          items:
-            $ref: '#/components/schemas/EndpointGroupApi'
-          type: array
-        missingEpgs:
-          items:
-            $ref: '#/components/schemas/IdValue'
-          type: array
-      type: object
-    TopologyRequestResponse:
-      properties:
-        request:
-          $ref: '#/components/schemas/ReqIdAndReqSystem'
-      type: object
-    EndpointGroupIdPageApi:
-      properties:
-        cursor:
-          type: string
-        epgs:
-          items:
-            $ref: '#/components/schemas/IdValue'
-          type: array
-      type: object
-    EndpointGroupUserApi:
-      properties:
-        description:
-          type: string
-        memberEndpoints:
-          items:
-            $ref: '#/components/schemas/EndpointWithTagApi'
-          type: array
-        memberGroups:
-          example:
-          - memberGroup1
-          format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
-          items:
-            example: '["memberGroup1"]'
-            format: 'MemberGroups should match this regex: ^[A-Za-z-_0-9~.]+$'
-            type: string
-          type: array
-      type: object
-    EndpointGroupListApi:
-      properties:
-        epgs:
-          items:
-            $ref: '#/components/schemas/EndpointGroupApi'
-          type: array
       type: object
   securitySchemes:
     BearerJWT:

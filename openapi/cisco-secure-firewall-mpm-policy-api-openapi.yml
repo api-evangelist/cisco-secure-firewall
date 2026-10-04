@@ -221,22 +221,51 @@ paths:
       - MPM Policy
 components:
   schemas:
-    MpmEndpointObj:
+    MpmPolicyObj:
       properties:
-        addressEnd:
-          format: int64
-          type: integer
-        addressStart:
-          format: int64
-          type: integer
         description:
           type: string
         id:
           format: uuid
           type: string
+        installTargets:
+          items:
+            type: string
+          type: array
         name:
           type: string
-        value:
+        natRules:
+          items:
+            $ref: '#/components/schemas/MpmNatRuleObj'
+          type: array
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+        rules:
+          items:
+            $ref: '#/components/schemas/MpmRuleObj'
+          type: array
+      type: object
+    MpmEndpointGroupObj:
+      properties:
+        description:
+          type: string
+        epgs:
+          items:
+            $ref: '#/components/schemas/MpmEndpointGroupObj'
+          type: array
+        eps:
+          items:
+            $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+        id:
+          format: uuid
+          type: string
+        name:
           type: string
       type: object
     MpmRuleObj:
@@ -292,63 +321,6 @@ components:
         srcEps:
           items:
             $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
-      type: object
-    MpmPolicyObj:
-      properties:
-        description:
-          type: string
-        id:
-          format: uuid
-          type: string
-        installTargets:
-          items:
-            type: string
-          type: array
-        name:
-          type: string
-        natRules:
-          items:
-            $ref: '#/components/schemas/MpmNatRuleObj'
-          type: array
-        policyType:
-          enum:
-          - SECURITY
-          - GOVERNANCE_PREPEND
-          - GOVERNANCE_APPEND
-          - NAT
-          type: string
-        rules:
-          items:
-            $ref: '#/components/schemas/MpmRuleObj'
-          type: array
-      type: object
-    IdValue:
-      properties:
-        id:
-          type: string
-      type: object
-    MpmAppGroupObj:
-      properties:
-        aps:
-          items:
-            $ref: '#/components/schemas/MpmAppObj'
-          type: array
-        description:
-          type: string
-        id:
-          format: uuid
-          type: string
-        name:
-          type: string
-      type: object
-    MpmPoliciesPage:
-      properties:
-        cursor:
-          type: string
-        policies:
-          items:
-            $ref: '#/components/schemas/MpmPolicyWithoutRulesObj'
           type: array
       type: object
     MpmNatRuleObj:
@@ -407,18 +379,46 @@ components:
           - HIDE
           type: string
       type: object
-    MpmEndpointGroupObj:
+    MpmPoliciesPage:
       properties:
+        cursor:
+          type: string
+        policies:
+          items:
+            $ref: '#/components/schemas/MpmPolicyWithoutRulesObj'
+          type: array
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
+      type: object
+    MpmEndpointObj:
+      properties:
+        addressEnd:
+          format: int64
+          type: integer
+        addressStart:
+          format: int64
+          type: integer
         description:
           type: string
-        epgs:
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    MpmAppGroupObj:
+      properties:
+        aps:
           items:
-            $ref: '#/components/schemas/MpmEndpointGroupObj'
+            $ref: '#/components/schemas/MpmAppObj'
           type: array
-        eps:
-          items:
-            $ref: '#/components/schemas/MpmEndpointObj'
-          type: array
+        description:
+          type: string
         id:
           format: uuid
           type: string

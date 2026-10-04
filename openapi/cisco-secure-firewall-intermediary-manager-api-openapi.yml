@@ -1981,10 +1981,55 @@ paths:
       - Intermediary Manager
 components:
   schemas:
-    IdValue:
+    ZoneResp:
       properties:
         id:
           type: string
+      required:
+      - id
+      type: object
+    AddressesApi:
+      properties:
+        addresses:
+          description: List of valid IPV4 addresses
+          example:
+          - value: 1.1.1.1/32
+          items:
+            $ref: '#/components/schemas/StringValue'
+          type: array
+      type: object
+    PensandoDssManagerAddAddressesApi:
+      properties:
+        addresses:
+          items:
+            type: string
+          type: array
+        parentZoneId:
+          type: string
+        vlanId:
+          format: int32
+          type: integer
+        vrfId:
+          pattern: '[A-Za-z0-9]+[A-Za-z0-9-.]*[A-Za-z0-9]+'
+          type: string
+      required:
+      - addresses
+      - vlanId
+      - vrfId
+      type: object
+    RuleSetApi:
+      properties:
+        id:
+          type: string
+        intermediaryManagerId:
+          type: string
+      type: object
+    GatewaySets:
+      properties:
+        gatewaySets:
+          items:
+            $ref: '#/components/schemas/IdValue'
+          type: array
       type: object
     AddressWithZoneMatch:
       properties:
@@ -1994,6 +2039,87 @@ components:
           description: Valid IPV4 address
           example: 1.1.1.1/32
           type: string
+      type: object
+    PensandoDscManagerApi:
+      properties:
+        credentialName:
+          type: string
+        hostDetails:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+          type: array
+        id:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IntermediaryManagerMetadata'
+        parentZoneId:
+          type: string
+        status:
+          description: Monitoring Status
+          enum:
+          - INACTIVE
+          - ACTIVE
+          type: string
+      required:
+      - hostDetails
+      - id
+      - status
+      type: object
+    IntermediaryManagerIdPage:
+      properties:
+        cursor:
+          type: string
+        managerIds:
+          items:
+            type: string
+          type: array
+      type: object
+    IntermediaryManagersResponse:
+      properties:
+        intermediaryManagers:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerInfo'
+          type: array
+      type: object
+    IntermediaryManagerIdResponse:
+      properties:
+        id:
+          type: string
+      required:
+      - id
+      type: object
+    PsmPdtAddAddressResponse:
+      properties:
+        affectedEntities:
+          $ref: '#/components/schemas/PsmPdtTopologyAffectedEntities'
+        reqId:
+          format: uuid
+          type: string
+        requestingSystem:
+          enum:
+          - PCM
+          - SDI
+          - MPM
+          - RED
+          - SEEDING
+          - TOPOLOGY
+          - PCM_TOPOLOGY_CHANGE
+          - SDI_TOPOLOGY_CHANGE
+          - MPM_SECURITY_TOPOLOGY_CHANGE
+          - MPM_POLICY_IMPORT
+          - ZONE_PATH_TOPOLOGY_CHANGE
+          - MPM_MULTI_POLICY_PUSH
+          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
+          type: string
+      type: object
+    UpdateMonitoringStatusRequest:
+      properties:
+        managerId:
+          type: string
+        message:
+          type: string
+        status:
+          type: boolean
       type: object
     CdoAsaGatewaySetRequest:
       properties:
@@ -2018,6 +2144,40 @@ components:
           - UNMANAGED
           type: string
       type: object
+    CdoManagerRequest:
+      properties:
+        credentialName:
+          type: string
+        hostDetails:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+          type: array
+        id:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/IntermediaryManagerMetadata'
+        parentZoneId:
+          type: string
+        status:
+          description: Monitoring Status
+          enum:
+          - INACTIVE
+          - ACTIVE
+          type: string
+      required:
+      - hostDetails
+      - id
+      - status
+      type: object
+    PsmPdtTopologyAffectedEntities:
+      properties:
+        enforcementPointId:
+          type: string
+        gwSetId:
+          type: string
+        zoneId:
+          type: string
+      type: object
     PensandoDssManagerDeleteAddressesApi:
       properties:
         addresses:
@@ -2034,12 +2194,21 @@ components:
       - vlanId
       - vrfId
       type: object
-    ZoneResp:
+    MultiCloudDefenseManagerApi:
       properties:
+        credentialName:
+          type: string
+        hostDetails:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+          type: array
         id:
           type: string
-      required:
-      - id
+        status:
+          enum:
+          - INACTIVE
+          - ACTIVE
+          type: string
       type: object
     IntermediaryManagerMetadata:
       properties:
@@ -2054,6 +2223,13 @@ components:
         monitorRetryCount:
           format: int32
           type: integer
+      type: object
+    AddressApi:
+      properties:
+        address:
+          description: Valid IPV4 addresses
+          example: 1.1.1.1/32
+          type: string
       type: object
     PensandoDssManagerApi:
       properties:
@@ -2086,78 +2262,6 @@ components:
           - ACTIVE
           type: string
       type: object
-    TopologyRequestResponse:
-      properties:
-        request:
-          $ref: '#/components/schemas/ReqIdAndReqSystem'
-      type: object
-    RuleSetApi:
-      properties:
-        id:
-          type: string
-        intermediaryManagerId:
-          type: string
-      type: object
-    AddressApi:
-      properties:
-        address:
-          description: Valid IPV4 addresses
-          example: 1.1.1.1/32
-          type: string
-      type: object
-    IntermediaryManagersResponse:
-      properties:
-        intermediaryManagers:
-          items:
-            $ref: '#/components/schemas/IntermediaryManagerInfo'
-          type: array
-      type: object
-    GatewaySets:
-      properties:
-        gatewaySets:
-          items:
-            $ref: '#/components/schemas/IdValue'
-          type: array
-      type: object
-    StringValue:
-      properties:
-        value:
-          type: string
-      type: object
-    IntermediaryManagerIdPage:
-      properties:
-        cursor:
-          type: string
-        managerIds:
-          items:
-            type: string
-          type: array
-      type: object
-    IntermediaryManagerIdResponse:
-      properties:
-        id:
-          type: string
-      required:
-      - id
-      type: object
-    PensandoPdtAddAddressesToInfraApi:
-      properties:
-        address:
-          $ref: '#/components/schemas/AddressWithZoneMatch'
-        parentZone:
-          type: string
-      required:
-      - address
-      type: object
-    PsmPdtTopologyAffectedEntities:
-      properties:
-        enforcementPointId:
-          type: string
-        gwSetId:
-          type: string
-        zoneId:
-          type: string
-      type: object
     IntermediaryManagerHostDetails:
       properties:
         hostname:
@@ -2174,42 +2278,13 @@ components:
       - hostname
       - port
       type: object
-    IntermediaryManagerUpdateApi:
+    PensandoDssManagerCreateVrfApi:
       properties:
-        hostDetails:
-          items:
-            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
-          type: array
-        id:
+        vrfId:
+          pattern: '[A-Za-z0-9]+[A-Za-z0-9-.]*[A-Za-z0-9]+'
           type: string
       required:
-      - hostDetails
-      - id
-      type: object
-    PensandoDscPdtManagerApi:
-      properties:
-        credentialName:
-          type: string
-        hostDetails:
-          items:
-            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
-          type: array
-        id:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IntermediaryManagerMetadata'
-        parentZoneId:
-          type: string
-        status:
-          description: Monitoring Status
-          enum:
-          - INACTIVE
-          - ACTIVE
-          type: string
-      required:
-      - hostDetails
-      - id
-      - status
+      - vrfId
       type: object
     ReqIdAndReqSystem:
       properties:
@@ -2232,117 +2307,6 @@ components:
           - MPM_MULTI_POLICY_PUSH
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
-      type: object
-    PensandoDssManagerAddAddressesApi:
-      properties:
-        addresses:
-          items:
-            type: string
-          type: array
-        parentZoneId:
-          type: string
-        vlanId:
-          format: int32
-          type: integer
-        vrfId:
-          pattern: '[A-Za-z0-9]+[A-Za-z0-9-.]*[A-Za-z0-9]+'
-          type: string
-      required:
-      - addresses
-      - vlanId
-      - vrfId
-      type: object
-    CdoManagerRequest:
-      properties:
-        credentialName:
-          type: string
-        hostDetails:
-          items:
-            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
-          type: array
-        id:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/IntermediaryManagerMetadata'
-        parentZoneId:
-          type: string
-        status:
-          description: Monitoring Status
-          enum:
-          - INACTIVE
-          - ACTIVE
-          type: string
-      required:
-      - hostDetails
-      - id
-      - status
-      type: object
-    IntermediaryManagerInfo:
-      properties:
-        hostname:
-          type: string
-        id:
-          type: string
-        port:
-          format: int32
-          type: integer
-      type: object
-    PsmPdtAddAddressResponse:
-      properties:
-        affectedEntities:
-          $ref: '#/components/schemas/PsmPdtTopologyAffectedEntities'
-        reqId:
-          format: uuid
-          type: string
-        requestingSystem:
-          enum:
-          - PCM
-          - SDI
-          - MPM
-          - RED
-          - SEEDING
-          - TOPOLOGY
-          - PCM_TOPOLOGY_CHANGE
-          - SDI_TOPOLOGY_CHANGE
-          - MPM_SECURITY_TOPOLOGY_CHANGE
-          - MPM_POLICY_IMPORT
-          - ZONE_PATH_TOPOLOGY_CHANGE
-          - MPM_MULTI_POLICY_PUSH
-          - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
-          type: string
-      type: object
-    TopologyRequestsResponse:
-      properties:
-        requests:
-          items:
-            $ref: '#/components/schemas/ReqIdAndReqSystem'
-          type: array
-      type: object
-    CredentialNameRequest:
-      properties:
-        credentialName:
-          type: string
-      type: object
-    AddressWithExactMatch:
-      properties:
-        addresses:
-          items:
-            $ref: '#/components/schemas/AddressWithZoneMatch'
-          type: array
-        parentZone:
-          type: string
-      required:
-      - addresses
-      type: object
-    AddressesApi:
-      properties:
-        addresses:
-          description: List of valid IPV4 addresses
-          example:
-          - value: 1.1.1.1/32
-          items:
-            $ref: '#/components/schemas/StringValue'
-          type: array
       type: object
     PsmPdtRetireZoneResponse:
       properties:
@@ -2373,40 +2337,21 @@ components:
         zoneId:
           type: string
       type: object
-    MultiCloudDefenseManagerApi:
+    StringValue:
       properties:
-        credentialName:
-          type: string
-        hostDetails:
-          items:
-            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
-          type: array
-        id:
-          type: string
-        status:
-          enum:
-          - INACTIVE
-          - ACTIVE
+        value:
           type: string
       type: object
-    PensandoDssManagerCreateVrfApi:
+    PensandoPdtAddAddressesToInfraApi:
       properties:
-        vrfId:
-          pattern: '[A-Za-z0-9]+[A-Za-z0-9-.]*[A-Za-z0-9]+'
+        address:
+          $ref: '#/components/schemas/AddressWithZoneMatch'
+        parentZone:
           type: string
       required:
-      - vrfId
+      - address
       type: object
-    UpdateMonitoringStatusRequest:
-      properties:
-        managerId:
-          type: string
-        message:
-          type: string
-        status:
-          type: boolean
-      type: object
-    PensandoDscManagerApi:
+    PensandoDscPdtManagerApi:
       properties:
         credentialName:
           type: string
@@ -2430,6 +2375,61 @@ components:
       - hostDetails
       - id
       - status
+      type: object
+    IdValue:
+      properties:
+        id:
+          type: string
+      type: object
+    IntermediaryManagerInfo:
+      properties:
+        hostname:
+          type: string
+        id:
+          type: string
+        port:
+          format: int32
+          type: integer
+      type: object
+    AddressWithExactMatch:
+      properties:
+        addresses:
+          items:
+            $ref: '#/components/schemas/AddressWithZoneMatch'
+          type: array
+        parentZone:
+          type: string
+      required:
+      - addresses
+      type: object
+    CredentialNameRequest:
+      properties:
+        credentialName:
+          type: string
+      type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
+      type: object
+    IntermediaryManagerUpdateApi:
+      properties:
+        hostDetails:
+          items:
+            $ref: '#/components/schemas/IntermediaryManagerHostDetails'
+          type: array
+        id:
+          type: string
+      required:
+      - hostDetails
+      - id
+      type: object
+    TopologyRequestsResponse:
+      properties:
+        requests:
+          items:
+            $ref: '#/components/schemas/ReqIdAndReqSystem'
+          type: array
       type: object
   securitySchemes:
     BearerJWT:

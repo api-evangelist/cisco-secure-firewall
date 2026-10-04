@@ -368,17 +368,55 @@ paths:
       x-publicly-available: true
 components:
   schemas:
-    Error:
+    AssignedGroups:
       properties:
-        code:
-          format: int32
-          type: integer
-        message:
+        id:
+          description: id of the group
+          example: 6280494d-dd0f-4655-b558-d36ce9a10655
           type: string
+        name:
+          description: name of the assigned group
+          example: Group A
+          type: string
+    PostManagedRelationshipResponse:
+      properties:
+        id:
+          description: id of the org
+          example: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
+          type: string
+        name:
+          description: name of the org
+          example: Test Enterprise
+          type: string
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/AssignedSubscriptions'
+          type: array
+    EntitlementManagedOrg:
+      example:
+        id: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
+        subscriptions:
+        - id: subs20250110
+          skus:
+          - key: BPT-SEC
+            quantity: 200
+          - key: XDR-ESS
+            quantity: 100
+        - id: subs20250111
+          skus:
+          - key: UPT-SEC-ESS
+            quantity: 200
+      properties:
+        id:
+          description: id of the managed org
+          example: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
+          type: string
+        subscriptions:
+          items:
+            $ref: '#/components/schemas/EntitlementSubscription'
+          type: array
       required:
-      - code
-      - message
-      type: object
+      - id
     EntitlementShareRequest:
       properties:
         managed_orgs:
@@ -427,20 +465,17 @@ components:
             type: object
           type: array
       type: object
-    AssignedAdmins:
+    Error:
       properties:
-        email:
-          description: email of the assigned admin
-          example: john.doe@xyz.com
+        code:
+          format: int32
+          type: integer
+        message:
           type: string
-        id:
-          description: id of the admin
-          example: 00u251alpxbbASGcC0h8
-          type: string
-        name:
-          description: name of the assigned admin
-          example: John Doe
-          type: string
+      required:
+      - code
+      - message
+      type: object
     organizationsRelationship:
       properties:
         assigned_admins:
@@ -489,29 +524,19 @@ components:
           items:
             $ref: '#/components/schemas/AssignedSubscriptions'
           type: array
-    PostManagedRelationshipResponse:
+    AssignedAdmins:
       properties:
+        email:
+          description: email of the assigned admin
+          example: john.doe@xyz.com
+          type: string
         id:
-          description: id of the org
-          example: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
+          description: id of the admin
+          example: 00u251alpxbbASGcC0h8
           type: string
         name:
-          description: name of the org
-          example: Test Enterprise
-          type: string
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/AssignedSubscriptions'
-          type: array
-    AssignedGroups:
-      properties:
-        id:
-          description: id of the group
-          example: 6280494d-dd0f-4655-b558-d36ce9a10655
-          type: string
-        name:
-          description: name of the assigned group
-          example: Group A
+          description: name of the assigned admin
+          example: John Doe
           type: string
     AssignedSubscriptions:
       properties:
@@ -543,46 +568,7 @@ components:
                 type: array
             type: object
           type: array
-    EntitlementManagedOrg:
-      example:
-        id: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
-        subscriptions:
-        - id: subs20250110
-          skus:
-          - key: BPT-SEC
-            quantity: 200
-          - key: XDR-ESS
-            quantity: 100
-        - id: subs20250111
-          skus:
-          - key: UPT-SEC-ESS
-            quantity: 200
-      properties:
-        id:
-          description: id of the managed org
-          example: 2b63ff9f-02e2-4f8e-ac98-b9e42c9feae1
-          type: string
-        subscriptions:
-          items:
-            $ref: '#/components/schemas/EntitlementSubscription'
-          type: array
-      required:
-      - id
-  headers:
-    Date:
-      schema:
-        pattern: ^.*$
-        type: string
   responses:
-    GeneralError:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: An unknown error occurred
-      headers:
-        Date:
-          $ref: '#/components/headers/Date'
     NotFoundError:
       content:
         application/json:
@@ -592,6 +578,20 @@ components:
       headers:
         Date:
           $ref: '#/components/headers/Date'
+    GeneralError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: An unknown error occurred
+      headers:
+        Date:
+          $ref: '#/components/headers/Date'
+  headers:
+    Date:
+      schema:
+        pattern: ^.*$
+        type: string
   securitySchemes:
     OpenID:
       openIdConnectUrl: https://auth.example.com/.well-known/openid-configuration

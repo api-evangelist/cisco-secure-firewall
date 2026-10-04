@@ -73,28 +73,6 @@ paths:
       - Feedback
 components:
   schemas:
-    quickPicks:
-      description: quick pick feedbacks object
-      properties:
-        quickPicks:
-          additionalProperties:
-            $ref: '#/components/schemas/quickPickFeedbacks'
-          description: Map containing model_type <> quick picks.
-          type: object
-      type: object
-    quickPickFeedback:
-      description: quick pick feedback object
-      properties:
-        deleted:
-          description: Indicates if the quick pick feedback is deleted.
-          type: boolean
-        displayString:
-          description: The display string for the quick pick feedback.
-          type: string
-        id:
-          description: The unique identifier for the quick pick feedback.
-          type: string
-      type: object
     quickPickFeedbacks:
       description: quick pick feedbacks object
       properties:
@@ -103,6 +81,15 @@ components:
           items:
             $ref: '#/components/schemas/quickPickFeedback'
           type: array
+      type: object
+    quickPicks:
+      description: quick pick feedbacks object
+      properties:
+        quickPicks:
+          additionalProperties:
+            $ref: '#/components/schemas/quickPickFeedbacks'
+          description: Map containing model_type <> quick picks.
+          type: object
       type: object
     errorResponse:
       description: error response
@@ -115,6 +102,19 @@ components:
           type: object
         message:
           description: Error message
+          type: string
+      type: object
+    quickPickFeedback:
+      description: quick pick feedback object
+      properties:
+        deleted:
+          description: Indicates if the quick pick feedback is deleted.
+          type: boolean
+        displayString:
+          description: The display string for the quick pick feedback.
+          type: string
+        id:
+          description: The unique identifier for the quick pick feedback.
           type: string
       type: object
   securitySchemes:

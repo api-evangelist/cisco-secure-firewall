@@ -157,105 +157,6 @@ components:
             $ref: '#/components/schemas/MpmRequestInfo'
           type: array
       type: object
-    Task:
-      properties:
-        allocatedTime:
-          format: date-time
-          type: string
-        completedTime:
-          format: date-time
-          type: string
-        gwSetId:
-          type: string
-        taskId:
-          type: string
-        taskStatus:
-          enum:
-          - ALLOCATED
-          - DISCARDED
-          - SUCCEEDED
-          - FAILED
-          type: string
-        workerId:
-          type: string
-      type: object
-    MpmPolicyIdentifier:
-      properties:
-        managerId:
-          format: uuid
-          type: string
-        policyId:
-          format: uuid
-          type: string
-        policyType:
-          enum:
-          - SECURITY
-          - GOVERNANCE_PREPEND
-          - GOVERNANCE_APPEND
-          - NAT
-          type: string
-        revisionId:
-          format: int32
-          type: integer
-      required:
-      - managerId
-      - policyId
-      - policyType
-      - revisionId
-      type: object
-    MpmMultiPolicyPushRequestApi:
-      properties:
-        gatewaySetId:
-          type: string
-        policyIdentifiers:
-          items:
-            $ref: '#/components/schemas/MpmPolicyIdentifier'
-          type: array
-      required:
-      - gatewaySetId
-      - policyIdentifiers
-      type: object
-    SubRequest:
-      properties:
-        errors:
-          type: string
-        executionCount:
-          format: int32
-          type: integer
-        gatewaySetInfo:
-          enum:
-          - ACTIVE
-          - HELD
-          - SKIPPED
-          - UNMANAGED
-          type: string
-        gwSetId:
-          type: string
-        modifiedTime:
-          format: date-time
-          type: string
-        priorityValue:
-          format: int32
-          type: integer
-        queuedTime:
-          format: date-time
-          type: string
-        reqId:
-          format: uuid
-          type: string
-        retryThreshold:
-          format: int32
-          type: integer
-        subReqStatus:
-          enum:
-          - READY
-          - IN_PROGRESS
-          - HELD
-          - SKIPPED
-          - SUCCEEDED
-          - ERRORED
-          type: string
-      type: object
     MpmRequestInfo:
       properties:
         createdBy:
@@ -337,6 +238,105 @@ components:
       - policyId
       - policyType
       - revisionId
+      type: object
+    MpmPolicyIdentifier:
+      properties:
+        managerId:
+          format: uuid
+          type: string
+        policyId:
+          format: uuid
+          type: string
+        policyType:
+          enum:
+          - SECURITY
+          - GOVERNANCE_PREPEND
+          - GOVERNANCE_APPEND
+          - NAT
+          type: string
+        revisionId:
+          format: int32
+          type: integer
+      required:
+      - managerId
+      - policyId
+      - policyType
+      - revisionId
+      type: object
+    MpmMultiPolicyPushRequestApi:
+      properties:
+        gatewaySetId:
+          type: string
+        policyIdentifiers:
+          items:
+            $ref: '#/components/schemas/MpmPolicyIdentifier'
+          type: array
+      required:
+      - gatewaySetId
+      - policyIdentifiers
+      type: object
+    Task:
+      properties:
+        allocatedTime:
+          format: date-time
+          type: string
+        completedTime:
+          format: date-time
+          type: string
+        gwSetId:
+          type: string
+        taskId:
+          type: string
+        taskStatus:
+          enum:
+          - ALLOCATED
+          - DISCARDED
+          - SUCCEEDED
+          - FAILED
+          type: string
+        workerId:
+          type: string
+      type: object
+    SubRequest:
+      properties:
+        errors:
+          type: string
+        executionCount:
+          format: int32
+          type: integer
+        gatewaySetInfo:
+          enum:
+          - ACTIVE
+          - HELD
+          - SKIPPED
+          - UNMANAGED
+          type: string
+        gwSetId:
+          type: string
+        modifiedTime:
+          format: date-time
+          type: string
+        priorityValue:
+          format: int32
+          type: integer
+        queuedTime:
+          format: date-time
+          type: string
+        reqId:
+          format: uuid
+          type: string
+        retryThreshold:
+          format: int32
+          type: integer
+        subReqStatus:
+          enum:
+          - READY
+          - IN_PROGRESS
+          - HELD
+          - SKIPPED
+          - SUCCEEDED
+          - ERRORED
+          type: string
       type: object
   securitySchemes:
     BearerJWT:

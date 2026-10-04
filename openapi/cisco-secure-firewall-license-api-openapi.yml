@@ -435,124 +435,8 @@ paths:
       summary: Create smart license
       x-summary-source: derived
 components:
-  parameters:
-    limit:
-      description: Number of items to return.
-      in: query
-      name: limit
-      required: false
-      schema:
-        format: int32
-        type: integer
-    expanded:
-      description: If set to true, the GET response displays a list of objects with additional attributes.
-      in: query
-      name: expanded
-      required: false
-      schema:
-        type: boolean
-    offset:
-      description: Index of first item to return.
-      in: query
-      name: offset
-      required: false
-      schema:
-        format: int32
-        type: integer
   schemas:
-    PagingContainer:
-      properties:
-        count:
-          format: int32
-          type: integer
-        limit:
-          format: int32
-          type: integer
-        offset:
-          format: int32
-          type: integer
-        pages:
-          format: int32
-          type: integer
-      type: object
-    IMetadata:
-      properties:
-        domain:
-          $ref: '#/components/schemas/IDomain'
-          type: object
-        isLocked:
-          type: boolean
-        lastUser:
-          $ref: '#/components/schemas/IMetadataUser'
-          type: object
-        matches:
-          items:
-            type: string
-          type: array
-        readOnly:
-          $ref: '#/components/schemas/IReadonly'
-          type: object
-        timestamp:
-          format: int32
-          type: integer
-      type: object
-    DeviceLicenseListContainer:
-      properties:
-        items:
-          $ref: '#/components/schemas/DeviceLicense'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
-      type: object
-    SmartLicense:
-      description: API's to trigger Smart License related operations like evaluation, registration, de-registration and Smart License operations on devices.
-      properties:
-        description:
-          description: More information about the Smart License.
-          type: string
-        force:
-          description: true | false, if true, Overwrite FMC instance in Smart Software Manager if instance already exists. default is false
-          type: string
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          description: Object representing this resource.
-          type: object
-        metadata:
-          $ref: '#/components/schemas/ISmartLicenseMetaData'
-          description: Object representing metadata attributes for the Smart License.
-          type: object
-        name:
-          description: Name of the Smart License.
-          type: string
-        regStatus:
-          description: REGISTERED|UNREGISTERED|RESERVATION_IN_PROGRESS|EVALUATION
-          enum:
-          - REGISTERED
-          - UNREGISTERED
-          - RESERVATION_IN_PROGRESS
-          - EVALUATION
-          type: string
-        registrationType:
-          description: EVALUATION|REGISTERED|DEREGISTERED
-          enum:
-          - EVALUATION
-          - REGISTER
-          - DEREGISTER
-          type: string
-        token:
-          description: X2M3YmJlY...
-          type: string
-        type:
-          description: SmartLicense
-          type: string
-      type: object
-    IDomain:
+    IMetadataUser:
       properties:
         id:
           type: string
@@ -562,76 +446,6 @@ components:
         name:
           type: string
         type:
-          type: string
-      type: object
-    ILinks:
-      description: This defines the self referencing links for the given resource.
-      properties:
-        parent:
-          description: Full resource URL path to reference the parent (if any) for this resource.
-          type: string
-        self:
-          description: Full resource URL path to reference this particular resource.
-          type: string
-      type: object
-    IReadonly:
-      properties:
-        reason:
-          enum:
-          - RBAC
-          - SYSTEM
-          - DOMAIN
-          type: string
-        state:
-          type: boolean
-      type: object
-    ErrorResponse:
-      properties:
-        category:
-          description: Describes the category of the error thrown.
-          enum:
-          - FRAMEWORK
-          - OTHER
-          - VALIDATION
-          type: string
-        messages:
-          description: List of error messages which the response has.
-          items:
-            $ref: '#/components/schemas/ErrorMessagesContainer'
-            type: object
-          type: array
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
-          type: string
-      type: object
-    ErrorMessagesContainer:
-      properties:
-        bulkPayloadIndex:
-          description: More details about the error.
-          type: string
-        code:
-          description: More details about the error.
-          type: string
-        description:
-          description: More details about the error.
-          type: string
-        details:
-          description: More details about the error.
-          type: string
-        errorCode:
-          description: More details about the error.
-          type: string
-        location:
-          description: More details about the error.
-          type: string
-        severity:
-          description: Specifies the Highest level severity among all the error messages.
-          enum:
-          - ERROR
-          - WARN
           type: string
       type: object
     ISmartLicenseMetaData:
@@ -677,83 +491,36 @@ components:
         virtualAccount:
           type: string
       type: object
-    SmartLicenseListContainer:
+    ILinks:
+      description: This defines the self referencing links for the given resource.
       properties:
-        items:
-          $ref: '#/components/schemas/SmartLicense'
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        paging:
-          $ref: '#/components/schemas/PagingContainer'
-          type: object
+        parent:
+          description: Full resource URL path to reference the parent (if any) for this resource.
+          type: string
+        self:
+          description: Full resource URL path to reference this particular resource.
+          type: string
       type: object
-    IDeviceLicense:
+    ErrorResponse:
       properties:
-        description:
+        category:
+          description: Describes the category of the error thrown.
+          enum:
+          - FRAMEWORK
+          - OTHER
+          - VALIDATION
           type: string
-        id:
-          type: string
-        items:
+        messages:
+          description: List of error messages which the response has.
           items:
-            $ref: '#/components/schemas/IDeviceLicense'
+            $ref: '#/components/schemas/ErrorMessagesContainer'
             type: object
           type: array
-        licenseTypes:
-          items:
-            enum:
-            - ESSENTIALS
-            - EXPORT_CONTROL
-            - MALWARE_DEFENSE
-            - MALWARE_DEFENSE_HA
-            - SECURE_CLIENT_PREMIER
-            - SECURE_CLIENT_PREMIER_HA
-            - SECURE_CLIENT_PREMIER_ADVANTAGE
-            - SECURE_CLIENT_PREMIER_ADVANTAGE_HA
-            - URL
-            - URL_HA
-            - IPS
-            - IPS_HA
-            - SECURE_CLIENT_VPNOnly
-            - SECURE_CLIENT_VPNOnly_HA
-            - CARRIER
-            - CARRIER_HA
-            type: string
-          type: array
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        metadata:
-          $ref: '#/components/schemas/IMetadata'
-          type: object
-        name:
-          type: string
-        performanceTier:
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
           enum:
-          - FTDv
-          - FTDv5
-          - FTDv10
-          - FTDv20
-          - FTDv30
-          - FTDv50
-          - FTDv100
-          type: string
-        type:
-          type: string
-        version:
-          type: string
-      type: object
-    IMetadataUser:
-      properties:
-        id:
-          type: string
-        links:
-          $ref: '#/components/schemas/ILinks'
-          type: object
-        name:
-          type: string
-        type:
+          - ERROR
+          - WARN
           type: string
       type: object
     DeviceLicense:
@@ -816,6 +583,239 @@ components:
         version:
           type: string
       type: object
+    IDeviceLicense:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        items:
+          items:
+            $ref: '#/components/schemas/IDeviceLicense'
+            type: object
+          type: array
+        licenseTypes:
+          items:
+            enum:
+            - ESSENTIALS
+            - EXPORT_CONTROL
+            - MALWARE_DEFENSE
+            - MALWARE_DEFENSE_HA
+            - SECURE_CLIENT_PREMIER
+            - SECURE_CLIENT_PREMIER_HA
+            - SECURE_CLIENT_PREMIER_ADVANTAGE
+            - SECURE_CLIENT_PREMIER_ADVANTAGE_HA
+            - URL
+            - URL_HA
+            - IPS
+            - IPS_HA
+            - SECURE_CLIENT_VPNOnly
+            - SECURE_CLIENT_VPNOnly_HA
+            - CARRIER
+            - CARRIER_HA
+            type: string
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        metadata:
+          $ref: '#/components/schemas/IMetadata'
+          type: object
+        name:
+          type: string
+        performanceTier:
+          enum:
+          - FTDv
+          - FTDv5
+          - FTDv10
+          - FTDv20
+          - FTDv30
+          - FTDv50
+          - FTDv100
+          type: string
+        type:
+          type: string
+        version:
+          type: string
+      type: object
+    SmartLicense:
+      description: API's to trigger Smart License related operations like evaluation, registration, de-registration and Smart License operations on devices.
+      properties:
+        description:
+          description: More information about the Smart License.
+          type: string
+        force:
+          description: true | false, if true, Overwrite FMC instance in Smart Software Manager if instance already exists. default is false
+          type: string
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          description: Object representing this resource.
+          type: object
+        metadata:
+          $ref: '#/components/schemas/ISmartLicenseMetaData'
+          description: Object representing metadata attributes for the Smart License.
+          type: object
+        name:
+          description: Name of the Smart License.
+          type: string
+        regStatus:
+          description: REGISTERED|UNREGISTERED|RESERVATION_IN_PROGRESS|EVALUATION
+          enum:
+          - REGISTERED
+          - UNREGISTERED
+          - RESERVATION_IN_PROGRESS
+          - EVALUATION
+          type: string
+        registrationType:
+          description: EVALUATION|REGISTERED|DEREGISTERED
+          enum:
+          - EVALUATION
+          - REGISTER
+          - DEREGISTER
+          type: string
+        token:
+          description: X2M3YmJlY...
+          type: string
+        type:
+          description: SmartLicense
+          type: string
+      type: object
+    DeviceLicenseListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/DeviceLicense'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    ErrorMessagesContainer:
+      properties:
+        bulkPayloadIndex:
+          description: More details about the error.
+          type: string
+        code:
+          description: More details about the error.
+          type: string
+        description:
+          description: More details about the error.
+          type: string
+        details:
+          description: More details about the error.
+          type: string
+        errorCode:
+          description: More details about the error.
+          type: string
+        location:
+          description: More details about the error.
+          type: string
+        severity:
+          description: Specifies the Highest level severity among all the error messages.
+          enum:
+          - ERROR
+          - WARN
+          type: string
+      type: object
+    IMetadata:
+      properties:
+        domain:
+          $ref: '#/components/schemas/IDomain'
+          type: object
+        isLocked:
+          type: boolean
+        lastUser:
+          $ref: '#/components/schemas/IMetadataUser'
+          type: object
+        matches:
+          items:
+            type: string
+          type: array
+        readOnly:
+          $ref: '#/components/schemas/IReadonly'
+          type: object
+        timestamp:
+          format: int32
+          type: integer
+      type: object
+    SmartLicenseListContainer:
+      properties:
+        items:
+          $ref: '#/components/schemas/SmartLicense'
+          type: array
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        paging:
+          $ref: '#/components/schemas/PagingContainer'
+          type: object
+      type: object
+    IReadonly:
+      properties:
+        reason:
+          enum:
+          - RBAC
+          - SYSTEM
+          - DOMAIN
+          type: string
+        state:
+          type: boolean
+      type: object
+    IDomain:
+      properties:
+        id:
+          type: string
+        links:
+          $ref: '#/components/schemas/ILinks'
+          type: object
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    PagingContainer:
+      properties:
+        count:
+          format: int32
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        offset:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+      type: object
+  parameters:
+    limit:
+      description: Number of items to return.
+      in: query
+      name: limit
+      required: false
+      schema:
+        format: int32
+        type: integer
+    expanded:
+      description: If set to true, the GET response displays a list of objects with additional attributes.
+      in: query
+      name: expanded
+      required: false
+      schema:
+        type: boolean
+    offset:
+      description: Index of first item to return.
+      in: query
+      name: offset
+      required: false
+      schema:
+        format: int32
+        type: integer
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT

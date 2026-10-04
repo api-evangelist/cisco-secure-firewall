@@ -453,51 +453,6 @@ paths:
       - MPM Search
 components:
   schemas:
-    MpmEndpointObj:
-      properties:
-        addressEnd:
-          format: int64
-          type: integer
-        addressStart:
-          format: int64
-          type: integer
-        description:
-          type: string
-        id:
-          format: uuid
-          type: string
-        name:
-          type: string
-        value:
-          type: string
-      type: object
-    MpmAppsAndAppGroupsResult:
-      properties:
-        appGroups:
-          items:
-            $ref: '#/components/schemas/MpmAppGroupObj'
-          type: array
-          uniqueItems: true
-        apps:
-          items:
-            $ref: '#/components/schemas/MpmAppObj'
-          type: array
-          uniqueItems: true
-      type: object
-    MpmAppGroupObj:
-      properties:
-        aps:
-          items:
-            $ref: '#/components/schemas/MpmAppObj'
-          type: array
-        description:
-          type: string
-        id:
-          format: uuid
-          type: string
-        name:
-          type: string
-      type: object
     MpmEndpointsAndEndpointGroupsResult:
       properties:
         endpointGroups:
@@ -508,6 +463,50 @@ components:
         endpoints:
           items:
             $ref: '#/components/schemas/MpmEndpointObj'
+          type: array
+          uniqueItems: true
+      type: object
+    MpmRuleSearchResults:
+      properties:
+        apgs:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        aps:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        dstEpgs:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        dstEps:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        rules:
+          items:
+            format: uuid
+            type: string
+          type: array
+        srcEpgs:
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+        srcEps:
+          items:
+            format: uuid
+            type: string
           type: array
           uniqueItems: true
       type: object
@@ -528,6 +527,51 @@ components:
           type: string
         name:
           type: string
+      type: object
+    MpmEndpointObj:
+      properties:
+        addressEnd:
+          format: int64
+          type: integer
+        addressStart:
+          format: int64
+          type: integer
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+      type: object
+    MpmAppGroupObj:
+      properties:
+        aps:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+        description:
+          type: string
+        id:
+          format: uuid
+          type: string
+        name:
+          type: string
+      type: object
+    MpmAppsAndAppGroupsResult:
+      properties:
+        appGroups:
+          items:
+            $ref: '#/components/schemas/MpmAppGroupObj'
+          type: array
+          uniqueItems: true
+        apps:
+          items:
+            $ref: '#/components/schemas/MpmAppObj'
+          type: array
+          uniqueItems: true
       type: object
     MpmPolicyWithoutRulesObj:
       properties:
@@ -583,50 +627,6 @@ components:
           type: integer
         value:
           type: string
-      type: object
-    MpmRuleSearchResults:
-      properties:
-        apgs:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        aps:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        dstEpgs:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        dstEps:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        rules:
-          items:
-            format: uuid
-            type: string
-          type: array
-        srcEpgs:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-        srcEps:
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
       type: object
   securitySchemes:
     BearerJWT:

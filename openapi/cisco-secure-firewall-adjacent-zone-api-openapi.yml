@@ -176,15 +176,24 @@ paths:
       - Adjacent Zone
 components:
   schemas:
-    ZonePair:
+    AdjacentZones:
       properties:
-        zoneOneId:
-          type: string
-        zoneTwoId:
-          type: string
-      required:
-      - zoneOneId
-      - zoneTwoId
+        adjacentZones:
+          items:
+            $ref: '#/components/schemas/ZonePair'
+          type: array
+      type: object
+    AdjacentZonesToGatewaySets:
+      properties:
+        adjacentZonesToGatewaySets:
+          items:
+            $ref: '#/components/schemas/AdjacentZoneToGatewaySet'
+          type: array
+      type: object
+    TopologyRequestResponse:
+      properties:
+        request:
+          $ref: '#/components/schemas/ReqIdAndReqSystem'
       type: object
     ReqIdAndReqSystem:
       properties:
@@ -208,12 +217,15 @@ components:
           - GOVERNANCE_POLICY_DYNAMIC_GROUP_CHANGE
           type: string
       type: object
-    AdjacentZones:
+    ZonePair:
       properties:
-        adjacentZones:
-          items:
-            $ref: '#/components/schemas/ZonePair'
-          type: array
+        zoneOneId:
+          type: string
+        zoneTwoId:
+          type: string
+      required:
+      - zoneOneId
+      - zoneTwoId
       type: object
     AdjacentZoneToGatewaySet:
       properties:
@@ -227,18 +239,6 @@ components:
       - gatewaySetId
       - zoneOneId
       - zoneTwoId
-      type: object
-    TopologyRequestResponse:
-      properties:
-        request:
-          $ref: '#/components/schemas/ReqIdAndReqSystem'
-      type: object
-    AdjacentZonesToGatewaySets:
-      properties:
-        adjacentZonesToGatewaySets:
-          items:
-            $ref: '#/components/schemas/AdjacentZoneToGatewaySet'
-          type: array
       type: object
     TopologyRequestsResponse:
       properties:

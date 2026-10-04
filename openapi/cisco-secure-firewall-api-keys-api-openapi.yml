@@ -109,18 +109,6 @@ paths:
       - API Keys
 components:
   schemas:
-    CreateApiKeyResponse:
-      properties:
-        accessToken:
-          description: The access token generated for the API key.
-          type: string
-        cuiMachineAccountId:
-          description: The unique identifier for the CUI machine account.
-          type: string
-        refreshToken:
-          description: The refresh token generated for the API key.
-          type: string
-      type: object
     ApiKey:
       properties:
         createdDate:
@@ -163,20 +151,6 @@ components:
           description: The expiration date and time of the token.
           type: string
       type: object
-    CreateApiKeyRequest:
-      properties:
-        apiKeyName:
-          description: The name of the API key to be created.
-          type: string
-        description:
-          description: A brief description of the API key.
-          type: string
-        permissions:
-          description: A list of permissions to be assigned to the API key.
-          items:
-            $ref: '#/components/schemas/Permission'
-          type: array
-      type: object
     ErrorResponse:
       properties:
         message:
@@ -194,6 +168,18 @@ components:
       - trackingId
       - message
       - timestamp
+      type: object
+    CreateApiKeyResponse:
+      properties:
+        accessToken:
+          description: The access token generated for the API key.
+          type: string
+        cuiMachineAccountId:
+          description: The unique identifier for the CUI machine account.
+          type: string
+        refreshToken:
+          description: The refresh token generated for the API key.
+          type: string
       type: object
     Permission:
       properties:
@@ -226,6 +212,20 @@ components:
           - static
           - custom
           type: string
+      type: object
+    CreateApiKeyRequest:
+      properties:
+        apiKeyName:
+          description: The name of the API key to be created.
+          type: string
+        description:
+          description: A brief description of the API key.
+          type: string
+        permissions:
+          description: A list of permissions to be assigned to the API key.
+          items:
+            $ref: '#/components/schemas/Permission'
+          type: array
       type: object
   securitySchemes:
     bearerAuth:

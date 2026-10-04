@@ -569,142 +569,45 @@ paths:
       tags:
       - Object Management
 components:
+  responses:
+    http403Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: User does not have sufficient privileges to perform this operation.
+    http401Unauthorised:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthenticationError'
+      description: Request not authorized.
+    http400BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommonApiError'
+      description: Invalid input provided. Check the response for details.
   schemas:
-    ProtocolValueContent:
+    IssuesDto:
       properties:
-        protocolValue:
-          description: The literal for a custom protocol value
-          example: www
-          type: string
-      type: object
-    PortsValue:
-      properties:
-        literal:
-          description: The literal port or range of port values
-          example: 8000-8080
-          type: string
-      type: object
-    AuthenticationError:
-      properties:
-        error:
-          description: A human-readable error description in English.
-          example: invalid_token
-          type: string
-        errorDescription:
-          description: A human-readable error description in English.
-          example: Your token is invalid
-          type: string
-    IssuesCount:
-      properties:
-        duplicates:
-          description: Number of duplicate Objects
-          example: 2
-          format: int64
-          type: integer
-        totalObjects:
-          description: Total number of objects for the tenant
-          example: 4
-          format: int64
-          type: integer
-        unAssociated:
-          description: Number of UnAssociated Objects
-          example: 1
-          format: int64
-          type: integer
-        unUseds:
-          description: Number of unAssigned Objects
-          example: 1
-          format: int64
-          type: integer
-      type: object
-    NetworkObjectContent:
-      description: The content of a network object
-      properties:
-        literal:
-          description: The literal content of the network object
-          example: a:b:c::1
-          minLength: 1
-          type: string
-      required:
-      - literal
-      type: object
-    SharedObjectValue:
-      properties:
-        defaultContent:
-          $ref: '#/components/schemas/ObjectContent'
-          description: The default value of the object
-        objectType:
-          description: The type of object
-          enum:
-          - NETWORK_OBJECT
-          - URL_OBJECT
-          - SERVICE_OBJECT
-          - NETWORK_GROUP
-          - URL_GROUP
-          - SERVICE_GROUP
-          example: NETWORK_OBJECT
-          type: string
-        overrides:
-          description: The list of target overrides for the object. Each override the default content for its target.
-          items:
-            $ref: '#/components/schemas/Override'
-          type: array
-      required:
-      - defaultContent
-      - objectType
-      type: object
-    UpdateRequest:
-      properties:
-        description:
-          description: The description of the object
-          example: My object description
-          type: string
-        labels:
-          description: The labels for the object
-          example:
-          - migration
+        duplicateTargetIds:
           items:
             type: string
           type: array
           uniqueItems: true
-        name:
-          description: The name of the object to update
-          example: my-object
-          type: string
-        tags:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-            uniqueItems: true
-          description: The tags for the object
-          example:
-            location:
-            - London
-            - Head-office
-          type: object
-        value:
-          $ref: '#/components/schemas/SharedObjectValue'
-          description: The value of the object
+        unusedTargetIds:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
       type: object
-    ObjectResponse:
+    CreateRequest:
       properties:
         description:
           description: The human-readable description of the object
           example: My object description
           type: string
-        elements:
-          description: A flattened list of the content value of the object
-          example: '[a:b:c::1]'
-          items:
-            type: string
-          type: array
-        issues:
-          $ref: '#/components/schemas/IssuesDto'
-          description: The issues for the object
-          example:
-            unusedTargetIds:
-            - 7131daad-e813-4b8f-8f42-be1e241e8cdb
         labels:
           description: The labels for the object
           example:
@@ -716,12 +619,8 @@ components:
         name:
           description: The name of the object
           example: my-object
+          minLength: 1
           type: string
-        referencesInfoFromDefaultAndOverrides:
-          description: List of objects referenced in the default content or in any of the overrides.
-          items:
-            $ref: '#/components/schemas/ReferenceInfo'
-          type: array
         tags:
           additionalProperties:
             items:
@@ -734,154 +633,20 @@ components:
             - London
             - Head-office
           type: object
-        targets:
-          description: Set of targets that contain the object. A target can be, for example, a device, service, or a shared policy (Ruleset).
+        targetIds:
+          description: Set of IDs for targets that contain the object. A target can be, for example, a device, service, or a shared policy (Ruleset).
+          example:
+          - 7131daad-e813-4b8f-8f42-be1e241e8cdb
           items:
-            $ref: '#/components/schemas/Target'
+            type: string
           type: array
-        uid:
-          description: The unique identifier of the object
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
+          uniqueItems: true
         value:
           $ref: '#/components/schemas/SharedObjectValue'
           description: The value of the object
-      type: object
-    UnifiedObjectListView:
-      properties:
-        description:
-          type: string
-        issues:
-          $ref: '#/components/schemas/IssuesDto'
-        labels:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        name:
-          type: string
-        overrideIds:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        tags:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-            uniqueItems: true
-          type: object
-        targetIds:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        uid:
-          format: uuid
-          type: string
-        value:
-          $ref: '#/components/schemas/SharedObjectValue'
-      type: object
-    CommonApiError:
-      properties:
-        details:
-          additionalProperties:
-            description: Additional details, if any, on the error
-            example: {}
-            type: object
-          description: Additional details, if any, on the error
-          example: {}
-          type: object
-        errorCode:
-          description: A unique code that describes the error.
-          enum:
-          - INVALID_INPUT
-          - UNAUTHORIZED
-          - FORBIDDEN
-          - NOT_FOUND
-          - METHOD_NOT_ALLOWED
-          - CONFLICT
-          - TOO_MANY_REQUESTS
-          - SERVER_ERROR
-          - PROXY_ERROR
-          - BAD_REQUEST
-          - UNPROCESSABLE_ENTITY
-          example: INVALID_INPUT
-          type: string
-        errorMsg:
-          description: A human-readable error description in English.
-          example: sample error
-          type: string
-    Icmp6Value:
-      properties:
-        icmp6Code:
-          enum:
-          - NO_ROUTE_DEST
-          - COMMUNICATION_PROHIBITED
-          - BEYOND_SCOPE_SRC_ADDR
-          - ADDRESS_UNREACHABLE
-          - PORT_UNREACHABLE
-          - SOURCE_ADDRESS_FAILED
-          - REJECT_ROUTE
-          - ERROR_SRC_ROUTING_HEADER
-          - HOP_LIMIT_EXCEEDED
-          - FRAGMENT_REASSEMBLY_TIME_EXCEEDED
-          - ERRONEOUS_HEADER_ENCOUNTERED
-          - UNRECOGNIZED_NEXT_HEADER_TYPE_ENCOUNTERED
-          - UNRECOGNIZED_IPV6_OPTION_ENCOUNTERED
-          - IPV6_FIRST_FRAG_HAS_INCOMPLETE_HEADER_CHAIN
-          - SR_UPPER_LAYER_HEADER_ERROR
-          - ROUTER_RENUMBERING_COMMAND
-          - ROUTER_RENUMBERING_RESULT
-          - DATA_CONTAINS_IPV6
-          - DATA_CONTAINS_NAME
-          - DATA_CONTAINS_IPV4
-          - SUCCESSFUL_REPLY
-          - RESPONDER_REFUSES_ANSWER
-          - QTYPE_UNKNOWN
-          example: ADDRESS_UNREACHABLE
-          type: string
-        icmp6Type:
-          enum:
-          - ANY
-          - DESTINATION_UNREACHABLE
-          - PACKET_TOO_BIG
-          - TIME_EXCEEDED
-          - PARAMETER_PROBLEM
-          - ECHO_REQUEST
-          - ECHO_REPLY
-          - MULTICAST_LISTENER_QUERY
-          - MULTICAST_LISTENER_REPORT
-          - MULTICAST_LISTENER_DONE
-          - ROUTER_SOLICITATION
-          - ROUTER_ADVERTISEMENT
-          - NEIGHBOUR_SOLICITATION
-          - NEIGHBOUR_ADVERTISEMENT
-          - REDIRECT_MESSAGE
-          - ROUTER_RENUMBERING
-          - ICMP_NODE_INFO_QUERY
-          - ICMP_NODE_INFO_RESPONSE
-          - INVERSE_NEIGHBOR_DISCOVERY_SOLICITATION
-          - INVERSE_NEIGHBOR_DISCOVERY_ADVERTISEMENT
-          - VER2_MULTICAST_LISTENER_REPORT
-          - HOME_AGENT_ADDR_DISCOVERY_REQUEST
-          - HOME_AGENT_ADDR_DISCOVERY_REPLY
-          - MOBILE_PREFIX_SOLICITATION
-          - MOBILE_PREFIX_ADVERTISEMENT
-          - CERT_PATH_SOLICITATION
-          - CERT_PATH_ADVERTISEMENT
-          - ICMP_EXP_MOBILITY_PROTOCOLS
-          - MULTICAST_ROUTER_ADVERTISEMENT
-          - MULTICAST_ROUTER_SOLICITATION
-          - MULTICAST_ROUTER_TERMINATION
-          - FMIPV6_MESSAGE
-          - RPL_CONTROL_MESSAGE
-          - PRIVATE_EXPERIMENTATION
-          - PRIVATE_EXPERIMENTATION_EXTENDED
-          example: DESTINATION_UNREACHABLE
-          type: string
+      required:
+      - name
+      - value
       type: object
     ReferenceInfo:
       properties:
@@ -906,29 +671,16 @@ components:
           format: uuid
           type: string
       type: object
-    Override:
-      example:
-        content: a:b:c::2
-        targetId: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+    AuthenticationError:
       properties:
-        content:
-          $ref: '#/components/schemas/ObjectContent'
-          description: The content value of the override. This overrides the object's default content.
-        targetId:
-          description: The ID of the target. A target can be, for example, a device, service, or a shared policy (Ruleset).
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+        error:
+          description: A human-readable error description in English.
+          example: invalid_token
           type: string
-      required:
-      - content
-      type: object
-    ObjectContent:
-      example:
-        literal: a:b:c::1
-      oneOf:
-      - $ref: '#/components/schemas/ServiceObjectContent'
-      - $ref: '#/components/schemas/UrlObjectContent'
-      - $ref: '#/components/schemas/GroupContent'
-      - $ref: '#/components/schemas/NetworkObjectContent'
+        errorDescription:
+          description: A human-readable error description in English.
+          example: Your token is invalid
+          type: string
     ServiceObjectContent:
       properties:
         protocol:
@@ -1070,128 +822,54 @@ components:
           - '80'
           - '81'
       type: object
-    IssuesDto:
+    ProtocolValueContent:
       properties:
-        duplicateTargetIds:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        unusedTargetIds:
-          items:
-            type: string
-          type: array
-          uniqueItems: true
+        protocolValue:
+          description: The literal for a custom protocol value
+          example: www
+          type: string
       type: object
-    SourceDestinationPortsValue:
+    NetworkObjectContent:
+      description: The content of a network object
       properties:
-        destination:
-          $ref: '#/components/schemas/PortsValue'
-        source:
-          $ref: '#/components/schemas/PortsValue'
-      type: object
-    UrlObjectContent:
-      properties:
-        url:
-          description: The URL literal
-          example: https://www.cisco.com/
+        literal:
+          description: The literal content of the network object
+          example: a:b:c::1
           minLength: 1
           type: string
       required:
-      - url
+      - literal
       type: object
-    CreateRequest:
+    CommonApiError:
       properties:
-        description:
-          description: The human-readable description of the object
-          example: My object description
-          type: string
-        labels:
-          description: The labels for the object
-          example:
-          - migration
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        name:
-          description: The name of the object
-          example: my-object
-          minLength: 1
-          type: string
-        tags:
+        details:
           additionalProperties:
-            items:
-              type: string
-            type: array
-            uniqueItems: true
-          description: The tags for the object
-          example:
-            location:
-            - London
-            - Head-office
+            description: Additional details, if any, on the error
+            example: {}
+            type: object
+          description: Additional details, if any, on the error
+          example: {}
           type: object
-        targetIds:
-          description: Set of IDs for targets that contain the object. A target can be, for example, a device, service, or a shared policy (Ruleset).
-          example:
-          - 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-        value:
-          $ref: '#/components/schemas/SharedObjectValue'
-          description: The value of the object
-      required:
-      - name
-      - value
-      type: object
-    TargetsRequest:
-      properties:
-        targetsUuids:
-          description: The list of UIDs of the targets to be deleted.
-          example:
-          - 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          items:
-            type: string
-          type: array
-      type: object
-    DuplicateGroupDto:
-      properties:
-        targetUid:
-          description: The unique identifier of the target to search in.
-          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
-          format: uuid
-          type: string
-        unifiedObjectUids:
-          description: The set of unique identifiers of the duplicate objects.
-          items:
-            format: uuid
-            type: string
-          type: array
-          uniqueItems: true
-      type: object
-    ServiceObjectValueContent:
-      example: '{ "8000-9000"] }'
-      oneOf:
-      - $ref: '#/components/schemas/Icmp4Value'
-      - $ref: '#/components/schemas/Icmp6Value'
-      - $ref: '#/components/schemas/SourceDestinationPortsValue'
-      - $ref: '#/components/schemas/PortsValue'
-      - $ref: '#/components/schemas/ProtocolValueContent'
-      properties:
-        type:
+        errorCode:
+          description: A unique code that describes the error.
           enum:
-          - NETWORK_OBJECT
-          - URL_OBJECT
-          - SERVICE_OBJECT
-          - ICMP_4
-          - ICMP_6
-          - SOURCE_DESTINATION_PORT
-          - PORT
-          - PROTOCOL_VALUE
+          - INVALID_INPUT
+          - UNAUTHORIZED
+          - FORBIDDEN
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - CONFLICT
+          - TOO_MANY_REQUESTS
+          - SERVER_ERROR
+          - PROXY_ERROR
+          - BAD_REQUEST
+          - UNPROCESSABLE_ENTITY
+          example: INVALID_INPUT
           type: string
-      type: object
+        errorMsg:
+          description: A human-readable error description in English.
+          example: sample error
+          type: string
     Target:
       properties:
         displayName:
@@ -1221,23 +899,62 @@ components:
           example: ASA
           type: string
       type: object
-    GroupContent:
-      description: The contents of an object group
+    PortsValue:
       properties:
-        literals:
-          description: List of content literals
-          items:
-            $ref: '#/components/schemas/SingleContent'
-          type: array
-        referencedObjectUids:
-          description: Set of UIDs of the group's referenced objects
+        literal:
+          description: The literal port or range of port values
+          example: 8000-8080
+          type: string
+      type: object
+    ObjectContent:
+      example:
+        literal: a:b:c::1
+      oneOf:
+      - $ref: '#/components/schemas/ServiceObjectContent'
+      - $ref: '#/components/schemas/UrlObjectContent'
+      - $ref: '#/components/schemas/GroupContent'
+      - $ref: '#/components/schemas/NetworkObjectContent'
+    TargetsRequest:
+      properties:
+        targetsUuids:
+          description: The list of UIDs of the targets to be deleted.
           example:
           - 7131daad-e813-4b8f-8f42-be1e241e8cdb
           items:
-            format: uuid
             type: string
           type: array
-          uniqueItems: true
+      type: object
+    SharedObjectValue:
+      properties:
+        defaultContent:
+          $ref: '#/components/schemas/ObjectContent'
+          description: The default value of the object
+        objectType:
+          description: The type of object
+          enum:
+          - NETWORK_OBJECT
+          - URL_OBJECT
+          - SERVICE_OBJECT
+          - NETWORK_GROUP
+          - URL_GROUP
+          - SERVICE_GROUP
+          example: NETWORK_OBJECT
+          type: string
+        overrides:
+          description: The list of target overrides for the object. Each override the default content for its target.
+          items:
+            $ref: '#/components/schemas/Override'
+          type: array
+      required:
+      - defaultContent
+      - objectType
+      type: object
+    SourceDestinationPortsValue:
+      properties:
+        destination:
+          $ref: '#/components/schemas/PortsValue'
+        source:
+          $ref: '#/components/schemas/PortsValue'
       type: object
     Icmp4Value:
       properties:
@@ -1331,6 +1048,308 @@ components:
           - PROTOCOL_VALUE
           type: string
       type: object
+    Override:
+      example:
+        content: a:b:c::2
+        targetId: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+      properties:
+        content:
+          $ref: '#/components/schemas/ObjectContent'
+          description: The content value of the override. This overrides the object's default content.
+        targetId:
+          description: The ID of the target. A target can be, for example, a device, service, or a shared policy (Ruleset).
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          type: string
+      required:
+      - content
+      type: object
+    UpdateRequest:
+      properties:
+        description:
+          description: The description of the object
+          example: My object description
+          type: string
+        labels:
+          description: The labels for the object
+          example:
+          - migration
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        name:
+          description: The name of the object to update
+          example: my-object
+          type: string
+        tags:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+            uniqueItems: true
+          description: The tags for the object
+          example:
+            location:
+            - London
+            - Head-office
+          type: object
+        value:
+          $ref: '#/components/schemas/SharedObjectValue'
+          description: The value of the object
+      type: object
+    ObjectResponse:
+      properties:
+        description:
+          description: The human-readable description of the object
+          example: My object description
+          type: string
+        elements:
+          description: A flattened list of the content value of the object
+          example: '[a:b:c::1]'
+          items:
+            type: string
+          type: array
+        issues:
+          $ref: '#/components/schemas/IssuesDto'
+          description: The issues for the object
+          example:
+            unusedTargetIds:
+            - 7131daad-e813-4b8f-8f42-be1e241e8cdb
+        labels:
+          description: The labels for the object
+          example:
+          - migration
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        name:
+          description: The name of the object
+          example: my-object
+          type: string
+        referencesInfoFromDefaultAndOverrides:
+          description: List of objects referenced in the default content or in any of the overrides.
+          items:
+            $ref: '#/components/schemas/ReferenceInfo'
+          type: array
+        tags:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+            uniqueItems: true
+          description: The tags for the object
+          example:
+            location:
+            - London
+            - Head-office
+          type: object
+        targets:
+          description: Set of targets that contain the object. A target can be, for example, a device, service, or a shared policy (Ruleset).
+          items:
+            $ref: '#/components/schemas/Target'
+          type: array
+        uid:
+          description: The unique identifier of the object
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        value:
+          $ref: '#/components/schemas/SharedObjectValue'
+          description: The value of the object
+      type: object
+    IssuesCount:
+      properties:
+        duplicates:
+          description: Number of duplicate Objects
+          example: 2
+          format: int64
+          type: integer
+        totalObjects:
+          description: Total number of objects for the tenant
+          example: 4
+          format: int64
+          type: integer
+        unAssociated:
+          description: Number of UnAssociated Objects
+          example: 1
+          format: int64
+          type: integer
+        unUseds:
+          description: Number of unAssigned Objects
+          example: 1
+          format: int64
+          type: integer
+      type: object
+    GroupContent:
+      description: The contents of an object group
+      properties:
+        literals:
+          description: List of content literals
+          items:
+            $ref: '#/components/schemas/SingleContent'
+          type: array
+        referencedObjectUids:
+          description: Set of UIDs of the group's referenced objects
+          example:
+          - 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    UnifiedObjectListView:
+      properties:
+        description:
+          type: string
+        issues:
+          $ref: '#/components/schemas/IssuesDto'
+        labels:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        name:
+          type: string
+        overrideIds:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        tags:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+            uniqueItems: true
+          type: object
+        targetIds:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        uid:
+          format: uuid
+          type: string
+        value:
+          $ref: '#/components/schemas/SharedObjectValue'
+      type: object
+    UrlObjectContent:
+      properties:
+        url:
+          description: The URL literal
+          example: https://www.cisco.com/
+          minLength: 1
+          type: string
+      required:
+      - url
+      type: object
+    DuplicateGroupDto:
+      properties:
+        targetUid:
+          description: The unique identifier of the target to search in.
+          example: 7131daad-e813-4b8f-8f42-be1e241e8cdb
+          format: uuid
+          type: string
+        unifiedObjectUids:
+          description: The set of unique identifiers of the duplicate objects.
+          items:
+            format: uuid
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    Icmp6Value:
+      properties:
+        icmp6Code:
+          enum:
+          - NO_ROUTE_DEST
+          - COMMUNICATION_PROHIBITED
+          - BEYOND_SCOPE_SRC_ADDR
+          - ADDRESS_UNREACHABLE
+          - PORT_UNREACHABLE
+          - SOURCE_ADDRESS_FAILED
+          - REJECT_ROUTE
+          - ERROR_SRC_ROUTING_HEADER
+          - HOP_LIMIT_EXCEEDED
+          - FRAGMENT_REASSEMBLY_TIME_EXCEEDED
+          - ERRONEOUS_HEADER_ENCOUNTERED
+          - UNRECOGNIZED_NEXT_HEADER_TYPE_ENCOUNTERED
+          - UNRECOGNIZED_IPV6_OPTION_ENCOUNTERED
+          - IPV6_FIRST_FRAG_HAS_INCOMPLETE_HEADER_CHAIN
+          - SR_UPPER_LAYER_HEADER_ERROR
+          - ROUTER_RENUMBERING_COMMAND
+          - ROUTER_RENUMBERING_RESULT
+          - DATA_CONTAINS_IPV6
+          - DATA_CONTAINS_NAME
+          - DATA_CONTAINS_IPV4
+          - SUCCESSFUL_REPLY
+          - RESPONDER_REFUSES_ANSWER
+          - QTYPE_UNKNOWN
+          example: ADDRESS_UNREACHABLE
+          type: string
+        icmp6Type:
+          enum:
+          - ANY
+          - DESTINATION_UNREACHABLE
+          - PACKET_TOO_BIG
+          - TIME_EXCEEDED
+          - PARAMETER_PROBLEM
+          - ECHO_REQUEST
+          - ECHO_REPLY
+          - MULTICAST_LISTENER_QUERY
+          - MULTICAST_LISTENER_REPORT
+          - MULTICAST_LISTENER_DONE
+          - ROUTER_SOLICITATION
+          - ROUTER_ADVERTISEMENT
+          - NEIGHBOUR_SOLICITATION
+          - NEIGHBOUR_ADVERTISEMENT
+          - REDIRECT_MESSAGE
+          - ROUTER_RENUMBERING
+          - ICMP_NODE_INFO_QUERY
+          - ICMP_NODE_INFO_RESPONSE
+          - INVERSE_NEIGHBOR_DISCOVERY_SOLICITATION
+          - INVERSE_NEIGHBOR_DISCOVERY_ADVERTISEMENT
+          - VER2_MULTICAST_LISTENER_REPORT
+          - HOME_AGENT_ADDR_DISCOVERY_REQUEST
+          - HOME_AGENT_ADDR_DISCOVERY_REPLY
+          - MOBILE_PREFIX_SOLICITATION
+          - MOBILE_PREFIX_ADVERTISEMENT
+          - CERT_PATH_SOLICITATION
+          - CERT_PATH_ADVERTISEMENT
+          - ICMP_EXP_MOBILITY_PROTOCOLS
+          - MULTICAST_ROUTER_ADVERTISEMENT
+          - MULTICAST_ROUTER_SOLICITATION
+          - MULTICAST_ROUTER_TERMINATION
+          - FMIPV6_MESSAGE
+          - RPL_CONTROL_MESSAGE
+          - PRIVATE_EXPERIMENTATION
+          - PRIVATE_EXPERIMENTATION_EXTENDED
+          example: DESTINATION_UNREACHABLE
+          type: string
+      type: object
+    ServiceObjectValueContent:
+      example: '{ "8000-9000"] }'
+      oneOf:
+      - $ref: '#/components/schemas/Icmp4Value'
+      - $ref: '#/components/schemas/Icmp6Value'
+      - $ref: '#/components/schemas/SourceDestinationPortsValue'
+      - $ref: '#/components/schemas/PortsValue'
+      - $ref: '#/components/schemas/ProtocolValueContent'
+      properties:
+        type:
+          enum:
+          - NETWORK_OBJECT
+          - URL_OBJECT
+          - SERVICE_OBJECT
+          - ICMP_4
+          - ICMP_6
+          - SOURCE_DESTINATION_PORT
+          - PORT
+          - PROTOCOL_VALUE
+          type: string
+      type: object
     ListObjectResponse:
       properties:
         count:
@@ -1355,25 +1374,6 @@ components:
           format: int64
           type: integer
       type: object
-  responses:
-    http403Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: User does not have sufficient privileges to perform this operation.
-    http400BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommonApiError'
-      description: Invalid input provided. Check the response for details.
-    http401Unauthorised:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AuthenticationError'
-      description: Request not authorized.
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
