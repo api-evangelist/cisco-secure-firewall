@@ -1,0 +1,12 @@
+{
+ "url": "https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml",
+ "requested_url": "https://raw.githubusercontent.com/CiscoDevNet/scc-public-api-docs/main/cdo/cdfmc-openapi.yaml",
+ "status": 200,
+ "content_type": "text/plain; charset=utf-8",
+ "bytes": 9481650,
+ "sha256": "07dabefb0ac92097683090a44e441e0bf456d8628d85613b20c11e9e3a5c9171",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 1.0), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
